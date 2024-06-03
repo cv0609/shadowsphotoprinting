@@ -39,7 +39,7 @@
           </div>
             <!-- /top tiles -->
   
-            <div class="row">
+            {{-- <div class="row">
               <div class="col-md-12 col-sm-12 ">
                 <div class="dashboard_graph">
   
@@ -678,7 +678,7 @@
                   <!-- end of weather widget -->
                 </div>
               </div>
-            </div>
+            </div> --}}
           </div>
           <!-- /page content -->
 @endsection
