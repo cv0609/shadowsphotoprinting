@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
+            $table->string('page_title');
+            $table->string('slug')->unique();
+            $table->enum('status',['0','1'])->default('1')->comment('0 for unactive 1 for active');
+            $table->tinyInteger('added_by_admin');
+            $table->string('url');
+            $table->string('page_category');
             $table->timestamps();
         });
     }

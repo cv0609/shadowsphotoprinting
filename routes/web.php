@@ -27,7 +27,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/dashboard',[AuthController::class,'dashboard'])->name('admin.dashboard');
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
         Route::get('/pages',[PagesController::class,'index'])->name('admin.pages.index');
-        Route::get('/add-page',[PagesController::class,'index'])->name('admin.page.add');
+        Route::get('/add-page',[PagesController::class,'addPage'])->name('admin.page.add');
     });
 
 

@@ -14,6 +14,6 @@ class PagesController extends Controller
 
     public function addPage()
      {
-         return view('admin');
+         return view('admin.pages.add');
      }
 }

@@ -26,7 +26,9 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Pages List</h2>
-              <button class="btn btn-info panel_toolbox">Create Page</button>
+              <a href="{{route('admin.page.add')}}">
+                <button class="btn btn-info panel_toolbox">Create Page</button>
+              </a>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -56,7 +58,7 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   </div>
 @endsection
