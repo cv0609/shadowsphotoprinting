@@ -26,7 +26,7 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Pages List</h2>
-              <button class="btn btn-info panel_toolbox">Add Page</button>
+              <button class="btn btn-info panel_toolbox">Create Page</button>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
