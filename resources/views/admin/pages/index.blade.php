@@ -26,7 +26,7 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Pages List</h2>
-              <a href="{{route('admin.page.add')}}">
+              <a href="{{ route('pages.create') }}">
                 <button class="btn btn-info panel_toolbox">Create Page</button>
               </a>
               <div class="clearfix"></div>
