@@ -31,9 +31,9 @@ class PagesController extends Controller
 
     public function show($page)
       {
-        $detail = Page::whereId($page)->first();
+        $detail = Page::where('slug',$page)->first();
         $page_fields = read_json($detail->slug.'.json');
-        dd($page_fields);
+
         return view('admin.pages.edit',compact('detail','page_fields'));
       }
 }
