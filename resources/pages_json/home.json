@@ -2,6 +2,24 @@
     "title": "home",
     "name": "home",
     "sections": [
+		{
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
         {
             "title": "main_banner",
             "layout_type": "row",
@@ -108,7 +126,7 @@
 					"type": "text",
 					"required": true,
 					"name": "order_now"
-				},
+				}
             ]
         },
 		{
