@@ -1,0 +1,11 @@
+{
+    "title": "shop",
+    "name": "shop",
+    "sections": [
+        {
+            "title": "shop_banner",
+            "layout_type": "row",
+            "fields":
+        }
+    ]
+}

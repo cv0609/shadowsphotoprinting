@@ -49,98 +49,77 @@
             "title": "design_section",
             "layout_type": "row",
             "fields": [
-
                 {
-					"title": "div_class_1",
+					"title": "quote_description",
 					"type": "text",
-					"required": false,
-					"name": "div_class_1"
+					"required": true,
+					"name": "quote_description"
 				},
 				{
-					"title": "div_class_2",
+					"title": "get_a_quote",
 					"type": "text",
-					"required": false,
-					"name": "div_class_2"
-				},
+					"required": true,
+					"name": "get_a_quote"
+				}
+            ]
+        },
+		{
+            "title": "photo_restoration_section",
+            "layout_type": "row",
+            "fields": [
                 {
-					"title": "div_class_3",
+					"title": "photo_restoration_service_description",
 					"type": "text",
-					"required": false,
-					"name": "div_class_3"
+					"required": true,
+					"name": "photo_restoration_service_description"
 				},
-                {
-					"title": "div_class_4",
+				{
+					"title": "contact_us",
 					"type": "text",
-					"required": false,
-					"name": "div_class_4"
+					"required": true,
+					"name": "contact_us"
 				},
+				{
+					"title": "photo_restoration_service_image",
+					"type": "images",
+					"required": true,
+					"name": "photo_restoration_service_image"
+				}
+            ]
+        },
+		{
+            "title": "bulk_section",
+            "layout_type": "row",
+            "fields": [
                 {
-					"title": "div_class_5",
+					"title": "accept_bulk_order_description",
 					"type": "text",
-					"required": false,
-					"name": "div_class_5"
+					"required": true,
+					"name": "accept_bulk_order_description"
 				},
-                {
-					"title": "div_class_6",
-					"type": "text",
-					"required": false,
-					"name": "div_class_6"
+				{
+					"title": "accept_bulk_order_image",
+					"type": "images",
+					"required": true,
+					"name": "accept_bulk_order_image"
 				},
-                {
-					"title": "div_class_7",
+				{
+					"title": "order_now",
 					"type": "text",
-					"required": false,
-					"name": "div_class_7"
+					"required": true,
+					"name": "order_now"
 				},
+            ]
+        },
+		{
+            "title": "shop_by_categories",
+            "layout_type": "row",
+            "fields": [
                 {
-					"title": "div_class_8",
+					"title": "shop_by_categories_title",
 					"type": "text",
-					"required": false,
-					"name": "div_class_8"
-				},
-                {
-					"title": "div_class_9",
-					"type": "text",
-					"required": false,
-					"name": "div_class_9"
-				},
-                {
-					"title": "div_class_10",
-					"type": "text",
-					"required": false,
-					"name": "div_class_10"
-				},
-                {
-					"title": "heading_class",
-					"type": "text",
-					"required": false,
-					"name": "heading_class"
-				},
-
-                {
-					"title": "sub_heading_class",
-					"type": "text",
-					"required": false,
-					"name": "sub_heading_class"
-				},
-
-                {
-					"title": "peragraph_class",
-					"type": "text",
-					"required": false,
-					"name": "peragraph_class"
-				},
-                {
-					"title": "img_class1",
-					"type": "text",
-					"required": false,
-					"name": "img_class1"
-				},
-                {
-					"title": "custom_css",
-					"type": "text",
-					"required": false,
-					"name": "custom_css"
+					"required": true,
+					"name": "shop_by_categories_title"
 				}
             ]
         }
