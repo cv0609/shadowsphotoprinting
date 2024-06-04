@@ -62,7 +62,7 @@
                 },
                 {
                     "title": "select_images",
-                    "type": "text",
+                    "type": "images",
                     "required": true,
                     "name": "select_images"
                 }
