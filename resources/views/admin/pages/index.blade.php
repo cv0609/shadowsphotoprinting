@@ -26,7 +26,9 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Pages List</h2>
-              <button class="btn btn-info panel_toolbox">Create Page</button>
+              <a href="{{ route('pages.create') }}">
+                <button class="btn btn-info panel_toolbox">Create Page</button>
+              </a>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -35,28 +37,28 @@
                         <tr>
                             <th>#</th>
                             <th>Pages Name</th>
-                            <th>Pages Slug </th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Home</td>
-                            <td>Home</td>
-                            <td>
-                                <div class="x_content">
-                                    <button type="button" class="btn btn-primary">Edit</button>
-                                    <button type="button" class="btn btn-danger">Danger</button>
-                                </div>
-                            </td>
-                        </tr>
+                        @foreach ($pages as $key => $page)
+                            <tr>
+                                <th scope="row">{{ $key + 1 }}</th>
+                                <td>{{ $page->page_title }}</td>
+                                <td>
+                                    <div class="x_content">
+                                    <a href="{{ route('pages.show', ['page' => $page->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                        <button type="button" class="btn btn-danger">Danger</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   </div>
 @endsection

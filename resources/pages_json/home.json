@@ -1,0 +1,146 @@
+{
+    "title": "home",
+    "name": "home",
+    "sections": [
+		{
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "main_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "main_banner",
+					"type": "images",
+					"required": false,
+					"name": "main_banner"
+				}
+            ]
+        },
+        {
+            "title": "about_section",
+            "layout_type": "row",
+            "fields": [
+
+                {
+					"title": "side_image",
+					"type": "image",
+					"required": true,
+					"name": "side_image"
+				},
+				{
+					"title": "title",
+					"type": "text",
+					"required": true,
+					"name": "title"
+				},
+                {
+					"title": "description",
+					"type": "textarea",
+					"required": true,
+					"name": "description"
+				},
+                {
+					"title": "shop_now",
+					"type": "text",
+					"required": true,
+					"name": "shop_now"
+				}
+            ]
+        },
+		{
+            "title": "design_section",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "quote_description",
+					"type": "text",
+					"required": true,
+					"name": "quote_description"
+				},
+				{
+					"title": "get_a_quote",
+					"type": "text",
+					"required": true,
+					"name": "get_a_quote"
+				}
+            ]
+        },
+		{
+            "title": "photo_restoration_section",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "photo_restoration_service_description",
+					"type": "text",
+					"required": true,
+					"name": "photo_restoration_service_description"
+				},
+				{
+					"title": "contact_us",
+					"type": "text",
+					"required": true,
+					"name": "contact_us"
+				},
+				{
+					"title": "photo_restoration_service_image",
+					"type": "images",
+					"required": true,
+					"name": "photo_restoration_service_image"
+				}
+            ]
+        },
+		{
+            "title": "bulk_section",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "accept_bulk_order_description",
+					"type": "text",
+					"required": true,
+					"name": "accept_bulk_order_description"
+				},
+				{
+					"title": "accept_bulk_order_image",
+					"type": "images",
+					"required": true,
+					"name": "accept_bulk_order_image"
+				},
+				{
+					"title": "order_now",
+					"type": "text",
+					"required": true,
+					"name": "order_now"
+				}
+            ]
+        },
+		{
+            "title": "shop_by_categories",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "shop_by_categories_title",
+					"type": "text",
+					"required": true,
+					"name": "shop_by_categories_title"
+				}
+            ]
+        }
+
+    ]
+}

@@ -1,0 +1,72 @@
+{
+    "title": "shop",
+    "name": "shop",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "shop_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "shop_banner",
+                    "type": "images",
+                    "required": "false",
+                    "name": "shop_banner"
+                }
+            ]
+        },
+        {
+            "title": "page_instruction",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "page_instruction_title",
+                    "type": "text",
+                    "required": "true",
+                    "name": "page_instruction_title"
+                },
+                {
+                    "title": "page_instruction_description",
+                    "type": "textarea",
+                    "required": "true",
+                    "name": "page_instruction_description"
+                }
+            ]
+        },
+        {
+            "title": "select_images_for_upload",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "select_images_for_upload_title",
+                    "type": "text",
+                    "required": "true",
+                    "name": "select_images_for_upload_title"
+                },
+                {
+                    "title": "select_images",
+                    "type": "text",
+                    "required": "true",
+                    "name": "select_images"
+                }
+            ]
+        }
+    ]
+}
