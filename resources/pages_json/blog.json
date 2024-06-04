@@ -3,10 +3,15 @@
     "name": "blog",
     "section": [
         {
-            "title": "",
+            "title": "photo_printing_blog",
             "layout_type": "",
             "fields": [
-
+                {
+                    "title": "photo_printing_blog_title",
+                    "type": "text",
+                    "required": "true",
+                    "name": "photo_printing_blog_title"
+                }
             ]
         }
     ]
