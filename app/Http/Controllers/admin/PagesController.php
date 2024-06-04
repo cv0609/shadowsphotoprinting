@@ -33,7 +33,6 @@ class PagesController extends Controller
       {
         $detail = Page::where('slug',$page)->first();
         $page_fields = read_json($detail->slug.'.json');
-
         return view('admin.pages.edit',compact('detail','page_fields'));
       }
 }
