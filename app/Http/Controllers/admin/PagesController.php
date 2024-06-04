@@ -26,6 +26,14 @@ class PagesController extends Controller
      {
         $slug = Str::slug($request->page_title);
         Page::insert(['page_title'=>$request->page_title,'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id()]);
-        return redirect()->route('pages.index');
+        return redirect()->route('pages.index')->with('success','Page is created successfully');
      }
+
+    public function show($page)
+      {
+        $detail = Page::whereId($page)->first();
+        $page_fields = read_json($detail->slug.'.json');
+        dd($page_fields);
+        return view('admin.pages.edit',compact('detail','page_fields'));
+      }
 }

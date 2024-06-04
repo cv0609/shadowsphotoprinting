@@ -1,0 +1,149 @@
+{
+    "title": "home",
+    "name": "home",
+    "sections": [
+        {
+            "title": "main_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "main_banner",
+					"type": "images",
+					"required": false,
+					"name": "main_banner"
+				}
+            ]
+        },
+        {
+            "title": "about_section",
+            "layout_type": "row",
+            "fields": [
+
+                {
+					"title": "side_image",
+					"type": "image",
+					"required": true,
+					"name": "side_image"
+				},
+				{
+					"title": "title",
+					"type": "text",
+					"required": true,
+					"name": "title"
+				},
+                {
+					"title": "description",
+					"type": "textarea",
+					"required": true,
+					"name": "description"
+				},
+                {
+					"title": "shop_now",
+					"type": "text",
+					"required": true,
+					"name": "shop_now"
+				}
+            ]
+        },
+		{
+            "title": "design_section",
+            "layout_type": "row",
+            "fields": [
+
+                {
+					"title": "div_class_1",
+					"type": "text",
+					"required": false,
+					"name": "div_class_1"
+				},
+				{
+					"title": "div_class_2",
+					"type": "text",
+					"required": false,
+					"name": "div_class_2"
+				},
+                {
+					"title": "div_class_3",
+					"type": "text",
+					"required": false,
+					"name": "div_class_3"
+				},
+                {
+					"title": "div_class_4",
+					"type": "text",
+					"required": false,
+					"name": "div_class_4"
+				},
+                {
+					"title": "div_class_5",
+					"type": "text",
+					"required": false,
+					"name": "div_class_5"
+				},
+                {
+					"title": "div_class_6",
+					"type": "text",
+					"required": false,
+					"name": "div_class_6"
+				},
+                {
+					"title": "div_class_7",
+					"type": "text",
+					"required": false,
+					"name": "div_class_7"
+				},
+                {
+					"title": "div_class_8",
+					"type": "text",
+					"required": false,
+					"name": "div_class_8"
+				},
+                {
+					"title": "div_class_9",
+					"type": "text",
+					"required": false,
+					"name": "div_class_9"
+				},
+                {
+					"title": "div_class_10",
+					"type": "text",
+					"required": false,
+					"name": "div_class_10"
+				},
+                {
+					"title": "heading_class",
+					"type": "text",
+					"required": false,
+					"name": "heading_class"
+				},
+
+                {
+					"title": "sub_heading_class",
+					"type": "text",
+					"required": false,
+					"name": "sub_heading_class"
+				},
+
+                {
+					"title": "peragraph_class",
+					"type": "text",
+					"required": false,
+					"name": "peragraph_class"
+				},
+                {
+					"title": "img_class1",
+					"type": "text",
+					"required": false,
+					"name": "img_class1"
+				},
+                {
+					"title": "custom_css",
+					"type": "text",
+					"required": false,
+					"name": "custom_css"
+				}
+            ]
+        }
+
+    ]
+}
