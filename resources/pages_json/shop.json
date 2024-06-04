@@ -27,7 +27,7 @@
                 {
                     "title": "shop_banner",
                     "type": "images",
-                    "required": "false",
+                    "required": false,
                     "name": "shop_banner"
                 }
             ]
@@ -39,13 +39,13 @@
                 {
                     "title": "page_instruction_title",
                     "type": "text",
-                    "required": "true",
+                    "required": true,
                     "name": "page_instruction_title"
                 },
                 {
                     "title": "page_instruction_description",
                     "type": "textarea",
-                    "required": "true",
+                    "required": true,
                     "name": "page_instruction_description"
                 }
             ]
@@ -57,13 +57,13 @@
                 {
                     "title": "select_images_for_upload_title",
                     "type": "text",
-                    "required": "true",
+                    "required": true,
                     "name": "select_images_for_upload_title"
                 },
                 {
                     "title": "select_images",
                     "type": "text",
-                    "required": "true",
+                    "required": true,
                     "name": "select_images"
                 }
             ]

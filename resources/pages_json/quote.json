@@ -1,7 +1,7 @@
 {
-    "title": "blog",
-    "name": "blog",
-    "section": [
+    "title": "quote",
+    "name": "quote",
+    "sections": [
         {
             "title": "meta_data",
             "layout_type": "row",
@@ -21,14 +21,20 @@
             ]
         },
         {
-            "title": "photo_printing_blog",
-            "layout_type": "",
+            "title": "get_a_quote",
+            "layout_type": "row",
             "fields": [
                 {
-                    "title": "photo_printing_blog_title",
+                    "title": "get_a_quote_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "get_a_quote_banner"
+                },
+                {
+                    "title": "get_a_quote_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "photo_printing_blog_title"
+                    "name": "get_a_quote_banner_title"
                 }
             ]
         }
