@@ -11,8 +11,9 @@
                     </div>
                     <div class="x_content">
                         <br>
-                        <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left"
-                            novalidate="">
+                        <form action="{{ route('pages.update',['page'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                            @csrf
+                            @method('PUT')
                             @foreach($page_fields->sections as $section)
                             <div class="form-felids-wrap">
                                 <h4 class="sec-tittle">{{ ucfirst(str_replace('_',' ',$section->title)) }}</h4>

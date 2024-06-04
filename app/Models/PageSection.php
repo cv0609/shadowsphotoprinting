@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Page extends Model
+class PageSection extends Model
 {
     use HasFactory;
 
-    public function pageSections()
+    public function pages()
     {
-        return $this->belongsToMany(PageSection::class, 'page_section_page');
+        return $this->belongsToMany(Page::class, 'page_section_page');
     }
 }

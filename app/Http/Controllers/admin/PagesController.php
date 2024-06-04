@@ -35,4 +35,9 @@ class PagesController extends Controller
         $page_fields = read_json($detail->slug.'.json');
         return view('admin.pages.edit',compact('detail','page_fields'));
       }
+
+    public function update(Request $request)
+     {
+         dd($request->all());
+     }
 }
