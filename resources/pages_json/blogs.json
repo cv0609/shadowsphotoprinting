@@ -1,6 +1,7 @@
 {
     "title": "blogs",
     "name": "blogs",
+    "upload_pointer": "file-upload-paths.blogs",
     "sections": [
         {
             "title": "meta_data",

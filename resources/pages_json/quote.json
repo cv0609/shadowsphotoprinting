@@ -1,6 +1,7 @@
 {
     "title": "quote",
     "name": "quote",
+    "upload_pointer": "file-upload-paths.quotes",
     "sections": [
         {
             "title": "meta_data",
