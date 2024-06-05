@@ -43,4 +43,6 @@ Route::get('/scrapbook-prints',[ProductController::class,'scrapbookPrints'])->na
 Route::get('/posters-panoramics',[ProductController::class,'postersPanoramics'])->name('posters.panoramics');
 Route::get('/prints-enlargements',[ProductController::class,'printEnlargements'])->name('prints.enlargements');
 Route::get('/photos-for-sale',[ProductController::class,'photosForsale'])->name('photos.for.sale');
+Route::get('/central-west-n-s-w',[ProductController::class,'centralWest'])->name('central.west');
+Route::get('/childrens-photos',[ProductController::class,'childrensPhotos'])->name('childrens.photos');
 Route::get('/giftcard',[ProductController::class,'giftCard'])->name('gift.card');
