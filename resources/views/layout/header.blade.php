@@ -112,7 +112,7 @@
                                     <li><a href="canvas-prints">CANVAS PRINTS</a></li>
                                     <li><a href="posters-panoramics">POSTERS & PANORAMICS</a></li>
                                     <li><a href="prints-enlargements">PRINTS & ENLARGEMENTS</a></li>
-                                    <li><a href="photos-for-sale">Photos for Sale</a></li>
+                                    <li><a href="photos">Photos for Sale</a></li>
                                     <li><a href="giftcard">Gift Card</a></li>
                                 </ul>
                             </li>
