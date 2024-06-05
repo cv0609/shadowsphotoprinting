@@ -8,9 +8,21 @@ use App\Http\Requests\AdminPageRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Page;
+use App\Services\UploadService;
 
 class PagesController extends Controller
 {
+    protected $uploadService;
+    protected $availableImageExtensions;
+    protected $flie_upload_path;
+
+    public function __construct()
+    {
+        $this->uploadService = new uploadService();
+        $this->availableImageExtensions = config('file-upload-extensions.image');
+        $this->flie_upload_path = '';
+
+    }
     public function index()
     {
         $pages = Page::get();
@@ -38,16 +50,21 @@ class PagesController extends Controller
 
     public function update(Request $request)
      {
+        $page_id = $request->page;
+
+        $page = Page::where(['id' => $page_id])->first();
         $page_fields_data = read_json(strtolower($page->slug) . '.json');
 
         $sections = $page_fields_data->sections;
+        $this->flie_upload_path = config($page_fields_data->upload_pointer);
+
         foreach ($sections as $section) {
             $fields = $section->fields;
 
             foreach ($fields as $field) {
                 $field_name = $field->name;
                 $field_value = "";
-                if($field->type =='multiselect')
+                if($field->type =='images')
                 {
                     if (preg_match('/^([^\[]+)/', $field->name, $matches)) {
                         // $matches[1] contains the matched part
