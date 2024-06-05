@@ -1,0 +1,306 @@
+@media only screen and (max-width: 991px) {
+    .screen-reader {
+
+        display: block;
+    }
+
+    .sidenavs {
+        width: 0;
+        position: fixed;
+        top: 0;
+        right: 0;
+        display: inline-block;
+        background-color: #444;
+        height: 100vh;
+        transition: all 0.3s;
+        z-index: 9999999;
+        padding-top: 45px;
+    }
+
+    .sidenavs[style="width: 290px;"] {
+        box-shadow: 0 0 0 100vmax #000000a3;
+
+    }
+
+    .second-clearfix ul li a {
+        border-bottom: 1px solid #eee;
+        display: block;
+        padding: 8px 10px;
+    }
+
+    .information-text {
+        margin-top: 30px;
+    }
+
+    .page-header {
+        opacity: 1;
+    }
+
+    .toggle-bar {
+        display: block !important;
+        color: #fff;
+        font-size: 30px;
+    }
+
+    span.closebtn {
+        display: block !important;
+        text-align: right;
+        color: #fff;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        font-size: 32px;
+    }
+
+    .navigation div#mySidenavs ul {
+        display: block;
+    }
+
+    .navigation div#mySidenavs ul li {
+        margin-left: 0px;
+        padding-bottom: 10px;
+    }
+
+    .navigation div#mySidenavs ul li a {
+        padding: 7px 20px;
+        display: block;
+        color: #fff;
+    }
+
+    .second-clearfix ul {
+        display: block;
+    }
+
+    .logo img {
+        max-width: 100px;
+    }
+
+    .second-clearfix ul li::after {
+        display: none;
+    }
+
+    a.signup {
+        display: none !important;
+    }
+
+    li.social-media {
+        display: none;
+    }
+
+    div#mySidenav {
+        margin-left: auto;
+        margin-right: 20px;
+    }
+
+    ul.sub-menu {
+        position: static;
+        transform: translateY(0);
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+    }
+
+    li.dropdown:hover ul.sub-menu {
+        display: block;
+    }
+
+    .kadence-posts {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    }
+
+    .blog-heading {
+        margin-bottom: 10%;
+    }
+
+    .sidenavs[style="width: 290px;"] span.closebtn {
+        left: -40px;
+    }
+
+    .Product-box {
+        display: block;
+    }
+
+    .Product_image {
+        width: 100%;
+    }
+
+    .Product_info {
+        padding: 15px;
+        width: 100%;
+        background: #ffffff21;
+    }
+
+    .restoration-wrapper.kash .row {
+        flex-direction: column-reverse;
+    }
+
+    .kad_product .row .col-xl-3.col-lg-4.col-md-6 {
+        margin-bottom: 30px;
+    }
+
+    .second-clearfix ul li a i {
+        margin: 0 10px 0;
+    }
+
+    section.subcategories ul.cstmlist {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .size-wrapper select {
+        max-width: 100%;
+    }
+
+    .margin-small li.type-product {
+        width: 50%;
+    }
+
+    section.subcategories ul.cstmlist li.central {
+        margin: 0 10px 10px 10px;
+
+    }
+
+    .navigation div#mySidenav ul.desk-trt ul.sub-menu {
+        position: absolute;
+        transform: translateY(0);
+        width: 240px;
+
+        opacity: 1;
+        visibility: visible;
+        display: none;
+    }
+
+    .navigation div#mySidenav ul.desk-trt li:hover ul.sub-menu {
+        display: block;
+    }
+
+    section.fw-area {
+        position: static;
+        background-color: transparent;
+        width: 100%;
+    }
+
+    .fw-products-box table tr td input {
+        background-color: #fff;
+        border: #fcfcfc;
+    }
+
+    .fw-area-wrap {
+        height: 100%;
+    }
+
+    ul.top-real li {
+        width: 100%;
+        float: none;
+    }
+
+    ul.top-real li:nth-child(4) {
+        text-align: left;
+    }
+
+    .orders-wrapper {
+        overflow-x: auto;
+    }
+
+    .orders-wrapper table {
+        width: 100%;
+        margin-bottom: 10px;
+        min-width: 600px;
+    }
+
+    .next-btn {
+        margin-top: 30px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .contact-bnr-text h2 {
+        font-size: 40px;
+
+    }
+
+    .margin-small li.type-product {
+        width: 100%;
+    }
+
+    li.type-product {
+        width: 100%;
+    }
+    .wt-coupon-wrapper {
+        margin-top: 20px;
+    }
+
+}
+
+@media only screen and (max-width: 575px) {
+    .breadcrumbs-wrapper span {
+        padding-bottom: 10px;
+        display: inline-block;
+    }
+
+    .slider.slider-nav .slick-list.draggable .slick-slide {
+        float: left;
+    }
+
+    .chirs-img {
+        width: 100%;
+    }
+
+    .billboards {
+        margin-top: 20px;
+    }
+
+    .chirs {
+        width: 100%;
+    }
+
+    .kad-shop-top {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    section.description {
+        padding-top: 18px;
+    }
+
+    .canvas-summary h2 {
+        font-size: 30px;
+    }
+
+    .endpointtitle {
+        padding: 20px 0 0 0;
+    }
+
+    .account-wrapper {
+        padding: 30px 30px 0;
+    }
+}
+
+@media only screen and (max-width: 433px) {
+    .navigation div#mySidenav ul {
+        display: flex;
+        align-items: center;
+    }
+
+    .navigation div#mySidenav ul li {
+        margin-left: 10px;
+    }
+
+    .woocommerce-info p a {
+        float: none;
+
+    }
+}
+
+@media only screen and (max-width: 424px) {
+    .navigation div#mySidenav ul li {
+        margin-left: 4px;
+    }
+
+    .navigation div#mySidenav ul li a {
+        font-size: 14px;
+    }
+}

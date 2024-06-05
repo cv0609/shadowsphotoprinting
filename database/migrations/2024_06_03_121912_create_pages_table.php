@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('page_title');
             $table->string('slug')->unique();
             $table->enum('status',['0','1'])->default('1')->comment('0 for unactive 1 for active');

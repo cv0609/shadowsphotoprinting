@@ -20,6 +20,9 @@
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="page-title" name="page_title" required="required" class="form-control ">
                         </div>
+                        @if(Session::has('error'))
+                          <span class="text-danger">{{ Session::get('error') }}</span>
+                        @endif
                         @error('page_title')
                          <span class="text-danger">{{ $message }}</span>
                         @enderror

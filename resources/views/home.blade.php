@@ -1,18 +1,18 @@
-@extends('layouts.main')
+@extends('layout.main')
 @section('content')
 
         <div class="banner-slider fade-slider">
             <div>
                 <div class="image">
                     <div class="slider-wrapper">
-                        <img src="assets/img/images/Wp2print-starter-1.jpg" alt="">
+                        <img src="assets/images/Wp2print-starter-1.jpg" alt="">
                     </div>
                 </div>
             </div>
             <div>
                 <div class="image">
                     <div class="slider-wrapper">
-                        <img src="assets/img/images/Wp2print-starter-9.jpg" alt="">
+                        <img src="assets/images/Wp2print-starter-9.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -22,7 +22,6 @@
 
         <!-- Welcome to Shadows Photo Printing -->
        
-      
         <section class="entry-content">
             <div class="container">
                 <div class="entry-content-wrapper"> <!-- Corrected class name -->
@@ -30,7 +29,7 @@
                         <div class="col-lg-6">
                             <div class="entry-img">
                                 <figure data-aos="fade-right">
-                                    <img src="assets/img/images/green.png" alt="">
+                                    <img src="assets/images/green.png" alt="">
                                 </figure>
                             </div>
                         </div>
@@ -79,14 +78,14 @@
         <section class="categories">
             <div class="container">
                 <div class="categories-heading">
-                    <h3>Shop By Categories</h3>
+                    <h3> Shop ByCategories</h3>
                 </div>
                 <div class="categories-wrapper">
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
                             <div class="product-categories">
                                 <a href="scrapbook">
-                                    <img src="assets/img/images/Categories1.png" alt="">
+                                    <img src="assets/images/Categories1.png" alt="">
                                     <span>SCRAPBOOK PRINTS</span>
                                 </a>
                             </div>
@@ -94,7 +93,7 @@
                         <div class="col-lg-3 col-md-6">
                             <div class="product-categories">
                                 <a href="canvas">
-                                    <img src="assets/img/images/categories2.jpg" alt="">
+                                    <img src="assets/images/categories2.jpg" alt="">
                                     <span>CANVAS PRINTS</span>
                                 </a>
                             </div>
@@ -102,7 +101,7 @@
                         <div class="col-lg-3 col-md-6">
                             <div class="product-categories">
                                 <a href="posters">
-                                    <img src="assets/img/images/categories3.jpg" alt="">
+                                    <img src="assets/images/categories3.jpg" alt="">
                                     <span>POSTERS & PANORAMICS</span>
                                 </a>
                             </div>
@@ -110,7 +109,7 @@
                         <div class="col-lg-3 col-md-6">
                             <div class="product-categories">
                                 <a href="prints">
-                                    <img src="assets/img/images/categories4.jpg" alt="">
+                                    <img src="assets/images/categories4.jpg" alt="">
                                     <span>PRINTS & ENLARGEMENTS</span>
                                 </a>
                             </div>
@@ -119,7 +118,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src -->
                             <div class="product-categories">
                                 <a href="gift-card">
-                                    <img src="assets/img/images/gift-card-scaled.jpeg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/gift-card-scaled.jpeg" alt=""> <!-- Changed src -->
                                     <span>Gift Cards</span>
                                 </a>
                             </div>
@@ -127,7 +126,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src -->
                             <div class="product-categories">
                                 <a href="central-west-n-s-w">
-                                    <img src="assets/img/images/The-Dish-Parkes.jpg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/The-Dish-Parkes.jpg" alt=""> <!-- Changed src -->
                                     <span>Central West N.S.W</span>
                                 </a>
                             </div>
@@ -135,7 +134,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src -->
                             <div class="product-categories">
                                 <a href="childrens-photos">
-                                    <img src="assets/img/images/working-on-the-railroad.jpg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/working-on-the-railroad.jpg" alt=""> <!-- Changed src -->
                                     <span>Children’s Photos</span>
                                 </a>
                             </div>
@@ -143,7 +142,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src and span text -->
                             <div class="product-categories">
                                 <a href="poems">
-                                    <img src="assets/img/images/Menindee-Lakes-sunse.jpg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/Menindee-Lakes-sunse.jpg" alt=""> <!-- Changed src -->
                                     <span>Poems and Quotes Photos</span> <!-- Corrected text -->
                                 </a>
                             </div>
@@ -151,7 +150,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src -->
                             <div class="product-categories">
                                 <a href="countryside-victoria">
-                                    <img src="assets/img/images/Rochester.jpg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/Rochester.jpg" alt=""> <!-- Changed src -->
                                     <span>Countryside Victoria</span>
                                 </a>
                             </div>
@@ -159,7 +158,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src -->
                             <div class="product-categories">
                                 <a href="outback-n-s-w">
-                                    <img src="assets/img/images/Packsaddle.jpg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/Packsaddle.jpg" alt=""> <!-- Changed src -->
                                     <span>Outback N.S.W</span>
                                 </a>
                             </div>
@@ -167,7 +166,7 @@
                         <div class="col-lg-3 col-md-6"> <!-- Changed src -->
                             <div class="product-categories">
                                 <a href="southern-queensland-country">
-                                    <img src="assets/img/images/Yelarbon-Silos.jpg" alt=""> <!-- Changed src -->
+                                    <img src="assets/images/Yelarbon-Silos.jpg" alt=""> <!-- Changed src -->
                                     <span>Southern Queensland Country</span>
                                 </a>
                             </div>
@@ -197,7 +196,7 @@
                             <div class="col-lg-6">
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="assets/img/images/cart-page.jpg" alt="">
+                                        <img src="assets/images/cart-page.jpg" alt="">
                                     </figure>
                                 </div>
                             </div>
@@ -208,7 +207,7 @@
                             <div class="col-lg-6">
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="assets/img/images/canvasprint9.jpg" alt="">
+                                        <img src="assets/images/canvasprint9.jpg" alt="">
                                     </figure>
                                 </div>
                             </div>

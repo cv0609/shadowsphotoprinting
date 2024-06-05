@@ -1,6 +1,7 @@
 {
     "title": "contact_us",
     "name": "contact_us",
+    "upload_pointer": "file-upload-paths.contactUs",
     "sections":     [
         {
             "title": "meta_data",
@@ -123,5 +124,5 @@
             ]
         }
     ]
-    
+
 }

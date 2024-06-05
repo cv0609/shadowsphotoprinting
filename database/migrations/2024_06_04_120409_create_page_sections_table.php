@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('page_sections', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('page_id');
+            $table->increments('id');
+            $table->unsignedInteger('page_id');
             $table->longText('content')->nullable();
             $table->timestamps();
+            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
         });
     }
 

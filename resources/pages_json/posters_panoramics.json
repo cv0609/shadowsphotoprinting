@@ -1,6 +1,7 @@
 {
     "title": "posters_panoramic",
     "name": "posters_panoramic",
+    "upload_pointer": "file-upload-paths.postersPanoramics",
     "sections": [
         {
             "title": "meta_data",

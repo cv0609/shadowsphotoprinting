@@ -1,6 +1,7 @@
 {
     "title": "canvas",
     "name": "canvas",
+    "upload_pointer": "file-upload-paths.canvas",
     "sections": [
         {
             "title": "meta_data",

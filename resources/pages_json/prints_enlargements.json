@@ -1,6 +1,7 @@
 {
     "title": "prints_enlargements",
     "name": "prints_enlargements",
+    "upload_pointer": "file-upload-paths.printsEnlargements",
     "sections": [
         {
             "title": "meta_data",

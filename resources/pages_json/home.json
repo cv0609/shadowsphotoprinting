@@ -1,6 +1,7 @@
 {
     "title": "home",
     "name": "home",
+    "upload_pointer": "file-upload-paths.homePage",
     "sections": [
 		{
             "title": "meta_data",
