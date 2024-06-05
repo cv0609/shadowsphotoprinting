@@ -43,7 +43,7 @@
                         <a href="gift-card.html">
                             <div class="noflipper ">
                                 <div class="product-animation">
-                                    <img src="images/cardgift.jpg" alt="">
+                                    <img src="assets/images/cardgift.jpg" alt="">
                                 </div>
                             </div>
                         </a>
@@ -61,7 +61,7 @@
                         <a href="birthday-gift-card.html">
                             <div class="noflipper ">
                                 <div class="product-animation">
-                                    <img src="images/AdobeStock.jpeg" alt="">
+                                    <img src="assets/images/AdobeStock.jpeg" alt="">
                                 </div>
                             </div>
                         </a>

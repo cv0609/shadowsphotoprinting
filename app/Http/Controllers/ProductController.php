@@ -35,4 +35,14 @@ class ProductController extends Controller
     {
         return view('giftcard');
     }
+
+    public function centralWest()
+    {
+        return view('central-west-n-s-w');
+    }
+
+    public function childrensPhotos()
+    {
+        return view('childrens-photos');
+    }
 }
