@@ -38,8 +38,16 @@ class PagesController extends Controller
     public function store(AdminPageRequest $request)
      {
         $slug = Str::slug($request->page_title);
-        Page::insert(['page_title'=>$request->page_title,'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id()]);
-        return redirect()->route('pages.index')->with('success','Page is created successfully');
+        $pointer = base_path('resources/pages_json/'.$slug.'.json');
+
+        if(file_exists($pointer)){
+            Page::insert(['page_title'=>$request->page_title,'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id()]);
+            return redirect()->route('pages.index')->with('success','Page is created successfully');
+        }
+        else
+        {
+            return redirect()->route('pages.create')->with('error','You can not add this page');
+        }
      }
 
     public function show($page)
@@ -74,11 +82,11 @@ class PagesController extends Controller
 
                     }
                 }
-               
+
                 $existing_page_content_array = json_decode($existing_page_content);
                 $existing_page_content_array = (array)$existing_page_content_array;
-           
-           
+
+
                 if (($field->type == 'image' || $field->type == 'video' || $field->type == 'file')) {
                     $file = $request->file($field_name);
 
@@ -128,5 +136,11 @@ class PagesController extends Controller
              $data = array();
          }
          return $data;
+     }
+
+    public function destroy($page)
+     {
+        Page::where('slug',$page)->delete();
+        return redirect()->route('pages.index')->with('success','Page deleted successfully');
      }
 }

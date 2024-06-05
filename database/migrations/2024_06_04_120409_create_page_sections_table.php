@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('page_id');
             $table->longText('content')->nullable();
             $table->timestamps();
+            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
         });
     }
 

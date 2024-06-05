@@ -48,8 +48,12 @@
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('pages.show', ['page' => $page->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                        <button type="button" class="btn btn-danger">Danger</button>
-                                    </div>
+                                    <form action="{{ route('pages.destroy', ['page' => $page->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+
                                 </td>
                             </tr>
                         @endforeach

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('page_id')->constrained()->onDelete('cascade');
             $table->foreignId('page_section_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->foreign('page_section_id')->references('id')->on('page_sections')->onDelete('cascade');
+
         });
     }
 
