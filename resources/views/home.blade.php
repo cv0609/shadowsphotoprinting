@@ -78,7 +78,7 @@
         <section class="categories">
             <div class="container">
                 <div class="categories-heading">
-                    <h3>Shop By Categories</h3>
+                    <h3> Shop ByCategories</h3>
                 </div>
                 <div class="categories-wrapper">
                     <div class="row">

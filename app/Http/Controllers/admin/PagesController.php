@@ -74,6 +74,11 @@ class PagesController extends Controller
 
                     }
                 }
+               
+                $existing_page_content_array = json_decode($existing_page_content);
+                $existing_page_content_array = (array)$existing_page_content_array;
+           
+           
                 if (($field->type == 'image' || $field->type == 'video' || $field->type == 'file')) {
                     $file = $request->file($field_name);
 
@@ -84,9 +89,9 @@ class PagesController extends Controller
                         if ($uploadFileName != "") {
                             $field_value = $uploadFileName;
                         }
-                    } else if (array_key_exists($field_name, $existing_page_content)) {
+                    } else if (array_key_exists($field_name, $existing_page_content_array)) {
 
-                        $field_value = $existing_page_content[$field_name];
+                        $field_value = $existing_page_content_array[$field_name];
                     } else {
                         //todo
                     }
