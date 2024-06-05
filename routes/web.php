@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\Admin\PagesController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PagesController as BasePagesController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 
 
@@ -34,10 +37,12 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/home',[BasePagesController::class,'home'])->name('home');
-Route::get('/shop',[UserController::class,'shop'])->name('shop');
-Route::get('/blog',[UserController::class,'blog'])->name('blog');
-Route::get('/fun-facts',[UserController::class,'funFacts'])->name('fun.facts');
-Route::get('/our-products',[UserController::class,'ourProducts'])->name('our.products');
-Route::get('/scrapbook-prints',[UserController::class,'scrapbookPrints'])->name('scrapbook.prints');
-Route::get('/posters-panoramics',[UserController::class,'postersPanoramics'])->name('posters.panoramics');
-Route::get('/prints-enlargement',[UserController::class,'printEnlargements'])->name('prints.enlargements');
+Route::get('/shop',[ShopController::class,'shop'])->name('shop');
+Route::get('/blog',[BlogController::class,'blog'])->name('blog');
+Route::get('/fun-facts',[BasePagesController::class,'funFacts'])->name('fun.facts');
+Route::get('/our-products',[ProductController::class,'ourProducts'])->name('our.products');
+Route::get('/scrapbook-prints',[ProductController::class,'scrapbookPrints'])->name('scrapbook.prints');
+Route::get('/posters-panoramics',[ProductController::class,'postersPanoramics'])->name('posters.panoramics');
+Route::get('/prints-enlargements',[ProductController::class,'printEnlargements'])->name('prints.enlargements');
+Route::get('/photos-for-sale',[ProductController::class,'photosForsale'])->name('photos.for.sale');
+Route::get('/giftcard',[ProductController::class,'giftCard'])->name('gift.card');

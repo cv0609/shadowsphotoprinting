@@ -108,12 +108,12 @@
                             <li class="dropdown"><a href="our-products.html">Our Products <i
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="scrapbook-prints.html">SCRAPBOOK PRINTS</a></li>
-                                    <li><a href="canvas-prints.html">CANVAS PRINTS</a></li>
-                                    <li><a href="posters-panoramics.html">POSTERS & PANORAMICS</a></li>
-                                    <li><a href="prints-enlargements.html">PRINTS & ENLARGEMENTS</a></li>
-                                    <li><a href="image.html">Photos for Sale</a></li>
-                                    <li><a href="giftcard.html">Gift Card</a></li>
+                                    <li><a href="scrapbook-prints">SCRAPBOOK PRINTS</a></li>
+                                    <li><a href="canvas-prints">CANVAS PRINTS</a></li>
+                                    <li><a href="posters-panoramics">POSTERS & PANORAMICS</a></li>
+                                    <li><a href="prints-enlargements">PRINTS & ENLARGEMENTS</a></li>
+                                    <li><a href="photos-for-sale">Photos for Sale</a></li>
+                                    <li><a href="giftcard">Gift Card</a></li>
                                 </ul>
                             </li>
                             <li><a href="get-a-quote.html">Get a Quote</a></li>

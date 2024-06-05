@@ -15,7 +15,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Prints-With-4mm-White-Border.jpg" alt="scrap6">
+                            <img src="assets/images/Prints-With-4mm-White-Border.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 8″ Prints – With 4mm White Border
@@ -41,7 +41,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border2.jpg" alt="scrap6">
+                            <img src="assets/images/Border2.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x48” Prints – with 4mm White Border </h3>
@@ -71,7 +71,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x48” Prints
@@ -100,7 +100,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border2.jpg" alt="scrap6">
+                            <img src="assets/images/Border2.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x36” Prints – with 4mm White Border
@@ -131,7 +131,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x36” Prints
@@ -160,7 +160,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border2.jpg" alt="scrap6">
+                            <img src="assets/images/Border2.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x24” Prints – with 4mm White Border </h3>
@@ -189,7 +189,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x24” Prints
@@ -220,7 +220,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border2.jpg" alt="scrap6">
+                            <img src="assets/images/Border2.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x18” Prints – with 4mm White Border
@@ -252,7 +252,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x18” Prints
@@ -281,7 +281,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border4.jpg" alt="scrap6">
+                            <img src="assets/images/Border4.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10″x 12″ Prints – With 4mm White Border
@@ -312,7 +312,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border5.jpg" alt="scrap6">
+                            <img src="assets/images/border5.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10″x 12″ Prints
@@ -342,7 +342,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border6.jpg" alt="scrap6">
+                            <img src="assets/images/border6.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 38” Prints – With 4mm White Border
@@ -373,7 +373,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border8.jpg" alt="scrap6">
+                            <img src="assets/images/border8.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 38” Prints </h3>
@@ -402,7 +402,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border6.jpg" alt="scrap6">
+                            <img src="assets/images/border6.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 24” Prints – With 4mm White Border </h3>
@@ -433,7 +433,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border7.jpg" alt="scrap6">
+                            <img src="assets/images/border7.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8” x 24” Prints </h3>
@@ -462,7 +462,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border6.jpg" alt="scrap6">
+                            <img src="assets/images/border6.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 18” Prints – With 4mm White Border
@@ -495,7 +495,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border6.jpg" alt="scrap6">
+                            <img src="assets/images/border6.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 14” Prints – With 4mm White Border
@@ -526,7 +526,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border7.jpg" alt="scrap6">
+                            <img src="assets/images/border7.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8” x 14” Prints
@@ -556,7 +556,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border9.jpg" alt="scrap6">
+                            <img src="assets/images/border9.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 12″ Prints
@@ -588,7 +588,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border9.jpg" alt="scrap6">
+                            <img src="assets/images/border9.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 10″ Prints
@@ -618,7 +618,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border10jpg.jpg" alt="scrap6">
+                            <img src="assets/images/Border10jpg.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 18″ Prints – With 4mm White Border
@@ -648,7 +648,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border11.jpg" alt="scrap6">
+                            <img src="assets/images/border11.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6”x12” Prints
@@ -677,7 +677,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border12.jpg" alt="scrap6">
+                            <img src="assets/images/border12.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6”x9” Prints – With 4mm White Border
@@ -707,7 +707,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border13jpg.jpg" alt="scrap6">
+                            <img src="assets/images/Border13jpg.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 8″ Prints
@@ -737,7 +737,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border13jpg.jpg" alt="scrap6">
+                            <img src="assets/images/Border13jpg.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 9″ Prints </h3>
@@ -765,7 +765,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/callifornia.jpg" alt="scrap6">
+                            <img src="assets/images/callifornia.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x18” Prints – With 4mm White Border
@@ -795,7 +795,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/callifornia.jpg" alt="scrap6">
+                            <img src="assets/images/callifornia.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 18″ Prints </h3>
@@ -824,7 +824,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/king.jpg" alt="scrap6">
+                            <img src="assets/images/king.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x12” Prints – With 4mm White Border </h3>
@@ -853,7 +853,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/carefully.jpg" alt="scrap6">
+                            <img src="assets/images/carefully.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 12″ Prints </h3>
@@ -882,7 +882,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/sdsmd.jpg" alt="scrap6">
+                            <img src="assets/images/sdsmd.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 10″ Prints – With 4mm White Border
@@ -913,7 +913,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/carefully.jpg" alt="scrap6">
+                            <img src="assets/images/carefully.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 10″ Prints </h3>
@@ -942,7 +942,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/king.jpg" alt="scrap6">
+                            <img src="assets/images/king.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x8” Prints – With 4mm White Border
@@ -974,7 +974,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/carefully.jpg" alt="scrap6">
+                            <img src="assets/images/carefully.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 8″ Prints
@@ -1006,7 +1006,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/With.jpg" alt="scrap6">
+                            <img src="assets/images/With.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 48″ Prints – With 4mm White Border
@@ -1036,7 +1036,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/street.jpg" alt="scrap6">
+                            <img src="assets/images/street.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 48″ Prints
@@ -1068,7 +1068,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border14.jpg" alt="scrap6">
+                            <img src="assets/images/Border14.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 36″ Prints – With 4mm White Border
@@ -1100,7 +1100,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/mrints.jpg" alt="scrap6">
+                            <img src="assets/images/mrints.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 36″ Prints
@@ -1132,7 +1132,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/White-Border.jpg" alt="scrap6">
+                            <img src="assets/images/White-Border.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 24″ Prints – With 4mm White Border
@@ -1162,7 +1162,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/baand.jpg" alt="scrap6">
+                            <img src="assets/images/baand.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 24″ Prints
@@ -1193,7 +1193,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/White-Border-1.jpg" alt="scrap6">
+                            <img src="assets/images/White-Border-1.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 18″ Prints – With 4mm White Border
@@ -1224,7 +1224,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/rides.jpg" alt="scrap6">
+                            <img src="assets/images/rides.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 18″ Prints
@@ -1254,7 +1254,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/professional.jpg" alt="scrap6">
+                            <img src="assets/images/professional.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 16″ Prints – With 4mm White Border
@@ -1286,7 +1286,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/dos.jpg" alt="scrap6">
+                            <img src="assets/images/dos.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 16″ Prints
@@ -1317,7 +1317,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border0.jpg" alt="scrap6">
+                            <img src="assets/images/Border0.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 14″ Prints – With 4mm White Border
@@ -1350,7 +1350,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 14″ Prints
@@ -1380,7 +1380,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/zaggly.jpg" alt="scrap6">
+                            <img src="assets/images/zaggly.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 12″ Prints – With 4mm White Border </h3>
@@ -1410,7 +1410,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/does.jpg" alt="scrap6">
+                            <img src="assets/images/does.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 12″ Prints
@@ -1439,7 +1439,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/Border00.jpg" alt="scrap6">
+                            <img src="assets/images/Border00.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 10″ Prints – With 4mm White Border
@@ -1471,7 +1471,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/pssrints.jpg" alt="scrap6">
+                            <img src="assets/images/pssrints.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 10″ Prints
@@ -1501,7 +1501,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/elaveted.jpg" alt="scrap6">
+                            <img src="assets/images/elaveted.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 8″ Prints – With 4mm White Border
@@ -1532,7 +1532,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/check.jpg" alt="scrap6">
+                            <img src="assets/images/check.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>12″x 8″ Prints
@@ -1562,7 +1562,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/out.jpg" alt="scrap6">
+                            <img src="assets/images/out.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x15” Prints – with 4mm White Border
@@ -1592,7 +1592,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10”x15” Prints
@@ -1622,7 +1622,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/firi.jpg" alt="scrap6">
+                            <img src="assets/images/firi.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10″x 10″ Prints – With 4mm White Border </h3>
@@ -1651,7 +1651,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/firi.jpg" alt="scrap6">
+                            <img src="assets/images/firi.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10″x 10″ Prints
@@ -1682,7 +1682,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/mrints.jpg" alt="scrap6">
+                            <img src="assets/images/mrints.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10″x 8″ Prints – With 4mm White Border </h3>
@@ -1711,7 +1711,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/one.jpg" alt="scrap6">
+                            <img src="assets/images/one.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>10″x 8″ Prints
@@ -1741,7 +1741,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/one1.jpg" alt="scrap6">
+                            <img src="assets/images/one1.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 10″ Prints – With 4mm White Border
@@ -1772,7 +1772,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/jee.jpg" alt="scrap6">
+                            <img src="assets/images/jee.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 8″ Prints
@@ -1804,7 +1804,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border6.jpg" alt="scrap6">
+                            <img src="assets/images/border6.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 36” Prints – With 4mm White Border
@@ -1836,7 +1836,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/vvsd.jpg" alt="scrap6">
+                            <img src="assets/images/vvsd.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8” x 12” Prints – With 4mm White Border
@@ -1867,7 +1867,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/baby.jpg" alt="scrap6">
+                            <img src="assets/images/baby.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>9″x 6″ Prints – With 4mm White Border
@@ -1898,7 +1898,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/kaspro.jpg" alt="scrap6">
+                            <img src="assets/images/kaspro.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>9″x 6″ Prints
@@ -1928,7 +1928,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/jasj.jpg" alt="scrap6">
+                            <img src="assets/images/jasj.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8”x 36” Prints </h3>
@@ -1957,7 +1957,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/maciuo.jpg" alt="scrap6">
+                            <img src="assets/images/maciuo.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8” x 18” Prints
@@ -1987,7 +1987,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/overall.jpg" alt="scrap6">
+                            <img src="assets/images/overall.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 6″ Prints – With 4mm White Border
@@ -2018,7 +2018,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/uploads.jpg" alt="scrap6">
+                            <img src="assets/images/uploads.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>8″x 6″ Prints </h3>
@@ -2047,7 +2047,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/sdsmd.jpg" alt="scrap6">
+                            <img src="assets/images/sdsmd.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 7″ Prints – With 4mm White Border
@@ -2078,7 +2078,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/content.jpg" alt="scrap6">
+                            <img src="assets/images/content.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x 7″ Prints
@@ -2108,7 +2108,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/border3.jpg" alt="scrap6">
+                            <img src="assets/images/border3.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5″x5” Prints – With 4mm White Border
@@ -2138,7 +2138,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/callifornia.jpg" alt="scrap6">
+                            <img src="assets/images/callifornia.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>5”x5” Prints </h3>
@@ -2167,7 +2167,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/lalBorder.jpg" alt="scrap6">
+                            <img src="assets/images/lalBorder.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6”x12” Prints – With 4mm White Border
@@ -2197,7 +2197,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/best.jpg" alt="scrap6">
+                            <img src="assets/images/best.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6”x18” Prints
@@ -2228,7 +2228,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/gran.jpg" alt="scrap6">
+                            <img src="assets/images/gran.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 6″ Prints – With 4mm White Border
@@ -2258,7 +2258,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/data.jpg" alt="scrap6">
+                            <img src="assets/images/data.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 6″ Prints
@@ -2290,7 +2290,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/data.jpg" alt="scrap6">
+                            <img src="assets/images/data.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 6″ Prints
@@ -2322,7 +2322,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/setting.jpg" alt="scrap6">
+                            <img src="assets/images/setting.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 4″ Prints – With 4mm White Border
@@ -2353,7 +2353,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="images/less.jpg" alt="scrap6">
+                            <img src="assets/images/less.jpg" alt="scrap6">
                         </div>
                         <div class="Product_info">
                             <h3>6″x 4″ Prints
