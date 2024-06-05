@@ -101,10 +101,10 @@
                             </div>
                         </div>
                         <ul>
-                            <li><a href="home">Home</a></li>
-                            <li><a href="shop">Shop</a></li>
-                            <li><a href="blog">Blog</a></li>
-                            <li><a href="fun-facts">Fun Facts</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="{{ route('shop') }}">Shop</a></li>
+                            <li><a href="{{ route('blog') }}">Blog</a></li>
+                            <li><a href="{{ route('fun-facts') }}">Fun Facts</a></li>
                             <li class="dropdown"><a href="our-products.html">Our Products <i
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
