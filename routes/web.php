@@ -21,9 +21,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 
 Route::prefix('admin')->group(function () {
@@ -36,10 +34,10 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-Route::get('/home',[BasePagesController::class,'home'])->name('home');
+Route::get('/',[BasePagesController::class,'home'])->name('home');
 Route::get('/shop',[ShopController::class,'shop'])->name('shop');
 Route::get('/blog',[BlogController::class,'blog'])->name('blog');
-Route::get('/fun-facts',[BasePagesController::class,'funFacts'])->name('fun.facts');
+Route::get('/fun-facts',[BasePagesController::class,'funFacts'])->name('fun-facts');
 Route::get('/our-products',[ProductController::class,'ourProducts'])->name('our.products');
 Route::get('/scrapbook-prints',[ProductController::class,'scrapbookPrints'])->name('scrapbook.prints');
 Route::get('/posters-panoramics',[ProductController::class,'postersPanoramics'])->name('posters.panoramics');
