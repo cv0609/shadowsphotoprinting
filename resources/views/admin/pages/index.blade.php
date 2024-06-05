@@ -44,10 +44,10 @@
                         @foreach ($pages as $key => $page)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ $page->page_title }}</td>
+                                <td>{{ ucfirst($page->page_title) }}</td>
                                 <td>
                                     <div class="x_content">
-                                    <a href="{{ route('pages.show', ['page' => $page->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                    <a href="{{ route('pages.show', ['page' => $page->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
                                         <button type="button" class="btn btn-danger">Danger</button>
                                     </div>
                                 </td>

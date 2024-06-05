@@ -1,0 +1,42 @@
+{
+    "title": "our_products",
+    "name": "our_products",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "our_products_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "our_products_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "our_products_banner"
+                },
+                {
+                    "title": "our_products_banner_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "our_products_banner_title"
+                }
+            ]
+        }
+    ]
+}

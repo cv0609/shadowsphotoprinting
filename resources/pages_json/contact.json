@@ -1,0 +1,127 @@
+{
+    "title": "contact_us",
+    "name": "contact_us",
+    "sections":     [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "meta_title",
+                    "type": "text",
+                    "required": false,
+                    "name": "meta_title"
+                },
+                {
+                    "title": "meta_description",
+                    "type": "text",
+                    "required": false,
+                    "name": "meta_description"
+                }
+            ]
+        },
+        {
+            "title": "contact_us_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "contact_us_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "contact_us_banner"
+                },
+                {
+                    "title": "contact_us_banner_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "contact_us_banner_title"
+                }
+            ]
+        },
+        {
+            "title": "shipping_policy",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "shipping_policy_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "shipping_policy_title"
+                },
+                {
+                    "title": "shipping_policy_description",
+                    "type": "textarea",
+                    "required": true,
+                    "name": "shipping_policy_description"
+                }
+            ]
+        },
+        {
+            "title": "policy_refund",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "policy_refund_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "policy_refund_title"
+                },
+                {
+                    "title": "policy_refund_description",
+                    "type": "textarea",
+                    "required": true,
+                    "name": "policy_refund_description"
+                }
+            ]
+        },
+        {
+            "title": "contact_us_today",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "contact_us_today_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "contact_us_today_title"
+                },
+                {
+                    "title": "contact_us_number",
+                    "type": "text",
+                    "required": true,
+                    "name": "contact_us_number"
+                }
+            ]
+        },
+        {
+            "title": "email_for_query",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "email_for_query_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "email_for_query_title"
+                },
+                {
+                    "title": "email",
+                    "type": "text",
+                    "required": true,
+                    "name": "email"
+                }
+            ]
+        },
+        {
+            "title": "facebook_page",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "facebook_page_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "facebook_page_title"
+                }
+            ]
+        }
+    ]
+    
+}

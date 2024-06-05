@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\Admin\PagesController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
         Route::resource('/pages',PagesController::class);
     });
-
-
 });
+
+Route::get('/home',[UserController::class,'home'])->name('home');
+Route::get('/layouts.main', [UserController::class, 'main'])->name('main');
+

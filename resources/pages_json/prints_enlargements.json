@@ -1,0 +1,42 @@
+{
+    "title": "prints_enlargements",
+    "name": "prints_enlargements",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "prints_enlargements_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "prints_enlargements_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "prints_enlargements_banner"
+                },
+                {
+                    "title": "prints_enlargements_banner_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "prints_enlargements_banner_title"
+                }
+            ]
+        }
+    ]
+}

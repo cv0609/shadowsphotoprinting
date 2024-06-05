@@ -1,0 +1,42 @@
+{
+    "title": "posters_panoramic",
+    "name": "posters_panoramic",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "posters_panoramic_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "posters_panoramic_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "posters_panoramic_banner"
+                },
+                {
+                    "title": "posters_panoramic_banner_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "posters_panoramic_banner_title"
+                }
+            ]
+        }
+    ]
+}

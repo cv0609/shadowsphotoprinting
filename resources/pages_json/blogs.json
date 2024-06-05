@@ -1,0 +1,36 @@
+{
+    "title": "blogs",
+    "name": "blogs",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "photo_printing_blog",
+            "layout_type": "",
+            "fields": [
+                {
+                    "title": "photo_printing_blog_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "photo_printing_blog_title"
+                }
+            ]
+        }
+    ]
+}

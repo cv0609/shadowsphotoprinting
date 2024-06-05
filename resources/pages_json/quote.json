@@ -1,0 +1,42 @@
+{
+    "title": "quote",
+    "name": "quote",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "get_a_quote",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "get_a_quote_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "get_a_quote_banner"
+                },
+                {
+                    "title": "get_a_quote_banner_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "get_a_quote_banner_title"
+                }
+            ]
+        }
+    ]
+}
