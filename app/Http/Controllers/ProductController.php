@@ -16,6 +16,11 @@ class ProductController extends Controller
         return view('scrapbook-prints');
     }
 
+    public function canvasPrints()
+    {
+        return view('canvas-prints');
+    }
+
     public function postersPanoramics()
     {
         return view('posters-panoramics');

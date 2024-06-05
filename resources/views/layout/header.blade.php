@@ -105,15 +105,15 @@
                             <li><a href="{{ route('shop') }}">Shop</a></li>
                             <li><a href="{{ route('blog') }}">Blog</a></li>
                             <li><a href="{{ route('fun-facts') }}">Fun Facts</a></li>
-                            <li class="dropdown"><a href="our-products.html">Our Products <i
+                            <li class="dropdown"><a href="{{ route('our-products') }}">Our Products <i
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="scrapbook-prints">SCRAPBOOK PRINTS</a></li>
-                                    <li><a href="canvas-prints">CANVAS PRINTS</a></li>
-                                    <li><a href="posters-panoramics">POSTERS & PANORAMICS</a></li>
-                                    <li><a href="prints-enlargements">PRINTS & ENLARGEMENTS</a></li>
-                                    <li><a href="photos">Photos for Sale</a></li>
-                                    <li><a href="giftcard">Gift Card</a></li>
+                                    <li><a href="{{ route('scrapbook-prints') }}">SCRAPBOOK PRINTS</a></li>
+                                    <li><a href="{{ route('canvas-prints') }}">CANVAS PRINTS</a></li>
+                                    <li><a href="{{ route('posters-panoramics') }}">POSTERS & PANORAMICS</a></li>
+                                    <li><a href="{{ route('prints-enlargements') }}">PRINTS & ENLARGEMENTS</a></li>
+                                    <li><a href="{{ route('photos') }}">Photos for Sale</a></li>
+                                    <li><a href="{{ route('giftcard') }}">Gift Card</a></li>
                                 </ul>
                             </li>
                             <li><a href="get-a-quote.html">Get a Quote</a></li>
