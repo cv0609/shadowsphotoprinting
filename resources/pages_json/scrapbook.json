@@ -1,6 +1,7 @@
 {
     "title": "scrapbook",
     "name": "scrapbook",
+    "upload_pointer": "file-upload-paths.scrapbook",
     "sections": [
         {
             "title": "meta_data",

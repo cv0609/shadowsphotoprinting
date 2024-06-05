@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PageSection extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'page_id',
+        'content',
+    ];
 
     public function pages()
     {

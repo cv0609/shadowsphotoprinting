@@ -35,7 +35,7 @@
                                   <div class="item form-group">
 									<label class="col-form-label col-md-3 col-sm-3 label-align ">{{ ucfirst(str_replace('_',' ',$field->title)) }}</label>
 									<div class="col-md-6 col-sm-6">
-										<textarea class="resizable_textarea form-control" placeholder="This text area automatically resizes its height as you fill in more text courtesy of autosize-master it out..."></textarea>
+										<textarea class="resizable_textarea form-control" name="{{ $field->name }}"></textarea>
 									</div>
 								</div>
                                   @endif

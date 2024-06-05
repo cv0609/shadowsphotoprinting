@@ -1,6 +1,7 @@
 {
     "title": "our_products",
     "name": "our_products",
+    "upload_pointer": "file-upload-paths.ourProducts",
     "sections": [
         {
             "title": "meta_data",

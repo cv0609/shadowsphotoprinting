@@ -8,6 +8,7 @@ use App\Http\Requests\AdminPageRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Page;
+use App\Models\PageSection;
 use App\Services\UploadService;
 
 class PagesController extends Controller
@@ -57,6 +58,7 @@ class PagesController extends Controller
 
         $sections = $page_fields_data->sections;
         $this->flie_upload_path = config($page_fields_data->upload_pointer);
+        $existing_page_content = $this->getPreContentPage($page_id);
 
         foreach ($sections as $section) {
             $fields = $section->fields;
@@ -73,7 +75,7 @@ class PagesController extends Controller
                     }
                 }
                 if (($field->type == 'image' || $field->type == 'video' || $field->type == 'file')) {
-                    $file = $request->$field_name;
+                    $file = $request->file($field_name);
 
                     if (!empty($file)) {
 
@@ -94,5 +96,32 @@ class PagesController extends Controller
                 $pageContent[$field->name] = $field_value;
             }
         }
+
+        $encoded_page_data = json_encode($pageContent);
+
+        $final_data = array();
+        $final_data['page_id'] = $page_id;
+        $final_data['content'] = $encoded_page_data;
+
+        if (PageSection::where('page_id', $page_id)->exists()) {
+
+            $update_status = PageSection::where('page_id', $page_id)->update($final_data);
+        } else {
+            $update_status = PageSection::create($final_data);
+        }
+
+        return redirect()->route('pages.index')->with('success','Page updated successfully');
+     }
+
+     private function getPreContentPage($page_id)
+     {
+         $Page_preContent = PageSection::where(['page_id' => $page_id])->select('content')->latest('id')->first();
+
+         if (!empty($Page_preContent['content'])) {
+             $data = $Page_preContent['content'];
+         } else {
+             $data = array();
+         }
+         return $data;
      }
 }
