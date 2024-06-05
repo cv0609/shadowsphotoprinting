@@ -6,13 +6,38 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function home()
+    public function shop()
     {
-        return view('home');
+        return view('shop');
     }
 
-    public function main()
+    public function blog()
     {
-        return view('layouts.main');
+        return view('blog');
+    }
+
+    public function funFacts()
+    {
+        return view('fun-facts');
+    }
+
+    public function ourProducts()
+    {
+        return view('our-products');
+    }
+
+    public function scrapbookPrints()
+    {
+        return view('scrapbook-prints');
+    }
+
+    public function postersPanoramics()
+    {
+        return view('posters-panoramics');
+    }
+
+    public function printEnlargements()
+    {
+        return view('prints-enlargements');
     }
 }
