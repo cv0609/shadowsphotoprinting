@@ -121,7 +121,7 @@ class PagesController extends Controller
         );
 
         // Sync the relationship
-        $page->pageSections()->syncWithoutDetaching([$pageSection->id]);
+        //$page->pageSections()->syncWithoutDetaching([$pageSection->id]);
 
         return redirect()->route('pages.index')->with('success','Page updated successfully');
      }
