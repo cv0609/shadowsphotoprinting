@@ -82,10 +82,12 @@ class PagesController extends Controller
 
                     }
                 }
-
-                $existing_page_content_array = json_decode($existing_page_content);
-                $existing_page_content_array = (array)$existing_page_content_array;
-
+                $existing_page_content_array = [];
+                if(!empty($existing_page_content))
+                 {
+                    $existing_page_content_array = json_decode($existing_page_content);
+                    $existing_page_content_array = (array)$existing_page_content_array;
+                 }
 
                 if (($field->type == 'image' || $field->type == 'video' || $field->type == 'file')) {
                     $file = $request->file($field_name);
@@ -112,16 +114,14 @@ class PagesController extends Controller
 
         $encoded_page_data = json_encode($pageContent);
 
-        $final_data = array();
-        $final_data['page_id'] = $page_id;
-        $final_data['content'] = $encoded_page_data;
+        // Update or create the PageSection
+        $pageSection = PageSection::updateOrCreate(
+            ['page_id' => $page_id],
+            ['content' => $encoded_page_data]
+        );
 
-        if (PageSection::where('page_id', $page_id)->exists()) {
-
-            $update_status = PageSection::where('page_id', $page_id)->update($final_data);
-        } else {
-            $update_status = PageSection::create($final_data);
-        }
+        // Sync the relationship
+        $page->pageSections()->syncWithoutDetaching([$pageSection->id]);
 
         return redirect()->route('pages.index')->with('success','Page updated successfully');
      }
