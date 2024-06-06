@@ -48,8 +48,8 @@ img{
 
 .choose-file-multiple {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     grid-gap: 8px;
+    grid-template-columns: repeat( auto-fill, minmax(150px, 1fr) );
 }
 input[type="file"].form-control {
     height: auto;
