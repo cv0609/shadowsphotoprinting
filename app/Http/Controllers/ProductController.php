@@ -16,6 +16,11 @@ class ProductController extends Controller
         return view('scrapbook-prints');
     }
 
+    public function canvasPrints()
+    {
+        return view('canvas-prints');
+    }
+
     public function postersPanoramics()
     {
         return view('posters-panoramics');
@@ -26,9 +31,9 @@ class ProductController extends Controller
         return view('prints-enlargements');
     }
 
-    public function photosForsale()
+    public function photos()
     {
-        return view('photos-for-sale');
+        return view('photos');
     }
 
     public function giftCard()
@@ -44,5 +49,20 @@ class ProductController extends Controller
     public function childrensPhotos()
     {
         return view('childrens-photos');
+    }
+
+    public function countrySidevictoria()
+    {
+        return view('countryside-victoria');
+    }
+
+    public function outback()
+    {
+        return view('outback-n-s-w');
+    }
+
+    public function poems()
+    {
+        return view('poems');
     }
 }

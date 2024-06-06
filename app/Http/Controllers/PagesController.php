@@ -11,7 +11,7 @@ class PagesController extends Controller
     {
 
         $content = Page::where('slug','home')->with('pageSections')->first();
-
+     
         if($content && isset($content->pageSections) && !empty($content->pageSections))
          {
            $page_content = json_decode($content->pageSections['content'],true);
