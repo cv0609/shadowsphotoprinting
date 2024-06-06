@@ -21,10 +21,10 @@
                             <input type="text" id="page-title" name="page_title" required="required" class="form-control ">
                         </div>
                         @if(Session::has('error'))
-                          <span class="text-danger">{{ Session::get('error') }}</span>
+                          <p class="text-danger">{{ Session::get('error') }}</p>
                         @endif
                         @error('page_title')
-                         <span class="text-danger">{{ $message }}</span>
+                         <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                   <div class="ln_solid"></div>
