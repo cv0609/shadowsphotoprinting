@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
+use App\Http\Controllers\Admin\BlogsController;
 use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PagesController as BasePagesController;
@@ -31,7 +32,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/dashboard',[AuthController::class,'dashboard'])->name('admin.dashboard');
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
         Route::resource('/pages',PagesController::class);
-        Route::resource('/blogs',BlogController::class);
+        Route::resource('/blogs',BlogsController::class);
     });
 });
 
