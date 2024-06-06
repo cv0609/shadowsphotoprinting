@@ -78,3 +78,6 @@ input[type="file"].form-control {
     justify-content: center;
     padding: 2px;
 }
+.form-control {
+    border-radius: 8px;
+}
