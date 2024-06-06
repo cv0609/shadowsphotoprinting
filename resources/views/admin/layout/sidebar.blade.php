@@ -34,6 +34,7 @@
                       <li><a href="index3.html">Dashboard3</a></li>
                     </ul> --}}
                   </li>
+                  <li><a href="{{route('pages.index')}}"><i class="fa fa-file"></i> Blog</a></li>
 
                 </ul>
               </div>

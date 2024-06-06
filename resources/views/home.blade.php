@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-        @php dd($page_content); @endphp
+        {{-- @php dd($page_content); @endphp --}}
         
         <div class="banner-slider fade-slider">
             @foreach ($page_content['main_banner'] as $image)

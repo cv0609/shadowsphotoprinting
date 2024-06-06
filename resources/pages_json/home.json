@@ -100,7 +100,7 @@
 				},
 				{
 					"title": "photo_restoration_service_image",
-					"type": "images",
+					"type": "image",
 					"required": true,
 					"name": "photo_restoration_service_image"
 				}
@@ -118,7 +118,7 @@
 				},
 				{
 					"title": "accept_bulk_order_image",
-					"type": "images",
+					"type": "image",
 					"required": true,
 					"name": "accept_bulk_order_image"
 				},
