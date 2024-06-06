@@ -17,6 +17,6 @@ class Page extends Model
 
     public function pageSections()
     {
-        return $this->belongsToMany(PageSection::class, 'page_section_page', 'page_id', 'page_section_id');
+        return $this->hasOne(PageSection::class);
     }
 }
