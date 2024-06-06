@@ -1,3 +1,26 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover, a:focus{
+    color: inherit;
+}
+img{
+    max-width: 100%;
+}
 #demo-form2 .sec-tittle {
     font-size: 16px;
     font-weight: 600;
@@ -10,4 +33,51 @@
 }
 .label-align {
     text-align: left;
+}
+.choose-file-wrap {
+    margin: 5px 0 0;
+}
+.choose-file-wrap img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+}
+.choose-file-wrap .choose-file-single figure {
+    max-width: 180px;
+}
+
+.choose-file-multiple {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: repeat( auto-fill, minmax(150px, 1fr) );
+}
+input[type="file"].form-control {
+    height: auto;
+}
+
+.choose-file-wrap figure {
+    margin: 0;
+    position: relative;
+}
+
+.choose-file-wrap figure span.closed_btn svg {
+    width: 100%;
+    height: 100%;
+}
+
+.choose-file-wrap figure span.closed_btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+.form-control {
+    border-radius: 8px;
 }

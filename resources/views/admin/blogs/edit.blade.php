@@ -6,16 +6,16 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Edit {{ ucfirst($page_fields->name) }} Page</small></h2>
+                        <h2>Edit {{ ucfirst($blog_fields->name) }} Blog</small></h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                         <br>
-                        <form action="{{ route('pages.update',['page'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                        <form action="{{ route('blogs.update',['blog'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                             @csrf
                             @method('PUT')
 
-                            @foreach($page_fields->sections as $section)
+                            @foreach($blog_fields->sections as $section)
                             <div class="form-felids-wrap">
                                 <h4 class="sec-tittle">{{ ucfirst(str_replace('_',' ',$section->title)) }}</h4>
                                 @foreach ($section->fields as $field)

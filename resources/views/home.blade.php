@@ -1,21 +1,26 @@
 @extends('layout.main')
 @section('content')
-
+        {{-- @php dd($page_content); @endphp --}}
+        
         <div class="banner-slider fade-slider">
-            <div>
-                <div class="image">
-                    <div class="slider-wrapper">
-                        <img src="assets/images/Wp2print-starter-1.jpg" alt="">
+            @foreach ($page_content['main_banner'] as $image)
+                <div>
+                    <div class="image">
+                        <div class="slider-wrapper">
+                            <img src="{{ asset('assets/images/' . $image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
+                            {{-- <img src="assets/images/Wp2print-starter-1.jpg" alt=""> --}}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
+            @endforeach
+           
+            {{-- <div>
                 <div class="image">
                     <div class="slider-wrapper">
                         <img src="assets/images/Wp2print-starter-9.jpg" alt="">
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         
         <!-- HERO SECTION -->
@@ -36,18 +41,20 @@
                         <div class="col-lg-6">
                             <div class="entry-text">
                                 <div class="widget-title" data-aos="fade-left">
-                                    <h3>Welcome to Shadows Photo Printing</h3>
+                                    <h3>{{ $page_content['title'] }}</h3>
+                                        {{-- <h3>Welcome to Shadows Photo Printing</h3> --}}
                                     <div class="textwidget">
-                                        <p>
+                                        {!! $page_content['description'] !!}
+                                        {{-- <p>
                                             At Shadows Photo Printing we offer professional photo printing by professional Photographers who take the time to check the quality of your image before we print, as we understand how important your beautiful memories are.
                                         </p>
                                         <p>
                                             Once we have checked the quality of your wonderful image and there are no issues we will go ahead and carefully print your beautiful memories and dispatch them as quickly as possible.
-                                        </p>
+                                        </p> --}}
                                     </div>
                                 </div>
                                 <div class="so-widget-sow-button" data-aos="fade-left">
-                                    <a href="shop">Shop Now</a>
+                                    <a href="shop">{{ $page_content['shop_now'] }}</a>
                                 </div>
                             </div>
                         </div>
@@ -63,10 +70,12 @@
             <div class="container">
                 <div class="custom-wrapper">
                     <div class="custom-size-content" >
-                        <h2 data-aos="fade-right">If you have a custom size to be printed, please fill out the form and We will get back to
-                            you with the price.</h2>
+                        <h2 data-aos="fade-right">{!! $page_content['quote_description'] !!}</h2>
+                        {{-- <h2 data-aos="fade-right">If you have a custom size to be printed, please fill out the form and We will get back to
+                            you with the price.</h2> --}}
                         <div class="ow-button-base" data-aos="fade-left">
-                            <a href="quote"> Get a Quote </a>
+                            <a href="quote"> {{ $page_content['get_a_quote'] }} </a>
+                            {{-- <a href="quote"> Get a Quote </a> --}}
                         </div>
                     </div>
                 </div>
@@ -78,7 +87,8 @@
         <section class="categories">
             <div class="container">
                 <div class="categories-heading">
-                    <h3> Shop ByCategories</h3>
+                    <h3>{{ $page_content['shop_by_categories_title'] }}</h3>
+                    {{-- <h3> Shop ByCategories</h3> --}}
                 </div>
                 <div class="categories-wrapper">
                     <div class="row">
@@ -187,36 +197,46 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="restoration-content">
-                                    <h2>Photo Restoration Service</h2>
+                                    <h2>{{ $page_content['photo_restoration_service_description'] }}</h2>
+                                    {{-- <h2>Photo Restoration Service</h2> --}}
                                     <div class="restoration-btn">
-                                        <a href="contact">Contact Us</a>
+                                        <a href="contact">{{ $page_content['contact_us'] }}</a>
+                                        {{-- <a href="contact">Contact Us</a> --}}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
+                              @foreach ($page_content['photo_restoration_service_image'] as $photoimage)
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="assets/images/cart-page.jpg" alt="">
+                                        <img src="{{ asset('assets/images/' .$photoimage )}}" alt="{{ pathinfo($photoimage, PATHINFO_FILENAME) }}">
+                                        {{-- <img src="assets/images/cart-page.jpg" alt=""> --}}
                                     </figure>
                                 </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                     <div class="restoration-wrapper seconds"> 
                         <div class="row">
                             <div class="col-lg-6">
+                              @foreach ($page_content['accept_bulk_order_image'] as $bulkimage)
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="assets/images/canvasprint9.jpg" alt="">
+                                        <img src="{{ asset('assets/images/' .$bulkimage )}}" alt="{{ pathinfo($bulkimage, PATHINFO_FILENAME) }}">
+                                        {{-- <img src="assets/images/canvasprint9.jpg" alt=""> --}}
                                     </figure>
                                 </div>
+                                @endforeach
                             </div>
                             <div class="col-lg-6">
                                 <div class="restoration-content">
-                                    <h2>We accept bulk orders for</h2>
+                                    <h2>{{ $page_content['accept_bulk_order_description'] }}</h2>
+                                    {{-- <h2>We accept bulk orders for</h2> --}}
                                     <p><a href="scrapbook">Scrapbook Prints</a>, <a href="#">Prints & Enlargements</a>, <a href="canvas">Canvas Prints</a>, <a href="#">Posters & Panoramics</a></p>
                                     <div class="restoration-btn">
-                                        <a href="shop">Order Now</a>
+                                        <a href="shop">{{ $page_content['order_now'] }}</a>
+                                        {{-- <a href="shop">Order Now</a> --}}
                                     </div>
                                 </div>
                             </div>
