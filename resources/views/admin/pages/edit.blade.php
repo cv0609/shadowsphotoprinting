@@ -49,10 +49,19 @@
                                         <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name }}">
                                         <div class="choose-file-wrap">
                                             <div class="choose-file-single">
-                                                choose file one
+                                               <img src="https://images.pexels.com/photos/20157706/pexels-photo-20157706/free-photo-of-tram-on-street-by-estrela-basilica-in-lisbon-portugal.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-single">
                                             </div>
                                             <div class="choose-file-multiple">
-                                                choose file multiple
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
+                                                <img src="https://images.pexels.com/photos/20988794/pexels-photo-20988794/free-photo-of-processed-with-vsco-with-m5-preset.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-multiple">
                                             </div>
                                         </div>
                                     </div>
