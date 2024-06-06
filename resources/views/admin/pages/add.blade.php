@@ -19,13 +19,13 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="page-title" name="page_title" required="required" class="form-control ">
+                            @if(Session::has('error'))
+                              <p class="text-danger">{{ Session::get('error') }}</p>
+                            @endif
+                            @error('page_title')
+                             <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
-                        @if(Session::has('error'))
-                          <p class="text-danger">{{ Session::get('error') }}</p>
-                        @endif
-                        @error('page_title')
-                         <p class="text-danger">{{ $message }}</p>
-                        @enderror
                     </div>
                   <div class="ln_solid"></div>
                     <div class="item form-group">
