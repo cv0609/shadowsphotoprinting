@@ -25,22 +25,41 @@ class BlogsController extends Controller
        $slug = Str::slug($request->title);
        $image = "";
        if($request->has('image'))
-         {
+        {
             $file = $request->file('image');
             $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
             $destinationPath = 'assets/admin/uploads/blogs';
             $file->move($destinationPath, $fileName);
             $image =  $destinationPath.'/'.$fileName;
-         }
-           Blog::insert(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
+        }
+        Blog::insert(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
 
-           return redirect()->route('blogs.index')->with('success','Blog is created successfully');
+        return redirect()->route('blogs.index')->with('success','Blog is created successfully');
     }
 
-    public function show($blog)
+    public function show($slug)
+    {  
+        $detail = Blog::where('slug',$slug)->first();
+        return view('admin.blogs.edit',compact('detail'));
+    }
+    
+    public function update(AdminBlogRequest $request)
     {
-      $detail = Blog::where('slug',$blog)->first();
-      $blog_fields = read_json($detail->slug.'.json');
-      return view('admin.blogs.edit',compact('detail','page_fields'));
+        $slug = Str::slug($request->title);
+        $data = ['title'=>$request->title,'description'=>$request->description,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()];
+       if($request->has('image'))
+        {
+            $file = $request->file('image');
+            $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+            $destinationPath = 'assets/admin/uploads/blogs';
+            $file->move($destinationPath, $fileName);
+            $image =  $destinationPath.'/'.$fileName;
+            $data['image']=$image;
+        }
+        dd($data);
+        Blog::where('id',$request->blog)->update($data);
+    
+        return redirect()->route('blogs.edit')->with('success', 'Blog post updated successfully');
+    
     }
 }

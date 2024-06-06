@@ -45,7 +45,7 @@
                         @foreach ($blogs as $key => $blog)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($blog->blog_title) }}</td>
+                                <td>{{ ucfirst($blog->title) }}</td>
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('blogs.show', ['blog' => $blog->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>

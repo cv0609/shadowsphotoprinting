@@ -11,51 +11,53 @@
             </div>
             <div class="x_content">
                 <br>
-                <form action="{{ route('blogs.store') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                <form action="{{ route('blogs.store') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
 
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Blog Title <span class="required">*</span>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Blog Title <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="blog-title" name="blog_title" required="required" class="form-control ">
+                            <input type="text" id="title" name="title" required="required" class="form-control ">
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
-                            @error('page_title')
+                            @error('title')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Blog Description <span class="required">*</span>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Blog Image <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <textarea id="blog-description" name="blog_description" required="required" class="form-control "></textarea>
+                            <input type="file" id="image" name="image" required="required" class="form-control">
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
-                            @error('blog_description')
+                            @error('image')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
+
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Blog Image <span class="required">*</span>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="description">Blog Description <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="file" id="blog-image" name="blog_image" required="required" class="form-control">
+                            <textarea id="description" name="description" required="required" class="form-control "></textarea>
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
-                            @error('blog_description')
+                            @error('description')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
-                    
+
+                                      
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
@@ -70,4 +72,9 @@
 </div>
 </div>
 </div>
+
+<script>
+    CKEDITOR.replace('description');
+</script>
+
 @endsection
