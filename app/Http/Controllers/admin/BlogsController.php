@@ -27,7 +27,7 @@ class BlogsController extends Controller
          {
             $file = $request->file('image');
             $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
-            $destinationPath = 'uploads/blog_images';
+            $destinationPath = 'assets/admin/uploads/blogs';
             $file->move($destinationPath, $fileName);
          }
            Blog::insert(['title'=>$request->title,'description'=>$request->description,'image'=>$request->blog_image ,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
