@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-        {{-- @php dd($page_content); @endphp --}}
+        @php dd($page_content); @endphp
         
         <div class="banner-slider fade-slider">
             @foreach ($page_content['main_banner'] as $image)
@@ -220,11 +220,14 @@
                     <div class="restoration-wrapper seconds"> 
                         <div class="row">
                             <div class="col-lg-6">
+                              @foreach ($page_content['accept_bulk_order_image'] as $bulkimage)
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="assets/images/canvasprint9.jpg" alt="">
+                                        <img src="{{ asset('assets/images/' .$bulkimage )}}" alt="{{ pathinfo($bulkimage, PATHINFO_FILENAME) }}">
+                                        {{-- <img src="assets/images/canvasprint9.jpg" alt=""> --}}
                                     </figure>
                                 </div>
+                                @endforeach
                             </div>
                             <div class="col-lg-6">
                                 <div class="restoration-content">
@@ -232,7 +235,8 @@
                                     {{-- <h2>We accept bulk orders for</h2> --}}
                                     <p><a href="scrapbook">Scrapbook Prints</a>, <a href="#">Prints & Enlargements</a>, <a href="canvas">Canvas Prints</a>, <a href="#">Posters & Panoramics</a></p>
                                     <div class="restoration-btn">
-                                        <a href="shop">Order Now</a>
+                                        <a href="shop">{{ $page_content['order_now'] }}</a>
+                                        {{-- <a href="shop">Order Now</a> --}}
                                     </div>
                                 </div>
                             </div>
