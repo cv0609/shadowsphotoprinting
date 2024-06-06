@@ -47,6 +47,14 @@
                                     </label>
                                     <div class="col-md-6 col-sm-6">
                                         <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name }}">
+                                        <div class="choose-file-wrap">
+                                            <div class="choose-file-single">
+                                                choose file one
+                                            </div>
+                                            <div class="choose-file-multiple">
+                                                choose file multiple
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 @endif
