@@ -39,10 +39,10 @@ img{
 }
 .choose-file-wrap img {
     width: 100%;
-    height: 30px;
+    height: 80px;
     object-fit: cover;
 }
-.choose-file-wrap .choose-file-single img {
+.choose-file-wrap .choose-file-single figure {
     max-width: 180px;
 }
 
@@ -53,4 +53,28 @@ img{
 }
 input[type="file"].form-control {
     height: auto;
+}
+
+.choose-file-wrap figure {
+    margin: 0;
+    position: relative;
+}
+
+.choose-file-wrap figure span.closed_btn svg {
+    width: 100%;
+    height: 100%;
+}
+
+.choose-file-wrap figure span.closed_btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
 }
