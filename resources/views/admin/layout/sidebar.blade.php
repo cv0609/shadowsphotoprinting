@@ -34,7 +34,7 @@
                       <li><a href="index3.html">Dashboard3</a></li>
                     </ul> --}}
                   </li>
-                  <li><a href=""><i class="fa fa-tasks"></i>Blog</a></li>
+                  <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blog</a></li>
 
                 </ul>
               </div>
