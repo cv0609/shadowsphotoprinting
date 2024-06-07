@@ -31,7 +31,7 @@ class UploadService
             // die;
             // echo $fileName;
             // die;
-             return $fileName;
+             return $destinationPath.'/'.$fileName;
         }
         return false;
     }

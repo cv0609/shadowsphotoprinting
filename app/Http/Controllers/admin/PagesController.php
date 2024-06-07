@@ -52,9 +52,10 @@ class PagesController extends Controller
 
     public function show($page)
       {
-        $detail = Page::where('slug',$page)->first();
+        $detail = Page::where('slug',$page)->with('pageSections')->first();
         $page_fields = read_json($detail->slug.'.json');
-        return view('admin.pages.edit',compact('detail','page_fields'));
+        $content = json_decode($detail->pageSections->content,true);
+        return view('admin.pages.edit',compact('detail','page_fields','content'));
       }
 
     public function update(Request $request)
