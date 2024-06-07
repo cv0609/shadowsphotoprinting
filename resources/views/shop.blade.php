@@ -1,21 +1,30 @@
 @extends('layout.main')
 @section('content')
  <!-- HERO SECTION -->
+        {{-- @php dd($page_content); @endphp --}}
+
  <div class="banner-slider fade-slider">
+    
+    @foreach ($page_content['shop_banner'] as $image)
     <div>
         <div class="image">
+          
+
             <div class="slider-wrapper">
-                <img src="assets/images/Wp2print-starter-2.jpg" alt="">
+                <img src="{{ asset($image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
+                {{-- <img src="assets/images/Wp2print-starter-2.jpg" alt=""> --}}
             </div>
         </div>
     </div>
-    <div>
+    @endforeach
+
+    {{-- <div>
         <div class="image">
             <div class="slider-wrapper">
                 <img src="assets/images/Wp2print-starter-3.jpg" alt="">
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 <!-- HERO SECTION -->
 
@@ -23,18 +32,19 @@
     <div class="container">
         <div class="instructions-inner">
             <div class="so-widget">
-                <h3>The instructions to Order your print on our Website.</h3>
-
+                <h3>{{ $page_content['page_instruction_title'] }}</h3>
+                {{-- <h3>The instructions to Order your print on our Website.</h3> --}}
                 <div class="tinymce ">
                     <ol>
-                        <li>Please upload your files by clicking on Select files, after selecting files click on
+                        {!! $page_content['page_instruction_description'] !!}
+                        {{-- <li>Please upload your files by clicking on Select files, after selecting files click on
                             the Upload images button and then wait until they are all processed and moved on to
                             the next step.</li>
                         <li>Then click in the box where it has a tick on the image you would like to work with.
                         </li>
                         <li>Then click the product’s box and pick what category you need.</li>
                         <li> Then pick the size you would like to print and add the qty then click add to cart
-                            and follow this process until you are ready to view the cart/ check out.</li>
+                            and follow this process until you are ready to view the cart/ check out.</li> --}}
                     </ol>
                 </div>
 
@@ -43,7 +53,10 @@
                 <form method="post">
                     <div class="uploading">
                         <div class="uploading-img">
-                            <p>Please select images for uploading:</p>
+                            
+                            <p>{{ $page_content['select_images_for_upload_title'] }}</p>
+
+                            {{-- <p>Please select images for uploading:</p> --}}
                             <div id="selectedFiles"></div>
                             <a id="selectfiles" href="javascript:;" class="button"
                                 style="position: relative; z-index: 1;">Select images</a>

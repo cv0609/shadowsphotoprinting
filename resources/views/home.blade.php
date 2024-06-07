@@ -7,7 +7,7 @@
                 <div>
                     <div class="image">
                         <div class="slider-wrapper">
-                            <img src="{{ asset('assets/images/' . $image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
+                            <img src="{{ asset($image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
                             {{-- <img src="assets/images/Wp2print-starter-1.jpg" alt=""> --}}
                         </div>
                     </div>
@@ -32,11 +32,11 @@
                 <div class="entry-content-wrapper"> <!-- Corrected class name -->
                     <div class="row"> <!-- Add row here -->
                         <div class="col-lg-6">
-                            <div class="entry-img">
-                                <figure data-aos="fade-right">
-                                    <img src="assets/images/green.png" alt="">
-                                </figure>
-                            </div>
+                                <div class="entry-img">
+                                    <figure data-aos="fade-right">
+                                        <img src="{{ $page_content['side_image'] }}" alt="Side Image"> 
+                                    </figure>
+                                </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="entry-text">
@@ -206,28 +206,24 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                              @foreach ($page_content['photo_restoration_service_image'] as $photoimage)
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="{{ asset('assets/images/' .$photoimage )}}" alt="{{ pathinfo($photoimage, PATHINFO_FILENAME) }}">
+                                        <img src="{{ $page_content['photo_restoration_service_image'] }}" alt="Photo restoration image">
                                         {{-- <img src="assets/images/cart-page.jpg" alt=""> --}}
                                     </figure>
                                 </div>
-                                @endforeach
                             </div>
                         </div>
                     </div>
                     <div class="restoration-wrapper seconds"> 
                         <div class="row">
                             <div class="col-lg-6">
-                              @foreach ($page_content['accept_bulk_order_image'] as $bulkimage)
                                 <div class="restoration-img">
                                     <figure>
-                                        <img src="{{ asset('assets/images/' .$bulkimage )}}" alt="{{ pathinfo($bulkimage, PATHINFO_FILENAME) }}">
+                                        <img src="{{ $page_content['accept_bulk_order_image'] }}" alt="bulk image">
                                         {{-- <img src="assets/images/canvasprint9.jpg" alt=""> --}}
                                     </figure>
                                 </div>
-                                @endforeach
                             </div>
                             <div class="col-lg-6">
                                 <div class="restoration-content">

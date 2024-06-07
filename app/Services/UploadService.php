@@ -13,24 +13,11 @@ class UploadService
 
     public function handleUploadedImages(UploadedFile $file, $destinationPath, $availableExtensions)
     {
-
-        // echo $destinationPath;
-        // print_r($availableExtensions);
-        // echo $file->getClientOriginalExtension();
-        // echo $file->getClientOriginalName();
-        // rand() . ''
-        // exit;
-
         $isValid = $this->validateFileExtension($file->getClientOriginalExtension(), $availableExtensions);
-
+        
         if ($isValid) {
             $fileName = rand().'-'.$file->getClientOriginalName();
-
             $file->move($destinationPath, $fileName);
-            // echo $file;
-            // die;
-            // echo $fileName;
-            // die;
              return $destinationPath.'/'.$fileName;
         }
         return false;

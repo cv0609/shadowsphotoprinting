@@ -1,7 +1,7 @@
 {
     "title": "shop",
     "name": "shop",
-    "upload_pointer": "file-upload-paths.shop",
+    "upload_pointer": "file-upload-paths.shopPage",
     "sections": [
         {
             "title": "meta_data",

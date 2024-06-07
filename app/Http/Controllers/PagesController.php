@@ -15,7 +15,7 @@ class PagesController extends Controller
         if($content && isset($content->pageSections) && !empty($content->pageSections))
          {
            $page_content = json_decode($content->pageSections['content'],true);
-          return view('home',compact('page_content'));
+           return view('home',compact('page_content'));
          }
          else
          {
