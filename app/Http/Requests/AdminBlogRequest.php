@@ -23,7 +23,7 @@ class AdminBlogRequest extends FormRequest
     {
         return [
             "title" => "required|unique:blogs,title",
-            "image" => "required|",
+            "image" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             "description" => "required"
         ];
     }
