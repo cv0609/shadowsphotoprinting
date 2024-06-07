@@ -56,10 +56,15 @@ class BlogsController extends Controller
             $image =  $destinationPath.'/'.$fileName;
             $data['image']=$image;
         }
-        dd($data);
+        // dd($data);
         Blog::where('id',$request->blog)->update($data);
     
-        return redirect()->route('blogs.edit')->with('success', 'Blog post updated successfully');
-    
+        return redirect()->route('blogs')->with('success', 'Blog post updated successfully');
+    }
+
+    public function destroy($blog)
+    {
+       Blog::where('slug',$blog)->delete();
+       return redirect()->route('blogs.index')->with('success','Page deleted successfully');
     }
 }

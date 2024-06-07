@@ -34,17 +34,20 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Blog Image <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
+
                             <div class="choose-file-wrap">
                                 <input type="file" id="image" name="image" class="form-control">
                                 @if(Session::has('error'))
-                                    <p class="text-danger">{{ Session::get('error') }}</p>
-                                @endif
-                                @error('image')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                                @if($detail->image)
-                                    <img src="{{ asset($detail->image) }}" alt="Blog Image" class="img-thumbnail mt-3" width="150">
-                                @endif
+                                <p class="text-danger">{{ Session::get('error') }}</p>
+                            @endif
+                                <div class="choose-file-single">
+                                    <figure>
+                                        <img src="{{ asset($detail->image) }}" alt="img-single">
+                                        <span class="closed_btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                                        </span>
+                                    </figure>
+                                </div>
                             </div>
             
                         </div>

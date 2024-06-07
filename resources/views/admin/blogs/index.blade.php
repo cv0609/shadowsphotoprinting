@@ -49,7 +49,7 @@
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('blogs.show', ['blog' => $blog->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('blogs.destroy', ['blog' => $blog->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
+                                    <form action="{{ route('blogs.destroy', ['blog' => $blog->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this blog?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

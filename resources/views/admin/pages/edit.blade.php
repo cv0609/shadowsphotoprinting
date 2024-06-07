@@ -11,7 +11,7 @@
                     </div>
                     <div class="x_content">
                         <br>
-                        <form action="{{ route('pages.update',['page'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                        <form action="{{ route('pages.update',['page'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -26,7 +26,7 @@
                                                 {{ ucfirst(str_replace('_',' ',$field->title)) }} <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name }}">
+                                                <input type="text" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name }}" value="{{ (isset($content[$field->name])) ? $content[$field->name] : "" }}">
                                             </div>
                                         </div>
                                   @endif
@@ -35,36 +35,32 @@
                                   <div class="item form-group">
 									<label class="col-form-label col-md-3 col-sm-3 label-align ">{{ ucfirst(str_replace('_',' ',$field->title)) }}</label>
 									<div class="col-md-6 col-sm-6">
-										<textarea class="resizable_textarea form-control" name="{{ $field->name }}"></textarea>
+										<textarea class="resizable_textarea form-control" name="{{ $field->name }}">{{ (isset($content[$field->name])) ? $content[$field->name] : "" }}</textarea>
 									</div>
 								</div>
                                   @endif
                                  {{-- image --}}
                                 @if($field->type == 'image')
-                                <div class="item form-group">
+                                    <div class="item form-group">
                                     <label class="col-form-label col-md-3 col-sm-3 label-align">
                                         {{ ucfirst(str_replace('_',' ',$field->title)) }} <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6">
                                         <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name }}">
+                                        @if(isset($content[$field->name]))
                                         <div class="choose-file-wrap">
                                             <div class="choose-file-single">
                                                 <figure>
-                                                    <img src="https://images.pexels.com/photos/20157706/pexels-photo-20157706/free-photo-of-tram-on-street-by-estrela-basilica-in-lisbon-portugal.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="img-single">
-                                                    <span class="closed_btn">
+                                                    <img src="{{ (isset($content[$field->name]) && !empty($content[$field->name]) && !is_array($content[$field->name])) ?  asset($content[$field->name]) : "" }}" alt="img-single">
+
+                                                    {{-- <span class="closed_btn">
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-                                                    </span>
+                                                    </span> --}}
                                                 </figure>
                                             </div>
-                                            <div class="choose-file-multiple">
-                                                <figure>
-                                                <img src="https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&w=600" alt="img-multiple">
-                                                <span class="closed_btn">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-                                                    </span>
-                                                </figure>
-                                            </div>
+                                       
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
@@ -75,7 +71,24 @@
                                         {{ ucfirst(str_replace('_',' ',$field->title)) }} <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6">
-                                        <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name }}[]" multiple>
+                                        <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name.'[]' }}" multiple>
+                                        @if(isset($content[$field->name]))
+                                        
+                                            <div class="choose-file-wrap">
+                                                <div class="choose-file-multiple">
+                                                @foreach ($content[$field->name] as $images)
+                                                <figure>
+                                                <img src="{{ (isset($images) && !empty($images) && !is_array($images)) ?  asset($images) : "" }}" alt="img-multiple">
+                                                {{-- <span class="closed_btn">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                                                    </span> --}}
+                                                </figure>
+                                        @endforeach
+                                    </div>
+
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                                 @endif
