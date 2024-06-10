@@ -43,20 +43,4 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
-// Route::get('/shop',[ShopController::class,'shop'])->name('shop');
-// Route::get('/blog',[BlogController::class,'blog'])->name('blogs');
-// Route::get('/fun-facts',[BasePagesController::class,'funFacts'])->name('fun-facts');
-// Route::get('/our-products',[ProductController::class,'ourProducts'])->name('our-products');
-// Route::get('/scrapbook-prints',[ProductController::class,'scrapbookPrints'])->name('scrapbook-prints');
-// Route::get('/canvas-prints',[ProductController::class,'canvasPrints'])->name('canvas-prints');
-// Route::get('/posters-panoramics',[ProductController::class,'postersPanoramics'])->name('posters-panoramics');
-// Route::get('/prints-enlargements',[ProductController::class,'printEnlargements'])->name('prints-enlargements');
-// Route::get('/photos',[ProductController::class,'photos'])->name('photos');
-// Route::get('/central-west-n-s-w',[ProductController::class,'centralWest'])->name('central-west');
-// Route::get('/childrens-photos',[ProductController::class,'childrensPhotos'])->name('childrens-photos');
-// Route::get('/countryside-victoria',[ProductController::class,'countrySidevictoria'])->name('countryside-victoria');
-// Route::get('/outback-n-s-w',[ProductController::class,'outback'])->name('outback');
-// Route::get('/poems',[ProductController::class,'poems'])->name('poems');
-// Route::get('/giftcard',[ProductController::class,'giftCard'])->name('giftcard');
-// Route::get('/get-a-quote',[BasePagesController::class,'quote'])->name('quote');
 
