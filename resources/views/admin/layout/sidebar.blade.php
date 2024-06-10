@@ -36,7 +36,7 @@
                   </li>
                   <li><a href="#"><i class="fa fa-product-hunt"></i> Products</a>
                     <ul class="nav child_menu">
-                      <li><a href="{{ route('product-categories') }}">Product Categories</a></li>
+                      <li><a href="{{ route('product-categories-list') }}">Product Categories</a></li>
                       <li><a href="index2.html">Products</a></li>
                     </ul>
                   </li>

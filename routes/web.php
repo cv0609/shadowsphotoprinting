@@ -34,7 +34,11 @@ Route::prefix('admin')->group(function () {
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
         Route::resource('/pages',PagesController::class);
         Route::resource('/blogs',BlogsController::class);
-        Route::get('/product-categories',[ProductsController::class,'productCategory'])->name('product-categories');
+        Route::get('/product-categories',[ProductsController::class,'productCategory'])->name('product-categories-list');
+        Route::get('/product-categories-add',[ProductsController::class,'productCategoryAdd'])->name('product-categories-add');
+        Route::post('/product-categories-save',[ProductsController::class,'productCategorySave'])->name('product-categories-save');
+        Route::get('/product-categories-show/{category_id}',[ProductsController::class,'productCategoryShow'])->name('product-categories-show');
+        Route::get('/product-categories-delete/{category_id}',[ProductsController::class,'productCategoryDistroy'])->name('product-categories-delete');
     });
 });
 
