@@ -13,7 +13,6 @@
                 <br>
                 <form action="{{ route('product-save') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
-
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_title">Product Title <span class="required">*</span>
                         </label>

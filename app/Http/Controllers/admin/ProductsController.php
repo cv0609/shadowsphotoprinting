@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Http\Requests\ProductCategoryRequest;
+use App\Http\Requests\ProductRequest;
+
 use Illuminate\Support\Str;
 
 class ProductsController extends Controller
@@ -59,10 +61,13 @@ class ProductsController extends Controller
         return view('admin.products.add');
     }
 
-    public function productSave(ProductCategoryRequest $request)
+    public function productSave(ProductRequest $request)
     {
-        $slug = Str::slug($request->name);
-        Product::insert(["name"=>$request->name,'slug'=>$slug]);
+        echo"ok";
+        print_r($request ->all());
+        die;
+        $slug = Str::slug($request->product_title);
+        Product::insert(["product_title"=>$request->product_title,"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,"product_image"=>$request->product_image,'slug'=>$slug]);
         return redirect()->route('product-list')->with('success','Product inserted successfully');
     }
 

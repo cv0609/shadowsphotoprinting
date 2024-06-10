@@ -48,7 +48,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/product-show/{category_id}',[ProductsController::class,'productShow'])->name('product-show');
         Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
         Route::get('/product-delete/{category_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
-
     });
 });
 
