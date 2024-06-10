@@ -39,14 +39,15 @@ Route::prefix('admin')->group(function () {
         Route::get('/product-categories-add',[ProductsController::class,'productCategoryAdd'])->name('product-categories-add');
         Route::post('/product-categories-save',[ProductsController::class,'productCategorySave'])->name('product-categories-save');
         Route::get('/product-categories-show/{category_id}',[ProductsController::class,'productCategoryShow'])->name('product-categories-show');
+        Route::post('/product-categories-update',[ProductsController::class,'productCategoryUpdate'])->name('product-categories-update');
         Route::delete('/product-categories-delete/{category_id}',[ProductsController::class,'productCategoryDistroy'])->name('product-categories-delete');
 
         Route::get('/products',[ProductsController::class,'products'])->name('product-list');
         Route::get('/product-add',[ProductsController::class,'productAdd'])->name('product-add');
         Route::post('/product-save',[ProductsController::class,'productSave'])->name('product-save');
         Route::get('/product-show/{category_id}',[ProductsController::class,'productShow'])->name('product-show');
+        Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
         Route::get('/product-delete/{category_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
-
 
     });
 });

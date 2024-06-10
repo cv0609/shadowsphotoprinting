@@ -6,12 +6,12 @@
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Edit Product Category</h2>
+                <h2>Edit Products</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <br>
-                <form action="{{ route('product-categories-update') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
+                <form action="{{ route('product-update') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
 
                     <div class="item form-group">
