@@ -4,7 +4,9 @@
     <div class="container">
         <div class="blog-new-wrapper">
             <div class="blog-heading">
-                <h2>Shadows Photo Printing Blog </h2>
+                {{-- <h2>Shadows Photo Printing Blog </h2> --}}
+                <h2>{{ $details['photo_printing_blog_title'] }} </h2>
+
             </div>
             <div class="kadence-posts">
                @foreach ($detail as $value)

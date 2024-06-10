@@ -52,3 +52,5 @@ Route::get('/countryside-victoria',[ProductController::class,'countrySidevictori
 Route::get('/outback-n-s-w',[ProductController::class,'outback'])->name('outback');
 Route::get('/poems',[ProductController::class,'poems'])->name('poems');
 Route::get('/giftcard',[ProductController::class,'giftCard'])->name('giftcard');
+Route::get('/get-a-quote',[ProductController::class,'quote'])->name('quote');
+
