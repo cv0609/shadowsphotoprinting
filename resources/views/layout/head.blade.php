@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Photo Prints Online Australia, Professional Photographer Glenreagh NSW, Canvas Photo Printing, Shadows Photo
-    Printing</title>
+<title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title>
+<meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
 <link rel="icon" href="assets/images/favicon.jpg" type="image/x-icon">
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/slick.css">

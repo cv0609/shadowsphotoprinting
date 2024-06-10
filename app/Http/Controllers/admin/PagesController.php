@@ -127,7 +127,7 @@ class PagesController extends Controller
     $encoded_page_data = json_encode($pageContent);
    
     // Update or create the PageSection
-    PageSection::updateOrCreate(
+    PageSection:: updateOrCreate(
         ['page_id' => $page_id],
         ['content' => $encoded_page_data]
     );

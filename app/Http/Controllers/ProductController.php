@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Page;
 
 use Illuminate\Http\Request;
 
@@ -13,12 +14,33 @@ class ProductController extends Controller
 
     public function scrapbookPrints()
     {
-        return view('scrapbook-prints');
-    }
 
+        $content = Page::where('slug','scrapbook')->with('pageSections')->first();
+     
+        if($content && isset($content->pageSections) && !empty($content->pageSections))
+        {
+            $page_content = json_decode($content->pageSections['content'],true);
+            return view('scrapbook-prints',compact('page_content'));
+        }
+        else
+        {
+            abort(404);
+        }
+    }
     public function canvasPrints()
     {
-        return view('canvas-prints');
+
+        $content = Page::where('slug','canvas')->with('pageSections')->first();
+     
+        if($content && isset($content->pageSections) && !empty($content->pageSections))
+         {
+           $page_content = json_decode($content->pageSections['content'],true);
+           return view('canvas-prints',compact('page_content'));
+         }
+         else
+         {
+            abort(404);
+         }
     }
 
     public function postersPanoramics()
