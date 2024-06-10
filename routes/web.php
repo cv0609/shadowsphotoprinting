@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\Admin\BlogsController;
 use App\Http\Controllers\Admin\PagesController;
+use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\ProductController;
@@ -33,6 +34,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
         Route::resource('/pages',PagesController::class);
         Route::resource('/blogs',BlogsController::class);
+        Route::get('/product-categories',[ProductsController::class,'productCategory'])->name('product-categories');
     });
 });
 
