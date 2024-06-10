@@ -1,7 +1,7 @@
 {
-    "title": "posters_panoramic",
-    "name": "posters_panoramic",
-    "upload_pointer": "file-upload-paths.postersPanoramics",
+    "title": "quote",
+    "name": "quote",
+    "upload_pointer": "file-upload-paths.getAquote",
     "sections": [
         {
             "title": "meta_data",
@@ -22,20 +22,20 @@
             ]
         },
         {
-            "title": "posters_panoramic_banner",
+            "title": "get_a_quote",
             "layout_type": "row",
             "fields": [
                 {
-                    "title": "posters_panoramic_banner",
+                    "title": "get_a_quote_banner",
                     "type": "images",
                     "required": true,
-                    "name": "posters_panoramic_banner"
+                    "name": "get_a_quote_banner"
                 },
                 {
-                    "title": "posters_panoramic_banner_title",
+                    "title": "get_a_quote_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "posters_panoramic_banner_title"
+                    "name": "get_a_quote_banner_title"
                 }
             ]
         }
