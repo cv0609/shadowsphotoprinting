@@ -108,12 +108,12 @@
                             <li class="dropdown"><a href="{{ route('our-products') }}">Our Products <i
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="{{ route('scrapbook-prints') }}">SCRAPBOOK PRINTS</a></li>
-                                    <li><a href="{{ route('canvas-prints') }}">CANVAS PRINTS</a></li>
-                                    <li><a href="{{ route('posters-panoramics') }}">POSTERS & PANORAMICS</a></li>
-                                    <li><a href="{{ route('prints-enlargements') }}">PRINTS & ENLARGEMENTS</a></li>
-                                    <li><a href="{{ route('photos') }}">Photos for Sale</a></li>
-                                    <li><a href="{{ route('giftcard') }}">Gift Card</a></li>
+                                    <li><a href="{{ url('scrapbook-prints') }}">SCRAPBOOK PRINTS</a></li>
+                                    <li><a href="{{ url('canvas-prints') }}">CANVAS PRINTS</a></li>
+                                    <li><a href="{{ url('posters-panoramics') }}">POSTERS & PANORAMICS</a></li>
+                                    <li><a href="{{ url('prints-enlargements') }}">PRINTS & ENLARGEMENTS</a></li>
+                                    <li><a href="{{ url('photos') }}">Photos for Sale</a></li>
+                                    <li><a href="{{ url('giftcard') }}">Gift Card</a></li>
                                 </ul>
                             </li>
                             <li><a href="get-a-quote.html">Get a Quote</a></li>
