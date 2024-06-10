@@ -1,9 +1,15 @@
 @extends('layout.main')
 @section('content')
 <section class="canvas-bnr">
+    <div class="banner-img">
+        @foreach ($page_content['canvas_prints_banner'] as $canvas_image)
+          <img src="{{ asset($canvas_image) }}" alt="{{ pathinfo($canvas_image, PATHINFO_FILENAME) }}">
+        @endforeach
+    </div>
     <div class="container">
         <div class="contact-bnr-text">
-            <h2>CANVAS PRINTS </h2>
+            {{-- <h2>CANVAS PRINTS </h2> --}}
+            <h2>{{ $page_content['canvas_prints_banner_title'] }} </h2>
         </div>
     </div>
 </section>

@@ -1,11 +1,12 @@
 @extends('layout.main')
 @section('content')
+{{-- @php dd($page_content); @endphp --}}
 <section class="blog-new">
     <div class="container">
         <div class="blog-new-wrapper">
             <div class="blog-heading">
-                {{-- <h2>Shadows Photo Printing Blog </h2> --}}
-                <h2>{{ $details['photo_printing_blog_title'] }} </h2>
+                <h2>Shadows Photo Printing Blog </h2>
+                {{-- <h2>{{ $details['photo_printing_blog_title'] }} </h2> --}}
 
             </div>
             <div class="kadence-posts">
