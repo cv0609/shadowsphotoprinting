@@ -22,7 +22,7 @@ class ProductCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:product_categories,nam'
+            'name' => 'required|unique:product_categories,name'
         ];
     }
 }

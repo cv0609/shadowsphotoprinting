@@ -48,7 +48,7 @@
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('product-categories-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('product-categories-delete', ['page' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
+                                    <form action="{{ route('product-categories-delete', ['category_id' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

@@ -6,7 +6,7 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Edit {{ ucfirst($page_fields->page_title) }} Page</small></h2>
+                        <h2>Edit {{ ucfirst($page_fields->name) }} Page</small></h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">

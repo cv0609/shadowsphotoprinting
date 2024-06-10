@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Http\Requests\ProductCategoryRequest;
+use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
@@ -23,7 +24,8 @@ class ProductsController extends Controller
 
     public function productCategorySave(ProductCategoryRequest $request)
     {
-        ProductCategory::insert(["name"=>$request->name]);
+        $slug = Str::slug($request->name);
+        ProductCategory::insert(["name"=>$request->name,'slug'=>$slug]);
         return redirect()->route('product-categories-list')->with('success','Product category inserted successfully');
     }
     public function productCategoryShow($category_id)
