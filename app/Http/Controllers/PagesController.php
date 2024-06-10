@@ -21,25 +21,4 @@ class PagesController extends Controller
     }
   }
 
-    // public function quote()
-    // {
-    //     $content = Page::where('slug','quote')->with('pageSections')->first();
-
-    //     if($content && isset($content->pageSections) && !empty($content->pageSections))
-    //      {
-    //        $page_content = json_decode($content->pageSections['content'],true);
-    //        return view('get-a-quote',compact('page_content'));
-    //      }
-    //      else
-    //      {
-    //         abort(404);
-    //      }
-    // }
-
-    // public function funFacts()
-    // {
-    //     return view('fun-facts');
-    // }
-
-
 }

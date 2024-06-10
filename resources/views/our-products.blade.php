@@ -1,9 +1,16 @@
 @extends('layout.main')
 @section('content')
+{{-- @php dd($page_content); @endphp --}}
 <section class="product-banner">
+    <div class="banner-img">
+        @foreach ($page_content['our_products_banner'] as $our_products_image)
+          <img src="{{ asset($our_products_image) }}" alt="{{ pathinfo($our_products_image, PATHINFO_FILENAME) }}">
+        @endforeach
+    </div>
     <div class="container">
         <div class="contact-bnr-text">
-            <h2>OUR PRODUCTS </h2>
+            {{-- <h2>OUR PRODUCTS </h2> --}}
+            <h2>{{ $page_content['our_products_banner_title'] }} </h2>
         </div>
     </div>
 </section>

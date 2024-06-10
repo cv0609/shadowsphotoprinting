@@ -34,6 +34,12 @@
                       <li><a href="index3.html">Dashboard3</a></li>
                     </ul> --}}
                   </li>
+                  <li><a href="#"><i class="fa fa-product-hunt"></i> Products</a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('product-categories-list') }}">Product Categories</a></li>
+                      <li><a href="index2.html">Products</a></li>
+                    </ul>
+                  </li>
                   <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blog</a></li>
 
                 </ul>

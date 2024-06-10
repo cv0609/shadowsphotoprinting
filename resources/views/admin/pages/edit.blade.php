@@ -58,7 +58,7 @@
                                                     </span> --}}
                                                 </figure>
                                             </div>
-                                       
+
                                         </div>
                                         @endif
                                     </div>
@@ -73,7 +73,7 @@
                                     <div class="col-md-6 col-sm-6">
                                         <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name.'[]' }}" multiple>
                                         @if(isset($content[$field->name]))
-                                        
+
                                             <div class="choose-file-wrap">
                                                 <div class="choose-file-multiple">
                                                 @foreach ($content[$field->name] as $images)

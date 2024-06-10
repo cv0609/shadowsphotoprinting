@@ -1,7 +1,7 @@
 {
-    "title": "our_products",
-    "name": "our_products",
-    "upload_pointer": "file-upload-paths.ourProducts",
+    "title": "posters_panoramic",
+    "name": "posters_panoramic",
+    "upload_pointer": "file-upload-paths.postersAndpanoramicsPages",
     "sections": [
         {
             "title": "meta_data",
@@ -22,20 +22,20 @@
             ]
         },
         {
-            "title": "our_products_banner",
+            "title": "posters_panoramic_banner",
             "layout_type": "row",
             "fields": [
                 {
-                    "title": "our_products_banner",
+                    "title": "posters_panoramic_banner",
                     "type": "images",
                     "required": true,
-                    "name": "our_products_banner"
+                    "name": "posters_panoramic_banner"
                 },
                 {
-                    "title": "our_products_banner_title",
+                    "title": "posters_panoramic_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "our_products_banner_title"
+                    "name": "posters_panoramic_banner_title"
                 }
             ]
         }

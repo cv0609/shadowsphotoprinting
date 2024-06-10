@@ -54,6 +54,7 @@ class PagesController extends Controller
       {
         $detail = Page::where('slug',$page)->with('pageSections')->first();
         $page_fields = read_json($detail->slug.'.json');
+
         if(isset($detail->pageSections->content)){
             $content = json_decode($detail->pageSections->content,true);
 
@@ -62,6 +63,7 @@ class PagesController extends Controller
         $content = [];
 
         }
+
         return view('admin.pages.edit',compact('detail','page_fields','content'));
       }
 
@@ -70,12 +72,12 @@ class PagesController extends Controller
     $page_id = $request->page;
 
     $page = Page::where(['id' => $page_id])->first();
-    
+
     $page_fields_data = read_json(strtolower($page->slug) . '.json');
 
     $sections = ($page_fields_data->sections);
     $this->flie_upload_path = config($page_fields_data->upload_pointer);
-    
+
     $existing_page_content = $this->getPreContentPage($page_id);
     $pageContent = [];
 
@@ -89,7 +91,7 @@ class PagesController extends Controller
             if ($field->type == 'images') {
                 $files = $request->file($field_name);
                 $uploadedImages = [];
-           
+
                 if (!empty($files)) {
                     foreach ($files as $file) {
                         if ($file->isValid()) {
@@ -104,7 +106,7 @@ class PagesController extends Controller
                     $existing_content = json_decode($existing_page_content, true);
                     $field_value = isset($existing_content[$field_name]) ? $existing_content[$field_name] : [];
                 }
-                
+
             } elseif (in_array($field->type, ['image', 'video', 'file'])) {
                 $file = $request->file($field_name);
                 if ($file && $file->isValid()) {
@@ -125,7 +127,7 @@ class PagesController extends Controller
     }
 
     $encoded_page_data = json_encode($pageContent);
-   
+
     // Update or create the PageSection
     PageSection:: updateOrCreate(
         ['page_id' => $page_id],
@@ -136,7 +138,7 @@ class PagesController extends Controller
 }
 
 
-    
+
      private function getPreContentPage($page_id)
      {
          $Page_preContent = PageSection::where(['page_id' => $page_id])->select('content')->latest('id')->first();

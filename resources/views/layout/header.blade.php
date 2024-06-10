@@ -1,3 +1,7 @@
+@php
+    $PageDataService = app(App\Services\PageDataService::class);
+    $productCategories = $PageDataService->getProductCategories();
+@endphp
 <header class="header">
     <!-- main header -->
     <div class="navigation page-header">
@@ -12,7 +16,6 @@
                     <div class="sidena mycel" id="mySidenav">
                         <div class="magnifying">
                             <ul class="desk-trt">
-
                                 <li class="update-menu" data-bs-toggle="modal" data-bs-target="#myModal"><a
                                         class=""><span> Login/Signup</span> </a></li>
                                 <li class="dropdown"><a href="our-products.html" class="signup">MY ACCOUNT </a>
@@ -69,8 +72,6 @@
                                 </li>
                                 <li class="social-media"><a><i class="fa-brands fa-facebook-f"></i> </a></li>
                                 <li class="social-media"><a> <i class="fa-brands fa-instagram"></i> </a></li>
-
-
                             </ul>
                         </div>
                     </div>
@@ -108,12 +109,9 @@
                             <li class="dropdown"><a href="{{ url('our-products') }}">Our Products <i
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="{{ url('scrapbook-prints') }}">SCRAPBOOK PRINTS</a></li>
-                                    <li><a href="{{ url('canvas-prints') }}">CANVAS PRINTS</a></li>
-                                    <li><a href="{{ url('posters-panoramics') }}">POSTERS & PANORAMICS</a></li>
-                                    <li><a href="{{ url('prints-enlargements') }}">PRINTS & ENLARGEMENTS</a></li>
-                                    <li><a href="{{ url('photos') }}">Photos for Sale</a></li>
-                                    <li><a href="{{ url('giftcard') }}">Gift Card</a></li>
+                                   @foreach ($productCategories as $productCategory)
+                                    <li><a href="{{ url($productCategory->slug) }}">{{ ucwords($productCategory->name) }}</a></li>
+                                   @endforeach
                                 </ul>
                             </li>
                             <li><a href="get-a-quote.html">Get a Quote</a></li>
