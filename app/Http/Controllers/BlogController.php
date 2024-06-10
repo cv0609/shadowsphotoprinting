@@ -8,7 +8,7 @@ class BlogController extends Controller
 {
     public function blog()
     {
-        $detail = Blog::get();
-        return view('blog',compact('detail'));
+        $blogs = Blog::get();
+        return $blogs;
     }
 }

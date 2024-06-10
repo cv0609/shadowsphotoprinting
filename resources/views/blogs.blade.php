@@ -1,16 +1,21 @@
 @extends('layout.main')
 @section('content')
+@php
+    $PageDataService = app(App\Services\PageDataService::class);
+    $blogs = $PageDataService->getBlogs();
+@endphp
 {{-- @php dd($page_content); @endphp --}}
 <section class="blog-new">
     <div class="container">
         <div class="blog-new-wrapper">
             <div class="blog-heading">
-                <h2>Shadows Photo Printing Blog </h2>
+                <h2>{{ $page_content['photo_printing_blog_title'] }}</h2>
                 {{-- <h2>{{ $details['photo_printing_blog_title'] }} </h2> --}}
 
             </div>
             <div class="kadence-posts">
-               @foreach ($detail as $value)
+               
+               @foreach ($blogs as $value)
                <article>
                 <a href="photo-restoration-bring-your-memories-back-to-life.html">
                     <div class="post-thumbnail-inner">
