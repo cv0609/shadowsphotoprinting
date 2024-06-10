@@ -105,7 +105,7 @@
                             <li><a href="{{ url('shop') }}">Shop</a></li>
                             <li><a href="{{ url('blogs') }}">Blog</a></li>
                             <li><a href="{{ url('fun-facts') }}">Fun Facts</a></li>
-                            <li class="dropdown"><a href="{{ route('our-products') }}">Our Products <i
+                            <li class="dropdown"><a href="{{ url('our-products') }}">Our Products <i
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
                                     <li><a href="{{ url('scrapbook-prints') }}">SCRAPBOOK PRINTS</a></li>
