@@ -36,10 +36,10 @@ class PagesController extends Controller
     //      }
     // }
 
-    // public function funFacts()
-    // {
-    //     return view('fun-facts');
-    // }
+  // public function funFacts()
+  // {
+  //     return view('fun-facts');
+  // }
 
 
 }
