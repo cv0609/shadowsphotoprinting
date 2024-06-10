@@ -6,7 +6,7 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Edit {{ ucfirst($page_fields->name) }} Page</small></h2>
+                        <h2>Edit {{ ucfirst($page_fields->page_title) }} Page</small></h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -58,7 +58,7 @@
                                                     </span> --}}
                                                 </figure>
                                             </div>
-                                       
+
                                         </div>
                                         @endif
                                     </div>
@@ -73,7 +73,7 @@
                                     <div class="col-md-6 col-sm-6">
                                         <input type="file" id="{{ ucfirst(str_replace('_',' ',$field->title)) }}" required="required" class="form-control" name="{{ $field->name.'[]' }}" multiple>
                                         @if(isset($content[$field->name]))
-                                        
+
                                             <div class="choose-file-wrap">
                                                 <div class="choose-file-multiple">
                                                 @foreach ($content[$field->name] as $images)
