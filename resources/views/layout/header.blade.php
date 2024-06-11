@@ -9,7 +9,7 @@
             <div class="navigation-inner">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
-                        <a href="index.html">
+                        <a href="{{ url('/') }}">
                             <img src="assets/images/logo.png" alt="logo">
                         </a>
                     </div>
