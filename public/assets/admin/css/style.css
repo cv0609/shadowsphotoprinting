@@ -87,3 +87,19 @@ input[type="file"].form-control {
 .choose-file-single {
     margin: 10px 0  0;
 }
+
+.nav_title.admin-logo {
+    height: 80px;
+    padding: 0px;
+}
+
+.nav_title.admin-logo .site_title {
+    height: 100%;
+    padding: 8px 10px;
+}
+
+.nav_title.admin-logo .site_title img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

@@ -120,8 +120,6 @@
                                 30”x40” (76cm x101.5cm) Canvas Print.<br>
 
                                 Dimensions: Width: 76cm, Height: 101.5cm
-
-
                             </p>
                         </div>
                     </div>

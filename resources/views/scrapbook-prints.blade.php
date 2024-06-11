@@ -1,7 +1,6 @@
 @extends('layout.main')
 @section('content')
 {{-- @php dd($page_content); @endphp --}}
-
 <section class="scrapbook-banner common-banner">
     <div class="banner-img">
         @foreach ($page_content['scrapbook_banner'] as $scrapbook_image)

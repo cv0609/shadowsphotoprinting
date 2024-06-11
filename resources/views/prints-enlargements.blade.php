@@ -208,19 +208,7 @@
                             <div class="print_paper_type">Type of Paper Use: <select>
                                     <option>Luster</option>
                                 </select></div>
-                            <p>At Shadows Photo Printing we offer professional photo printing by professional
-                                Photographers who take the time to check the quality of your image before we
-                                print. We understand how important your beautiful memories are. <br>
-
-                                Once we have checked the quality of your wonderful image and there are no issues
-                                we will go ahead and carefully print your beautiful memories and dispatch them
-                                as quickly as possible.<br>
-
-                                10”x24” Prints (25.4cm x 60.96cm) Prints & Enlargements.<br>
-
-                                Dimensions: Width: 25.4cm, Height: 60.96cm
-
-                            </p>
+                            <p></p>
                         </div>
                     </div>
                 </li>

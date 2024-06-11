@@ -19,7 +19,7 @@
     <div class="container">
         <div class="Product_box">
             <ul class="product-list">
-                <li class="product-sect">
+                {{-- <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="assets/images/dup17.png" alt="scrap6">
@@ -42,8 +42,8 @@
                             </p>
                         </div>
                     </div>
-                </li>
-                <li class="product-sect">
+                </li> --}}
+                {{-- <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="assets/images/dup26.png" alt="scrap6">
@@ -73,8 +73,8 @@
                             </p>
                         </div>
                     </div>
-                </li>
-                <li class="product-sect">
+                </li> --}}
+                {{-- <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="assets/images/dup25.png" alt="scrap6">
@@ -102,7 +102,7 @@
                                 Dimensions: Width: 101.6cm, Height: 127cm </p>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">

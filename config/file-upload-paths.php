@@ -10,5 +10,6 @@ return [
     'getAquote' => 'assets/admin/uploads/getAquote',
     'contactUS' => 'assets/admin/uploads/contactUS',
     'ourProductspage' => 'assets/admin/uploads/ourProducts',
+    'funFactpage' => 'assets/admin/uploads/funFact',
 
 ];

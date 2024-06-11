@@ -10,7 +10,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
                         <a href="{{ url('/') }}">
-                            <img src="assets/images/logo.png" alt="logo">
+                            <img src="{{asset('assets/images/logo.png')}}" alt="logo">
                         </a>
                     </div>
                     <div class="sidena mycel" id="mySidenav">

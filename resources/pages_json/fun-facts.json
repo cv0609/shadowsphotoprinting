@@ -1,0 +1,37 @@
+{
+    "title": "fun-fact",
+    "name": "fun-fact",
+    "upload_pointer": "file-upload-paths.funFactpage",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "fun-facts",
+            "layout_type": "",
+            "fields": [
+                {
+                    "title": "fun-facts-content",
+                    "type": "text-editor",
+                    "required": true,
+                    "name": "fun-facts-content"
+                }
+            ]
+        }
+    ]
+}
