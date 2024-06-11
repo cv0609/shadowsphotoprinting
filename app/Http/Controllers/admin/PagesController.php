@@ -41,7 +41,7 @@ class PagesController extends Controller
         $pointer = base_path('resources/pages_json/'.$slug.'.json');
 
         if(file_exists($pointer)){
-            Page::insert(['page_title'=>$request->page_title,'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id()]);
+            Page::insert(['page_title'=>preg_replace('/[^\w\s]/',' ', $request->page_title),'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id()]);
             return redirect()->route('pages.index')->with('success','Page is created successfully');
         }
         else
@@ -68,74 +68,74 @@ class PagesController extends Controller
       }
 
       public function update(Request $request)
-{
-    $page_id = $request->page;
+        {
+            $page_id = $request->page;
 
-    $page = Page::where(['id' => $page_id])->first();
+            $page = Page::where(['id' => $page_id])->first();
 
-    $page_fields_data = read_json(strtolower($page->slug) . '.json');
+            $page_fields_data = read_json(strtolower($page->slug) . '.json');
 
-    $sections = ($page_fields_data->sections);
-    $this->flie_upload_path = config($page_fields_data->upload_pointer);
+            $sections = ($page_fields_data->sections);
+            $this->flie_upload_path = config($page_fields_data->upload_pointer);
 
-    $existing_page_content = $this->getPreContentPage($page_id);
-    $pageContent = [];
+            $existing_page_content = $this->getPreContentPage($page_id);
+            $pageContent = [];
 
-    foreach ($sections as $section) {
-        $fields = $section->fields;
+            foreach ($sections as $section) {
+                $fields = $section->fields;
 
-        foreach ($fields as $field) {
-            $field_name = $field->name;
-            $field_value = "";
+                foreach ($fields as $field) {
+                    $field_name = $field->name;
+                    $field_value = "";
 
-            if ($field->type == 'images') {
-                $files = $request->file($field_name);
-                $uploadedImages = [];
+                    if ($field->type == 'images') {
+                        $files = $request->file($field_name);
+                        $uploadedImages = [];
 
-                if (!empty($files)) {
-                    foreach ($files as $file) {
-                        if ($file->isValid()) {
+                        if (!empty($files)) {
+                            foreach ($files as $file) {
+                                if ($file->isValid()) {
+                                    $uploadFileName = $this->uploadService->handleUploadedImages($file, $this->flie_upload_path, $this->availableImageExtensions);
+                                    if ($uploadFileName != "") {
+                                        $uploadedImages[] = $uploadFileName;
+                                    }
+                                }
+                            }
+                            $field_value = $uploadedImages;
+                        } else {
+                            $existing_content = json_decode($existing_page_content, true);
+                            $field_value = isset($existing_content[$field_name]) ? $existing_content[$field_name] : [];
+                        }
+
+                    } elseif (in_array($field->type, ['image', 'video', 'file'])) {
+                        $file = $request->file($field_name);
+                        if ($file && $file->isValid()) {
                             $uploadFileName = $this->uploadService->handleUploadedImages($file, $this->flie_upload_path, $this->availableImageExtensions);
                             if ($uploadFileName != "") {
-                                $uploadedImages[] = $uploadFileName;
+                                $field_value = $uploadFileName;
                             }
+                        } else {
+                            $existing_content = json_decode($existing_page_content, true);
+                            $field_value = isset($existing_content[$field_name]) ? $existing_content[$field_name] : null;
                         }
+                    } else {
+                        $field_value = $request->input($field_name, '');
                     }
-                    $field_value = $uploadedImages;
-                } else {
-                    $existing_content = json_decode($existing_page_content, true);
-                    $field_value = isset($existing_content[$field_name]) ? $existing_content[$field_name] : [];
-                }
 
-            } elseif (in_array($field->type, ['image', 'video', 'file'])) {
-                $file = $request->file($field_name);
-                if ($file && $file->isValid()) {
-                    $uploadFileName = $this->uploadService->handleUploadedImages($file, $this->flie_upload_path, $this->availableImageExtensions);
-                    if ($uploadFileName != "") {
-                        $field_value = $uploadFileName;
-                    }
-                } else {
-                    $existing_content = json_decode($existing_page_content, true);
-                    $field_value = isset($existing_content[$field_name]) ? $existing_content[$field_name] : null;
+                    $pageContent[$field_name] = $field_value;
                 }
-            } else {
-                $field_value = $request->input($field_name, '');
             }
 
-            $pageContent[$field_name] = $field_value;
+            $encoded_page_data = json_encode($pageContent);
+
+            // Update or create the PageSection
+            PageSection:: updateOrCreate(
+                ['page_id' => $page_id],
+                ['content' => $encoded_page_data]
+            );
+
+            return redirect()->route('pages.index')->with('success', 'Page updated successfully');
         }
-    }
-
-    $encoded_page_data = json_encode($pageContent);
-
-    // Update or create the PageSection
-    PageSection:: updateOrCreate(
-        ['page_id' => $page_id],
-        ['content' => $encoded_page_data]
-    );
-
-    return redirect()->route('pages.index')->with('success', 'Page updated successfully');
-}
 
 
 
