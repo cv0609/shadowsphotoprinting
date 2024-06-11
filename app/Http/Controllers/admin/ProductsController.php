@@ -31,7 +31,7 @@ class ProductsController extends Controller
 
     public function productCategoryUpdate(Request $request)
     {
-    
+
         $slug = Str::slug($request->name);
         ProductCategory::whereId($request->category_id)->update(["name"=>$request->name,'slug'=>$slug]);
         return redirect()->route('product-categories-list')->with('success','Product category updated successfully');
@@ -53,7 +53,7 @@ class ProductsController extends Controller
         $products = Product::paginate(10);
         return view('admin.products.index', compact('products'));
     }
- 
+
     public function productAdd()
     {
         return view('admin.products.add');
@@ -72,4 +72,8 @@ class ProductsController extends Controller
         Product::whereId($request->category_id)->update(["name"=>$request->name,'slug'=>$slug]);
         return redirect()->route('product-list')->with('success','Product updated successfully');
     }
+
+
+
+
 }

@@ -114,8 +114,8 @@
                                    @endforeach
                                 </ul>
                             </li>
-                            <li><a href="get-a-quote.html">Get a Quote</a></li>
-                            <li><a href="contact-us.html">Contact Us</a></li>
+                            <li><a href="{{ url('get-a-quote') }}">Get a Quote</a></li>
+                            <li><a href="{{ url('contact-us') }}">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
