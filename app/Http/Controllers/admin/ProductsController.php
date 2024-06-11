@@ -58,23 +58,27 @@ class ProductsController extends Controller
  
     public function productAdd()
     {
-        return view('admin.products.add');
+        $productCategories = ProductCategory::get();
+        return view('admin.products.add',compact('productCategories'));
     }
 
     public function productSave(ProductRequest $request)
     {
-        echo"ok";
-        print_r($request ->all());
-        die;
         $slug = Str::slug($request->product_title);
-        Product::insert(["product_title"=>$request->product_title,"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,"product_image"=>$request->product_image,'slug'=>$slug]);
+        Product::insert(["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,"product_image"=>$request->product_image,'slug'=>$slug]);
         return redirect()->route('product-list')->with('success','Product inserted successfully');
+    }
+
+    public function productShow($product_id)
+    {
+        $product = Product::whereId($product_id)->first();
+        return view('admin.products.edit', compact('product'));
     }
 
     public function productUpdate(Request $request)
     {
         $slug = Str::slug($request->name);
-        Product::whereId($request->category_id)->update(["name"=>$request->name,'slug'=>$slug]);
+        Product::whereId($request->product_id)->update(["product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),'slug'=>$slug]);
         return redirect()->route('product-list')->with('success','Product updated successfully');
     }
 }
