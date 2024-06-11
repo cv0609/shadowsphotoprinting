@@ -93,6 +93,24 @@
                                 </div>
                                 @endif
 
+                                  {{-- text editor --}}
+                                  @if($field->type == 'text-editor')
+                                  <div class="item form-group">
+                                      <label class="col-form-label col-md-3 col-sm-3 label-align">
+                                          {{ ucfirst(str_replace('_',' ',$field->title)) }} <span class="required">*</span>
+                                      </label>
+                                      <div class="col-md-6 col-sm-6 ">
+                                        <textarea id="description" name="description" required="required" class="form-control "></textarea>
+                                        @if(Session::has('error'))
+                                          <p class="text-danger">{{ Session::get('error') }}</p>
+                                        @endif
+                                        @error('description')
+                                         <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                  </div>
+                                  @endif
+
                                 @endforeach
                             </div>
                             @endforeach
@@ -104,4 +122,7 @@
         </div>
     </div>
 </div>
+<script>
+    CKEDITOR.replace('description');
+</script>
 @endsection
