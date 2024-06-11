@@ -37,6 +37,7 @@
                         <tr>
                             <th>#</th>
                             <th>Products Name</th>
+                            <th>Products Category</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -45,6 +46,7 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ ucfirst($product->product_title) }}</td>
+                                <td>{{ ucfirst($product->product_category['name']) }}</td>
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
@@ -58,7 +60,9 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    
                 </table>
+                {{ $products->links('pagination::bootstrap-4') }}
             </div>
           </div>
         </div>

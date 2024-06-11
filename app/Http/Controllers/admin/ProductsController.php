@@ -52,12 +52,15 @@ class ProductsController extends Controller
 
     public function products()
     {
-        $products = Product::paginate(10);
+        $products = Product::with(['product_category' => function($query) {
+            $query->select('id', 'name'); 
+        }])->paginate(10);
         return view('admin.products.index', compact('products'));
     }
 
     public function productAdd()
     {
+        
         $productCategories = ProductCategory::get();
         return view('admin.products.add',compact('productCategories'));
     }
