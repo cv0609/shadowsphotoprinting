@@ -44,11 +44,11 @@
                         @foreach ($products as $key => $product)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($product->name) }}</td>
+                                <td>{{ ucfirst($product->product_title) }}</td>
                                 <td>
                                     <div class="x_content">
-                                    <a href="{{ route('product-show', ['product_id' => $product->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('product-delete', ['product_id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
+                                    <a href="{{ route('product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                    <form action="{{ route('product-delete', ['slug' => $product->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>
