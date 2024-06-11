@@ -100,7 +100,7 @@
                                           {{ ucfirst(str_replace('_',' ',$field->title)) }} <span class="required">*</span>
                                       </label>
                                       <div class="col-md-6 col-sm-6 ">
-                                        <textarea id="description" name="description" required="required" class="form-control "></textarea>
+                                        <textarea id="description" name="{{ $field->name }}" required="required" class="form-control ">{{ (isset($content[$field->name])) ? $content[$field->name] : "" }}</textarea>
                                         @if(Session::has('error'))
                                           <p class="text-danger">{{ Session::get('error') }}</p>
                                         @endif

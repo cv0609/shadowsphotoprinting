@@ -1,9 +1,11 @@
 @extends('layout.main')
 @section('content')
+{{-- @php dd($page_content); @endphp --}}
 <section class="about-printing">
     <div class="container">
         <div class="about-printing">
-            <h3>Fun facts about printing </h3>
+            {!! html_entity_decode($page_content['fun-facts-content']) !!}
+            {{-- <h3>Fun facts about printing </h3>
             <p>Have you or did you know that we do all our printing in sRGB? <br>
                 The printer prints in sRGB, and it will convert the CMYK mode to the sRGB before printing.
                 <br>
@@ -208,7 +210,7 @@
             <p>If need be, we will then give you a credit.
             </p>
             <h4>If we stuff up – we pay for it!
-            </h4>
+            </h4> --}}
         </div>
     </div>
 </section>
