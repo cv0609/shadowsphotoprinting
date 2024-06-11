@@ -64,21 +64,43 @@ class ProductsController extends Controller
 
     public function productSave(ProductRequest $request)
     {
+
         $slug = Str::slug($request->product_title);
-        Product::insert(["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,"product_image"=>$request->product_image,'slug'=>$slug]);
+
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+
+        if ($request->hasFile('product_image')) {
+            $image = $request->file('product_image');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('assets/admin/images'), $imageName);
+            $product_image = 'assets/admin/images/'.$imageName;
+            $data["product_image"] = $product_image;
+         }
+        Product::insert($data);
         return redirect()->route('product-list')->with('success','Product inserted successfully');
     }
 
-    public function productShow($product_id)
+    public function productShow($slug)
     {
-        $product = Product::whereId($product_id)->first();
-        return view('admin.products.edit', compact('product'));
+        $product = Product::where('slug', $slug)->first();
+        $productCategories = ProductCategory::get();
+        return view('admin.products.edit', compact('product','productCategories'));
     }
 
     public function productUpdate(Request $request)
     {
-        $slug = Str::slug($request->name);
-        Product::whereId($request->product_id)->update(["product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),'slug'=>$slug]);
+        $slug = Str::slug($request->product_title);
+
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+
+        if ($request->hasFile('product_image')) {
+            $image = $request->file('product_image');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('assets/admin/images'), $imageName);
+            $product_image = 'assets/admin/images/'.$imageName;
+            $data["product_image"] = $product_image;
+         }
+        Product::whereId($request->product_id)->update($data);
         return redirect()->route('product-list')->with('success','Product updated successfully');
     }
 

@@ -45,9 +45,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/products',[ProductsController::class,'products'])->name('product-list');
         Route::get('/product-add',[ProductsController::class,'productAdd'])->name('product-add');
         Route::post('/product-save',[ProductsController::class,'productSave'])->name('product-save');
-        Route::get('/product-show/{product_id}',[ProductsController::class,'productShow'])->name('product-show');
+        Route::get('/product-show/{slug}',[ProductsController::class,'productShow'])->name('product-show');
         Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
-        Route::get('/product-delete/{product_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
+        Route::get('/product-delete/{slug}',[ProductsController::class,'productDistroy'])->name('product-delete');
     });
 });
 
