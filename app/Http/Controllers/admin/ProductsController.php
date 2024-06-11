@@ -105,6 +105,10 @@ class ProductsController extends Controller
     }
 
 
-
+   public function productDistroy($category_id)
+    {
+       $category = Product::whereId($category_id)->delete();
+       return redirect()->route('product-list')->with('success','Product is deleted successfully');
+    }
 
 }

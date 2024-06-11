@@ -47,7 +47,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/product-save',[ProductsController::class,'productSave'])->name('product-save');
         Route::get('/product-show/{slug}',[ProductsController::class,'productShow'])->name('product-show');
         Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
-        Route::get('/product-delete/{slug}',[ProductsController::class,'productDistroy'])->name('product-delete');
+        Route::delete('/product-delete/{product_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
     });
 });
 

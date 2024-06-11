@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title>
 <meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
-<link rel="icon" href="assets/images/favicon.jpg" type="image/x-icon">
+<link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/slick.css">
 <link rel="stylesheet" href="assets/fonts/stylesheet.css">
