@@ -2168,7 +2168,7 @@
                             <h3>6”x12” Prints – With 4mm White Border
                             </h3>
                             <div class="cart_price">
-                                <span class="price">Price: $1.40
+                                <span class="price">Price: $.401
                                 </span>
                             </div>
                             <div class="print_paper_type">Type of Paper Use: <select>
