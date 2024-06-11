@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
-use App\Http\Controllers\Admin\BlogsController;
-use App\Http\Controllers\Admin\PagesController;
-use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\admin\BlogsController;
+use App\Http\Controllers\admin\PagesController;
+use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\ProductController;
