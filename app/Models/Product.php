@@ -15,4 +15,9 @@ class Product extends Model
         'type_of_paper_use',
         'product_image'
     ];
+
+    public function product_category()
+    {
+        return $this->belongsTo(ProductCategory::class);
+    }
 }

@@ -13,13 +13,28 @@
                 <br>
                 <form action="{{ route('product-save') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_category" >Product Category <span class="required">*</span>
+                        </label>.
+                        <div class="col-md-6 col-sm-6">
+                           <select class="form-control" name="category_id">
+                               <option value="">Select</option>
+                                @foreach ($productCategories as $productCategory)
+                                <option value="{{ $productCategory->id }}">{{ $productCategory->name }}</option>
+                                @endforeach
+                        </select>
+                        @error('category_id')
+                        <p class="text-danger">{{ $message }}</p>
+                       @enderror
+                    </div>
 
+                    </div>
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_title">Product Title <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="product_title" name="product_title" required="required" class="form-control ">
-                            @error('Product_title')
+                            @error('product_title')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
@@ -29,7 +44,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_price"> Product Price <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="product_price" name="product_price" required="required" class="form-control ">
+                            <input type="number" id="product_price" name="product_price" required="required" class="form-control" step=".01">
                             @error('product_price')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror

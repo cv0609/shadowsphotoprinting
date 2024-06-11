@@ -44,7 +44,7 @@
                         @foreach ($products as $key => $product)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($product->name) }}</td>
+                                <td>{{ ucfirst($product->product_title) }}</td>
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('product-show', ['product_id' => $product->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
