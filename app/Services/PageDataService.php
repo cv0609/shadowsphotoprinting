@@ -29,4 +29,17 @@ class PageDataService
             return null;
         }    
     }
+
+    public function getProductBySlug($slug)
+     {
+       $categoryProducts = ProductCategory::with('products')->where('slug',$slug)->first();
+       if(isset($categoryProducts) && !empty($categoryProducts))
+       {
+           return $categoryProducts->products;
+       }
+       else
+       {
+           return null;
+       }  
+     }
 }

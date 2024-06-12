@@ -17,7 +17,7 @@
                
                @foreach ($blogs as $value)
                <article>
-                <a href="photo-restoration-bring-your-memories-back-to-life.html">
+                <a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">
                     <div class="post-thumbnail-inner">
                         <img src="{{ $value['image'] }}" alt="Image">
                         {{-- <img src="assets/images/table.png" alt="jon-tyson"> --}}
@@ -30,20 +30,20 @@
                                 <a href="uncategorized.html">Uncategorized</a>
                             </span>
                         </div>
-                        <h2><a href="photo-restoration-bring-your-memories-back-to-life.html">{{ $value['title'] }}</a></h2>
+                        <h2><a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">{{ $value['title'] }}</a></h2>
                         <div class="divider-dot">
                             <span>By Terri Pangas</span>
                             <span class=""></span>
-                            <span>February 24, 2023</span>
+                            <span>{{ date("F d,Y",$value['update_at']) }}</span>
                         </div>
                     </div>
                     <div class="entry-summary">
-                        {!! html_entity_decode($value['description']) !!}
+                        {!! html_entity_decode(substr($value['description'],0,200)) !!}
                         {{-- <p>Have you ever wanted to bring your memories back to life? Photo restoration can
                             help you do just that! With the right tools, you can take old photos and restore
                             them to their former glory. Whether it’s restoring a single … </p> --}}
                         <div class="read-printing">
-                            <a href="photo-restoration-bring-your-memories-back-to-life.html"> Read More <i class="fa-solid fa-arrow-right-long"></i></a>
+                            <a href="{{ route('blog-detail',['slug'=>$value->slug]) }}"> Read More <i class="fa-solid fa-arrow-right-long"></i></a>
                         </div>
                     </div>
                 </div>

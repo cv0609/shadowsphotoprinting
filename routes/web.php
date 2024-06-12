@@ -52,4 +52,7 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
+Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
+
+Route::get('/blog-detail/{slug}',[BlogController::class,'blogDetail'])->name('blog-detail');
 

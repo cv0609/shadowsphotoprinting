@@ -25,6 +25,17 @@
                         </div>
                     </div>
 
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Category Image <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                            <input type="file" id="image" name="image" required="required" class="form-control ">
+                            @error('image')
+                             <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">

@@ -37,14 +37,16 @@
                         <tr>
                             <th>#</th>
                             <th>Product Category Name</th>
+                            <th>Image</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($categories as $key => $category)
                             <tr>
-                                <th scope="row">{{ $key + 1 }}</th>
+                                <th scope="row">{{ $key + 1 }}</th> 
                                 <td>{{ ucfirst($category->name) }}</td>
+                                <td><img src="{{ (isset($category['image']) && !empty($category['image'])) ? asset($category['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('product-categories-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
@@ -53,7 +55,6 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
-
                                 </td>
                             </tr>
                         @endforeach

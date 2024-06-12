@@ -4,21 +4,42 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Page;
+use App\Services\PageDataService;
 
 class PagesController extends Controller
 {
-  public function pages($slug = 'home')
+  private $PageDataServices;
+
+  public function __construct(PageDataService $PageDataService)
   {
-    $content = Page::where('slug',$slug)->with('pageSections')->first();
-    if($content && isset($content->pageSections) && !empty($content->pageSections))
-    {
-      $page_content = json_decode($content->pageSections['content'],true);
-      return view($slug,compact('page_content'));
-    }
-    else
-    {
-      abort(404);
-    }
+    $this->PageDataServices = $PageDataService;
+  }
+  public function pages(Request $request)
+  {
+        // Get the full path
+        $path = $request->path();
+
+        // Extract the last segment
+        $segments = explode('/', $path);
+        $slug = end($segments);
+
+        // Default to 'home' if the slug is empty
+        if (empty($slug)) {
+            $slug = 'home';
+        }
+    
+      $page_info = Page::where('slug',$slug)->with('pageSections')->first();
+      if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
+      {
+        $page_content = json_decode($page_info->pageSections['content'],true);
+        $page_content['slug'] = $page_info['slug'];
+       
+        return view($slug,compact('page_content','page_info'));
+      }
+      else
+      {
+        abort(404);
+      }
   }
 
 }

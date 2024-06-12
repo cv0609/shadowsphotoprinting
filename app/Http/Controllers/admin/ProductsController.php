@@ -27,7 +27,16 @@ class ProductsController extends Controller
     public function productCategorySave(ProductCategoryRequest $request)
     {
         $slug = Str::slug($request->name);
-        ProductCategory::insert(["name"=>$request->name,'slug'=>$slug]);
+        $image = "";
+        if($request->has('image'))
+         {
+             $file = $request->file('image');
+             $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+             $destinationPath = 'assets/admin/uploads/categories';
+             $file->move($destinationPath, $fileName);
+             $image =  $destinationPath.'/'.$fileName;
+         }
+        ProductCategory::insert(["name"=>$request->name,'slug'=>$slug,'image'=>$image]);
         return redirect()->route('product-categories-list')->with('success','Product category inserted successfully');
     }
 
@@ -35,7 +44,18 @@ class ProductsController extends Controller
     {
 
         $slug = Str::slug($request->name);
-        ProductCategory::whereId($request->category_id)->update(["name"=>$request->name,'slug'=>$slug]);
+        $data = ["name"=>$request->name,'slug'=>$slug];
+        if($request->has('image'))
+        {
+            $file = $request->file('image');
+            $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+            $destinationPath = 'assets/admin/uploads/categories';
+            $file->move($destinationPath, $fileName);
+            $image =  $destinationPath.'/'.$fileName;
+            $data['image']=$image;
+        }
+        ProductCategory::whereId($request->category_id)->update($data);
+
         return redirect()->route('product-categories-list')->with('success','Product category updated successfully');
     }
     public function productCategoryShow($category_id)
