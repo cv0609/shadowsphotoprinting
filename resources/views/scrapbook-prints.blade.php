@@ -1,8 +1,8 @@
 @extends('layout.main')
 @section('content')
 @php
-    $PageDataService = app(App\Services\PageDataService::class);
-    $ProductCategories = $PageDataService->getProductCategories();
+   $PageDataService = app(App\Services\PageDataService::class);
+   $products = $PageDataService->getProductBySlug($page_content['slug']);
 @endphp
 
 <section class="scrapbook-banner common-banner">
@@ -23,8 +23,27 @@
     <div class="container">
         <div class="Product_box">
             <ul class="product-list">
-
+                @foreach ($products as $product )
                 <li class="product-sect">
+                    <div class="Product-box">
+                        <div class="Product_image">
+                            <img src="{{ asset($product['product_image']) }}" alt="Image">
+                        </div>
+                        <div class="Product_info">
+                            <h3>{{ $product['product_title'] }}</h3>
+                            <div class="cart_price">
+                                <span class="price">Price: ${{ $product['product_price'] }}</span>
+                            </div>
+                            <div class="print_paper_type">Type of Paper Use: 
+                                <select>
+                                    <option>{{ $product['type_of_paper_use'] }}</option>
+                                </select></div>
+                                {!! html_entity_decode($product['product_description']) !!}
+                        </div>
+                    </div>
+                </li> 
+                @endforeach
+                {{-- <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="assets/images/scrap6.jpg" alt="scrap6">
@@ -48,8 +67,7 @@
                                 Dimensions: Width: 30.48cm, Height: 30.48cm</p>
                         </div>
                     </div>
-                </li>
-             
+                </li> --}}
             </ul>
         </div>
     </div>

@@ -30,8 +30,16 @@ class PageDataService
         }    
     }
 
-    public function getProductByCategory($category_id)
+    public function getProductBySlug($slug)
      {
-        ProductCategory::with('products')->where('category_id ',$category_id)->get();
+       $categoryProducts = ProductCategory::with('products')->where('slug',$slug)->first();
+       if(isset($categoryProducts) && !empty($categoryProducts))
+       {
+           return $categoryProducts->products;
+       }
+       else
+       {
+           return null;
+       }  
      }
 }

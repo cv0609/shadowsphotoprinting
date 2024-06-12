@@ -21,12 +21,12 @@
         <div class="container">
             <div class="categories-wrapper custom-categories">
                 <div class="row">
-                    @foreach ($ProductCategories as $productcategory)
+                    @foreach ($ProductCategories as $productCategory)
                         <div class="col-lg-3 col-md-6 ">
                             <div class="product-categories">
-                                <a href="#">
-                                    <img src="{{(isset($productcategory['image']) && !empty($productcategory['image'])) ? asset($productcategory['image'])  : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image">
-                                    <span>{{ $productcategory['name'] }}</span>
+                                <a  href="{{ url('our-products/'.$productCategory->slug)}}">
+                                    <img src="{{(isset($productCategory['image']) && !empty($productCategory['image'])) ? asset($productCategory['image'])  : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image">
+                                    <span>{{ $productCategory['name'] }}</span>
                                 </a>
                             </div>
                         </div>

@@ -110,7 +110,7 @@
                                         class="fa-solid fa-caret-down"></i></a>
                                 <ul class="sub-menu">
                                    @foreach ($productCategories as $productCategory)
-                                    <li><a href="{{ url($productCategory->slug) }}">{{ ucwords($productCategory->name) }}</a></li>
+                                    <li><a href="{{ url('our-products/'.$productCategory->slug)}}">{{ ucwords($productCategory->name) }}</a></li>
                                    @endforeach
                                 </ul>
                             </li>

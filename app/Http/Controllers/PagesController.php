@@ -14,25 +14,31 @@ class PagesController extends Controller
   {
     $this->PageDataServices = $PageDataService;
   }
-  public function pages($slug = 'home')
+  public function pages(Request $request)
   {
-    $content = Page::where('slug',$slug)->with('pageSections')->first();
-    if($content && isset($content->pageSections) && !empty($content->pageSections))
-    {
-      $page_content = json_decode($content->pageSections['content'],true);
-      return view($slug,compact('page_content'));
-    }
-    else
-    {
-      abort(404);
-    }
-  }
+        // Get the full path
+        $path = $request->path();
 
-  public function ourProducts($slug = '')
-  {
-      if(isset($slug) && !empty($slug))
+        // Extract the last segment
+        $segments = explode('/', $path);
+        $slug = end($segments);
+
+        // Default to 'home' if the slug is empty
+        if (empty($slug)) {
+            $slug = 'home';
+        }
+    
+      $page_info = Page::where('slug',$slug)->with('pageSections')->first();
+      if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
       {
-        $this->PageDataServices->getProductByCategory($slug);
+        $page_content = json_decode($page_info->pageSections['content'],true);
+        $page_content['slug'] = $page_info['slug'];
+       
+        return view($slug,compact('page_content','page_info'));
+      }
+      else
+      {
+        abort(404);
       }
   }
 
