@@ -16,5 +16,6 @@ class Blog extends Model
         'status',
         'added_by',
     ];
-
+     
+    
 }

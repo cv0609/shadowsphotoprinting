@@ -19,7 +19,7 @@
     <div class="container">
         <div class="Product_box">
             <ul class="product-list">
-                <li class="product-sect">
+                {{-- <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="assets/images/Prints-With-4mm-White-Border.jpg" alt="scrap6">
@@ -2374,7 +2374,7 @@
                             </p>
                         </div>
                     </div>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

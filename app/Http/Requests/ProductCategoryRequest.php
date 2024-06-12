@@ -22,7 +22,8 @@ class ProductCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:product_categories,name'
+            'name' => 'required|unique:product_categories,name',
+            "image" => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

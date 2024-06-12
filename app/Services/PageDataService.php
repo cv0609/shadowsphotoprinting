@@ -29,4 +29,9 @@ class PageDataService
             return null;
         }    
     }
+
+    public function getProductByCategory($category_id)
+     {
+        ProductCategory::with('products')->where('category_id ',$category_id)->get();
+     }
 }
