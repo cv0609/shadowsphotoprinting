@@ -28,11 +28,6 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li><a href="{{route('pages.index')}}"><i class="fa fa-file-text-o"></i> Pages</a>
-                    {{-- <ul class="nav child_menu">
-                      <li><a href="index.html">Dashboard</a></li>
-                      <li><a href="index2.html">Dashboard2</a></li>
-                      <li><a href="index3.html">Dashboard3</a></li>
-                    </ul> --}}
                   </li>
                   <li><a href="#"><i class="fa fa-product-hunt"></i> Products</a>
                     <ul class="nav child_menu">
@@ -40,7 +35,13 @@
                       <li><a href="{{ route('product-list') }}">Products</a></li>
                     </ul>
                   </li>
-                  <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blog</a></li>
+                  <li><a href="#"><i class="fa fa-picture-o"></i> Photos For Sale</a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('photos-for-sale-categories-list') }}">Categories</a></li>
+                      <li><a href="{{ route('product-list') }}">Products</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>
 
                 </ul>
               </div>
