@@ -64,12 +64,6 @@ Route::prefix('admin')->group(function () {
         Route::post('/photos-for-sale-product-update',[PhotoForSaleController::class,'productUpdate'])->name('photos-for-sale-product-update');
         Route::delete('/photos-for-sale-product-delete/{product_id}',[PhotoForSaleController::class,'productDistroy'])->name('photos-for-sale-product-delete');
 
-
-
-
-
-
-
     });
 });
 

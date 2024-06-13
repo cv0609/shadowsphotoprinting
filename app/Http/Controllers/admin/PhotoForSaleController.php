@@ -87,51 +87,55 @@ class PhotoForSaleController extends Controller
 
     public function productSave(PhotoForSaleProductRequest $request)
     {
+        $slug = \Str::slug($request->product_title);
 
-        $slug = Str::slug($request->product_title);
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->min_price,'slug'=>$slug];
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
-
-        if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image');
+        if ($request->hasFile('product_images')) {
+            foreach ($request->file('product_images') as $image) {
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('assets/admin/images'), $imageName);
             $product_image = 'assets/admin/images/'.$imageName;
-            $data["product_image"] = $product_image;
+            $product_image_array[] = $product_image;
+            }
+            $data["product_images"] = implode(',',$product_image_array);
          }
          PhotoForSaleProduct::insert($data);
-        return redirect()->route('product-list')->with('success','Product inserted successfully');
+        return redirect()->route('photos-for-sale-product-list')->with('success','Product inserted successfully');
     }
 
     public function productShow($slug)
     {
         $product = PhotoForSaleProduct::where('slug', $slug)->first();
         $productCategories = PhotoForSaleCategory::get();
-        return view('admin.products.edit', compact('product','productCategories'));
+        return view('admin.photo_for_sale.edit', compact('product','productCategories'));
     }
 
     public function productUpdate(Request $request)
     {
-        $slug = Str::slug($request->product_title);
+        $slug = \Str::slug($request->product_title);
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
 
-        if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image');
+        if ($request->hasFile('product_images')) {
+            foreach ($request->file('product_images') as $image) {
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('assets/admin/images'), $imageName);
             $product_image = 'assets/admin/images/'.$imageName;
-            $data["product_image"] = $product_image;
+            $product_image_array[] = $product_image;
+            }
+            $data["product_images"] = implode(',',$product_image_array);
          }
-         PhotoForSaleProduct::whereId($request->product_id)->update($data);
-        return redirect()->route('product-list')->with('success','Product updated successfully');
+
+        PhotoForSaleProduct::whereId($request->product_id)->update($data);
+        return redirect()->route('photos-for-sale-product-list')->with('success','Product updated successfully');
     }
 
 
-   public function productDistroy($category_id)
+   public function productDistroy($product_id)
     {
-       $category = PhotoForSaleProduct::whereId($category_id)->delete();
-       return redirect()->route('product-list')->with('success','Product is deleted successfully');
+       $category = PhotoForSaleProduct::whereId($product_id)->delete();
+       return redirect()->route('photos-for-sale-product-list')->with('success','Product is deleted successfully');
     }
 
 }

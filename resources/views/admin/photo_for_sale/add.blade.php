@@ -76,9 +76,9 @@
                                     Image<span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="file" id="product_image" name="product_image" required="required"
-                                        class="form-control ">
-                                    @error('product_image')
+                                    <input type="file" id="product_image" name="product_images[]" required="required"
+                                        class="form-control" multiple>
+                                    @error('product_images')
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
