@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\Blog;
+use App\Models\PhotoForSaleCategory;
+use App\Models\PhotoForSaleProduct;
 use App\Services\PageDataService;
 
 class PagesController extends Controller
@@ -51,6 +53,8 @@ class PagesController extends Controller
 
   public function PhotosForSale()
   {
-    return view('photos-for-sale');
+    $product = PhotoForSaleProduct::where('slug', $slug)->first();
+    $productCategories = PhotoForSaleCategory::get();
+    return view('photos-for-sale',compact('product','productCategories'));
   }
 }
