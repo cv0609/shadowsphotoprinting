@@ -53,8 +53,8 @@ class PagesController extends Controller
 
   public function PhotosForSale()
   {
-    $product = PhotoForSaleProduct::where('slug', $slug)->first();
+    $products = PhotoForSaleProduct::paginate(10);
     $productCategories = PhotoForSaleCategory::get();
-    return view('photos-for-sale',compact('product','productCategories'));
+    return view('photos-for-sale',compact('products','productCategories'));
   }
 }

@@ -20,12 +20,9 @@
     <div class="container">
         <div class="subcate">
             <ul class="cstmlist">
-                <li class="central"> <a href="central-west-n-s-w">Central West N.S.W</a> </li>
-                <li class="central"> <a href="childrens-photos">Children’s Photos</a> </li>
-                <li class="central"> <a href="countryside-victoria">Countryside Victoria</a> </li>
-                <li class="central"> <a href="outback-n-s-w">Outback N.S.W</a> </li>
-                <li class="central"> <a href="poems">Pomes and Quotes Photos</a> </li>
-                <li class="central"> <a href="southern-queensland-country">Southern Queensland Country</a> </li>
+                @foreach ($productCategories as $productCategory)
+                 <li class="central"> <a href="central-west-n-s-w">{{ ucfirst($productCategory->name) }}</a> </li>
+               @endforeach
             </ul>
         </div>
     </div>
@@ -56,275 +53,33 @@
                 </div>
             </div>
             <ul class="isotope-intrinsic">
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="a-platypus-down-under.html">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Platypus.jpg" alt="">
+                @foreach ($products as $product)
+                    <li class="type-product">
+                        <div class="clearfix kold">
+                            <a href="a-platypus-down-under.html">
+                                <div class="noflipper ">
+                                   @foreach (explode(',',$product->product_images) as $product_image)
+                                   <div class="product-animation">
+                                     <img src="{{ asset($product_image) }}" alt="">0
+                                    </div>
+                                   @endforeach
                                 </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Platypus2.jpg" alt="">
+                            </a>
+                            <div class="details-product-item">
+                                <div class="product_details-card">
+                                    <a href="#">
+                                        <h3>{{ ucfirst($product->product_title) }}</h3>
+                                        <span>${{ $product->min_price }} - ${{ $product->max_price }} incl. GST</span>
+                                    </a>
                                 </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>A Platypus Down Under</h3>
-                                    <span>$2.75 - $127.17 incl. GST</span>
-                                </a>
                             </div>
                         </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Blinky-Bill.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Blinky-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Blinky Bill</h3>
-                                    <span>$2.75 - $127.17 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Canola-Fields-Parkes.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Canol-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Canola Fields Parkes N.S.W</h3>
-                                    <span>$30.95 - $164.30 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Dont.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Dont2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Don’t let your yearnings get ahead of your earnings!</h3>
-                                    <span>$4.15 - $124.80 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Platypus.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Platypus2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>A Platypus Down Under</h3>
-                                    <span>$2.75 - $127.17 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Blinky-Bill.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Blinky-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Blinky Bill</h3>
-                                    <span>$2.75 - $127.17 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Canola-Fields-Parkes.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Canol-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Canola Fields Parkes N.S.W</h3>
-                                    <span>$30.95 - $164.30 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Dont.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Dont2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Don’t let your yearnings get ahead of your earnings!</h3>
-                                    <span>$4.15 - $124.80 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Platypus.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Platypus2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>A Platypus Down Under</h3>
-                                    <span>$2.75 - $127.17 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Blinky-Bill.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Blinky-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Blinky Bill</h3>
-                                    <span>$2.75 - $127.17 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Canola-Fields-Parkes.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Canol-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Canola Fields Parkes N.S.W</h3>
-                                    <span>$30.95 - $164.30 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="type-product">
-                    <div class="clearfix kold">
-                        <a href="#">
-                            <div class="noflipper ">
-                                <div class="product-animation">
-                                    <img src="assets/images/Dont.jpg" alt="">
-                                </div>
-                                <div class="image_flip_back">
-                                    <img src="assets/images/Dont2.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-                        <div class="details-product-item">
-                            <div class="product_details-card">
-                                <a href="#">
-                                    <h3>Don’t let your yearnings get ahead of your earnings!</h3>
-                                    <span>$4.15 - $124.80 incl. GST</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-
+                    </li>
+                @endforeach
             </ul>
             <div class="paginations">
-                <ul class="page-numbers">
+                {{ $products->links() }}
+                {{-- <ul class="page-numbers">
                     <li> <a class="current">1</a></li>
                     <li><a href="#">2</a></li>
                     <li><a href="#">3</a></li>
@@ -332,7 +87,7 @@
                     <li><a href="#">5</a></li>
                     <li><a href="#">6</a></li>
                     <li><a href="#"><i class="fa-solid fa-arrow-right"></i></a></li>
-                </ul>
+                </ul> --}}
             </div>
         </div>
     </div>
