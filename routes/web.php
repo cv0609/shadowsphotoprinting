@@ -50,9 +50,9 @@ Route::prefix('admin')->group(function () {
         Route::delete('/product-delete/{product_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
     });
 });
+Route::get('/blog-detail/{slug}',[BlogController::class,'blogDetail'])->name('blog-detail');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
 
-Route::get('/blog-detail/{slug}',[BlogController::class,'blogDetail'])->name('blog-detail');
 
