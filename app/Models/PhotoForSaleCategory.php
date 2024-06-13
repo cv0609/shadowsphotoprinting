@@ -14,4 +14,9 @@ class PhotoForSaleCategory extends Model
         'image'
     ];
     protected $table = 'photo_for_sale_category';
+
+    public function products()
+    {
+        return $this->hasMany(PhotoForSaleProduct::class,'category_id');
+    }
 }

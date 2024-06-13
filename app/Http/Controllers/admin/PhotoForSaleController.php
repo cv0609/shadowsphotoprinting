@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PhotoForSaleCategory;
+use App\Models\PhotoForSaleProduct;
 use App\Http\Requests\PhotoForSaleCategoryRequest;
 
 class PhotoForSaleController extends Controller
@@ -70,10 +71,10 @@ class PhotoForSaleController extends Controller
 
     public function products()
     {
-        $products = Product::with(['product_category' => function($query) {
+        $products = PhotoForSaleProduct::with(['product_category' => function($query) {
             $query->select('id', 'name');
         }])->paginate(10);
-        return view('admin.products.index', compact('products'));
+        return view('admin.photo_for_sale.index', compact('products'));
     }
 
     public function productAdd()

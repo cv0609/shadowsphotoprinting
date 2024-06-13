@@ -38,7 +38,7 @@
                   <li><a href="#"><i class="fa fa-picture-o"></i> Photos For Sale</a>
                     <ul class="nav child_menu">
                       <li><a href="{{ route('photos-for-sale-categories-list') }}">Categories</a></li>
-                      <li><a href="{{ route('product-list') }}">Products</a></li>
+                      <li><a href="{{ route('photos-for-sale-product-list') }}">Products</a></li>
                     </ul>
                   </li>
                   <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>
