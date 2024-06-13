@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\BlogsController;
 use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductsController;
+use App\Http\Controllers\admin\PhotoForSaleController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\ProductController;
@@ -48,9 +49,27 @@ Route::prefix('admin')->group(function () {
         Route::get('/product-show/{slug}',[ProductsController::class,'productShow'])->name('product-show');
         Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
         Route::delete('/product-delete/{product_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
+
+        Route::get('/photos-for-sale-categories',[PhotoForSaleController::class,'productCategory'])->name('photos-for-sale-categories-list');
+        Route::get('/photos-for-sale-categories-add',[PhotoForSaleController::class,'productCategoryAdd'])->name('photos-for-sale-categories-add');
+        Route::post('/photos-for-sale-categories-save',[PhotoForSaleController::class,'productCategorySave'])->name('photos-for-sale-categories-save');
+        Route::get('/photos-for-sale-categories-show/{category_id}',[PhotoForSaleController::class,'productCategoryShow'])->name('photos-for-sale-categories-show');
+        Route::post('/photos-for-sale-categories-update',[PhotoForSaleController::class,'productCategoryUpdate'])->name('photos-for-sale-categories-update');
+        Route::delete('/photos-for-sale-categories-delete/{category_id}',[PhotoForSaleController::class,'productCategoryDistroy'])->name('photos-for-sale-categories-delete');
+
+        Route::get('/photos-for-sale-products',[PhotoForSaleController::class,'products'])->name('photos-for-sale-product-list');
+        Route::get('/photos-for-sale-product-add',[PhotoForSaleController::class,'productAdd'])->name('photos-for-sale-product-add');
+        Route::post('/photos-for-sale-product-save',[PhotoForSaleController::class,'productSave'])->name('photos-for-sale-product-save');
+        Route::get('/photos-for-sale-product-show/{slug}',[PhotoForSaleController::class,'productShow'])->name('photos-for-sale-product-show');
+        Route::post('/photos-for-sale-product-update',[PhotoForSaleController::class,'productUpdate'])->name('photos-for-sale-product-update');
+        Route::delete('/photos-for-sale-product-delete/{product_id}',[PhotoForSaleController::class,'productDistroy'])->name('photos-for-sale-product-delete');
+
     });
 });
-Route::get('/blog-detail/{slug}',[BlogController::class,'blogDetail'])->name('blog-detail');
+
+Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
+// Route::get('/our-products/photos-for-sale',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
+
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

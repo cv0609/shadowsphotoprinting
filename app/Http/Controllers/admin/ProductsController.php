@@ -58,6 +58,7 @@ class ProductsController extends Controller
 
         return redirect()->route('product-categories-list')->with('success','Product category updated successfully');
     }
+
     public function productCategoryShow($category_id)
     {
         $category = ProductCategory::whereId($category_id)->first();
@@ -73,14 +74,14 @@ class ProductsController extends Controller
     public function products()
     {
         $products = Product::with(['product_category' => function($query) {
-            $query->select('id', 'name'); 
+            $query->select('id', 'name');
         }])->paginate(10);
         return view('admin.products.index', compact('products'));
     }
 
     public function productAdd()
     {
-        
+
         $productCategories = ProductCategory::get();
         return view('admin.products.add',compact('productCategories'));
     }
