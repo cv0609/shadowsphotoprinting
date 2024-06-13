@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Http\Requests\PhotoForSaleCategoryRequest;
+use App\Http\Requests\PhotoForSaleProductRequest;
 
 class PhotoForSaleController extends Controller
 {
@@ -84,7 +85,7 @@ class PhotoForSaleController extends Controller
         return view('admin.photo_for_sale.add',compact('productCategories'));
     }
 
-    public function productSave(ProductRequest $request)
+    public function productSave(PhotoForSaleProductRequest $request)
     {
 
         $slug = Str::slug($request->product_title);
