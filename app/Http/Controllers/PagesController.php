@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Page;
+use App\Models\Blog;
 use App\Services\PageDataService;
 
 class PagesController extends Controller
@@ -27,13 +28,13 @@ class PagesController extends Controller
         if (empty($slug)) {
             $slug = 'home';
         }
-    
+
       $page_info = Page::where('slug',$slug)->with('pageSections')->first();
       if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
       {
         $page_content = json_decode($page_info->pageSections['content'],true);
         $page_content['slug'] = $page_info['slug'];
-       
+
         return view($slug,compact('page_content','page_info'));
       }
       else
@@ -42,4 +43,14 @@ class PagesController extends Controller
       }
   }
 
+  public function blogDetail($slug)
+  {
+      $blog_details = Blog::where('slug',$slug)->first();
+      return view('blog_detail',compact('blog_details'));
+  }
+
+  public function PhotosForSale()
+  {
+    return view('photos-for-sale');
+  }
 }

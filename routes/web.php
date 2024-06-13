@@ -67,7 +67,9 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-Route::get('/blog-detail/{slug}',[BlogController::class,'blogDetail'])->name('blog-detail');
+Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
+Route::get('/our-products/photos-for-sale',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
+
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
