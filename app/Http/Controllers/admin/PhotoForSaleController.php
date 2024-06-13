@@ -80,8 +80,8 @@ class PhotoForSaleController extends Controller
     public function productAdd()
     {
 
-        $productCategories = ProductCategory::get();
-        return view('admin.products.add',compact('productCategories'));
+        $productCategories = PhotoForSaleCategory::get();
+        return view('admin.photo_for_sale.add',compact('productCategories'));
     }
 
     public function productSave(ProductRequest $request)
@@ -98,14 +98,14 @@ class PhotoForSaleController extends Controller
             $product_image = 'assets/admin/images/'.$imageName;
             $data["product_image"] = $product_image;
          }
-        Product::insert($data);
+         PhotoForSaleProduct::insert($data);
         return redirect()->route('product-list')->with('success','Product inserted successfully');
     }
 
     public function productShow($slug)
     {
-        $product = Product::where('slug', $slug)->first();
-        $productCategories = ProductCategory::get();
+        $product = PhotoForSaleProduct::where('slug', $slug)->first();
+        $productCategories = PhotoForSaleCategory::get();
         return view('admin.products.edit', compact('product','productCategories'));
     }
 
@@ -122,14 +122,14 @@ class PhotoForSaleController extends Controller
             $product_image = 'assets/admin/images/'.$imageName;
             $data["product_image"] = $product_image;
          }
-        Product::whereId($request->product_id)->update($data);
+         PhotoForSaleProduct::whereId($request->product_id)->update($data);
         return redirect()->route('product-list')->with('success','Product updated successfully');
     }
 
 
    public function productDistroy($category_id)
     {
-       $category = Product::whereId($category_id)->delete();
+       $category = PhotoForSaleProduct::whereId($category_id)->delete();
        return redirect()->route('product-list')->with('success','Product is deleted successfully');
     }
 

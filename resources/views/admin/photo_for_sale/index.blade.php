@@ -26,8 +26,8 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Product List</h2>
-              <a href="{{ route('product-add') }}">
-                <button class="btn btn-info panel_toolbox">Products</button>
+              <a href="{{ route('photos-for-sale-product-add') }}">
+                <button class="btn btn-info panel_toolbox">Add Product</button>
               </a>
               <div class="clearfix"></div>
             </div>

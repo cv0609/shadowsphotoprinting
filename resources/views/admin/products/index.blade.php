@@ -27,7 +27,7 @@
             <div class="x_title">
               <h2>Product List</h2>
               <a href="{{ route('product-add') }}">
-                <button class="btn btn-info panel_toolbox">Products</button>
+                <button class="btn btn-info panel_toolbox">Add Product</button>
               </a>
               <div class="clearfix"></div>
             </div>
@@ -60,7 +60,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    
+
                 </table>
                 {{ $products->links('pagination::bootstrap-4') }}
             </div>
