@@ -4,7 +4,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Products</h3>
+          <h3>Coupons</h3>
         </div>
 
         <div class="title_right">
@@ -25,9 +25,9 @@
         <div class="col-md-12 col-sm-6  ">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Product List</h2>
+              <h2>Coupons List</h2>
               <a href="{{ route('product-add') }}">
-                <button class="btn btn-info panel_toolbox">Add Product</button>
+                <button class="btn btn-info panel_toolbox">Add Coupons</button>
               </a>
               <div class="clearfix"></div>
             </div>
