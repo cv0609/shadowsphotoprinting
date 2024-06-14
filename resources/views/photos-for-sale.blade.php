@@ -21,7 +21,7 @@
         <div class="subcate">
             <ul class="cstmlist">
                 @foreach ($productCategories as $productCategory)
-                 <li class="central"> <a href="central-west-n-s-w">{{ ucfirst($productCategory->name) }}</a> </li>
+                 <li class="central"> <a href="{{ route('photos-for-sale',['slug'=>$productCategory->slug]) }}">{{ ucfirst($productCategory->name) }}</a> </li>
                @endforeach
             </ul>
         </div>
@@ -34,7 +34,7 @@
         <div class="notices-wrapper">
             <div class="kad-shop-top">
                 <div class="results-count">
-                    <p> Showing all 3 results</p>
+                    <p> Showing all {{count($products)}} results</p>
                 </div>
                 <div class="kad-woo-ordering">
                     <form method="get">
@@ -56,7 +56,7 @@
                 @foreach ($products as $product)
                     <li class="type-product">
                         <div class="clearfix kold">
-                           
+
                             <a href="a-platypus-down-under.html">
                                 <div class="noflipper" id="image-div">
                                     @foreach (explode(',',$product->product_images) as $key => $product_image)
@@ -114,5 +114,5 @@
             cssEase: 'linear'
         });
     </script>
-   
+
 @endsection

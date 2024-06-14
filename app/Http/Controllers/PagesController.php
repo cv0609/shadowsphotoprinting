@@ -59,13 +59,25 @@ class PagesController extends Controller
         return view('blog_detail',compact('blog_details','previousBlog','nextBlog'));
   }
 
-  public function PhotosForSale()
+  public function PhotosForSale($slug = null)
   {
-    $products = PhotoForSaleProduct::paginate(10);
+    if($slug == null)
+     {
+       $products = PhotoForSaleProduct::paginate(10);
+     }
+    else
+     {
+        $caregory = PhotoForSaleCategory::where('slug',$slug)->first();
+        $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
+    }
     $productCategories = PhotoForSaleCategory::get();
     return view('photos-for-sale',compact('products','productCategories'));
   }
 
+  public function PhotoForSaleByCategory($slug)
+   {
+
+   }
   public function giftCard()
   {
     return view('giftcard');
