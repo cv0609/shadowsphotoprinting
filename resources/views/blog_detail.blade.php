@@ -14,7 +14,6 @@
     </div>
 </div>
 
-
 <section class="single-article">
     <div class="container">
         <div class="single-arti">
