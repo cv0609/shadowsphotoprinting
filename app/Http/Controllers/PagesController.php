@@ -57,4 +57,9 @@ class PagesController extends Controller
     $productCategories = PhotoForSaleCategory::get();
     return view('photos-for-sale',compact('products','productCategories'));
   }
+
+  public function giftCard()
+  {
+    return view('giftcard');
+  }
 }
