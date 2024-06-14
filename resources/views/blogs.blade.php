@@ -14,7 +14,7 @@
 
             </div>
             <div class="kadence-posts">
-               
+
                @foreach ($blogs as $value)
                <article>
                 <a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">
@@ -27,7 +27,7 @@
                     <div class="kadence-street">
                         <div class="entry-taxonomies">
                             <span>
-                                <a href="uncategorized.html">Uncategorized</a>
+                                <a href="javascript:void(0)">Uncategorized</a>
                             </span>
                         </div>
                         <h2><a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">{{ $value['title'] }}</a></h2>
@@ -49,7 +49,7 @@
                 </div>
             </article>
                @endforeach
-                
+
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
         AOS.init({
             duration: 1200,
         })
-    
+
     </script>
     <script>
         $('.fade-slider').slick({

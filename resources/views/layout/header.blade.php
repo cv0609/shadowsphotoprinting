@@ -106,8 +106,8 @@
                             <li><a href="{{ url('shop') }}">Shop</a></li>
                             <li><a href="{{ url('blogs') }}">Blog</a></li>
                             <li><a href="{{ url('fun-facts') }}">Fun Facts</a></li>
-                            <li class="dropdown"><a href="{{ url('our-products') }}">Our Products <i
-                                        class="fa-solid fa-caret-down"></i></a>
+                            <li class="dropdown"><a href="{{ url('our-products') }}">Our Products  <i class="fa-solid fa-caret-down dropdown_icon"></i></a>
+
                                 <ul class="sub-menu">
                                    @foreach ($productCategories as $productCategory)
                                     <li><a href="{{ url('our-products/'.$productCategory->slug)}}">{{ ucwords($productCategory->name) }}</a></li>
