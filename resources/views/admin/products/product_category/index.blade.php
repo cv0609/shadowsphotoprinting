@@ -1,12 +1,21 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="#">Product Categories</a></li>
+    </ol>
+  </nav>
+  @if(Session::has('success'))
+    <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+  @endif
     <div class="">
       <div class="page-title">
         <div class="title_left">
           <h3>Product Categories</h3>
         </div>
-
+{{-- 
         <div class="title_right">
           <div class="col-md-5 col-sm-5   form-group pull-right top_search">
             <div class="input-group">
@@ -16,7 +25,7 @@
               </span>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
 
       <div class="clearfix"></div>
