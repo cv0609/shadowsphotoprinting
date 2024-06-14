@@ -3132,9 +3132,3 @@ overflow: hidden;
 .custom-size-content {
     overflow: hidden;
 }
-i.fa-solid.fa-caret-down.dropdown_icon {
-position: absolute;
-top: 22px;
-right: 7px;
-color: #ffff;
-}

@@ -23,7 +23,7 @@
     }
 
     .second-clearfix ul li a {
-        border-bottom: 1px solid #eee;
+    
         display: block;
         padding: 8px 10px;
     }
@@ -144,6 +144,9 @@
     .second-clearfix ul li a i {
         margin: 0 10px 0;
     }
+    .second-clearfix ul li {
+        border-bottom: 1px solid #eee;
+    }
 
     section.subcategories ul.cstmlist {
         display: flex;
@@ -229,12 +232,8 @@ ul.sub-menu li a {
 ul.sub-menu::before {
    display: none;
 }
-i.fa-solid.fa-caret-down.dropdown_icon {
-position: absolute;
-top: 12px;
-right: 25px;
-color: #ffff;
-}
+
+
 }
 
 @media only screen and (max-width: 767px) {
