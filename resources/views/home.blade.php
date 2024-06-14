@@ -11,19 +11,10 @@ $ProductCategories = $PageDataService->getProductCategories();
                     <div class="image">
                         <div class="slider-wrapper">
                             <img src="{{ asset($image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
-                            {{-- <img src="assets/images/Wp2print-starter-1.jpg" alt=""> --}}
                         </div>
                     </div>
                 </div>
             @endforeach
-
-            {{-- <div>
-                <div class="image">
-                    <div class="slider-wrapper">
-                        <img src="assets/images/Wp2print-starter-9.jpg" alt="">
-                    </div>
-                </div>
-            </div> --}}
         </div>
 
         <!-- HERO SECTION -->
@@ -45,15 +36,8 @@ $ProductCategories = $PageDataService->getProductCategories();
                             <div class="entry-text">
                                 <div class="widget-title" data-aos="fade-left">
                                     <h3>{{ $page_content['title'] }}</h3>
-                                        {{-- <h3>Welcome to Shadows Photo Printing</h3> --}}
                                     <div class="textwidget">
                                         {!! $page_content['description'] !!}
-                                        {{-- <p>
-                                            At Shadows Photo Printing we offer professional photo printing by professional Photographers who take the time to check the quality of your image before we print, as we understand how important your beautiful memories are.
-                                        </p>
-                                        <p>
-                                            Once we have checked the quality of your wonderful image and there are no issues we will go ahead and carefully print your beautiful memories and dispatch them as quickly as possible.
-                                        </p> --}}
                                     </div>
                                 </div>
                                 <div class="so-widget-sow-button" data-aos="fade-left">
@@ -74,11 +58,8 @@ $ProductCategories = $PageDataService->getProductCategories();
                 <div class="custom-wrapper">
                     <div class="custom-size-content" >
                         <h2 data-aos="fade-right">{!! $page_content['quote_description'] !!}</h2>
-                        {{-- <h2 data-aos="fade-right">If you have a custom size to be printed, please fill out the form and We will get back to
-                            you with the price.</h2> --}}
                         <div class="ow-button-base" data-aos="fade-left">
                             <a href="{{ url('get-a-quote') }}"> {{ $page_content['get_a_quote'] }} </a>
-                            {{-- <a href="quote"> Get a Quote </a> --}}
                         </div>
                     </div>
                 </div>
@@ -91,7 +72,6 @@ $ProductCategories = $PageDataService->getProductCategories();
             <div class="container">
                 <div class="categories-heading">
                     <h3>{{ $page_content['shop_by_categories_title'] }}</h3>
-                    {{-- <h3> Shop ByCategories</h3> --}}
                 </div>
                 <div class="categories-wrapper">
                     <div class="row">
@@ -122,10 +102,8 @@ $ProductCategories = $PageDataService->getProductCategories();
                             <div class="col-lg-6">
                                 <div class="restoration-content">
                                     <h2>{{ $page_content['photo_restoration_service_description'] }}</h2>
-                                    {{-- <h2>Photo Restoration Service</h2> --}}
                                     <div class="restoration-btn">
                                         <a href="{{ url('contact-us') }}">{{ $page_content['contact_us'] }}</a>
-                                        {{-- <a href="contact">Contact Us</a> --}}
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,13 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main" style="min-height: 3963px;">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('photos-for-sale-product-list') }}">Products</a></li>
+          <li class="breadcrumb-item"><a href="#">Add Product</a></li>
+        </ol>
+    </nav>
     <div class="">
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
@@ -89,7 +96,7 @@
                                     Product Description <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <textarea id="product_description" name="product_description" required="required"
+                                    <textarea id="product_description" name="product_description" 
                                         class="form-control "></textarea>
                                     @error('product_description')
                                     <p class="text-danger">{{ $message }}</p>
