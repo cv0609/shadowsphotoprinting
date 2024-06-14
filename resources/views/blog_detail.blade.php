@@ -6,7 +6,7 @@
             <div class="breadcrumbs-wrapper">
                 <span><a href="{{ url('/') }}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="">uncategorized</a></span>
+                <span><a href="#">uncategorized</a></span>
                 <span class="bc-delimiter">»</span>
                 <span> {{ strtoupper($blog_details['title']) }}</span>
             </div>
@@ -19,7 +19,7 @@
     <div class="container">
         <div class="single-arti">
             <div class="category-kt">
-                <a href="uncategorized.html">Uncategorized</a>
+                <a href="#">Uncategorized</a>
             </div>
             <div class="benefit">
                 <h3>{{ $blog_details['title'] }}</h3>
