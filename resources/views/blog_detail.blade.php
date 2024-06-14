@@ -18,7 +18,7 @@
     <div class="container">
         <div class="single-arti">
             <div class="category-kt">
-                <a href="#">Uncategorized</a>
+                <a href="javascript:void(0)">Uncategorized</a>
             </div>
             <div class="benefit">
                 <h3>{{ $blog_details['title'] }}</h3>
