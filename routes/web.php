@@ -6,11 +6,9 @@ use App\Http\Controllers\admin\BlogsController;
 use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\PagesController as BasePagesController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\UserController;
+
 
 
 /*
@@ -63,6 +61,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/photos-for-sale-product-show/{slug}',[PhotoForSaleController::class,'productShow'])->name('photos-for-sale-product-show');
         Route::post('/photos-for-sale-product-update',[PhotoForSaleController::class,'productUpdate'])->name('photos-for-sale-product-update');
         Route::delete('/photos-for-sale-product-delete/{product_id}',[PhotoForSaleController::class,'productDistroy'])->name('photos-for-sale-product-delete');
+
+        Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
+
 
     });
 });
