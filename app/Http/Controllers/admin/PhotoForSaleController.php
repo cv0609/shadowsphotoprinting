@@ -90,16 +90,17 @@ class PhotoForSaleController extends Controller
         $slug = \Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->min_price,'slug'=>$slug];
-
+         
         if ($request->hasFile('product_images')) {
-            foreach ($request->file('product_images') as $image) {
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            foreach ($request->file('product_images') as $key => $image) {
+            $imageName = time().'-'.$key.'.'.$image->getClientOriginalExtension();
             $image->move(public_path('assets/admin/images'), $imageName);
             $product_image = 'assets/admin/images/'.$imageName;
             $product_image_array[] = $product_image;
             }
             $data["product_images"] = implode(',',$product_image_array);
          }
+       
          PhotoForSaleProduct::insert($data);
         return redirect()->route('photos-for-sale-product-list')->with('success','Product inserted successfully');
     }
@@ -118,8 +119,8 @@ class PhotoForSaleController extends Controller
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
 
         if ($request->hasFile('product_images')) {
-            foreach ($request->file('product_images') as $image) {
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            foreach ($request->file('product_images') as $key => $image) {
+            $imageName = time().'-'.$key.'.'.$image->getClientOriginalExtension();
             $image->move(public_path('assets/admin/images'), $imageName);
             $product_image = 'assets/admin/images/'.$imageName;
             $product_image_array[] = $product_image;

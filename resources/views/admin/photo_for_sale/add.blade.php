@@ -89,7 +89,7 @@
                                     Product Description <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <textarea id="product_description" name="product_description" required="required"
+                                    <textarea id="product_description" name="product_description" 
                                         class="form-control "></textarea>
                                     @error('product_description')
                                     <p class="text-danger">{{ $message }}</p>
