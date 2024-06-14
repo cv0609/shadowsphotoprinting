@@ -23,7 +23,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="gift-img">
-                        <img src="images/cart-page.jpg" alt="">
+                        @if(Request::segment('3') == 'gift-card')
+                        <img src="{{ asset('assets/images/cardgift.jpg') }}" alt="">
+                        @elseif (Request::segment('3') == 'birthday-gift-card')
+                        <img src="{{ asset('assets/images/AdobeStock.jpeg') }}" alt="">
+                        @elseif (Request::segment('3') == 'mothers-day-gift-card')
+                        <img src="{{ asset('assets/images/Mothers-Day-Gfit.jpg') }}" alt="">
+                        @endif
+
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -93,16 +100,16 @@
                 <ul class="isotope-intrinsic">
                     <li class="type-product">
                         <div class="clearfix ">
-                            <a href="mothers-day-gift-card.html">
-                                <div class="noflipper ">
-                                    <div class="product-animation">
-                                        <img src="{{ asset('images/Mothers-Day-Gfit.jpg') }}" alt="">
+                            <a href="{{ url('/our-products/gift-card/mothers-day-gift-card') }}">
+                                <div class="noflipper">
+                                    <div class="product-animations">
+                                        <img src="{{ asset('assets/images/Mothers-Day-Gfit.jpg') }}" alt="">
                                     </div>
                                 </div>
                             </a>
                             <div class="details-product-item">
                                 <div class="product_details-card">
-                                    <a href="mothers-day-gift-card.html">
+                                    <a href="{{ url('/our-products/gift-card/mothers-day-gift-card') }}">
                                         <h3>Mothers Day Gift Card</h3>
                                     </a>
                                 </div>
@@ -111,16 +118,16 @@
                     </li>
                     <li class="type-product">
                         <div class="clearfix ">
-                            <a href="birthday-gift-card.html">
+                            <a href="{{ url('/our-products/gift-card/birthday-gift-card') }}">
                                 <div class="noflipper ">
-                                    <div class="product-animation">
-                                        <img src="images/AdobeStock.jpeg" alt="">
+                                    <div class="product-animations">
+                                        <img src="{{ asset('assets/images/AdobeStock.jpeg') }}" alt="">
                                     </div>
                                 </div>
                             </a>
                             <div class="details-product-item">
                                 <div class="product_details-card">
-                                    <a href="birthday-gift-card.html">
+                                    <a href="{{ url('/our-products/gift-card/birthday-gift-card') }}">
                                         <h3>Birthday Gift Card</h3>
                                     </a>
                                 </div>
