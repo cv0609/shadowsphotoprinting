@@ -27,7 +27,7 @@
                     <span>{{ date("F d,Y",$blog_details['update_at']) }}</span>
                     <span>by</span>
                     <span> <a href="shadtpang.html">Terri Pangas</a> </span>
-               
+
                     <div class="shadtpang">
                         <img src="{{ asset($blog_details['image']) }}" alt="Image">
                         {!! html_entity_decode($blog_details['description']) !!}
@@ -39,16 +39,31 @@
 </section>
 
 <section class="previous-link">
+    @if($previousBlog != null)
     <div class="container">
         <div class="previous-box">
-            <a href="photo-restoration-bring-your-memories-back-to-life.html">
+            <a href="{{ route('blog-detail',['slug'=>$previousBlog->slug]) }}">
                 <span class="kt_color_gray">Previous Post</span>
-                <span class="kt_postlink_title">Photo Restoration -Bring Your Memories Back to Life</span>
+                <span class="kt_postlink_title">{{ $previousBlog->title }}</span>
             </a>
         </div>
     </div>
+    @endif
+
+    @if($nextBlog != null)
+    <div class="container">
+        <div class="next-link">
+            <a href="{{ route('blog-detail',['slug'=>$nextBlog->slug]) }}">
+                <span class="kt_color_gray">NEXT POST</span>
+                <span class="kt_postlink_title">{{ $nextBlog->title }}</span>
+            </a>
+        </div>
+    </div>
+    @endif
+
 </section>
 @endsection
+
 @section('scripts')
     <script>
         $('.fade-slider').slick({
