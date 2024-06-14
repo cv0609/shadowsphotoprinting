@@ -79,7 +79,7 @@
                 @endforeach
             </ul>
             <div class="paginations">
-                {{ $products->links() }}
+                {{ $products->links('pagination::bootstrap-4') }}
                 {{-- <ul class="page-numbers">
                     <li> <a class="current">1</a></li>
                     <li><a href="#">2</a></li>

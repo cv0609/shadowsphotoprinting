@@ -4,7 +4,7 @@
     <div class="adbreadcrumbs">
         <div class="container">
             <div class="breadcrumbs-wrapper">
-                <span><a href="index.html">Home</a></span>
+                <span><a href="home">Home</a></span>
                 <span class="bc-delimiter">»</span>
                 <span><a href="">uncategorized</a></span>
                 <span class="bc-delimiter">»</span>
