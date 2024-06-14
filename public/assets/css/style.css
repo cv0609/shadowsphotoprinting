@@ -1735,7 +1735,6 @@ span.posted_in a {
     font-weight: 600;
     font-style: normal;
     color: #ffc205;
-    font-size: 40px;
     width: 100%;
     max-width: 790px;
 }
@@ -1839,6 +1838,8 @@ span.kt_postlink_title {
     padding: 30px 0;
     position: relative;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
+    max-width: 790px;
+    width: 100%;
 }
 
 .next-link a {
@@ -3094,4 +3095,40 @@ padding: 0 15px;
 a#selectfiles:hover {
 -webkit-box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
 box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
+}
+
+.product_details-card h3 {
+font-family: "Source Sans Pro";
+text-transform: none;
+line-height: 20px;
+letter-spacing: 1.2px;
+font-weight: 600;
+font-style: normal;
+color: #444444;
+font-size: 15px;
+}
+.product_details-card span {
+font-family: "Source Sans Pro";
+line-height: 24px;
+letter-spacing: 0px;
+font-weight: 400;
+font-style: normal;
+color: #ffc205;
+font-size: 16px;
+}
+.product_details-card span {
+margin-top: 21px;
+}
+.breadcrumbs-wrapper span a {
+    border-bottom: 2px solid #eee;
+    color: #eee;
+}
+.breadcrumbs-wrapper span {
+    color: #eee;
+}
+.entry-content-wrapper {
+overflow: hidden;
+}
+.custom-size-content {
+    overflow: hidden;
 }
