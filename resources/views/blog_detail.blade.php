@@ -8,7 +8,7 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="">uncategorized</a></span>
                 <span class="bc-delimiter">»</span>
-                <span> WHAT IS BULK PRINTING AND HOW DOES IT BENEFIT PHOTOGRAPHERS?</span>
+                <span> {{ strtoupper($blog_details['title']) }}</span>
             </div>
         </div>
     </div>
