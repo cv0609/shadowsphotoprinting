@@ -48,16 +48,36 @@ class PagesController extends Controller
   public function blogDetail($slug)
   {
       $blog_details = Blog::where('slug',$slug)->first();
-      return view('blog_detail',compact('blog_details'));
+
+        $previousBlog = Blog::where('id', '<', $blog_details->id)
+          ->orderBy('id', 'desc')
+          ->first();
+
+        $nextBlog = Blog::where('id', '>', $blog_details->id)
+            ->orderBy('id', 'asc')
+            ->first();
+        return view('blog_detail',compact('blog_details','previousBlog','nextBlog'));
   }
 
-  public function PhotosForSale()
+  public function PhotosForSale($slug = null)
   {
-    $products = PhotoForSaleProduct::paginate(10);
+    if($slug == null)
+     {
+       $products = PhotoForSaleProduct::paginate(10);
+     }
+    else
+     {
+        $caregory = PhotoForSaleCategory::where('slug',$slug)->first();
+        $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
+    }
     $productCategories = PhotoForSaleCategory::get();
     return view('photos-for-sale',compact('products','productCategories'));
   }
 
+  public function PhotoForSaleByCategory($slug)
+   {
+
+   }
   public function giftCard()
   {
     return view('giftcard');
