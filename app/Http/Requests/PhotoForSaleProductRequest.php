@@ -24,7 +24,6 @@ class PhotoForSaleProductRequest extends FormRequest
         return [
             'category_id' => 'required',
             'product_title' => 'required|string|max:255',
-            'product_description' => 'required|string',
             'min_price' => 'required|numeric|min:0',
             'max_price' => 'required|numeric|min:0|gte:min_price',
             'product_images' => 'required|array',

@@ -1,6 +1,13 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main" style="min-height: 3963px;">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('photos-for-sale-categories-list') }}">Product Categories</a></li>
+          <li class="breadcrumb-item"><a href="#">Edit Category</a></li>
+        </ol>
+    </nav>
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
