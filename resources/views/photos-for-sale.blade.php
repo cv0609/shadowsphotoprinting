@@ -59,19 +59,12 @@
                            
                             <a href="a-platypus-down-under.html">
                                 <div class="noflipper" id="image-div">
-                                    @foreach (explode(',',$product->product_images) as $key => $product_image)
-                                        @if($key == 0)
-                                            <div class="product-animation">
-                                            <img src="{{ asset($product_image) }}" alt="">
-                                            </div>
-                                        @elseif($key == 1)
-                                            <div class="image_flip_back">
-                                                <img src="{{ asset($product_image) }}" alt="">
-                                            </div>
-                                        @endif
-                                       @endforeach
-
-                                </div>
+                                  <div class="product-animation">
+                                     @foreach (explode(',',$product->product_images) as $key => $product_image)
+                                       <img src="{{ asset($product_image) }}" alt="">
+                                    @endforeach
+                                 </div>
+                               </div>
                             </a>
 
                             <div class="details-product-item">
