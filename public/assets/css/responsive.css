@@ -229,6 +229,12 @@ ul.sub-menu li a {
 ul.sub-menu::before {
    display: none;
 }
+i.fa-solid.fa-caret-down.dropdown_icon {
+position: absolute;
+top: 12px;
+right: 25px;
+color: #ffff;
+}
 }
 
 @media only screen and (max-width: 767px) {
