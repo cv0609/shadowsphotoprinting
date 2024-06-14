@@ -80,13 +80,14 @@ class PagesController extends Controller
    }
   public function giftCard($slug = null)
   {
-      if($slug = null)
+      if($slug == null)
        {
         return view('giftcard');
 
        }
        else
         {
+            return view('giftcard_detail');
 
         }
   }

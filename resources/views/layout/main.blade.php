@@ -6,11 +6,11 @@
 <body>
     <div class="main-page">
             <!-- HEADER -->
-        <header class="header">
+
             <!-- main header -->
             @include('layout.header')
-        </header>
-    
+
+
         @yield('content')
     @include('layout.footer')
 </body>
