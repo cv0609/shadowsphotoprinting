@@ -56,15 +56,23 @@
                 @foreach ($products as $product)
                     <li class="type-product">
                         <div class="clearfix kold">
-                            @foreach (explode(',',$product->product_images) as $product_image)
+                           
                             <a href="a-platypus-down-under.html">
-                                <div class="noflipper ">
-                                    <div class="product-animation">
-                                     <img src="{{ asset($product_image) }}" alt="">
-                                    </div>
+                                <div class="noflipper" id="image-div">
+                                    @foreach (explode(',',$product->product_images) as $key => $product_image)
+                                        @if($key == 0)
+                                            <div class="product-animation">
+                                            <img src="{{ asset($product_image) }}" alt="">
+                                            </div>
+                                        @elseif($key == 1)
+                                            <div class="image_flip_back">
+                                                <img src="{{ asset($product_image) }}" alt="">
+                                            </div>
+                                        @endif
+                                       @endforeach
+
                                 </div>
                             </a>
-                            @endforeach
 
                             <div class="details-product-item">
                                 <div class="product_details-card">
@@ -106,4 +114,5 @@
             cssEase: 'linear'
         });
     </script>
+   
 @endsection
