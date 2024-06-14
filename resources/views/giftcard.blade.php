@@ -43,7 +43,7 @@
                         <a href="gift-card.html">
                             <div class="noflipper ">
                                 <div class="product-animation">
-                                    <img src="assets/images/cardgift.jpg" alt="">
+                                    <img src="{{ asset('assets/images/cardgift.jpg') }}" alt="">
                                 </div>
                             </div>
                         </a>
@@ -61,7 +61,7 @@
                         <a href="birthday-gift-card.html">
                             <div class="noflipper ">
                                 <div class="product-animation">
-                                    <img src="assets/images/AdobeStock.jpeg" alt="">
+                                    <img src="{{ asset('assets/images/AdobeStock.jpeg') }}" alt="">
                                 </div>
                             </div>
                         </a>
@@ -79,7 +79,7 @@
                         <a href="mothers-day-gift-card.html">
                             <div class="noflipper ">
                                 <div class="product-animation">
-                                    <img src="assets/images/Mothers-Day-Gfit.jpg" alt="">
+                                    <img src="{{ asset('assets/images/Mothers-Day-Gfit.jpg') }}" alt="">
                                 </div>
                             </div>
                         </a>
