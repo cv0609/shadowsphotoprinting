@@ -26,7 +26,7 @@
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
-                            <img src="{{ asset($product['product_image']) }}" alt="Image">
+                            <img src="{{ (isset($product['product_image']) && !empty($product['product_image'])) ? asset($product['product_image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image">
                         </div>
                         <div class="Product_info">
                             <h3>{{ $product['product_title'] }} </h3>

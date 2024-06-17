@@ -49,7 +49,7 @@
                         </a>
                         <div class="details-product-item">
                             <div class="product_details-card">
-                                <a href="{{ url('/our-products/gift-card/gift-card') }}">
+                                {{-- <a href="{{ url('/our-products/gift-card/gift-card') }}"> --}}
                                     <h3>Gift Card</h3>
                                 </a>
                             </div>

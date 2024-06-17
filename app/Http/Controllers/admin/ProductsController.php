@@ -81,7 +81,6 @@ class ProductsController extends Controller
 
     public function productAdd()
     {
-
         $productCategories = ProductCategory::get();
         return view('admin.products.add',compact('productCategories'));
     }
