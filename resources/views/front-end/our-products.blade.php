@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @php
     $PageDataService = app(App\Services\PageDataService::class);
     $ProductCategories = $PageDataService->getProductCategories();

@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
 @php
    $PageDataService = app(App\Services\PageDataService::class);
@@ -34,14 +34,14 @@
                             <div class="cart_price">
                                 <span class="price">Price: ${{ $product['product_price'] }}</span>
                             </div>
-                            <div class="print_paper_type">Type of Paper Use: 
+                            <div class="print_paper_type">Type of Paper Use:
                                 <select>
                                     <option>{{ $product['type_of_paper_use'] }}</option>
                                 </select></div>
                                 {!! html_entity_decode($product['product_description']) !!}
                         </div>
                     </div>
-                </li> 
+                </li>
                 @endforeach
                 {{-- <li class="product-sect">
                     <div class="Product-box">

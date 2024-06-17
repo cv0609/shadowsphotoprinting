@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
 {{-- @php dd($page_content); @endphp --}}
 <section class="contact-banner">

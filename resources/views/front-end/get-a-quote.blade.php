@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
 <section class="get-a-quote">
     <div class="banner-img">
@@ -95,7 +95,7 @@
         AOS.init({
             duration: 1200,
         })
-    
+
     </script>
     <script>
         $('.fade-slider').slick({

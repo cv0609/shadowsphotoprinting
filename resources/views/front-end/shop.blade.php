@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
  <!-- HERO SECTION -->
         {{-- @php dd($page_content); @endphp --}}
