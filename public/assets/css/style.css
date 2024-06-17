@@ -3132,3 +3132,6 @@ overflow: hidden;
 .custom-size-content {
     overflow: hidden;
 }
+li.dropdown a.signup {
+    display: block !important;
+}

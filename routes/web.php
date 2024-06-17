@@ -6,9 +6,10 @@ use App\Http\Controllers\admin\BlogsController;
 use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
+use App\Http\Controllers\admin\GiftCardController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\PagesController as BasePagesController;
-
+use App\Http\Controllers\LoginController;
 
 
 /*
@@ -62,6 +63,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/photos-for-sale-product-update',[PhotoForSaleController::class,'productUpdate'])->name('photos-for-sale-product-update');
         Route::delete('/photos-for-sale-product-delete/{product_id}',[PhotoForSaleController::class,'productDistroy'])->name('photos-for-sale-product-delete');
 
+        Route::get('/gift-card',[GiftCardController::class,'giftCard'])->name('gift-card-list');
+        Route::get('/gift-card-add',[GiftCardController::class,'giftCardAdd'])->name('gift-card-add');
+        Route::post('/gift-card-save',[GiftCardController::class,'giftCardSave'])->name('gift-card-save');
+        Route::get('/gift-card-show/{category_id}',[GiftCardController::class,'giftCardShow'])->name('gift-card-show');
+        Route::post('/gift-card-update',[GiftCardController::class,'giftCardUpdate'])->name('gift-card-update');
+        Route::delete('/gift-card-delete/{category_id}',[GiftCardController::class,'giftCardDistroy'])->name('gift-card-delete');
+
         Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
 
 
@@ -71,6 +79,9 @@ Route::prefix('admin')->group(function () {
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
 Route::get('/our-products/gift-card/{slug?}',[BasePagesController::class,'giftCard'])->name('gift-card');
+Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
+Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
+Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
