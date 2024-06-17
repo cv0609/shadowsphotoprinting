@@ -40,16 +40,16 @@
             <ul class="isotope-intrinsic">
                 <li class="type-product">
                     <div class="clearfix ">
-                        <a href="gift-card.html">
+                        <a href="{{ url('/our-products/gift-card/gift-card') }}">
                             <div class="noflipper ">
-                                <div class="product-animation">
+                                <div class="product-animations">
                                     <img src="{{ asset('assets/images/cardgift.jpg') }}" alt="">
                                 </div>
                             </div>
                         </a>
                         <div class="details-product-item">
                             <div class="product_details-card">
-                                <a href="gift-card.html">
+                                <a href="{{ url('/our-products/gift-card/gift-card') }}">
                                     <h3>Gift Card</h3>
                                 </a>
                             </div>
@@ -58,16 +58,16 @@
                 </li>
                 <li class="type-product">
                     <div class="clearfix ">
-                        <a href="birthday-gift-card.html">
+                        <a href="{{ url('/our-products/gift-card/birthday-gift-card') }}">
                             <div class="noflipper ">
-                                <div class="product-animation">
+                                <div class="product-animations">
                                     <img src="{{ asset('assets/images/AdobeStock.jpeg') }}" alt="">
                                 </div>
                             </div>
                         </a>
                         <div class="details-product-item">
                             <div class="product_details-card">
-                                <a href="birthday-gift-card.html">
+                                <a href="{{ url('/our-products/gift-card/birthday-gift-card') }}">
                                     <h3>Birthday Gift Card</h3>
                                 </a>
                             </div>
@@ -76,16 +76,16 @@
                 </li>
                 <li class="type-product">
                     <div class="clearfix ">
-                        <a href="mothers-day-gift-card.html">
+                        <a href="{{ url('/our-products/gift-card/mothers-day-gift-card') }}">
                             <div class="noflipper ">
-                                <div class="product-animation">
+                                <div class="product-animations">
                                     <img src="{{ asset('assets/images/Mothers-Day-Gfit.jpg') }}" alt="">
                                 </div>
                             </div>
                         </a>
                         <div class="details-product-item">
                             <div class="product_details-card">
-                                <a href="mothers-day-gift-card.html">
+                                <a href="{{ url('/our-products/gift-card/mothers-day-gift-card') }}">
                                     <h3>Mothers Day Gift Card</h3>
                                 </a>
                             </div>

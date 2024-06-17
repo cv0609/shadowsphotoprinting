@@ -4,11 +4,11 @@
         {{-- @php dd($page_content); @endphp --}}
 
  <div class="banner-slider fade-slider">
-    
+
     @foreach ($page_content['shop_banner'] as $image)
     <div>
         <div class="image">
-          
+
 
             <div class="slider-wrapper">
                 <img src="{{ asset($image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
@@ -53,7 +53,7 @@
                 <form method="post">
                     <div class="uploading">
                         <div class="uploading-img">
-                            
+
                             <p>{{ $page_content['select_images_for_upload_title'] }}</p>
 
                             {{-- <p>Please select images for uploading:</p> --}}
@@ -78,7 +78,7 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
-                        <a href="bulkprints.html">
+                        <a href="javascript:void(0)">
                             <div class="cat-intrinsic">
                                 <img src="assets/images/cart-page.jpg " alt="">
                             </div>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
-                        <a href="giftcard.html">
+                        <a href="javascript:void(0)">
                             <div class="cat-intrinsic">
                                 <img src="assets/images/gift-card-scaled.jpeg" alt="">
                             </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
-                        <a href="image.html">
+                        <a href="javascript:void(0)">
                             <div class="cat-intrinsic">
                                 <img src="assets/images/The-Dish-Parkes.jpg" alt="">
                             </div>

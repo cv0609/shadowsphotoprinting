@@ -57,7 +57,7 @@
                     <li class="type-product">
                         <div class="clearfix kold">
 
-                            <a href="a-platypus-down-under.html">
+                            <a href="javascript:void(0)">
                                 <div class="noflipper" id="image-div">
                                   <div class="product-animation">
                                      @foreach (explode(',',$product->product_images) as $key => $product_image)
