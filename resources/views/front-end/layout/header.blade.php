@@ -16,7 +16,7 @@
                     <div class="sidena mycel" id="mySidenav">
                         <div class="magnifying">
                             <ul class="desk-trt">
-                                <li class="update-menu" data-bs-toggle="modal" data-bs-target="#myModal"><a
+                                <li class="update-menu" data-bs-toggle="modal" data-bs-target="#login-form"><a
                                         class=""><span> Login/Signup</span> </a></li>
                                 <li class="dropdown"><a href="our-products.html" class="signup">MY ACCOUNT </a>
                                     <ul class="sub-menu">

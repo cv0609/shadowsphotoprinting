@@ -8,7 +8,7 @@ use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\PagesController as BasePagesController;
-
+use App\Http\Controllers\LoginController;
 
 
 /*
@@ -71,6 +71,7 @@ Route::prefix('admin')->group(function () {
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
 Route::get('/our-products/gift-card/{slug?}',[BasePagesController::class,'giftCard'])->name('gift-card');
+Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

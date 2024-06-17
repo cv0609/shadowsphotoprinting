@@ -1,3 +1,4 @@
+
 <footer class="footer">
     <div class="container">
         <div class="footerbase">
@@ -11,7 +12,7 @@
 </footer>
 
 <div class="login-popup">
-    <div class="modal" id="myModal">
+    <div class="modal" id="login-form">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
@@ -55,18 +56,22 @@
                                 <div class="woocommerce-form">
                                     <h2>Register
                                     </h2>
-                                    <form action="#" method="post">
+                                    <form action="" method="post">
+                                        @csrf
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Username *</label>
-                                            <input type="text" name="username" id="username-pop">
+                                            <input type="text" name="name" id="register-name">
+                                            <span class="text-danger d-none error" id="register-name-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Email address *</label>
-                                            <input type="text" name="username" id="username-pop">
+                                            <input type="text" name="email" id="register-email">
+                                            <span class="text-danger d-none error" id="register-email-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Password *</label>
-                                            <input type="text" name="username" id="username-pop">
+                                            <input type="password" name="password" id="register-password">
+                                            <span class="text-danger d-none error" id="register-password-error"></span>
                                         </div>
 
                                         <div class="woocommerce-wrapper">
@@ -77,7 +82,7 @@
                                                     policy</span>.</p>
                                         </div>
                                         <div class="woocommerce-wrapper">
-                                            <button type="button" class="login-btn">Register</button>
+                                            <button type="button" id="user-register" class="login-btn">Register</button>
                                         </div>
                                     </form>
                                 </div>
