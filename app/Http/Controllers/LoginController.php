@@ -7,9 +7,13 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    use AuthenticatesUsers;
+
     public function registerUser(Request $request)
      {
         $validator = Validator::make($request->all(), [
@@ -31,6 +35,18 @@ class LoginController extends Controller
 
     public function login(Request $request)
      {
-        User::where
+          // Attempt to login
+          if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+            // Redirect to dashboard
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User login successfully!'
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'errors' => 'Invalid email and password'
+            ], 422);
+        }
      }
 }

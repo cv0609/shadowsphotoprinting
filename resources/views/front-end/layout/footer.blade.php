@@ -28,17 +28,21 @@
                             <div class="customer_login">
                                 <div class="woocommerce-form">
                                     <h2>Login</h2>
+                                    <span class="text-danger" id="login-error"></span>
                                     <form action="#" method="post">
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Username or email address *</label>
-                                            <input type="text" name="name" id="username-pop">
+                                            <input type="text" name="name" id="login-name">
+                                            <span class="text-danger d-none error" id="login-name-error"></span>
+
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Password*</label>
-                                            <input type="text" name="password" id="username-pop">
+                                            <input type="text" name="password" id="login-password">
+                                            <span class="text-danger d-none error" id="login-email-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
-                                            <button type="button" class="login-btn">Login</button>
+                                            <button type="button" id="login" class="login-btn">Login</button>
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <input type="checkbox">

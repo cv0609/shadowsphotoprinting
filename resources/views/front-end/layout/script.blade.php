@@ -50,6 +50,41 @@ $("#user-register").on('click',function(){
 
 });
 
+$("#login").on('click',function(){
+    $(".error").addClass('d-none').html('');
+    if(!$("#login-name").val())
+      {
+         $("#login-name-error").removeClass('d-none').html('This field is required.');
+      }
+      else if(!$("#login-password").val())
+      {
+         $("#login-email-error").removeClass('d-none').html('This field is required.');
+      }
+      else
+      {
+        $.post("{{ route('user-login') }}",
+        {
+            email: $("#login-name").val(),
+            password: $("#login-password").val(),
+            '_token': '{{ csrf_token() }}'
+        })
+        .done(function(res) {
+            if(res.status === 'success') {
+                $('#register-success').html('User login successfully');
+                location.reload();
+            }
+        })
+        .fail(function(xhr) {
+            if(xhr.status === 422) {
+                let errors = xhr.responseJSON.errors;
+                $("#login-error").removeClass('d-none').html('Login details not matched');
+            }
+        });
+      }
+
+})
+
+
 function validateEmail(email) {
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
