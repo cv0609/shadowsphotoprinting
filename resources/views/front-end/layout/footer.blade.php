@@ -54,8 +54,8 @@
                         <div class="col-lg-6">
                             <div class="customer_login">
                                 <div class="woocommerce-form">
-                                    <h2>Register
-                                    </h2>
+                                    <h2>Register</h2>
+                                    <span class="text-success" id="register-success"></span>
                                     <form action="" method="post">
                                         @csrf
                                         <div class="woocommerce-wrapper">

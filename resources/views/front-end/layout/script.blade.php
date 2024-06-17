@@ -31,10 +31,20 @@ $("#user-register").on('click',function(){
             name: $("#register-name").val(),
             email: $("#register-email").val(),
             password: $("#register-password").val(),
+            password_confirmation: $("#register-password-confirmation").val(),
             '_token': '{{ csrf_token() }}'
-        },
-        function(res){
-            console.log(res);
+        })
+        .done(function(res) {
+            if(res.status === 'success') {
+                $('#register-success').html('User registered successfully');
+                location.reload();
+            }
+        })
+        .fail(function(xhr) {
+            if(xhr.status === 422) {
+                let errors = xhr.responseJSON.errors;
+                $("#register-email-error").removeClass('d-none').html(errors.email[0]);
+            }
         });
       }
 
