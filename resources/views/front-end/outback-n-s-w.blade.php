@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
 <div class="kt-bc-nomargin">
     <div class="adbreadcrumbs">
@@ -10,12 +10,11 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="photos">images</a></span>
                 <span class="bc-delimiter">»</span>
-                <span>COUNTRYSIDE VICTORIA</span>
+                <span> OUTBACK N.S.W</span>
             </div>
         </div>
     </div>
 </div>
-
 
 <section class="subcategories">
     <div class="container">
@@ -23,8 +22,8 @@
             <ul class="cstmlist">
                 <li class="central"> <a href="central-west-n-s-w" target="_blank">Central West N.S.W</a> </li>
                 <li class="central"> <a href="childrens-photos" target="_blank">Children’s Photos</a> </li>
-                <li class="central"> <a href="countryside-victoria" target="_blank" class="active">Countryside Victoria</a> </li>
-                <li class="central"> <a href="outback-n-s-w" target="_blank">Outback N.S.W</a> </li>
+                <li class="central"> <a href="countryside-victoria" target="_blank" >Countryside Victoria</a> </li>
+                <li class="central"> <a href="outback-n-s-w" target="_blank" class="active">Outback N.S.W</a> </li>
                 <li class="central"> <a href="poems" target="_blank">Pomes and Quotes Photos</a> </li>
                 <li class="central"> <a href="southern-queensland-country" target="_blank">Southern Queensland Country</a> </li>
             </ul>

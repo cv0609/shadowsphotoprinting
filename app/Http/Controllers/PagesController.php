@@ -37,7 +37,7 @@ class PagesController extends Controller
         $page_content = json_decode($page_info->pageSections['content'],true);
         $page_content['slug'] = $page_info['slug'];
 
-        return view($slug,compact('page_content','page_info'));
+        return view('front-end/'.$slug,compact('page_content','page_info'));
       }
       else
       {
@@ -56,7 +56,7 @@ class PagesController extends Controller
         $nextBlog = Blog::where('id', '>', $blog_details->id)
             ->orderBy('id', 'asc')
             ->first();
-        return view('blog_detail',compact('blog_details','previousBlog','nextBlog'));
+        return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog'));
   }
 
   public function PhotosForSale($slug = null)
@@ -71,7 +71,7 @@ class PagesController extends Controller
         $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
     }
     $productCategories = PhotoForSaleCategory::get();
-    return view('photos-for-sale',compact('products','productCategories'));
+    return view('front-end/photos-for-sale',compact('products','productCategories'));
   }
 
   public function PhotoForSaleByCategory($slug)
@@ -82,12 +82,12 @@ class PagesController extends Controller
   {
       if($slug == null)
        {
-        return view('giftcard');
+        return view('front-end/giftcard');
 
        }
        else
         {
-            return view('giftcard_detail');
+            return view('front-end/giftcard_detail');
 
         }
   }

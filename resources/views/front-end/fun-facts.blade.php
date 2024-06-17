@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
 {{-- @php dd($page_content); @endphp --}}
 <section class="about-printing">
@@ -7,15 +7,15 @@
             {!! html_entity_decode($page_content['fun-facts-content']) !!}
             {{-- <h3>Fun facts about printing </h3>
             <p>Have you or did you know that we do all our printing in sRGB? <br>
-            
+
         The printer prints in sRGB, and it will convert the CMYK mode to the sRGB before printing. <br>
-            
+
             sRGB encompasses only 35% of all visible colors. <br>
-            
+
         While it produces more colors than any CMYK color space, The reason is that most of the sRGB colour space is printable across a range of devices. <br>
             </p>
             <p>Why do we use RGB or Adobe 1998 because of the greater range of colour’s as CMYK cannot produce brighter colours. <br>
-            
+
             These hues are beyond the CMYK range and will come out daker and duller when printed.
             </p>
             <p class="color_yellow"><strong>Setting your files!
@@ -27,15 +27,15 @@
              <h4>Have you had your monitor calibrated?
             </h4>
             <p>As this is a good idea for photo editing no matter what your profession. <br>
-            
+
         As a photographer this is especially important! A monitor colour calibration ensures that the
-                
+
                 edits you apply to a photo are accurate. <br>
-            
+
             It also helps to ensure that your prints look as good as they did on your monitor and all other
                 calibrated monitors. <br>
-            
-            We calibrate or monitor regularly and check the settings in our editing program to make sure 
+
+            We calibrate or monitor regularly and check the settings in our editing program to make sure
                 that
                 we are set at <strong> sRGB </strong> or <strong>RGB, Adobe 1998.</strong>
             </p>
@@ -53,10 +53,10 @@
                 the
                 most common other than 3:2ratio is 4:3 ratio.
             </p>
-            <p>For files not shot in a 3:2 ratio, care must be taken to get the desired aspect ratio with 
+            <p>For files not shot in a 3:2 ratio, care must be taken to get the desired aspect ratio with
                 editing software as photos will need to be the same ratio as the print selected or <br> <strong>
                     WHITE  EDGES
-                    WILL APPEAR ON YOUR FINISIED PRINTS.</strong> This also can happen if you have cropped 
+                    WILL APPEAR ON YOUR FINISIED PRINTS.</strong> This also can happen if you have cropped
                 your file in some
                 way.
             </p>
@@ -155,13 +155,13 @@
            <p>Please make sure that you have your images in the correct <span>RATIOS – ASPECT RATIO</span> before you place your order.
 
            </p>
-            
-            
-            <p>However, if you need any help or advise on checking the size or setting your files for printing 
+
+
+            <p>However, if you need any help or advise on checking the size or setting your files for printing
                 your beautiful photos, please feel free to contact our team!
             </p>
             <p class="color_yellow"><strong>Damaged in the mailing system!</strong></p>
-            <p>We will resend the order, if your prints are damaged in the mail system, however you will 
+            <p>We will resend the order, if your prints are damaged in the mail system, however you will
                 need to
                 contact us with your order number and email us an attachment of the <br> damage order  to email
                 <a href="mailto:shadowsphotoprinting@outlook.com">shadowsphotoprinting@outlook.com</a>
@@ -174,7 +174,7 @@
             <p>If need be, we will then give you a credit.
             </p>
             <p class="color_yellow"><strong>If we stuff up – we pay for it!</strong></p> --}}
-         
+
         </div>
     </div>
 </section>

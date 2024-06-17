@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('front-end.layout.main')
 @section('content')
 @php
     $PageDataService = app(App\Services\PageDataService::class);
