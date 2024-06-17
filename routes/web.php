@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\BlogsController;
 use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
+use App\Http\Controllers\admin\GiftCardController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\PagesController as BasePagesController;
 
@@ -61,6 +62,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/photos-for-sale-product-show/{slug}',[PhotoForSaleController::class,'productShow'])->name('photos-for-sale-product-show');
         Route::post('/photos-for-sale-product-update',[PhotoForSaleController::class,'productUpdate'])->name('photos-for-sale-product-update');
         Route::delete('/photos-for-sale-product-delete/{product_id}',[PhotoForSaleController::class,'productDistroy'])->name('photos-for-sale-product-delete');
+
+        Route::get('/gift-card',[GiftCardController::class,'giftCard'])->name('gift-card-list');
+        Route::get('/gift-card-add',[GiftCardController::class,'giftCardAdd'])->name('gift-card-add');
+        Route::post('/gift-card-save',[GiftCardController::class,'giftCardSave'])->name('gift-card-save');
+        Route::get('/gift-card-show/{category_id}',[GiftCardController::class,'giftCardShow'])->name('gift-card-show');
+        Route::post('/gift-card-update',[GiftCardController::class,'giftCardUpdate'])->name('gift-card-update');
+        Route::delete('/gift-card-delete/{category_id}',[GiftCardController::class,'giftCardDistroy'])->name('gift-card-delete');
 
         Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
 
