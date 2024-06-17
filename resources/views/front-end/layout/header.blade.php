@@ -16,8 +16,7 @@
                     <div class="sidena mycel" id="mySidenav">
                         <div class="magnifying">
                             <ul class="desk-trt">
-                                <li class="update-menu" data-bs-toggle="modal" data-bs-target="#login-form"><a
-                                        class=""><span> Login/Signup</span> </a></li>
+                                @if(Auth::check())
                                 <li class="dropdown"><a href="our-products.html" class="signup">MY ACCOUNT </a>
                                     <ul class="sub-menu">
                                         <li>
@@ -52,7 +51,7 @@
                                                         <li class=""> <a href="wt-smart-coupon.html">My Coupons
                                                                 <i class="fa-solid fa-credit-card"></i></a>
                                                         </li>
-                                                        <li class=""><a href="log-out.html">Log out <i
+                                                        <li class=""><a href="{{ route('user-logout') }}">Log out <i
                                                                     class="fa-solid fa-arrow-right"></i></a>
                                                         </li>
                                                     </ul>
@@ -72,6 +71,12 @@
                                 </li>
                                 <li class="social-media"><a><i class="fa-brands fa-facebook-f"></i> </a></li>
                                 <li class="social-media"><a> <i class="fa-brands fa-instagram"></i> </a></li>
+
+                                @else
+                                <li class="update-menu" data-bs-toggle="modal" data-bs-target="#login-form"><a
+                                    class=""><span> Login/Signup</span> </a></li>
+                                @endif
+
                             </ul>
                         </div>
                     </div>

@@ -73,6 +73,7 @@ Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'
 Route::get('/our-products/gift-card/{slug?}',[BasePagesController::class,'giftCard'])->name('gift-card');
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
+Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
