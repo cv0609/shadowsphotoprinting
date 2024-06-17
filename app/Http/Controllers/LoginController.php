@@ -28,4 +28,9 @@ class LoginController extends Controller
             'message' => 'User registered successfully!'
         ], 200);
      }
+
+    public function login(Request $request)
+     {
+        User::where
+     }
 }

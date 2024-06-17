@@ -31,11 +31,11 @@
                                     <form action="#" method="post">
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Username or email address *</label>
-                                            <input type="text" name="username" id="username-pop">
+                                            <input type="text" name="name" id="username-pop">
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Password*</label>
-                                            <input type="text" name="username" id="username-pop">
+                                            <input type="text" name="password" id="username-pop">
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <button type="button" class="login-btn">Login</button>
