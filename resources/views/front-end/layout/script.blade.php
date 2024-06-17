@@ -75,9 +75,9 @@ $("#login").on('click',function(){
             }
         })
         .fail(function(xhr) {
-            if(xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-                $("#login-error").removeClass('d-none').html('Login details not matched');
+
+            if(xhr.status == 422) {
+                $("#login-error").removeClass('d-none').html('Invalid email or password');
             }
         });
       }
