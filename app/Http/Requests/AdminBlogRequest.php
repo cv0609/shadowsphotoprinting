@@ -22,7 +22,7 @@ class AdminBlogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|unique:blogs,title",
+            "title" => "required",
             "image" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             "description" => "required"
         ];

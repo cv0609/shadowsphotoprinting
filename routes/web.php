@@ -71,8 +71,11 @@ Route::prefix('admin')->group(function () {
         Route::delete('/gift-card-delete/{category_id}',[GiftCardController::class,'giftCardDistroy'])->name('gift-card-delete');
 
         Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
-
-
+        Route::get('/coupon-add',[CouponController::class,'couponAdd'])->name('coupon-add');
+        Route::post('/coupon-save',[CouponController::class,'couponSave'])->name('coupon-save');
+        Route::get('/coupon-show/{type}', [CouponController::class, 'couponShow'])->name('coupon-show');
+        Route::post('/coupon-update',[CouponController::class,'couponUpdate'])->name('product-update');
+        Route::delete('/coupon-delete/{type}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
     });
 });
 

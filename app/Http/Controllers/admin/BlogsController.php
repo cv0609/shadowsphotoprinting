@@ -59,7 +59,7 @@ class BlogsController extends Controller
         // dd($data);
         Blog::where('id',$request->blog)->update($data);
     
-        return redirect()->route('blogs')->with('success', 'Blog post updated successfully');
+        return redirect()->route('blogs.index')->with('success', 'Blog post updated successfully');
     }
 
     public function destroy($blog)
