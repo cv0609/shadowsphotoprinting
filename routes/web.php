@@ -10,7 +10,7 @@ use App\Http\Controllers\admin\GiftCardController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +27,10 @@ use App\Http\Controllers\LoginController;
 
 
 Route::prefix('admin')->group(function () {
+
     Route::get('/login',[AuthController::class,'login'])->name('admin.login');
     Route::post('/login', [AuthController::class, 'loginPost'])->name('admin.login.post');
+
     Route::middleware('auth:admin')->group(function () {
         Route::get('/dashboard',[AuthController::class,'dashboard'])->name('admin.dashboard');
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
@@ -82,6 +84,8 @@ Route::get('/our-products/gift-card/{slug?}',[BasePagesController::class,'giftCa
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
 Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');
+Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('shop-upload-image');
+Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
