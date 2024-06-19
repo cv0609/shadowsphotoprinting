@@ -1,5 +1,6 @@
 @extends('front-end.layout.main')
 @section('content')
+
 <div class="kt-bc-nomargin">
     <div class="adbreadcrumbs">
         <div class="container">

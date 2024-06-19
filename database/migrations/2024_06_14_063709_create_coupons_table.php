@@ -29,7 +29,7 @@ class CreateCouponsTable extends Migration
                 $table->integer("same_ip_limit")->nullable();
                 $table->integer("use_limit_per_user")->nullable();
                 $table->string("use_device")->nullable();
-                $table->enum("multiple_use", ["yes", "no"])->default("no");
+                $table->enum("multiple_use", [0 , 1])->default("no")->change();
                 $table->integer("total_use")->default(0);
                 $table->integer("status")->default(0);
                 $table->timestamps();

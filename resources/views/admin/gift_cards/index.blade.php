@@ -1,7 +1,12 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main">
- 
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="#">Gift Cards</a></li>
+    </ol>
+</nav>
   @if(Session::has('success'))
     <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
   @endif
@@ -20,7 +25,7 @@
             <div class="x_title">
               <h2>Gift Card List</h2>
               <a href="{{ route('gift-card-add') }}">
-                <button class="btn btn-info panel_toolbox">Create Category</button>
+                <button class="btn btn-info panel_toolbox">Add Card</button>
               </a>
               <div class="clearfix"></div>
             </div>
@@ -36,20 +41,20 @@
                     </thead>
                     <tbody>
                         @foreach ($categories as $key => $category)
-                            <tr>
-                                <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($category->name) }}</td>
-                                <td><img src="{{ (isset($category['image']) && !empty($category['image'])) ? asset($category['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
-                                <td>
-                                    <div class="x_content">
-                                    <a href="{{ route('gift-card-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('gift-card-delete', ['category_id' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
+                          <tr>
+                            <th scope="row">{{ $key + 1 }}</th>
+                            <td>{{ ucfirst($category->name) }}</td>
+                            <td><img src="{{ (isset($category['image']) && !empty($category['image'])) ? asset($category['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
+                            <td>
+                              <div class="x_content">
+                              <a href="{{ route('gift-card-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                              <form action="{{ route('gift-card-delete', ['category_id' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                              </form>
+                 </td>
+                          </tr>
                         @endforeach
                     </tbody>
                 </table>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\Blog;
+use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Services\PageDataService;
@@ -74,6 +75,7 @@ class PagesController extends Controller
     return view('front-end/photos-for-sale',compact('products','productCategories'));
   }
 
+
   public function PhotoForSaleByCategory($slug)
    {
 
@@ -91,4 +93,5 @@ class PagesController extends Controller
 
         }
   }
+
 }

@@ -129,6 +129,9 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('custom-script')
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Ensure CKEditor script is fully loaded before replacing the textarea
