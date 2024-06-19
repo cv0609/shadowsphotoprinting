@@ -17,20 +17,20 @@
 </div>
 
 
-<section class="subcategories">
+{{-- <section class="subcategories">
     <div class="container">
         <div class="subcate">
             <ul class="cstmlist">
                 <li class="central"> <a href="central-west-n-s-w" target="_blank" >Central West N.S.W</a> </li>
                 <li class="central"> <a href="childrens-photos" class="active">Children’s Photos</a> </li>
-                <li class="central"> <a href="countryside-victoria" target="_blank">Countryside Victoria</a> </li>
+                <li class="central"> <a href="countryside-victoria" target="_blank">Countrysideeeeeeeeeeeeee Victoria</a> </li>
                 <li class="central"> <a href="outback-n-s-w" target="_blank">Outback N.S.W</a> </li>
                 <li class="central"> <a href="poems" target="_blank">Pomes and Quotes Photos</a> </li>
                 <li class="central"> <a href="southern-queensland-country" target="_blank">Southern Queensland Country</a> </li>
             </ul>
         </div>
     </div>
-</section>
+</section> --}}
 
 
 <section class="shadow-taxlist">

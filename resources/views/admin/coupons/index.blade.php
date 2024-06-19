@@ -7,16 +7,6 @@
           <h3>Coupons</h3>
         </div>
 
-        <div class="title_right">
-          <div class="col-md-5 col-sm-5   form-group pull-right top_search">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="clearfix"></div>
@@ -26,7 +16,7 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Coupons List</h2>
-              <a href="{{ route('product-add') }}">
+              <a href="{{ route('coupon-add') }}">
                 <button class="btn btn-info panel_toolbox">Add Coupons</button>
               </a>
               <div class="clearfix"></div>
@@ -36,25 +26,23 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Products Name</th>
-                            <th>Products Category</th>
+                            <th>Coupon Type</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($coupons as $key => $product)
+                        @foreach ($coupons as $key => $coupon)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($product->product_title) }}</td>
-                                <td>{{ ucfirst($product->product_category['name']) }}</td>
+                                <td>{{ ucfirst($coupon->type) }}</td>
                                 <td>
                                     <div class="x_content">
-                                    <a href="{{ route('product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('product-delete', ['product_id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
+                                      <a href="{{ route('coupon-show', ['type' => $coupon->type]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                      <form action="{{ route('coupon-delete', ['type' => $coupon->type]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button type="submit" class="btn btn-danger">Delete</button>
+                                      </form>
 
                                 </td>
                             </tr>
@@ -62,7 +50,7 @@
                     </tbody>
 
                 </table>
-                {{ $coupons->links('pagination::bootstrap-4') }}
+                {{-- {{ $coupons->links('pagination::bootstrap-4') }} --}}
             </div>
           </div>
         </div>

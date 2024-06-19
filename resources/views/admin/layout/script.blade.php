@@ -40,6 +40,3 @@
     <script src="{{ asset('assets/admin/build/js/custom.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
 
-</body>
-</html>
-
