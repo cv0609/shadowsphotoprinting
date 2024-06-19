@@ -22,20 +22,13 @@ class CouponRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'object_type' => 'required|in:0,1',
-           'code' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'coupon_type' => 'required',
+            'code' => 'required|unique:coupons,code',
             'amount' => 'required|numeric|min:0',
             'minimum_spend' => 'required|numeric|min:0',
             'maximum_spend' => 'required|numeric|min:0|gte:minimum_spend',
             'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'use_limit' => 'required|integer|min:0',
-            'same_ip_limit' => 'required|integer|min:0',
-            'use_limit_per_user' => 'required|integer|min:0',
-            'use_device' => 'required|string|max:255',
-            'multiple_use' => 'required|in:0,1',
-            'total_use' => 'required|integer|min:0',
         ];
     }
 }
