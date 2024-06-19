@@ -20,7 +20,7 @@ class PagesController extends Controller
   }
   public function pages(Request $request)
   {
-        // Get the full path
+       // Get the full path
         $path = $request->path();
 
         // Extract the last segment
@@ -38,7 +38,7 @@ class PagesController extends Controller
         $page_content = json_decode($page_info->pageSections['content'],true);
         $page_content['slug'] = $page_info['slug'];
 
-        return view('front-end/'.$slug,compact('page_content','page_info'));
+        return view('front-end/category_detail',compact('page_content','page_info'));
       }
       else
       {
@@ -82,16 +82,9 @@ class PagesController extends Controller
    }
   public function giftCard($slug = null)
   {
-      if($slug == null)
-       {
-        return view('front-end/giftcard');
-
-       }
-       else
-        {
-            return view('front-end/giftcard_detail');
-
-        }
+     $cards =  GiftCardCategory::get();
+     return view('front-end/giftcard',compact('cards'));
+   
   }
 
 }
