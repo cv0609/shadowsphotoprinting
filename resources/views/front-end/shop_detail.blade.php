@@ -41,23 +41,24 @@
                     <div class="fw-products">
                         <h4>PRODUCTS</h4>
                         <div class="fw-products-cats">
-                            <select name="pc_subcategory">
-                                <option value="">ALL</option>
-                                <option value="">Canvas Prints</option>
-                                <option value="">Posters Panoramics</option>
-                                <option value="">Prints Enlargements</option>
-                                <option value="">Scrapbook Prints</option>
+                            <select name="category" id="category">
+                                <option value="all">ALL</option>
+                                @foreach ($productCategories as $productCategory)
+                                    <option value="{{ $productCategory->slug }}">{{ $productCategory->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="fw-products-box">
                             <table>
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <th>QTY</th>
                                         <th>DESCRIPTION</th>
                                         <th>PRICE</th>
                                         <th>TOTAL</th>
                                     </tr>
+                                </thead>
+                                  <tbody id="products-main">
                                     @foreach($products as $key => $product)
                                     <tr class="gi-prod">
                                         <td>
@@ -74,6 +75,7 @@
                                         </td>
                                     </tr>
                                    @endforeach 
+                                 
                                 </tbody>
                             </table>
                         </div>
@@ -95,6 +97,18 @@
 <script>
  $("input[name=quantity]").on('keyup',function(){
     console.log("OK");
+ })
+
+ $("#category").on('change',function(){
+    
+    $.post("{{ route('products-by-category') }}",
+    {
+        slug: $(this).val(),
+        '_token': "{{ csrf_token() }}"
+    },
+    function(res){
+         $("#products-main").html(res);
+    });
  })
 </script>
 @endsection        

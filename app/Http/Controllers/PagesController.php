@@ -38,7 +38,7 @@ class PagesController extends Controller
         $page_content = json_decode($page_info->pageSections['content'],true);
         $page_content['slug'] = $page_info['slug'];
 
-        return view('front-end/category_detail',compact('page_content','page_info'));
+        return view('front-end/'.$slug,compact('page_content','page_info'));
       }
       else
       {
@@ -48,16 +48,16 @@ class PagesController extends Controller
 
   public function blogDetail($slug)
   {
-      $blog_details = Blog::where('slug',$slug)->first();
+    $blog_details = Blog::where('slug',$slug)->first();
 
-        $previousBlog = Blog::where('id', '<', $blog_details->id)
-          ->orderBy('id', 'desc')
-          ->first();
+    $previousBlog = Blog::where('id', '<', $blog_details->id)
+      ->orderBy('id', 'desc')
+      ->first();
 
-        $nextBlog = Blog::where('id', '>', $blog_details->id)
-            ->orderBy('id', 'asc')
-            ->first();
-        return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog'));
+    $nextBlog = Blog::where('id', '>', $blog_details->id)
+      ->orderBy('id', 'asc')
+      ->first();
+    return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog'));
   }
 
   public function PhotosForSale($slug = null)
@@ -77,9 +77,9 @@ class PagesController extends Controller
 
 
   public function PhotoForSaleByCategory($slug)
-   {
+  {
 
-   }
+  }
   public function giftCard($slug = null)
   {
     $cards =  GiftCardCategory::get();

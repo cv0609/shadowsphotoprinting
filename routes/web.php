@@ -89,6 +89,7 @@ Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
 Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');
 Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('shop-upload-image');
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
+Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
