@@ -17,15 +17,12 @@ class CouponController extends Controller
 
    public function couponAdd()
    {
-      $productCategories = Coupon::get();
-      return view('admin.coupons.add',compact('productCategories'));
+      return view('admin.coupons.add');
    }
 
    public function couponSave(CouponRequest $request)
    {
-      $validated = $request->validated();
-      Coupon::create($validated);
-
+      Coupon::create(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->coupon_type,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date]);
       return view('admin.coupons.index')->with('success', 'Coupon created successfully!');
    }
 
