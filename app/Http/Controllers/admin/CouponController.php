@@ -23,14 +23,24 @@ class CouponController extends Controller
    public function couponSave(CouponRequest $request)
    {
       Coupon::create(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->coupon_type,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date]);
-      return view('admin.coupons.index')->with('success', 'Coupon created successfully!');
+      return redirect()->route('coupons-list')->with('success', 'Coupon created successfully!');
    }
 
-   public function couponShow(Request $request, $type)
+   public function couponShow($id)
    {
-      $coupons = Coupon::where('type', $type)->get();
-
-      return view('admin.coupons.edit', compact('coupons'));
+      $coupon_detail = Coupon::whereId($id)->first();
+      return view('admin.coupons.edit', compact('coupon_detail'));
    }
 
+   public function couponUpdate(Request $request)
+   {
+      Coupon::whereId($request->coupon_id)->update(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->coupon_type,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date]);
+      return redirect()->route('coupons-list')->with('success', 'Coupon updated successfully!');
+   }
+
+   public function couponDistroy($id)
+   {
+      $coupon_detail = Coupon::whereId($id)->delete();
+      return redirect()->route('coupons-list')->with('success','Card is deleted successfully');
+   }
 }

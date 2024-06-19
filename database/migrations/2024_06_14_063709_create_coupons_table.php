@@ -16,10 +16,10 @@ class CreateCouponsTable extends Migration
         if (!Schema::hasTable('coupons')) {
             Schema::create('coupons', function (Blueprint $table) {
                 $table->id();
-                $table->string('object_type');
+                $table->enum("object_type", [0 , 1])->default("no")->change();
                 $table->integer("vendor_id")->nullable();
                 $table->string('code');
-                $table->string('type');
+                $table->enum("type", [0 , 1])->default("no")->change();
                 $table->double('amount', 12, 2);
                 $table->double('minimum_spend', 12, 2)->nullable();
                 $table->double('maximum_spend', 12, 2)->nullable();

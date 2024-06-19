@@ -75,9 +75,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
         Route::get('/coupon-add',[CouponController::class,'couponAdd'])->name('coupon-add');
         Route::post('/coupon-save',[CouponController::class,'couponSave'])->name('coupon-save');
-        Route::get('/coupon-show/{type}', [CouponController::class, 'couponShow'])->name('coupon-show');
+        Route::get('/coupon-show/{id}', [CouponController::class, 'couponShow'])->name('coupon-show');
         Route::post('/coupon-update',[CouponController::class,'couponUpdate'])->name('coupon-update');
-        Route::delete('/coupon-delete/{type}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
+        Route::delete('/coupon-delete/{id}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
     });
 });
 
