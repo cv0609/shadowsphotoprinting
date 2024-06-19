@@ -50,7 +50,8 @@
 
             </div>
             <div class="fcsg-wrap">
-                <form method="post">
+                <form action="{{ route('shop-upload-image') }}" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="uploading">
                         <div class="uploading-img">
 
@@ -60,9 +61,10 @@
                             <div id="selectedFiles"></div>
                             <a id="selectfiles" href="javascript:;" class="button"
                                 style="position: relative; z-index: 1;">Select images</a>
-                            <input type="file" id="fileInput" multiple style="display: none;">
-                            <a id="uploadfiles" href="details.html" class="button button-primary"
-                                style="display: none;">Upload images</a>
+                            <input type="file" id="fileInput" name="image[]" multiple style="display: none;">
+                            <button type="submit" id="uploadfiles" class="button button-primary" style="display: none;">Upload images</button>
+                            <!-- <a type="submit" id="uploadfiles" href="{{ route('shop-upload-image') }}" class="button button-primary"
+                                >Upload images</a> -->
                         </div>
                     </div>
                 </form>
