@@ -7,6 +7,9 @@
                     @foreach($imageName as $temImages)
                     <div class="decoding-wrapper">
                         <img src="{{ asset('storage/temp/' . $temImages) }}" alt="">
+                        <input type="checkbox" name="" class="d-none">
+                         <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
+                         <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
                     </div>
                     @endforeach
                     @endif
