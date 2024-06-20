@@ -15,7 +15,7 @@ class CreateCouponsTable extends Migration
     {
         if (!Schema::hasTable('coupons')) {
             Schema::create('coupons', function (Blueprint $table) {
-                $table->id();
+                $table->increments('id');
                 $table->enum("object_type", ['0','1'])->default("0")->change();
                 $table->integer("vendor_id")->nullable();
                 $table->string('code');
