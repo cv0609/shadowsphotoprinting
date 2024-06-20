@@ -15,9 +15,9 @@ class ShopController extends Controller
         $temImagesStore = [];
         if($request->image)
         {
-            foreach($request->image as $image)
+            foreach($request->image as $key => $image)
             {
-                $temImages = time().'.'.$image->extension();
+                $temImages = time().$key.'.'.$image->extension();
 
                 // Store image in the temporary directory
                 $image->storeAs('public/temp', $temImages);
@@ -25,7 +25,6 @@ class ShopController extends Controller
             }
             
         }
-       
         // Pass the image name to the display route
         return redirect()->route('shop-detail')->with('temImages', $temImagesStore);
     }
@@ -33,15 +32,13 @@ class ShopController extends Controller
   {
     $imageName = session('temImages'); 
     if(isset($category_slug) && $category_slug != null)
-     {
-        $productCategories = ProductCategory::get();
-     }
-     else
-     {
-         $productCategories = ProductCategory::get();
-        
-     }
-
+    {
+      $productCategories = ProductCategory::get();
+    }
+    else
+    {
+      $productCategories = ProductCategory::get();
+    }
     $productCategories = ProductCategory::get();
     $products = Product::select(['id','product_title','product_price'])->get();
     return view('front-end/shop_detail', compact('imageName','products','productCategories'));
