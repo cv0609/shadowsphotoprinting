@@ -10,11 +10,12 @@
                     </div>
                     @endforeach
                     @endif
-                    <div class="quanti-wrapper">
-                        <div class="quanti">
-                            <a class="quanti-btn" id="selectall">Select All</a>
-                            <a class="quanti-btn" id="deselectall">Deselect All</a>
-                        </div>
+                   
+                </div>
+                <div class="quanti-wrapper">
+                    <div class="quanti">
+                        <a class="quanti-btn" id="selectall">Select All</a>
+                        <a class="quanti-btn" id="deselectall">Deselect All</a>
                     </div>
                 </div>
             </div>
