@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cart', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('user_email')->nullable();
+            $table->string('user_email')->nullable();
             $table->unsignedBigInteger('coupon_id')->nullable();
             $table->decimal('total', 10, 2)->default(0)->nullable();
             $table->decimal('shipping_cost', 10, 2)->default(0)->nullable();

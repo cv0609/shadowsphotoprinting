@@ -11,8 +11,7 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-       $user_id = null; //Auth::loginUsingId();
-       $cart = Cart::create(["user_id"=>$user_id,"coupon_id"=>null,"total"=>$request->total,"shipping_cost"=>0,"grand_total"=>$request->total]);
+       $cart = Cart::create(["user_id"=>"","coupon_id"=>null,"total"=>$request->total,"shipping_cost"=>0,"grand_total"=>$request->total]);
 
        if($cart)
          {
