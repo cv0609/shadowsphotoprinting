@@ -7,7 +7,7 @@ use App\Models\Shop;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Storage;
-
+use Session;
 class ShopController extends Controller
 {
    public function uploadImage(Request $request)
@@ -25,12 +25,12 @@ class ShopController extends Controller
             }
             
         }
-        // Pass the image name to the display route
-        return redirect()->route('shop-detail')->with('temImages', $temImagesStore);
+        Session::put('temImages',$temImagesStore);
+        return redirect()->route('shop-detail');
     }
   public function shopDetail($category_slug = null)
   {
-    $imageName = session('temImages'); 
+    $imageName = Session::get('temImages'); 
     if(isset($category_slug) && $category_slug != null)
     {
       $productCategories = ProductCategory::get();
