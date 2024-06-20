@@ -3183,4 +3183,7 @@ li.dropdown a.signup {
     right: 0;
     width: 28px;
 }
-
+.decoding-wrapper .main_check_img {
+    width: 150px;
+    height: 150px;
+}

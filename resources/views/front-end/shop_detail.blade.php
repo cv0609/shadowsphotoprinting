@@ -6,14 +6,14 @@
                     @if(Session::has('temImages'))
                     @foreach($imageName as $temImages)
                     <div class="decoding-wrapper selected-images">
-                        <img src="{{ asset('storage/temp/' . $temImages) }}" alt="">
-                        <input type="checkbox" name="selected-image" value="0" class="d-none">
+                        <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
+                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{$temImages}}">
                          <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
                          <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
                     </div>
                     @endforeach
                     @endif
-                   
+
                 </div>
                 <div class="quanti-wrapper">
                     <div class="quanti">
@@ -111,9 +111,10 @@ $(document).ready(function() {
 
         let cartItems = [];
         let total = 0;
-
+        let selectedImages = [];
         $("input[name=quantity]").each(function() {
             let quantity = $(this).val();
+
             if (quantity !== '' && quantity > 0) {
                 let price = parseFloat($(this).data('price'));
                 let productId = $(this).data('productid'); // Assuming the ID is in the format "quantity-{productId}"
@@ -127,6 +128,15 @@ $(document).ready(function() {
             }
         });
 
+        $("input[name='selected-image[]']").each(function() {
+            if($(this).val() == "1")
+             {
+                selectedImages.push($(this).data('img'));
+             }
+        });
+
+
+
         if (cartItems.length > 0) {
             // Send cart items to the server
             $.ajax({
@@ -135,6 +145,7 @@ $(document).ready(function() {
                 data: {
                     cart_items: cartItems,
                     total: total,
+                    selectedImages:selectedImages,
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
@@ -168,6 +179,7 @@ $(document).ready(function() {
 
                 // Update the total price for the individual product
                 let rowId = $(this).attr('id').split('-')[1];
+
                 $("#quantity-price-" + rowId).text('$' + totalPrice.toFixed(2));
             }
         });
@@ -193,15 +205,15 @@ $(document).ready(function() {
  })
 
  $(".selected-images").on('click',function(){
-    if($(this).children("input[name=selected-image]").val() == "0")
+    if($(this).children("input[name='selected-image[]']").val() == "0")
     {
-        $(this).children("input[name=selected-image]").val("1");
+        $(this).children("input[name='selected-image[]']").val("1");
         $(this).children("#checked-img").removeClass('d-none');
         $(this).children("#unchecked-img").addClass('d-none');
     }
-    else if($(this).children("input[name=selected-image]").val() == "1")
+    else if($(this).children("input[name='selected-image[]']").val() == "1")
     {
-        $(this).children("input[name=selected-image]").val("0");
+        $(this).children("input[name='selected-image[]']").val("0");
         $(this).children("#checked-img").addClass('d-none');
         $(this).children("#unchecked-img").removeClass('d-none');
     }
