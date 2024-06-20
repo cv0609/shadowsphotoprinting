@@ -32,10 +32,10 @@
                     </div>
                     <div class="cart-totals">
                         <div class="cart-items">
-                            <span>8 items</span>
+                            <span id="cart-total-itmes">0 items</span>
                         </div>
                         <div class="cart-items">
-                            <span>$4.70</span>
+                            <span id="cart-total-price">$0.00</span>
                         </div>
                     </div>
                     <div class="fw-products">
@@ -62,7 +62,7 @@
                                     @foreach($products as $key => $product)
                                     <tr class="gi-prod">
                                         <td>
-                                            <input type="number" name="quantity" id="quantity-{{$key}}">
+                                            <input type="number" name="quantity" id="quantity-{{$key}}" data-price="{{ $product->product_price }}">
                                         </td>
                                         <td>
                                             {{ $product->product_title }}
@@ -74,8 +74,8 @@
                                             <span id="quantity-price-{{$key}}">$0.00</span>
                                         </td>
                                     </tr>
-                                   @endforeach 
-                                 
+                                   @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -92,15 +92,27 @@
                 </div>
             </div>
         </section>
-@endsection        
+@endsection
 @section('scripts')
 <script>
- $("input[name=quantity]").on('keyup',function(){
-    console.log("OK");
- })
+ $(document).on('keyup', "input[name=quantity]", function(){
+    let total = 0;
+    let totalQuantity = 0;
+    $("input[name=quantity]").each(function() {
+        if ($(this).val() !== '') {
+            let quantity = parseFloat($(this).val());
+            let price = parseFloat($(this).data('price'));
+            let totalPrice = quantity * price;
+            total += totalPrice;
+            totalQuantity += quantity;
+        }
+    });
+    $("#cart-total-price").html("$"+total.toFixed(2));
+    $("#cart-total-itmes").html(totalQuantity+"items");
+   })
 
  $("#category").on('change',function(){
-    
+
     $.post("{{ route('products-by-category') }}",
     {
         slug: $(this).val(),
@@ -111,4 +123,4 @@
     });
  })
 </script>
-@endsection        
+@endsection
