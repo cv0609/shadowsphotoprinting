@@ -33,18 +33,9 @@
         <div class="instructions-inner">
             <div class="so-widget">
                 <h3>{{ $page_content['page_instruction_title'] }}</h3>
-                {{-- <h3>The instructions to Order your print on our Website.</h3> --}}
                 <div class="tinymce ">
                     <ol>
                         {!! $page_content['page_instruction_description'] !!}
-                        {{-- <li>Please upload your files by clicking on Select files, after selecting files click on
-                            the Upload images button and then wait until they are all processed and moved on to
-                            the next step.</li>
-                        <li>Then click in the box where it has a tick on the image you would like to work with.
-                        </li>
-                        <li>Then click the product’s box and pick what category you need.</li>
-                        <li> Then pick the size you would like to print and add the qty then click add to cart
-                            and follow this process until you are ready to view the cart/ check out.</li> --}}
                     </ol>
                 </div>
 
@@ -54,17 +45,12 @@
                     @csrf
                     <div class="uploading">
                         <div class="uploading-img">
-
                             <p>{{ $page_content['select_images_for_upload_title'] }}</p>
-
-                            {{-- <p>Please select images for uploading:</p> --}}
                             <div id="selectedFiles"></div>
                             <a id="selectfiles" href="javascript:;" class="button"
                                 style="position: relative; z-index: 1;">Select images</a>
                             <input type="file" id="fileInput" name="image[]" multiple style="display: none;">
                             <button type="submit" id="uploadfiles" class="button button-primary" style="display: none;">Upload images</button>
-                            <!-- <a type="submit" id="uploadfiles" href="{{ route('shop-upload-image') }}" class="button button-primary"
-                                >Upload images</a> -->
                         </div>
                     </div>
                 </form>
@@ -110,7 +96,6 @@
                             </div>
                             <div class="product-cat-title">
                                 <h3>Image <small class="count">(63)</small></h3>
-
                             </div>
                         </a>
                     </div>

@@ -13,41 +13,30 @@
                 <br>
                 <form action="{{ route('coupon-update') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
-                    <input type="hidden" id="vendor_id" name="vendor_id">
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="object_type" >Object Type <span class="required">*</span>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="coupon_type" >Coupon Type <span class="required">*</span>
                         </label>.
                         <div class="col-md-6 col-sm-6">
-                            <select class="form-control" name="object_type">
-                                <option value="">Select</option>
-                                <option value="0">Amount</option>
-                                <option value="1">Percent</option>
-                            </select>
-                            @error('object_type')
-                                <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
+                           
+                           <select class="form-control" name="coupon_type" >
+                               <option value="">Select</option>
+                                <option value="0" <?= ($coupon_detail->type == "0" ? "selected" : "") ?> >Amount</option>
+                                <option value="1" <?= ($coupon_detail->type == "1" ? "selected" : "") ?>>Percent</option>
+                        </select>
+                        @error('coupon_type')
+                        <span class="text-danger">{{ $message }}</span>
+                       @enderror
                     </div>
 
+                    </div>
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="code">Code <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="code" name="code" required="required" class="form-control "  >
+                            <input type="text" id="code" name="code" required="required" class="form-control" value="{{ $coupon_detail->code }}">
                             @error('code')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="type">Type<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="type" name="type" required="required" class="form-control ">
-                            @error('type')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="text-danger">{{ $message }}</span>
+                           @enderror
                         </div>
                     </div>
 
@@ -55,10 +44,10 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="amount">Amount <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="amount" name="amount" required="required" class="form-control" step=".01">
+                            <input type="number" id="amount" name="amount" required="required" class="form-control" step=".01" value="{{ $coupon_detail->amount }}">
                             @error('amount')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="text-danger">{{ $message }}</span>
+                           @enderror
                         </div>
                     </div>
 
@@ -66,10 +55,10 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="minimum_spend"> Minimum Spend <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="minimum_spend" name="minimum_spend" required="required" class="form-control" step=".01">
+                            <input type="number" id="minimum_spend" name="minimum_spend" required="required" class="form-control" step=".01" value="{{ $coupon_detail->minimum_spend }}">
                             @error('minimum_spend')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="text-danger">{{ $message }}</span>
+                           @enderror
                         </div>
                     </div>
 
@@ -77,10 +66,10 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="maximum_spend"> Maximum Spend <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="maximum_spend" name="maximum_spend" required="required" class="form-control" step=".01">
+                            <input type="number" id="maximum_spend" name="maximum_spend" required="required" class="form-control" step=".01"  value="{{ $coupon_detail->maximum_spend }}">
                             @error('maximum_spend')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="text-danger">{{ $message }}</span>
+                           @enderror
                         </div>
                     </div>
 
@@ -88,10 +77,10 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="start_date">Start Date<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="date" id="start_date" name="start_date" required="required" class="form-control" step=".01">
+                            <input type="date" id="start_date" name="start_date" required="required" class="form-control inputDate" step=".01" value="{{ $coupon_detail->start_date }}">
                             @error('start_date')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="text-danger">{{ $message }}</span>
+                           @enderror
                         </div>
                     </div>
 
@@ -99,80 +88,13 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="end_date">End Date<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="date" id="end_date" name="end_date" required="required" class="form-control" step=".01">
+                            <input type="date" id="end_date" name="end_date" required="required" class="form-control inputDate" step=".01" value="{{ $coupon_detail->end_date }}">
                             @error('end_date')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="text-danger">{{ $message }}</span>
+                           @enderror
                         </div>
                     </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="use_limit"> Use Limit<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="use_limit" name="use_limit" required="required" class="form-control" step=".01">
-                            @error('use_limit')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="same_ip_limit">Same IP Limit<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="same_ip_limit" name="same_ip_limit" required="required" class="form-control" step=".01">
-                            @error('same_ip_limit')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="use_limit_per_user">Use Limit Per User<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="use_limit_per_user" name="use_limit_per_user" required="required" class="form-control" step=".01">
-                            @error('use_limit_per_user')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="use_device">Use Device<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="use_device" name="use_device" required="required" class="form-control" step=".01">
-                            @error('use_device')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="multiple_use">Multiple Use<span class="required">*</span></label>
-                        <div class="col-md-6 col-sm-6">
-                            <select class="form-control" id="multiple_use" name="multiple_use" required>
-                                <option value="">Select</option>
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
-                            </select>
-                            @error('multiple_use')
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="total_use">Total Use<span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="total_use" name="total_use" required="required" class="form-control" step=".01">
-                            @error('total_use')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
+                    <input type="hidden" name="coupon_id" value="{{ $coupon_detail->id }}">
 
                     <div class="ln_solid"></div>
                         <div class="item form-group">
@@ -188,9 +110,24 @@
 </div>
 </div>
 </div>
+@endsection
 
+@section('custom-script')
 <script>
-    CKEDITOR.replace('description');
-</script>
+    $(function(){
+        var dtToday = new Date();
 
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+
+        $('.inputDate').attr('min', maxDate);
+    });
+    </script>
 @endsection

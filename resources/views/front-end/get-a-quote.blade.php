@@ -9,7 +9,6 @@
     <div class="container">
         <div class="contact-bnr-text">
             <h2>{{ $page_content['get_a_quote_banner_title'] }} </h2>
-            {{-- <h2>Get a Quote </h2> --}}
         </div>
     </div>
 </section>

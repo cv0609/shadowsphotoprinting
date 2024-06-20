@@ -20,7 +20,7 @@ class PagesController extends Controller
   }
   public function pages(Request $request)
   {
-        // Get the full path
+       // Get the full path
         $path = $request->path();
 
         // Extract the last segment
@@ -48,28 +48,28 @@ class PagesController extends Controller
 
   public function blogDetail($slug)
   {
-      $blog_details = Blog::where('slug',$slug)->first();
+    $blog_details = Blog::where('slug',$slug)->first();
 
-        $previousBlog = Blog::where('id', '<', $blog_details->id)
-          ->orderBy('id', 'desc')
-          ->first();
+    $previousBlog = Blog::where('id', '<', $blog_details->id)
+      ->orderBy('id', 'desc')
+      ->first();
 
-        $nextBlog = Blog::where('id', '>', $blog_details->id)
-            ->orderBy('id', 'asc')
-            ->first();
-        return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog'));
+    $nextBlog = Blog::where('id', '>', $blog_details->id)
+      ->orderBy('id', 'asc')
+      ->first();
+    return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog'));
   }
 
   public function PhotosForSale($slug = null)
   {
     if($slug == null)
-     {
-       $products = PhotoForSaleProduct::paginate(10);
-     }
+    {
+      $products = PhotoForSaleProduct::paginate(10);
+    }
     else
-     {
-        $caregory = PhotoForSaleCategory::where('slug',$slug)->first();
-        $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
+    {
+      $caregory = PhotoForSaleCategory::where('slug',$slug)->first();
+      $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
     }
     $productCategories = PhotoForSaleCategory::get();
     return view('front-end/photos-for-sale',compact('products','productCategories'));
@@ -77,21 +77,12 @@ class PagesController extends Controller
 
 
   public function PhotoForSaleByCategory($slug)
-   {
+  {
 
-   }
+  }
   public function giftCard($slug = null)
   {
-      if($slug == null)
-       {
-        return view('front-end/giftcard');
-
-       }
-       else
-        {
-            return view('front-end/giftcard_detail');
-
-        }
+    $cards =  GiftCardCategory::get();
+    return view('front-end/giftcard',compact('cards'));
   }
-
 }

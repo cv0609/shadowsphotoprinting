@@ -6,8 +6,8 @@
             <div class="breadcrumbs-wrapper">
                 <span><a href="{{ url('/') }}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="#">uncategorized</a></span>
-                <span class="bc-delimiter">»</span>
+                {{-- <span><a href="#">uncategorized</a></span>
+                <span class="bc-delimiter">»</span> --}}
                 <span> {{ strtoupper($blog_details['title']) }}</span>
             </div>
         </div>

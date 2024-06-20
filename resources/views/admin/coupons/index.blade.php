@@ -26,7 +26,9 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Coupon Type</th>
+                            <th>Coupon Code</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -34,11 +36,13 @@
                         @foreach ($coupons as $key => $coupon)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($coupon->type) }}</td>
+                                <td>{{ $coupon->code }}</td>
+                                <td>{{ date('d-m-Y',strtotime($coupon->start_date)) }}</td>
+                                <td>{{ date('d-m-Y',strtotime($coupon->end_date)) }}</td>
                                 <td>
                                     <div class="x_content">
-                                      <a href="{{ route('coupon-show', ['type' => $coupon->type]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                      <form action="{{ route('coupon-delete', ['type' => $coupon->type]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
+                                      <a href="{{ route('coupon-show', ['id' => $coupon->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                      <form action="{{ route('coupon-delete', ['id' => $coupon->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
                                           @csrf
                                           @method('DELETE')
                                           <button type="submit" class="btn btn-danger">Delete</button>

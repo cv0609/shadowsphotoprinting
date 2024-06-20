@@ -15,7 +15,7 @@
         <div class="title_left">
           <h3>Product Categories</h3>
         </div>
-{{-- 
+{{--
         <div class="title_right">
           <div class="col-md-5 col-sm-5   form-group pull-right top_search">
             <div class="input-group">
@@ -35,9 +35,9 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Product Categories List</h2>
-              <a href="{{ route('product-categories-add') }}">
+              {{-- <a href="{{ route('product-categories-add') }}">
                 <button class="btn btn-info panel_toolbox">Create Category</button>
-              </a>
+              </a> --}}
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -53,7 +53,7 @@
                     <tbody>
                         @foreach ($categories as $key => $category)
                             <tr>
-                                <th scope="row">{{ $key + 1 }}</th> 
+                                <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ ucfirst($category->name) }}</td>
                                 <td><img src="{{ (isset($category['image']) && !empty($category['image'])) ? asset($category['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
                                 <td>

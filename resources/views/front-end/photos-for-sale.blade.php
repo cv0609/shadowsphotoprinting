@@ -5,9 +5,9 @@
     <div class="adbreadcrumbs">
         <div class="container">
             <div class="breadcrumbs-wrapper">
-                <span><a href="index.html">Home</a></span>
+                <span><a href="{{ url('/') }}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="order-prints.html">Order prints</a></span>
+                <span><a href="{{ url('shop') }}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
                 <span>images</span>
             </div>

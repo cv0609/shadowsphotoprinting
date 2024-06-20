@@ -41,7 +41,7 @@ $ProductCategories = $PageDataService->getProductCategories();
                                     </div>
                                 </div>
                                 <div class="so-widget-sow-button" data-aos="fade-left">
-                                    <a href="shop">{{ $page_content['shop_now'] }}</a>
+                                    <a href="{{ url('shop') }}">{{ $page_content['shop_now'] }}</a>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +137,7 @@ $ProductCategories = $PageDataService->getProductCategories();
                                         @endforeach
                                     </p>
                                     <div class="restoration-btn">
-                                        <a href="shop">{{ $page_content['order_now'] }}</a>
+                                        <a href="{{ url('shop') }}">{{ $page_content['order_now'] }}</a>
                                         {{-- <a href="shop">Order Now</a> --}}
                                     </div>
                                 </div>
