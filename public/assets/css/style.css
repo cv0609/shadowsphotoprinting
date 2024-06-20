@@ -2818,11 +2818,11 @@ form.account-details fieldset legend {
     color: #16a085;
 }
 
-.decoding-wrapper {
+/* .decoding-wrapper {
     width: 100%;
     max-width: 300px;
     margin-bottom: 20px;
-}
+} */
 
 .decoding {
     padding: 30px 0;
@@ -3172,6 +3172,7 @@ li.dropdown a.signup {
     max-width: 150px;
     margin-bottom: 20px;
     position: relative;
+    cursor: pointer;
 }
 .decoding {
     padding: 30px 0 0;
@@ -3182,3 +3183,4 @@ li.dropdown a.signup {
     right: 0;
     width: 28px;
 }
+
