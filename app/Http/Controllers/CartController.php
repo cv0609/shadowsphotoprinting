@@ -11,7 +11,17 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-       $user_id = Auth::loginUsingId();
-       Cart::insert(["user_id"=>$user_id,"coupon_id"=>"","total"=>$request->total,"shipping_cost"=>"","grand_total"=>$request->total]);
+       $user_id = null; //Auth::loginUsingId();
+       $cart = Cart::create(["user_id"=>$user_id,"coupon_id"=>null,"total"=>$request->total,"shipping_cost"=>0,"grand_total"=>$request->total]);
+
+       if($cart)
+         {
+            $cart_items = $request->cart_items;
+            $cartId = $cart->id;
+            foreach($cart_items as $cart_item)
+              {
+                CartData::insert(["cart_id"=>$cartId,"product_id"=>$cart_item['product_id'],"quantity"=>$cart_item['quantity']]);
+              }
+         }
     }
 }
