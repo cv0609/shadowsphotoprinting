@@ -11,7 +11,7 @@ use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
-
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,6 +90,7 @@ Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout'
 Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('shop-upload-image');
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
