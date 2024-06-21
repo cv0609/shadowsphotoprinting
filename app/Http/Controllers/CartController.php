@@ -27,7 +27,7 @@ class CartController extends Controller
                     foreach($request->selectedImages as $selectedImages)
                     {
                         $tempImagePath = $selectedImages;
-                        $permanentImagePath = 'assets/images/order_images/' . basename($tempImagePath);
+                        $permanentImagePath = '/assets/images/order_images/' . basename($tempImagePath);
 
                         // Move the image from temp to permanent storage
                         Storage::disk('public')->move($tempImagePath, $permanentImagePath);
