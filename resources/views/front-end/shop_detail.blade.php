@@ -7,7 +7,7 @@
                     @foreach($imageName as $temImages)
                     <div class="decoding-wrapper selected-images">
                         <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
-                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{$temImages}}">
+                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}">
                          <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
                          <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
                     </div>
