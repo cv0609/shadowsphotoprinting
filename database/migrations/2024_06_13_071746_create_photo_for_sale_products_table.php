@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug');
             $table->decimal('min_price', 10, 2)->default(0)->nullable();
             $table->decimal('max_price', 10, 2)->default(0)->nullable();
-            $table->longText('product_description')->nullable()->change();
+            $table->longText('product_description')->nullable();
             $table->string('product_images');
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('photo_for_sale_category')->onDelete('cascade');
