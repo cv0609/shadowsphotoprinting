@@ -17,17 +17,17 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="coupon_type" >Coupon Type <span class="required">*</span>
                         </label>.
                         <div class="col-md-6 col-sm-6">
-                           <select class="form-control" name="coupon_type">
+                            <select class="form-control" name="coupon_type">
                                <option value="">Select</option>
                                 <option value="0">Amount</option>
                                 <option value="1">Percent</option>
-                        </select>
-                        @error('coupon_type')
-                        <span class="text-danger">{{ $message }}</span>
-                       @enderror
+                            </select>
+                            @error('coupon_type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
-                    </div>
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="code">Code <span class="required">*</span>
                         </label>
@@ -94,12 +94,42 @@
                         </div>
                     </div>
 
-                    <div class="ln_solid"></div>
-                        <div class="item form-group">
-                            <div class="col-md-6 col-sm-6 offset-md-3">
-                                <button type="submit" class="btn btn-success">Submit</button>
-                            </div>
+                    
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Products<span ></span>
+                        </label>.
+                        <div class="col-md-6 col-sm-6">
+                            <select class="form-control" name="products[]" multiple="multiple">
+                                @foreach ($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->product_title }}</option>
+                                @endforeach
+                               
+                            </select>
+                            @error('products')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
+                    </div>
+
+                    <div class="item form-group control-label">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="auto_applied">Automatic coupon applied<span class="required"></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                           <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="1" name="auto_applied"> Automatic coupon applied
+                            </label>
+                             
+                           </div>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
 
                 </form>
             </div>

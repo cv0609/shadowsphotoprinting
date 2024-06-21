@@ -20,7 +20,7 @@
                            <select class="form-control" name="category_id">
                                <option value="">Select</option>
                                 @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}" <?= ($product->id == $productCategory->id) ?'selected' : '' ?>>{{ $productCategory->name }}</option>
+                                <option value="{{ $productCategory->id }}" <?= ($product->id == $productCategory->id) ? 'selected' : '' ?>>{{ $productCategory->name }}</option>
                                 @endforeach
                         </select>
                         @error('category_id')
