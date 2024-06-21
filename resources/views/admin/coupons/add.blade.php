@@ -95,15 +95,14 @@
                     </div>
 
                     
-                    <div class="item form-group">
+                    <div class="item form-group ">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Products<span ></span>
                         </label>.
                         <div class="col-md-6 col-sm-6">
-                            <select class="form-control" name="products[]" multiple="multiple">
+                            <select class="form-control " id="optlist" name="products[]" multiple="multiple">
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}">{{ $product->product_title }}</option>
                                 @endforeach
-                               
                             </select>
                             @error('products')
                                 <span class="text-danger">{{ $message }}</span>
@@ -158,4 +157,6 @@
         $('.inputDate').attr('min', maxDate);
     });
     </script>
+
+
 @endsection
