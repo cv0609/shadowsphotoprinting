@@ -23,14 +23,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="gift-img">
-                        @if(Request::segment('3') == 'gift-card')
-                        <img src="{{ asset('assets/images/cardgift.jpg') }}" alt="">
-                        @elseif (Request::segment('3') == 'birthday-gift-card')
-                        <img src="{{ asset('assets/images/AdobeStock.jpeg') }}" alt="">
-                        @elseif (Request::segment('3') == 'mothers-day-gift-card')
-                        <img src="{{ asset('assets/images/Mothers-Day-Gfit.jpg') }}" alt="">
-                        @endif
-
+                        <img src="{{ asset($blog_detail->image) }}" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -98,42 +91,27 @@
             <h3>Related Products</h3>
             <div class="margin-small">
                 <ul class="isotope-intrinsic">
+                    @foreach ($related_products as $related_product)
                     <li class="type-product">
                         <div class="clearfix ">
-                            <a href="{{ url('/our-products/gift-card/mothers-day-gift-card') }}">
+                            <a href="{{ route('gift-card-detail',['slug'=>$related_product->slug]) }}">
                                 <div class="noflipper">
                                     <div class="product-animations">
-                                        <img src="{{ asset('assets/images/Mothers-Day-Gfit.jpg') }}" alt="">
+                                        <img src="{{ asset($related_product->image) }}" alt="">
                                     </div>
                                 </div>
                             </a>
                             <div class="details-product-item">
                                 <div class="product_details-card">
-                                    <a href="{{ url('/our-products/gift-card/mothers-day-gift-card') }}">
-                                        <h3>Mothers Day Gift Card</h3>
+                                    <a href="{{ route('gift-card-detail',['slug'=>$related_product->slug]) }}">
+                                        <h3>{{ $related_product->name }}</h3>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li class="type-product">
-                        <div class="clearfix ">
-                            <a href="{{ url('/our-products/gift-card/birthday-gift-card') }}">
-                                <div class="noflipper ">
-                                    <div class="product-animations">
-                                        <img src="{{ asset('assets/images/AdobeStock.jpeg') }}" alt="">
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="details-product-item">
-                                <div class="product_details-card">
-                                    <a href="{{ url('/our-products/gift-card/birthday-gift-card') }}">
-                                        <h3>Birthday Gift Card</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                    @endforeach
+
                 </ul>
             </div>
         </div>

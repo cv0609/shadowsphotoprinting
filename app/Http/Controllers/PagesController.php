@@ -90,6 +90,7 @@ class PagesController extends Controller
   public function giftCard_detail($slug)
   {
     $blog_detail = GiftCardCategory::where(["slug"=>$slug])->first();
-    return view('front-end/giftcard_detail',compact('blog_detail'));
+    $related_products =  GiftCardCategory::where("slug","!=",$slug)->get();
+    return view('front-end/giftcard_detail',compact('blog_detail','related_products'));
   }
 }
