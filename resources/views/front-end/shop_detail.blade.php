@@ -109,6 +109,7 @@ $(document).ready(function() {
     $("#add-to-cart").on('click', function(event) {
         event.preventDefault(); // Prevent default action
 
+
         let cartItems = [];
         let total = 0;
         let selectedImages = [];
@@ -135,7 +136,11 @@ $(document).ready(function() {
              }
         });
 
-
+        if (selectedImages === null || selectedImages.length === 0)
+            {
+                alert('Please select an image');
+                return false;
+            }
 
         if (cartItems.length > 0) {
             // Send cart items to the server
