@@ -25,6 +25,8 @@ class CreateCouponsTable extends Migration
                 $table->double('maximum_spend', 12, 2)->nullable();
                 $table->date('start_date');
                 $table->date('end_date');
+                $table->string('products')->nullable();
+                $table->enum("auto_applied", ['0','1'])->comment('0 for not auto applied, 1 for auto applied')->default("0");
                 $table->integer("use_limit")->nullable();
                 $table->integer("same_ip_limit")->nullable();
                 $table->integer("use_limit_per_user")->nullable();
