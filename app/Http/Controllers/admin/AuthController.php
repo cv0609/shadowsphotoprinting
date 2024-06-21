@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\GiftCardCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AdminLogin;
+use App\Models\Blog;
+
 class AuthController extends Controller
 {
    public function login()
@@ -25,7 +30,10 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $blogs = Blog::count();
+        $cards = GiftCardCategory::count();
+        $products = Product::count();
+        return view('admin.dashboard',compact('products','cards','blogs'));
     }
 
     public function logout()
