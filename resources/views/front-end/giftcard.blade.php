@@ -39,27 +39,27 @@
                 </div>
             </div>
             <ul class="isotope-intrinsic">
-              @foreach ($cards as $card)
+              @foreach ($blogs as $blog)
               <li class="type-product">
                 <div class="clearfix ">
-                    <a href="{{ url('/our-products/gift-card/gift-card') }}">
+                    <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
                         <div class="noflipper ">
                             <div class="product-animations">
-                                <img src="{{ asset($card['image']) }}" alt="Image">
+                                <img src="{{ asset($blog['image']) }}" alt="Image">
                             </div>
                         </div>
                     </a>
                     <div class="details-product-item">
                         <div class="product_details-card">
-                            <a href="{{ url('/our-products/gift-card/gift-card') }}">
-                                <h3>{{ $card->name }}</h3>
+                            <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
+                                <h3>{{ $blog->name }}</h3>
                             </a>
                         </div>
                     </div>
                 </div>
             </li>
               @endforeach
-               
+
             </ul>
         </div>
     </div>

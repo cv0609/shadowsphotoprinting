@@ -18,6 +18,8 @@ class Coupon extends Model
         'maximum_spend',
         'start_date',
         'end_date',
+        'products',
+        'auto_applied',
         'use_limit',
         'same_ip_limit',
         'use_limit_per_user',
