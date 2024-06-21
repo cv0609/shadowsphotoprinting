@@ -23,7 +23,7 @@
     }
 
     .second-clearfix ul li a {
-    
+
         display: block;
         padding: 8px 10px;
     }
@@ -233,7 +233,7 @@ ul.sub-menu::before {
    display: none;
 }
 
-  
+
 }
 
 @media only screen and (max-width: 767px) {
@@ -252,7 +252,10 @@ ul.sub-menu::before {
     .wt-coupon-wrapper {
         margin-top: 20px;
     }
-
+    .coupon-icons {
+        width: 100%;
+        float: none;
+    }
 }
 
 @media only screen and (max-width: 575px) {
@@ -296,6 +299,29 @@ ul.sub-menu::before {
 
     .account-wrapper {
         padding: 30px 30px 0;
+    }
+
+    th.product-price {
+        display: none;
+    }
+
+    td.product-price {
+        display: none;
+    }
+
+    .coupon-icons input {
+        max-width: 100%;
+    }
+
+    .coupon-icons button.button {
+        width: 100%;
+        margin-top: 18px;
+    }
+
+    button.button.satay {
+        opacity: .8 !important;
+        width: 100%;
+        margin-top: 18px;
     }
 }
 
