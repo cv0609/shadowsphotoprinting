@@ -83,7 +83,8 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
-Route::get('/our-products/gift-card/{slug?}',[BasePagesController::class,'giftCard'])->name('gift-card');
+Route::get('/our-products/gift-card}',[BasePagesController::class,'giftCard'])->name('gift-card');
+Route::get('/our-products/gift-card-detail/{slug}}',[BasePagesController::class,'giftCard'])->name('gift-card-detail');
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
 Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');

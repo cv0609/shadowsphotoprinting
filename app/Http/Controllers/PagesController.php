@@ -80,9 +80,16 @@ class PagesController extends Controller
   {
 
   }
-  public function giftCard($slug = null)
+
+  public function giftCard()
   {
-    $cards =  GiftCardCategory::get();
-    return view('front-end/giftcard',compact('cards'));
+    $blogs =  GiftCardCategory::get();
+    return view('front-end/giftcard',compact('blogs'));
+  }
+
+  public function giftCard_detail($slug)
+  {
+    $blog_detail = GiftCardCategory::where(["slug"=>$slug])->first();
+    return view('front-end/giftcard_detail',compact('blog_detail'));
   }
 }
