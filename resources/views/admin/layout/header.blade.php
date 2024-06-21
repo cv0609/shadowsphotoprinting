@@ -11,12 +11,8 @@
                   <img src="{{ asset('assets/admin/images/img.jpg') }}" alt="">John Doe
                 </a>
                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item"  href="javascript:;"> Profile</a>
-                    <a class="dropdown-item"  href="javascript:;">
-                      <span class="badge bg-red pull-right">50%</span>
-                      <span>Settings</span>
-                    </a>
-                <a class="dropdown-item"  href="javascript:;">Help</a>
+                  {{-- <a class="dropdown-item"  href="javascript:;"> Profile</a> --}}
+
                   {{-- <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a> --}}
                   {{-- <div class="dropdown-divider"></div> --}}
                                  @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
