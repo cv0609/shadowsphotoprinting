@@ -1,7 +1,10 @@
 <?php
 namespace App\Services;
 use App\Models\Blog;
+use App\Models\GiftCardCategory;
 use App\Models\ProductCategory;
+use App\Models\PhotoForSaleProduct;
+
 class PageDataService
 {
     public function getBlogs()
@@ -41,5 +44,12 @@ class PageDataService
        {
            return null;
        }  
+     }
+
+     public function getShopProductsBySlug()
+     {
+       $data['giftcardCount'] = GiftCardCategory::count();
+       $data['photoSaleCount'] = PhotoForSaleProduct::count();
+       return  $data;
      }
 }

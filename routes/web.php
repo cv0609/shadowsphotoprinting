@@ -86,7 +86,6 @@ Route::prefix('admin')->group(function () {
         Route::post('/shipping-save',[ShippingController::class,'shippingSave'])->name('shipping-save');
         Route::get('/shipping-show/{id}', [ShippingController::class, 'shippingShow'])->name('shipping-show');
         Route::post('/shipping-update',[ShippingController::class,'shippingUpdate'])->name('shipping-update');
-        Route::delete('/shipping-delete/{id}',[ShippingController::class,'shippingDistroy'])->name('shipping-delete');
     });
 });
 

@@ -107,3 +107,22 @@ input[type="file"].form-control {
 ul.pagination {
     justify-content: flex-end;
 }
+
+.right_col .row {
+    display: block !important;
+}
+.col-md-4.col-sm-4.tile_stats_count {
+    max-width: 13%;
+}
+
+@media  (max-width:1199px){
+    .col-md-4.col-sm-4.tile_stats_count {
+        max-width: 20%;
+    }
+}
+
+@media  (max-width:575px){
+    .col-md-4.col-sm-4.tile_stats_count {
+        max-width: 33%;
+    }
+}

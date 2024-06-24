@@ -15,4 +15,9 @@ class GiftCardCategory extends Model
         'slug',
         'image'
     ];
+
+    public function giftcards()
+    {
+        return $this->hasMany(GiftCardCategory::class,'slug');
+    }
 }
