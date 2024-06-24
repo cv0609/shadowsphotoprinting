@@ -60,6 +60,10 @@
                                         </li>
                                     </ul>
                                 </li>
+                                @else
+                                <li class="update-menu" data-bs-toggle="modal" data-bs-target="#login-form"><a
+                                    class=""><span> Login/Signup</span> </a></li>
+                                @endif
                                 <li><a>
                                         <span class="kt-extras-label">
                                             <span class="cart-extras-title">Cart</span>
@@ -72,10 +76,7 @@
                                 <li class="social-media"><a href="https://www.facebook.com/Shadows-Photo-Printing-635792569950635"><i class="fa-brands fa-facebook-f"></i> </a></li>
                                 <li class="social-media"><a href="https://www.instagram.com/shadowsphotoprinting/"> <i class="fa-brands fa-instagram"></i> </a></li>
 
-                                @else
-                                <li class="update-menu" data-bs-toggle="modal" data-bs-target="#login-form"><a
-                                    class=""><span> Login/Signup</span> </a></li>
-                                @endif
+
 
                             </ul>
                         </div>

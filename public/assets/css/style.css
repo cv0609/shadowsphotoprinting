@@ -3416,6 +3416,10 @@ a.calculat-shipping {
     color: #16a085;
 }
 
+ .validator {
+    border-color: red !important;
+ }
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;

@@ -30,7 +30,7 @@
                                        @foreach ($cart->items as $item)
                                          <tr>
                                             <td class="product-remove">
-                                                <a href="">×</a>
+                                                <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                             </td>
                                             <td class="product-thumbnail">
                                                 <a href="#"><img src="{{ asset($item->selected_images) }}" alt=""></a>
@@ -54,8 +54,7 @@
                                                 <div class="coupon-icons">
                                                     <input type="text" name="coupon_code" class="input-text"
                                                         id="coupon_code" value="" placeholder="Coupon code">
-                                                    <button type="submit" class="button" name="apply_coupon"
-                                                        value="Apply coupon">Apply coupon</button>
+                                                    <button type="button" class="button" id="apply_coupon">Apply coupon</button>
                                                 </div>
                                                 <button type="submit " class="button satay" name="update_cart"
                                                     value="Update cart">Update cart</button>
@@ -121,5 +120,30 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+  <script>
+     $("#apply_coupon").on('click',function(){
+        $("#coupon_code").removeClass('validator');
+
+        if(!$("#coupon_code").val())
+          {
+            $("#coupon_code").addClass('validator');
+          }
+          else
+           {
+             var couponCode = $("#coupon_code").val();
+             $.post("{{ route('apply-coupon') }}",
+                {
+                    coupon_code: couponCode,
+                    "_token": "{{ csrf_token() }}"
+                },
+                function(res){
+                    console.log(res);
+                });
+           }
+     })
+  </script>
 @endsection
 

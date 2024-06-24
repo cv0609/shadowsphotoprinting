@@ -60,17 +60,22 @@ class CartController extends Controller
         return view('front-end.cart',compact('cart','total'));
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart($product_id)
     {
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->first();
 
         if ($cart) {
-            $cartItem = CartItem::where('cart_id', $cart->id)
-                                ->where('product_id', $request->product_id)
+            $CartData = CartData::where('cart_id', $cart->id)
+                                ->where('product_id', $product_id)
                                 ->delete();
         }
 
-        return response()->json(['message' => 'Item removed from cart']);
+        return redirect()->route('cart')->with('success','Item removed from cart');
     }
+
+    public function applyCoupon(Request $request)
+     {
+        echo $request->coupon_code;
+     }
 }
