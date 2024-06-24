@@ -9,7 +9,7 @@
 	<link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/ico" />
 
     <title>Gentelella Alela!</title>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
     <!-- Bootstrap -->
     <link href="{{ asset('assets/admin/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->

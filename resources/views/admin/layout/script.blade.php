@@ -39,4 +39,4 @@
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('assets/admin/build/js/custom.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
