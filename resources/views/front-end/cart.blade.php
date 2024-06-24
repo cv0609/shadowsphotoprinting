@@ -131,6 +131,18 @@
           {
             $("#coupon_code").addClass('validator');
           }
+          else
+           {
+             var couponCode = $("#coupon_code").val();
+             $.post("{{ route('apply-coupon') }}",
+                {
+                    coupon_code: couponCode,
+                    "_token": "{{ csrf_token() }}"
+                },
+                function(res){
+                    console.log(res);
+                });
+           }
      })
   </script>
 @endsection

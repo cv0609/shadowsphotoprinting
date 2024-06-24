@@ -94,6 +94,7 @@ Route::post('/products-by-category',[ShopController::class,'getProductsBycategor
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

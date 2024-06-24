@@ -73,4 +73,9 @@ class CartController extends Controller
 
         return redirect()->route('cart')->with('success','Item removed from cart');
     }
+
+    public function applyCoupon(Request $request)
+     {
+        echo $request->coupon_code;
+     }
 }
