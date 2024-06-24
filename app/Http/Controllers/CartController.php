@@ -7,12 +7,13 @@ use App\Models\Cart;
 use App\Models\CartData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Session;
 class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-       $cart = Cart::create(["user_id"=>"","coupon_id"=>null]);
+       $session_id = Session::getId();
+       $cart = Cart::firstOrCreate(["user_email"=>"","coupon_id"=>null,"session_id"=>$session_id]);
 
        if($cart)
          {
@@ -38,8 +39,16 @@ class CartController extends Controller
 
                  }
 
-                CartData::insert($data);
+                CartData::updateOrCreate($data);
               }
          }
+    }
+
+    public function cart()
+    {
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+
+        return view('front-end.cart',compact('cart'));
     }
 }

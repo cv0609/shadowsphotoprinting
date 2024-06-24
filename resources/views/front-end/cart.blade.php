@@ -27,26 +27,28 @@
                                         </th>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                       @foreach ($cart->items as $item)
+                                         <tr>
                                             <td class="product-remove">
                                                 <a href="">×</a>
                                             </td>
                                             <td class="product-thumbnail">
-                                                <a href="#"><img src="images/cart-img.jfif" alt=""></a>
+                                                <a href="#"><img src="{{ asset($item->selected_images) }}" alt=""></a>
                                             </td>
                                             <td class="product-name">
-                                                <a href="">5”x5” Prints</a>
+                                                <a href="">{{ $item->product->product_title }}</a>
                                             </td>
                                             <td class="product-price">
-                                                <span class=""><bdi><span class="">$</span>0.55</bdi></span>
+                                                <span class=""><bdi><span class="">$</span>{{ $item->product->product_price }}</bdi></span>
                                             </td>
                                             <td class="product-quantity">
-                                                <input type="number" name="" id="" placeholder="0">
+                                                <input type="number" name="" id="" placeholder="0" value="{{ $item->quantity }}">
                                             </td>
                                             <td class="product-subtotal">
-                                                <span><bdi><span>$</span>0.55</bdi></span>
+                                                <span><bdi><span>$</span>{{ $item->product->product_price }}</bdi></span>
                                             </td>
                                         </tr>
+                                        @endforeach
                                         <tr>
                                             <td colspan="6" class="actions">
                                                 <div class="coupon-icons">

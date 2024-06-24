@@ -92,6 +92,7 @@ Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('s
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

@@ -31,7 +31,7 @@
                     <div class="fw-head">
                         <h4>Cart contents</h4>
                         <div class="quanti">
-                            <a href="#">VIEW CART</a>
+                            <a href="{{ route('cart') }}">VIEW CART</a>
                         </div>
                     </div>
                     <div class="cart-totals">
@@ -91,7 +91,7 @@
                         <a href="#" id="add-to-cart">ADD TO CART</a>
                     </div>
                     <div class="quanti">
-                        <a href="#">VIEW CART / CHECKOUT</a>
+                        <a href="{{ route('cart') }}">VIEW CART / CHECKOUT</a>
                     </div>
                 </div>
             </div>
