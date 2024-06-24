@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Coupon extends Model
 {
@@ -27,4 +28,14 @@ class Coupon extends Model
         'multiple_use',
         'total_use'
     ];
+
+    public function isExpired()
+    {
+        return $this->end_date && Carbon::parse($this->end_date)->isPast();
+    }
+
+    public function canBeUsed()
+    {
+        return !$this->usage_limit || $this->used < $this->usage_limit;
+    }
 }
