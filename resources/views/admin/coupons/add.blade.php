@@ -22,7 +22,7 @@
                     @csrf
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="coupon_type" >Coupon Type <span class="required">*</span>
-                        </label>.
+                        </label>
                         <div class="col-md-6 col-sm-6">
                             <select class="form-control" name="coupon_type">
                                <option value="">Select</option>
@@ -104,7 +104,7 @@
                     
                     <div class="item form-group ">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Products<span ></span>
-                        </label>.
+                        </label>
                         <div class="col-md-6 col-sm-6">
                             <select class="form-control " id="optlist" name="products[]" multiple="multiple">
                                 @foreach ($products as $product)
