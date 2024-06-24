@@ -74,9 +74,10 @@
                                     <tbody>
                                         <tr class="cart-subtotal">
                                             <th>Subtotal</th>
-                                            <td data-title="Subtotal"><span><bdi><span>$</span>0.55</bdi></span>
+                                            <td data-title="Subtotal"><span><bdi><span>$</span>{{ $total }}</bdi></span>
                                             </td>
                                         </tr>
+                                        @if(isset($cart->coupon_id) && !empty($cart->coupon_id))
                                         <tr class="cart-discount coupon-eofy-discount">
                                             <th>Coupon: eofy discount</th>
                                             <td data-title="Coupon: eofy discount">-<span
@@ -84,6 +85,7 @@
                                                         class="woocommerce-Price-currencySymbol">$</span>0.27</span>
                                             </td>
                                         </tr>
+                                        @endif
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
@@ -107,7 +109,7 @@
                                     <a href="" class="checkout-button button alt wc-forward">
                                         Proceed to checkout</a>
                                 </div>
-                                <div class="shopping_btn_cstm"> <a href="#" class="shop_cont_button">Continue
+                                <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}" class="shop_cont_button">Continue
                                         Shopping →</a></div>
                             </div>
                         </div>

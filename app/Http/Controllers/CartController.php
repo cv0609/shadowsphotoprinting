@@ -7,9 +7,16 @@ use App\Models\Cart;
 use App\Models\CartData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\CartService;
 use Session;
+
 class CartController extends Controller
 {
+    protected $CartService;
+    public function __construct(CartService $CartService)
+    {
+        $this->CartService = $CartService;
+    }
     public function addToCart(Request $request)
     {
        $session_id = Session::getId();
@@ -48,7 +55,7 @@ class CartController extends Controller
     {
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
-
-        return view('front-end.cart',compact('cart'));
+        $total = $this->CartService->getCartTotal();
+        return view('front-end.cart',compact('cart','total'));
     }
 }
