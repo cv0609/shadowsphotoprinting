@@ -12,6 +12,8 @@ use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\admin\ShippingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,6 +80,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/coupon-show/{id}', [CouponController::class, 'couponShow'])->name('coupon-show');
         Route::post('/coupon-update',[CouponController::class,'couponUpdate'])->name('coupon-update');
         Route::delete('/coupon-delete/{id}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
+
+        Route::get('/shipping',[ShippingController::class,'shipping'])->name('shipping-list');
+        Route::get('/shipping-add',[ShippingController::class,'shippingAdd'])->name('shipping-add');
+        Route::post('/shipping-save',[ShippingController::class,'shippingSave'])->name('shipping-save');
+        Route::get('/shipping-show/{id}', [ShippingController::class, 'shippingShow'])->name('shipping-show');
+        Route::post('/shipping-update',[ShippingController::class,'shippingUpdate'])->name('shipping-update');
+        Route::delete('/shipping-delete/{id}',[ShippingController::class,'shippingDistroy'])->name('shipping-delete');
     });
 });
 
