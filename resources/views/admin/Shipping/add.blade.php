@@ -22,7 +22,7 @@
                     @csrf
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="country" >Country <span class="required">*</span>
-                        </label>.
+                        </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="country" name="country" required="required" class="form-control ">
                             @error('country')
@@ -33,7 +33,7 @@
 
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="shipping_method" >Shipping Method <span class="required">*</span>
-                        </label>.
+                        </label>
                         <div class="col-md-6 col-sm-6">
                             <select class="form-control" name="shipping_method">
                                <option value="">Select</option>
