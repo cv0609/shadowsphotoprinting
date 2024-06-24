@@ -39,13 +39,13 @@
                                                 <a href="">{{ $item->product->product_title }}</a>
                                             </td>
                                             <td class="product-price">
-                                                <span class=""><bdi><span class="">$</span>{{ $item->product->product_price }}</bdi></span>
+                                                <span class=""><bdi><span class="">$</span>{{ number_format($item->product->product_price,2) }}</bdi></span>
                                             </td>
                                             <td class="product-quantity">
                                                 <input type="number" name="" id="" placeholder="0" value="{{ $item->quantity }}">
                                             </td>
                                             <td class="product-subtotal">
-                                                <span><bdi><span>$</span>{{ $item->product->product_price }}</bdi></span>
+                                                <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -74,7 +74,7 @@
                                     <tbody>
                                         <tr class="cart-subtotal">
                                             <th>Subtotal</th>
-                                            <td data-title="Subtotal"><span><bdi><span>$</span>{{ $total }}</bdi></span>
+                                            <td data-title="Subtotal"><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span>
                                             </td>
                                         </tr>
                                         @if(isset($cart->coupon_id) && !empty($cart->coupon_id))

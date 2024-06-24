@@ -42,11 +42,12 @@ class CartController extends Controller
                         $Images[] = $permanentImagePath;
 
                     }
+
                     $data['selected_images'] =  implode(',',$Images);
 
                  }
 
-                CartData::updateOrCreate($data);
+                CartData::insert($data);
               }
          }
     }
@@ -57,5 +58,19 @@ class CartController extends Controller
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $total = $this->CartService->getCartTotal();
         return view('front-end.cart',compact('cart','total'));
+    }
+
+    public function removeFromCart(Request $request)
+    {
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->first();
+
+        if ($cart) {
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                                ->where('product_id', $request->product_id)
+                                ->delete();
+        }
+
+        return response()->json(['message' => 'Item removed from cart']);
     }
 }
