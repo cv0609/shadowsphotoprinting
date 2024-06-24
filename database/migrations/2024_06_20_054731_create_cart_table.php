@@ -13,6 +13,7 @@ return new class extends Migration
         Schema::create('cart', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_email')->nullable();
+            $table->string('session_id')->nullable();
             $table->unsignedInteger('coupon_id')->nullable();
             $table->timestamps();
             $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('cascade');

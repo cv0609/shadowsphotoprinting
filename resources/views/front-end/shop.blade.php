@@ -64,7 +64,7 @@
     <div class="container">
         <div class="kad_product">
             <div class="row">
-                <div class="col-xl-3 col-lg-4 col-md-6">
+                {{-- <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
                         <a href="javascript:void(0)">
                             <div class="cat-intrinsic">
@@ -75,7 +75,7 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
                         <a href="javascript:void(0)">

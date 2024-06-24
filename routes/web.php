@@ -12,6 +12,8 @@ use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\admin\ShippingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,6 +80,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/coupon-show/{id}', [CouponController::class, 'couponShow'])->name('coupon-show');
         Route::post('/coupon-update',[CouponController::class,'couponUpdate'])->name('coupon-update');
         Route::delete('/coupon-delete/{id}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
+
+        Route::get('/shipping',[ShippingController::class,'shipping'])->name('shipping-list');
+        Route::get('/shipping-add',[ShippingController::class,'shippingAdd'])->name('shipping-add');
+        Route::post('/shipping-save',[ShippingController::class,'shippingSave'])->name('shipping-save');
+        Route::get('/shipping-show/{id}', [ShippingController::class, 'shippingShow'])->name('shipping-show');
+        Route::post('/shipping-update',[ShippingController::class,'shippingUpdate'])->name('shipping-update');
+        Route::delete('/shipping-delete/{id}',[ShippingController::class,'shippingDistroy'])->name('shipping-delete');
     });
 });
 
@@ -92,6 +101,9 @@ Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('s
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

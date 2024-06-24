@@ -44,7 +44,7 @@
                   <li><a href="{{route('gift-card-list')}}"><i class="fa fa-duotone fa-gift"></i>Gift Cards</a></li>
                   <li><a href="{{route('coupons-list')}}"><i class="fa fa-solid fa-tag"></i>Coupons</a>
                   <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>
-
+                  <li><a href="{{route('shipping-list')}}"><i class="fa fa-truck"></i>Shipping</a></li>
                 </ul>
               </div>
 

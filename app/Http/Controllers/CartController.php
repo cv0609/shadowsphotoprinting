@@ -7,12 +7,20 @@ use App\Models\Cart;
 use App\Models\CartData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\CartService;
+use Session;
 
 class CartController extends Controller
 {
+    protected $CartService;
+    public function __construct(CartService $CartService)
+    {
+        $this->CartService = $CartService;
+    }
     public function addToCart(Request $request)
     {
-       $cart = Cart::create(["user_id"=>"","coupon_id"=>null]);
+       $session_id = Session::getId();
+       $cart = Cart::firstOrCreate(["user_email"=>"","coupon_id"=>null,"session_id"=>$session_id]);
 
        if($cart)
          {
@@ -34,6 +42,7 @@ class CartController extends Controller
                         $Images[] = $permanentImagePath;
 
                     }
+
                     $data['selected_images'] =  implode(',',$Images);
 
                  }
@@ -42,4 +51,31 @@ class CartController extends Controller
               }
          }
     }
+
+    public function cart()
+    {
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        $total = $this->CartService->getCartTotal();
+        return view('front-end.cart',compact('cart','total'));
+    }
+
+    public function removeFromCart($product_id)
+    {
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->first();
+
+        if ($cart) {
+            $CartData = CartData::where('cart_id', $cart->id)
+                                ->where('product_id', $product_id)
+                                ->delete();
+        }
+
+        return redirect()->route('cart')->with('success','Item removed from cart');
+    }
+
+    public function applyCoupon(Request $request)
+     {
+        echo $request->coupon_code;
+     }
 }

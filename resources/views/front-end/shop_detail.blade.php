@@ -31,7 +31,7 @@
                     <div class="fw-head">
                         <h4>Cart contents</h4>
                         <div class="quanti">
-                            <a href="#">VIEW CART</a>
+                            <a href="{{ route('cart') }}">VIEW CART</a>
                         </div>
                     </div>
                     <div class="cart-totals">
@@ -91,7 +91,7 @@
                         <a href="#" id="add-to-cart">ADD TO CART</a>
                     </div>
                     <div class="quanti">
-                        <a href="#">VIEW CART / CHECKOUT</a>
+                        <a href="{{ route('cart') }}">VIEW CART / CHECKOUT</a>
                     </div>
                 </div>
             </div>
@@ -225,4 +225,36 @@ $(document).ready(function() {
  })
 
 </script>
+<script>
+    $(document).ready(function() {
+        $('#selectall').click(function() {
+            $('.selected-images input[type="checkbox"]').each(function() {
+                $(this).prop('checked', true);
+                $(this).nextAll('#unchecked-img').addClass('d-none');
+                $(this).nextAll('#checked-img').removeClass('d-none');
+            });
+        });
+
+        $('#deselectall').click(function() {
+            $('.selected-images input[type="checkbox"]').each(function() {
+                $(this).prop('checked', false);
+                $(this).nextAll('#checked-img').addClass('d-none');
+                $(this).nextAll('#unchecked-img').removeClass('d-none');
+            });
+        });
+
+        $('.selected-images').click(function() {
+            let checkbox = $(this).find('input[type="checkbox"]');
+            checkbox.prop('checked', !checkbox.prop('checked'));
+            if (checkbox.prop('checked')) {
+                $(this).find('#unchecked-img').addClass('d-none');
+                $(this).find('#checked-img').removeClass('d-none');
+            } else {
+                $(this).find('#checked-img').addClass('d-none');
+                $(this).find('#unchecked-img').removeClass('d-none');
+            }
+        });
+    });
+</script>
+
 @endsection

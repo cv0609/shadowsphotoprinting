@@ -27,33 +27,34 @@
                                         </th>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                       @foreach ($cart->items as $item)
+                                         <tr>
                                             <td class="product-remove">
-                                                <a href="">×</a>
+                                                <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                             </td>
                                             <td class="product-thumbnail">
-                                                <a href="#"><img src="images/cart-img.jfif" alt=""></a>
+                                                <a href="#"><img src="{{ asset($item->selected_images) }}" alt=""></a>
                                             </td>
                                             <td class="product-name">
-                                                <a href="">5”x5” Prints</a>
+                                                <a href="">{{ $item->product->product_title }}</a>
                                             </td>
                                             <td class="product-price">
-                                                <span class=""><bdi><span class="">$</span>0.55</bdi></span>
+                                                <span class=""><bdi><span class="">$</span>{{ number_format($item->product->product_price,2) }}</bdi></span>
                                             </td>
                                             <td class="product-quantity">
-                                                <input type="number" name="" id="" placeholder="0">
+                                                <input type="number" name="" id="" placeholder="0" value="{{ $item->quantity }}">
                                             </td>
                                             <td class="product-subtotal">
-                                                <span><bdi><span>$</span>0.55</bdi></span>
+                                                <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span>
                                             </td>
                                         </tr>
+                                        @endforeach
                                         <tr>
                                             <td colspan="6" class="actions">
                                                 <div class="coupon-icons">
                                                     <input type="text" name="coupon_code" class="input-text"
                                                         id="coupon_code" value="" placeholder="Coupon code">
-                                                    <button type="submit" class="button" name="apply_coupon"
-                                                        value="Apply coupon">Apply coupon</button>
+                                                    <button type="button" class="button" id="apply_coupon">Apply coupon</button>
                                                 </div>
                                                 <button type="submit " class="button satay" name="update_cart"
                                                     value="Update cart">Update cart</button>
@@ -72,9 +73,10 @@
                                     <tbody>
                                         <tr class="cart-subtotal">
                                             <th>Subtotal</th>
-                                            <td data-title="Subtotal"><span><bdi><span>$</span>0.55</bdi></span>
+                                            <td data-title="Subtotal"><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span>
                                             </td>
                                         </tr>
+                                        @if(isset($cart->coupon_id) && !empty($cart->coupon_id))
                                         <tr class="cart-discount coupon-eofy-discount">
                                             <th>Coupon: eofy discount</th>
                                             <td data-title="Coupon: eofy discount">-<span
@@ -82,6 +84,7 @@
                                                         class="woocommerce-Price-currencySymbol">$</span>0.27</span>
                                             </td>
                                         </tr>
+                                        @endif
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
@@ -105,7 +108,7 @@
                                     <a href="" class="checkout-button button alt wc-forward">
                                         Proceed to checkout</a>
                                 </div>
-                                <div class="shopping_btn_cstm"> <a href="#" class="shop_cont_button">Continue
+                                <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}" class="shop_cont_button">Continue
                                         Shopping →</a></div>
                             </div>
                         </div>
@@ -117,5 +120,30 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+  <script>
+     $("#apply_coupon").on('click',function(){
+        $("#coupon_code").removeClass('validator');
+
+        if(!$("#coupon_code").val())
+          {
+            $("#coupon_code").addClass('validator');
+          }
+          else
+           {
+             var couponCode = $("#coupon_code").val();
+             $.post("{{ route('apply-coupon') }}",
+                {
+                    coupon_code: couponCode,
+                    "_token": "{{ csrf_token() }}"
+                },
+                function(res){
+                    console.log(res);
+                });
+           }
+     })
+  </script>
 @endsection
 
