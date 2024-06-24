@@ -66,11 +66,11 @@ class CartController extends Controller
         $cart = Cart::where('session_id', $session_id)->first();
 
         if ($cart) {
-            $cartItem = CartItem::where('cart_id', $cart->id)
+            $CartData = CartData::where('cart_id', $cart->id)
                                 ->where('product_id', $product_id)
                                 ->delete();
         }
 
-        return response()->json(['message' => 'Item removed from cart']);
+        return redirect()->route('cart')->with('success','Item removed from cart');
     }
 }
