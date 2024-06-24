@@ -1,7 +1,9 @@
 @extends('front-end.layout.main')
 @section('content')
- <!-- HERO SECTION -->
-        {{-- @php dd($page_content); @endphp --}}
+@php
+   $PageDataService = app(App\Services\PageDataService::class);
+   $productCount = $PageDataService->getShopProductsBySlug();
+@endphp
 
  <div class="banner-slider fade-slider">
 
@@ -78,24 +80,24 @@
                 </div> --}}
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
-                        <a href="javascript:void(0)">
+                        <a href="{{ url('our-products/gift-card') }}">
                             <div class="cat-intrinsic">
-                                <img src="assets/images/gift-card-scaled.jpeg" alt="">
+                                <img src="{{ asset('assets/images/gift-card-scaled.jpeg') }}" alt="">
                             </div>
                             <div class="product-cat-title">
-                                <h3>Gift Card <small class="count">(3)</small></h3>
+                                <h3>Gift Card <small class="count">({{ $productCount['giftcardCount'] }})</small></h3>
                             </div>
                         </a>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
-                        <a href="javascript:void(0)">
+                        <a href="{{ url('our-products/photos-for-sale') }}">
                             <div class="cat-intrinsic">
-                                <img src="assets/images/The-Dish-Parkes.jpg" alt="">
+                                <img src="{{ asset('assets/images/The-Dish-Parkes.jpg') }}" alt="">
                             </div>
                             <div class="product-cat-title">
-                                <h3>Image <small class="count">(63)</small></h3>
+                                <h3>Image <small class="count">({{ $productCount['photoSaleCount'] }})</small></h3>
                             </div>
                         </a>
                     </div>
