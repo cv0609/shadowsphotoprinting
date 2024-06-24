@@ -1,6 +1,13 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main" style="min-height: 3963px;">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('coupons-list') }}">Coupons</a></li>
+          <li class="breadcrumb-item"><a href="#">Edit Coupon</a></li>
+        </ol>
+    </nav>
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -99,7 +106,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Products<span ></span>
                         </label>.
                         <div class="col-md-6 col-sm-6">
-                            <select class="form-control" name="products[]" multiple="multiple">
+                            <select class="form-control" id="optlist" name="products[]" multiple="multiple">
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}"<?= (in_array($product->id,explode(',',$coupon_detail->products))) ? "selected" : ""  ?>>{{ $product->product_title }}</option>
                                 @endforeach
@@ -159,5 +166,12 @@
 
         $('.inputDate').attr('min', maxDate);
     });
-    </script>
+    
+    $(document).ready(function() {
+        $('#optlist').select2({
+            placeholder: 'Select products',
+            allowClear: true
+        });
+    });
+</script>
 @endsection
