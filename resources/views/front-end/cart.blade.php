@@ -30,7 +30,7 @@
                                        @foreach ($cart->items as $item)
                                          <tr>
                                             <td class="product-remove">
-                                                <a href="">×</a>
+                                                <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}">×</a>
                                             </td>
                                             <td class="product-thumbnail">
                                                 <a href="#"><img src="{{ asset($item->selected_images) }}" alt=""></a>
