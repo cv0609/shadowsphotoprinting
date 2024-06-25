@@ -48,11 +48,11 @@
                         <td>{{ $shipping->country }}</td>
                         <td>{{ $shipping->amount }}</td>
                         <td>                          
-                          <label class="switch">
-                            <input type="checkbox" checked>
+                          <label  class="switch">
+                            <input type="checkbox" id="{{ $shipping->id }}" onchange="updateShipping(this)" name="status" class="toggle-class"  {{$shipping->status?'checked':''}}>
                             <span class="slider round"></span>
                           </label>
-                       </td>
+                        </td>
                         <td>
                           <div class="x_content">
                             <a href="{{ route('shipping-show', ['id' => $shipping->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
@@ -70,4 +70,30 @@
       </div>
     </div>
   </div>
+@endsection
+@section('custom-script')
+  <script>
+    $('.toggle-class').change(function() {
+
+        var status = $(this).prop('checked') == true ? 1 : 0;
+        var id = $(this).data('shipping_id');
+        $.ajax({
+
+            type: "POST",
+            dataType: "json",
+            url: "{{ route('shipping-update') }}",
+            data: {
+                'status': status,
+                'shipping_id': id,
+                '_token': '{{ csrf_token() }}'
+            },
+
+            success: function(data) {
+                console.log(data.success)
+          
+            }
+        });
+    })
+</script>
+ 
 @endsection

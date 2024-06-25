@@ -33,7 +33,7 @@ class ShippingController extends Controller
 
     public function shippingUpdate(Request $request)
     {  
-        Shipping::whereId($request->shipping_id)->update(['shipping_method'=>$request->shipping_method,'amount'=>$request->amount]);
+        Shipping::whereId($request->shipping_id)->update(['shipping_method'=>$request->shipping_method,'amount'=>$request->amount,'status'=>$request->status]);
         return redirect()->route('shipping-list')->with('success', 'Shipping updated successfully!');
     }
 }
