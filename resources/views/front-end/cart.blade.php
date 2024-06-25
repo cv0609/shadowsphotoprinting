@@ -56,6 +56,7 @@
                                                     <input type="text" name="coupon_code" class="input-text"
                                                         id="coupon_code" value="" placeholder="Coupon code">
                                                     <button type="button" class="button" id="apply_coupon">Apply coupon</button>
+                                                    <span class="text-danger coupon-errors"></span>
                                                 </div>
                                                 <button type="submit " class="button satay" name="update_cart"
                                                     value="Update cart">Update cart</button>
@@ -84,18 +85,145 @@
                                             <td data-title="Coupon: {{ Session::get('coupon')['code'] }} discount">-<span
                                                     class="woocommerce-Price-amount amount"><span
                                                         class="woocommerce-Price-currencySymbol">$</span>
-                                                        {{ Session::get('coupon')['discount_amount'] }}</span>
+                                                        {{ number_format(Session::get('coupon')['discount_amount'],2) }}</span>
                                             </td>
                                         </tr>
                                         @endif
+                                        @if($shipping->status == "1")
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
+
+                                                @if(Session::has('billing_details'))
+                                                <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
+                                                <p>
+                                                <p class="">
+                                                    Shipping to <strong>ghhhhhhhhhhhhhh, ccc Northern Territory
+                                                        ghhhhhhhhhhhhh</strong>. </p>
+                                                </p>
+
+                                                <form action="" class="change-address-form">
+                                                    <a class="change-address calculat-shipping" id="change-address">Change
+                                                        address</a>
+                                                    <div class="calculate-shipping">
+                                                        <div class="custom-select">
+                                                            <div class="select-box">
+                                                                <div class="selected-item">
+                                                                    Select an option
+                                                                </div>
+                                                                <div class="arrow">
+                                                                    <i class="fa-solid fa-caret-down"></i>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="options">
+                                                                <input type="text" class="search-box"
+                                                                    placeholder="Search options">
+                                                                <li class="option">Australian Capital Territory
+                                                                </li>
+                                                                <li class="option">New South Wales</li>
+                                                                <li class="option">Northern Territory</li>
+
+                                                            </ul>
+                                                        </div>
+                                                        <div class="custom-select">
+                                                            <div class="select-box">
+                                                                <div class="selected-item">
+                                                                    Select an option
+                                                                </div>
+                                                                <div class="arrow">
+                                                                    <i class="fa-solid fa-caret-down"></i>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="options">
+                                                                <input type="text" class="search-box"
+                                                                    placeholder="Search options">
+                                                                <li class="option">Australian Capital Territory
+                                                                </li>
+                                                                <li class="option">New South Wales</li>
+                                                                <li class="option">Northern Territory</li>
+
+                                                            </ul>
+                                                        </div>
+                                                        <p class="form-row">
+                                                            <input type="text" name="city" placeholder="city">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <input type="text" name="city"
+                                                                placeholder="postcode/ ZIP">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <button type="button"
+                                                                class="update-btn">Update</button>
+                                                        </p>
+                                                    </div>
+                                                </form>
+                                                @endif
+
+                                                @if(!Session::has('billing_details'))
                                                 <p class="woocommerce-shipping-destination">
                                                     Shipping options will be updated during checkout. </p>
-                                                <a href="#" class="calculat-shipping">Calculate shipping</a>
+
+                                                <form action="" class="change-calculate-form">
+                                                    <a class="calculat-shipping"
+                                                        id="calculat-shipping">Calculate shipping</a>
+                                                    <div class="calculate-shipping">
+                                                        <div class="custom-select">
+                                                            <div class="select-box">
+                                                                <div class="selected-item">
+                                                                    Select an option
+                                                                </div>
+                                                                <div class="arrow">
+                                                                    <i class="fa-solid fa-caret-down"></i>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="options">
+                                                                <input type="text" class="search-box"
+                                                                    placeholder="Search options">
+                                                                <li class="option">Australian Capital
+                                                                    Territory
+                                                                </li>
+                                                                <li class="option">New South Wales</li>
+                                                                <li class="option">Northern Territory</li>
+
+                                                            </ul>
+                                                        </div>
+                                                        <div class="custom-select">
+                                                            <div class="select-box">
+                                                                <div class="selected-item">
+                                                                    Select an option
+                                                                </div>
+                                                                <div class="arrow">
+                                                                    <i class="fa-solid fa-caret-down"></i>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="options">
+                                                                <input type="text" class="search-box"
+                                                                    placeholder="Search options">
+                                                                <li class="option">Australian Capital
+                                                                    Territory
+                                                                </li>
+                                                                <li class="option">New South Wales</li>
+                                                                <li class="option">Northern Territory</li>
+
+                                                            </ul>
+                                                        </div>
+                                                        <p class="form-row">
+                                                            <input type="text" name="city" placeholder="city">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <input type="text" name="city"
+                                                                placeholder="postcode/ ZIP">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <button type="button"
+                                                                class="update-btn">Update</button>
+                                                        </p>
+                                                    </div>
+                                                </form>
+                                                @endif
                                             </td>
                                         </tr>
+                                        @endif
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td data-title="Total">
@@ -156,5 +284,15 @@
            }
      })
   </script>
+
+<script>
+
+    $(document).ready(function () {
+        $(".calculat-shipping").click(function () {
+            $(".calculate-shipping").slideToggle();
+        });
+    });
+
+</script>
 @endsection
 

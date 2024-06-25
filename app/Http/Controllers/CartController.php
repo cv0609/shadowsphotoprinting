@@ -58,7 +58,8 @@ class CartController extends Controller
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $total = $this->CartService->getCartTotal();
-        return view('front-end.cart',compact('cart','total'));
+        $shipping = $this->CartService->getShippingCharge();
+        return view('front-end.cart',compact('cart','total','shipping'));
     }
 
     public function removeFromCart($product_id)
@@ -78,6 +79,8 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
      {
         $coupon = Coupon::where('code', $request->coupon_code)->first();
+        $total = $this->CartService->getCartTotal();
+
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
@@ -93,13 +96,11 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
-        $total = $this->CartService->getCartTotal();
-
         if ($total < $coupon->minimum_cart_total) {
             return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
         }
 
-        if($total >= $coupon->minimum_spend && $total <= $coupon->maximum_spend)
+        if($total < $coupon->minimum_spend || $total > $coupon->maximum_spend)
         {
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
         }
