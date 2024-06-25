@@ -55,6 +55,7 @@
                                                     <input type="text" name="coupon_code" class="input-text"
                                                         id="coupon_code" value="" placeholder="Coupon code">
                                                     <button type="button" class="button" id="apply_coupon">Apply coupon</button>
+                                                    <span class="text-danger coupon-errors"></span>
                                                 </div>
                                                 <button type="submit " class="button satay" name="update_cart"
                                                     value="Update cart">Update cart</button>
@@ -140,7 +141,11 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 function(res){
-                    console.log(res);
+                    if(res.success === false)
+                      {
+                        $("#coupon_code").addClass('validator');
+                        $(".coupon-errors").html(res.message);
+                      }
                 });
            }
      })
