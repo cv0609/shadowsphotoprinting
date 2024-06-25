@@ -8,12 +8,15 @@
           <li class="breadcrumb-item"><a href="#">Edit Shipping</a></li>
         </ol>
     </nav>
+    @if(Session::has('success'))
+    <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+  @endif
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Add Coupon</h2>
+                <h2>Edit Shipping</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -23,8 +26,8 @@
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="country" >Country <span class="required">*</span>
                         </label>.
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="country" name="country" required="required" class="form-control " value="{{ $shipping->country }}">
+                        <div class="col-md-6 col-sm-6 " >
+                            <input type="text" id="country" name="country" required="required" class="form-control " value="{{ $shipping->country }}" disabled>
                             @error('country')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
