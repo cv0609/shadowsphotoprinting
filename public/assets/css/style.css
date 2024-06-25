@@ -3574,3 +3574,10 @@ form.change-calculate-form a {
 .calculate-shipping .custom-select {
     margin-bottom: 7px;
 }
+
+.cart-collaterals button.select2-selection__clear {
+    display: none;
+}
+.cart-collaterals span.select2 {
+    margin-bottom: 7px;
+}

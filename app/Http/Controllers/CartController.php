@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartData;
+use App\Models\Country;
 use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -57,9 +58,10 @@ class CartController extends Controller
     {
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        $countries = Country::find(14);
         $total = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
-        return view('front-end.cart',compact('cart','total','shipping'));
+        return view('front-end.cart',compact('cart','total','shipping','countries'));
     }
 
     public function removeFromCart($product_id)

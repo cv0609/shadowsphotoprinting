@@ -106,44 +106,18 @@
                                                     <a class="change-address calculat-shipping" id="change-address">Change
                                                         address</a>
                                                     <div class="calculate-shipping">
-                                                        <div class="custom-select">
-                                                            <div class="select-box">
-                                                                <div class="selected-item">
-                                                                    Select an option
-                                                                </div>
-                                                                <div class="arrow">
-                                                                    <i class="fa-solid fa-caret-down"></i>
-                                                                </div>
-                                                            </div>
-                                                            <ul class="options">
-                                                                <input type="text" class="search-box"
-                                                                    placeholder="Search options">
-                                                                <li class="option">Australian Capital Territory
-                                                                </li>
-                                                                <li class="option">New South Wales</li>
-                                                                <li class="option">Northern Territory</li>
-
-                                                            </ul>
-                                                        </div>
-                                                        <div class="custom-select">
-                                                            <div class="select-box">
-                                                                <div class="selected-item">
-                                                                    Select an option
-                                                                </div>
-                                                                <div class="arrow">
-                                                                    <i class="fa-solid fa-caret-down"></i>
-                                                                </div>
-                                                            </div>
-                                                            <ul class="options">
-                                                                <input type="text" class="search-box"
-                                                                    placeholder="Search options">
-                                                                <li class="option">Australian Capital Territory
-                                                                </li>
-                                                                <li class="option">New South Wales</li>
-                                                                <li class="option">Northern Territory</li>
-
-                                                            </ul>
-                                                        </div>
+                                                        <select class="form-control" id="country" name="products" >
+                                                            <option value="volvo">Volvo</option>
+                                                            <option value="saab">Saab</option>
+                                                            <option value="mercedes">Mercedes</option>
+                                                            <option value="audi">Audi</option>                               
+                                                        </select>	
+                                                        <select class="form-control" id="state" name="products" >
+                                                            <option value="volvo">Volvo</option>
+                                                            <option value="saab">Saab</option>
+                                                            <option value="mercedes">Mercedes</option>
+                                                            <option value="audi">Audi</option>                               
+                                                        </select>	
                                                         <p class="form-row">
                                                             <input type="text" name="city" placeholder="city">
                                                         </p>
@@ -167,46 +141,18 @@
                                                     <a class="calculat-shipping"
                                                         id="calculat-shipping">Calculate shipping</a>
                                                     <div class="calculate-shipping">
-                                                        <div class="custom-select">
-                                                            <div class="select-box">
-                                                                <div class="selected-item">
-                                                                    Select an option
-                                                                </div>
-                                                                <div class="arrow">
-                                                                    <i class="fa-solid fa-caret-down"></i>
-                                                                </div>
-                                                            </div>
-                                                            <ul class="options">
-                                                                <input type="text" class="search-box"
-                                                                    placeholder="Search options">
-                                                                <li class="option">Australian Capital
-                                                                    Territory
-                                                                </li>
-                                                                <li class="option">New South Wales</li>
-                                                                <li class="option">Northern Territory</li>
-
-                                                            </ul>
-                                                        </div>
-                                                        <div class="custom-select">
-                                                            <div class="select-box">
-                                                                <div class="selected-item">
-                                                                    Select an option
-                                                                </div>
-                                                                <div class="arrow">
-                                                                    <i class="fa-solid fa-caret-down"></i>
-                                                                </div>
-                                                            </div>
-                                                            <ul class="options">
-                                                                <input type="text" class="search-box"
-                                                                    placeholder="Search options">
-                                                                <li class="option">Australian Capital
-                                                                    Territory
-                                                                </li>
-                                                                <li class="option">New South Wales</li>
-                                                                <li class="option">Northern Territory</li>
-
-                                                            </ul>
-                                                        </div>
+                                                        <select class="form-control" id="country" name="products[]" >
+                                                            <option value="saab" selected>{{ $countries->name }}</option>
+                                                                                           
+                                                        </select>	
+                                                        <select class="form-control" id="state" name="products[]" >
+                                                            <option value="volvo">State</option>
+                                                             @foreach ($countries->states as $state)
+                                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                                                 
+                                                             @endforeach
+                                                       option>                               
+                                                        </select>	
                                                         <p class="form-row">
                                                             <input type="text" name="city" placeholder="city">
                                                         </p>
@@ -294,5 +240,19 @@
     });
 
 </script>
+<script>    
+    $(document).ready(function() {
+        $('#country').select2({
+            placeholder: 'Select products',
+            allowClear: true
+        });
+		   $('#state').select2({
+            placeholder: 'Select products',
+            allowClear: true
+        });
+
+    });
+</script>
+
 @endsection
 
