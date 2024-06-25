@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartData;
+use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
@@ -76,6 +77,38 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
      {
-        echo $request->coupon_code;
+        $coupon = Coupon::where('code', $request->coupon_code)->first();
+
+        if (!$coupon) {
+            return ['success' => false, 'message' => 'Coupon does not exist'];
+        }
+
+        if ($coupon->isExpired()) {
+            return ['success' => false, 'message' => 'Coupon has expired'];
+        }
+
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+
+        if (!$cart) {
+            return ['success' => false, 'message' => 'Cart is empty'];
+        }
+
+        $total = $this->CartService->getCartTotal();
+
+        if ($total < $coupon->minimum_cart_total) {
+            return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
+        }
+
+        // Mark the coupon as used
+        $coupon->used++;
+        $coupon->save();
+
+        Session::put('coupon', [
+            'code' => $coupon->code,
+            'discount_amount' => $coupon->discount_amount,
+        ]);
+
+        return ['success' => true, 'total' => $total - $coupon->discount_amount];
      }
 }
