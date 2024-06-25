@@ -93,8 +93,9 @@
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
-                                                <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
+
                                                 @if(Session::has('billing_details'))
+                                                <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
                                                 <p>
                                                 <p class="">
                                                     Shipping to <strong>ghhhhhhhhhhhhhh, ccc Northern Territory
