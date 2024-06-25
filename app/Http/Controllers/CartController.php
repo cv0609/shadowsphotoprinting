@@ -78,7 +78,6 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
      {
         $coupon = Coupon::where('code', $request->coupon_code)->first();
-
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
@@ -100,15 +99,21 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
         }
 
+        if($total >= $coupon->minimum_spend && $total <= $coupon->maximum_spend)
+        {
+            return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
+        }
+
+
         // Mark the coupon as used
         $coupon->used++;
         $coupon->save();
 
         Session::put('coupon', [
             'code' => $coupon->code,
-            'discount_amount' => $coupon->discount_amount,
+            'discount_amount' => $coupon->amount,
         ]);
-
         return ['success' => true, 'total' => $total - $coupon->discount_amount];
+
      }
 }

@@ -49,6 +49,7 @@
                                             </td>
                                         </tr>
                                         @endforeach
+                                        @if(!Session::has('coupon'))
                                         <tr>
                                             <td colspan="6" class="actions">
                                                 <div class="coupon-icons">
@@ -60,6 +61,7 @@
                                                     value="Update cart">Update cart</button>
                                             </td>
                                         </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </form>
@@ -76,12 +78,13 @@
                                             <td data-title="Subtotal"><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span>
                                             </td>
                                         </tr>
-                                        @if(isset($cart->coupon_id) && !empty($cart->coupon_id))
+                                        @if(Session::has('coupon'))
                                         <tr class="cart-discount coupon-eofy-discount">
-                                            <th>Coupon: eofy discount</th>
-                                            <td data-title="Coupon: eofy discount">-<span
+                                            <th>Coupon: {{ Session::get('coupon')['code'] }} discount</th>
+                                            <td data-title="Coupon: {{ Session::get('coupon')['code'] }} discount">-<span
                                                     class="woocommerce-Price-amount amount"><span
-                                                        class="woocommerce-Price-currencySymbol">$</span>0.27</span>
+                                                        class="woocommerce-Price-currencySymbol">$</span>
+                                                        {{ Session::get('coupon')['discount_amount'] }}</span>
                                             </td>
                                         </tr>
                                         @endif
@@ -132,7 +135,7 @@
             $("#coupon_code").addClass('validator');
           }
           else
-           {
+          {
              var couponCode = $("#coupon_code").val();
              $.post("{{ route('apply-coupon') }}",
                 {
@@ -140,7 +143,15 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 function(res){
-                    console.log(res);
+                    if(res.success === false)
+                      {
+                        $("#coupon_code").addClass('validator');
+                        $(".coupon-errors").html(res.message);
+                      }
+                      else
+                      {
+                        location.reload();
+                      }
                 });
            }
      })

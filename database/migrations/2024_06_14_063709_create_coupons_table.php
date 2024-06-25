@@ -19,6 +19,7 @@ class CreateCouponsTable extends Migration
                 $table->enum("object_type", ['0','1'])->default("0");
                 $table->integer("vendor_id")->nullable();
                 $table->string('code');
+                $table->enum("used", ['0','1']);
                 $table->enum("type", ['0','1'])->comment('0 for amount, 1 for percent')->default("0");
                 $table->double('amount', 12, 2);
                 $table->double('minimum_spend', 12, 2)->nullable();
