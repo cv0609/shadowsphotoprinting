@@ -22,7 +22,7 @@ class CartController extends Controller
         $this->CartService = $CartService;
     }
     public function addToCart(Request $request)
-     {
+    {
         $session_id = Session::getId();
         $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
 
@@ -31,6 +31,7 @@ class CartController extends Controller
             $cartId = $cart->id;
 
             foreach ($cart_items as $cart_item) {
+                $Images = [];
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
 
@@ -40,13 +41,16 @@ class CartController extends Controller
                     ->first();
 
                 if ($existingCartItem) {
-                    // Update the quantity if the product exists
+                    // Update the quantity if the product already exists
                     $existingCartItem->quantity += $quantity;
                     $existingCartItem->save();
                 } else {
-                    // Insert new cart item if the product does not exist
-                    $Images = [];
-                    $data = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity];
+                    // Prepare data for a new cart item
+                    $data = [
+                        "cart_id" => $cartId,
+                        "product_id" => $product_id,
+                        "quantity" => $quantity
+                    ];
 
                     if (isset($request->selectedImages)) {
                         foreach ($request->selectedImages as $selectedImages) {
@@ -60,13 +64,14 @@ class CartController extends Controller
 
                         $data['selected_images'] = implode(',', $Images);
                     }
-                    CartData::create($data);
 
-                     dd($data);
+                    // Insert the new cart item
+                    CartData::create($data);
                 }
             }
         }
-   }
+    }
+
 
 
 
