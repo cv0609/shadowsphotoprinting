@@ -22,39 +22,53 @@ class CartController extends Controller
         $this->CartService = $CartService;
     }
     public function addToCart(Request $request)
-    {
-       $session_id = Session::getId();
-       $cart = Cart::firstOrCreate(["user_email"=>"","coupon_id"=>null,"session_id"=>$session_id]);
+     {
+        $session_id = Session::getId();
+        $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
 
-       if($cart)
-         {
+        if ($cart) {
             $cart_items = $request->cart_items;
             $cartId = $cart->id;
-            foreach($cart_items as $cart_item)
-              {
-                $Images = [];
-                $data = ["cart_id"=>$cartId,"product_id"=>$cart_item['product_id'],"quantity"=>$cart_item['quantity']];
-                if(isset($request->selectedImages))
-                 {
-                    foreach($request->selectedImages as $selectedImages)
-                    {
-                        $tempImagePath = $selectedImages;
-                        $permanentImagePath = '/assets/images/order_images/' . basename($tempImagePath);
 
-                        // Move the image from temp to permanent storage
-                        Storage::disk('public')->move($tempImagePath, $permanentImagePath);
-                        $Images[] = $permanentImagePath;
+            foreach ($cart_items as $cart_item) {
+                $product_id = $cart_item['product_id'];
+                $quantity = $cart_item['quantity'];
 
+                // Check if the product already exists in the cart
+                $existingCartItem = CartData::where('cart_id', $cartId)
+                    ->where('product_id', $product_id)
+                    ->first();
+
+                if ($existingCartItem) {
+                    // Update the quantity if the product exists
+                    $existingCartItem->quantity += $quantity;
+                    $existingCartItem->save();
+                } else {
+                    // Insert new cart item if the product does not exist
+                    $Images = [];
+                    $data = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity];
+
+                    if (isset($request->selectedImages)) {
+                        foreach ($request->selectedImages as $selectedImages) {
+                            $tempImagePath = $selectedImages;
+                            $permanentImagePath = '/assets/images/order_images/' . basename($tempImagePath);
+
+                            // Move the image from temp to permanent storage
+                            Storage::disk('public')->move($tempImagePath, $permanentImagePath);
+                            $Images[] = $permanentImagePath;
+                        }
+
+                        $data['selected_images'] = implode(',', $Images);
                     }
+                    CartData::create($data);
 
-                    $data['selected_images'] =  implode(',',$Images);
+                     dd($data);
+                }
+            }
+        }
+   }
 
-                 }
 
-                CartData::insert($data);
-              }
-         }
-    }
 
     public function cart()
     {
@@ -65,12 +79,12 @@ class CartController extends Controller
         $shipping = $this->CartService->getShippingCharge();
         if(!empty($cart) && isset($cart->items) && !$cart->items->isEmpty())
           {
-           
+
             return view('front-end.cart',compact('cart','total','shipping','countries'));
           }
           else
            {
-            
+
              return redirect('shop');
            }
     }
@@ -126,7 +140,7 @@ class CartController extends Controller
           elseif($coupon->type == "1")
            {
               $amount = ($coupon->amount / 100) * $total;
-              
+
            }
         $coupon->used++;
         $coupon->save();
@@ -137,14 +151,14 @@ class CartController extends Controller
         ]);
         return ['success' => true, 'total' => $total - $coupon->discount_amount];
 
-        
+
 
     }
 
    public function billingDetails(Request $request)
     {
         $state_name = State::whereId($request->state)->select('name')->first();
-        
+
         $session_data = ['country'=>$request->country,'state'=>$state_name['name'],'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
         Session::put('billing_details', $session_data);
         return  redirect('cart');
