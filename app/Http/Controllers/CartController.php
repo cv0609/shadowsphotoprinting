@@ -24,32 +24,21 @@ class CartController extends Controller
 
 
     public function addToCart(Request $request)
-{
-    $session_id = Session::getId();
-    $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
+    {
 
-    if ($cart) {
-        $cart_items = $request->cart_items;
-        $cartId = $cart->id;
+        $session_id = Session::getId();
+        $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
+        $insertData = [];
 
-        foreach ($cart_items as $cart_item) {
-            $product_id = $cart_item['product_id'];
-            $quantity = $cart_item['quantity'];
+        if ($cart) {
+            $cart_items = $request->cart_items;
 
-            // Check if the product already exists in the cart
-            $existingCartItem = CartData::where('cart_id', $cartId)
-                                        ->where('product_id', $product_id)
-                                        ->first();
+            $cartId = $cart->id;
 
-            if ($existingCartItem) {
-                // If the product already exists in the cart, increase the quantity
-                $existingCartItem->quantity += $quantity;
-                $existingCartItem->save();
-            } else {
+           foreach ($cart_items as $cart_item) {
+                $product_id = $cart_item['product_id'];
+                $quantity = $cart_item['quantity'];
                 // If the product does not exist in the cart, create a new cart item
-                $Images = [];
-                $data = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity];
-
                 if (isset($request->selectedImages)) {
                     foreach ($request->selectedImages as $selectedImage) {
                         $tempImagePath = $selectedImage;
@@ -57,17 +46,16 @@ class CartController extends Controller
 
                         // Move the image from temp to permanent storage
                         Storage::disk('public')->move($tempImagePath, $permanentImagePath);
-                        $Images[] = $permanentImagePath;
+
+                        $insertData[] = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity,"selected_images"=>$permanentImagePath];
                     }
 
-                    $data['selected_images'] = implode(',', $Images);
                 }
-
-                CartData::create($data);
+                dd($insertData);
+                CartData::create($insertData);
             }
         }
     }
-}
 
 
 
