@@ -21,56 +21,53 @@ class CartController extends Controller
     {
         $this->CartService = $CartService;
     }
+
+
     public function addToCart(Request $request)
-    {
-        $session_id = Session::getId();
-        $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
+{
+    $session_id = Session::getId();
+    $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
 
-        if ($cart) {
-            $cart_items = $request->cart_items;
-            $cartId = $cart->id;
+    if ($cart) {
+        $cart_items = $request->cart_items;
+        $cartId = $cart->id;
 
-            foreach ($cart_items as $cart_item) {
+        foreach ($cart_items as $cart_item) {
+            $product_id = $cart_item['product_id'];
+            $quantity = $cart_item['quantity'];
+
+            // Check if the product already exists in the cart
+            $existingCartItem = CartData::where('cart_id', $cartId)
+                                        ->where('product_id', $product_id)
+                                        ->first();
+
+            if ($existingCartItem) {
+                // If the product already exists in the cart, increase the quantity
+                $existingCartItem->quantity += $quantity;
+                $existingCartItem->save();
+            } else {
+                // If the product does not exist in the cart, create a new cart item
                 $Images = [];
-                $product_id = $cart_item['product_id'];
-                $quantity = $cart_item['quantity'];
+                $data = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity];
 
-                // Check if the product already exists in the cart
-                $existingCartItem = CartData::where('cart_id', $cartId)
-                    ->where('product_id', $product_id)
-                    ->first();
+                if (isset($request->selectedImages)) {
+                    foreach ($request->selectedImages as $selectedImage) {
+                        $tempImagePath = $selectedImage;
+                        $permanentImagePath = '/assets/images/order_images/' . basename($tempImagePath);
 
-                if ($existingCartItem) {
-                    // Update the quantity if the product already exists
-                    $existingCartItem->quantity += $quantity;
-                    $existingCartItem->save();
-                } else {
-                    // Prepare data for a new cart item
-                    $data = [
-                        "cart_id" => $cartId,
-                        "product_id" => $product_id,
-                        "quantity" => $quantity
-                    ];
-
-                    if (isset($request->selectedImages)) {
-                        foreach ($request->selectedImages as $selectedImages) {
-                            $tempImagePath = $selectedImages;
-                            $permanentImagePath = '/assets/images/order_images/' . basename($tempImagePath);
-
-                            // Move the image from temp to permanent storage
-                            Storage::disk('public')->move($tempImagePath, $permanentImagePath);
-                            $Images[] = $permanentImagePath;
-                        }
-
-                        $data['selected_images'] = implode(',', $Images);
+                        // Move the image from temp to permanent storage
+                        Storage::disk('public')->move($tempImagePath, $permanentImagePath);
+                        $Images[] = $permanentImagePath;
                     }
 
-                    // Insert the new cart item
-                    CartData::create($data);
+                    $data['selected_images'] = implode(',', $Images);
                 }
+
+                CartData::create($data);
             }
         }
     }
+}
 
 
 
