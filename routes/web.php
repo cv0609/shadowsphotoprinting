@@ -103,6 +103,7 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+Route::Post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

@@ -7,6 +7,8 @@ use App\Models\Cart;
 use App\Models\CartData;
 use App\Models\Country;
 use App\Models\Coupon;
+use App\Models\Shipping;
+use App\Models\State;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
@@ -61,7 +63,16 @@ class CartController extends Controller
         $countries = Country::find(14);
         $total = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
-        return view('front-end.cart',compact('cart','total','shipping','countries'));
+        if(!empty($cart) && isset($cart->items) && !$cart->items->isEmpty())
+          {
+           
+            return view('front-end.cart',compact('cart','total','shipping','countries'));
+          }
+          else
+           {
+            
+             return redirect('shop');
+           }
     }
 
     public function removeFromCart($product_id)
@@ -80,7 +91,7 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
      {
-        $coupon = Coupon::where('code', $request->coupon_code)->first();
+       $coupon = Coupon::where('code', $request->coupon_code)->first();
         $total = $this->CartService->getCartTotal();
 
         if (!$coupon) {
@@ -106,17 +117,36 @@ class CartController extends Controller
         {
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
         }
+        $amount = 0;
+        if($coupon->type == "0")
+          {
+           $amount = $coupon->amount;
 
-
-        // Mark the coupon as used
+          }
+          elseif($coupon->type == "1")
+           {
+              $amount = ($coupon->amount / 100) * $total;
+              
+           }
         $coupon->used++;
         $coupon->save();
 
         Session::put('coupon', [
             'code' => $coupon->code,
-            'discount_amount' => $coupon->amount,
+            'discount_amount' => $amount,
         ]);
         return ['success' => true, 'total' => $total - $coupon->discount_amount];
 
-     }
+        
+
+    }
+
+   public function billingDetails(Request $request)
+    {
+        $state_name = State::whereId($request->state)->select('name')->first();
+        
+        $session_data = ['country'=>$request->country,'state'=>$state_name['name'],'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
+        Session::put('billing_details', $session_data);
+        return  redirect('cart');
+    }
 }
