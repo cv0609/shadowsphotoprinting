@@ -49,6 +49,6 @@ class CouponController extends Controller
    public function couponDistroy($id)
    {
       $coupon_detail = Coupon::whereId($id)->delete();
-      return redirect()->route('coupons-list')->with('success','Card is deleted successfully');
+      return redirect()->route('coupons-list')->with('success','Coupon is deleted successfully');
    }
 }

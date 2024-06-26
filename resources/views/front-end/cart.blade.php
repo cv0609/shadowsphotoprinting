@@ -49,17 +49,20 @@
                                             </td>
                                         </tr>
                                         @endforeach
+                                        @if(!Session::has('coupon'))
                                         <tr>
                                             <td colspan="6" class="actions">
                                                 <div class="coupon-icons">
                                                     <input type="text" name="coupon_code" class="input-text"
                                                         id="coupon_code" value="" placeholder="Coupon code">
                                                     <button type="button" class="button" id="apply_coupon">Apply coupon</button>
+                                                    <span class="text-danger coupon-errors"></span>
                                                 </div>
                                                 <button type="submit " class="button satay" name="update_cart"
                                                     value="Update cart">Update cart</button>
                                             </td>
                                         </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </form>
@@ -76,23 +79,97 @@
                                             <td data-title="Subtotal"><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span>
                                             </td>
                                         </tr>
-                                        @if(isset($cart->coupon_id) && !empty($cart->coupon_id))
+                                        @if(Session::has('coupon'))
                                         <tr class="cart-discount coupon-eofy-discount">
-                                            <th>Coupon: eofy discount</th>
-                                            <td data-title="Coupon: eofy discount">-<span
+                                            <th>Coupon: {{ Session::get('coupon')['code'] }} discount</th>
+                                            <td data-title="Coupon: {{ Session::get('coupon')['code'] }} discount">-<span
                                                     class="woocommerce-Price-amount amount"><span
-                                                        class="woocommerce-Price-currencySymbol">$</span>0.27</span>
+                                                        class="woocommerce-Price-currencySymbol">$</span>
+                                                        {{ number_format(Session::get('coupon')['discount_amount'],2) }}</span>
                                             </td>
                                         </tr>
                                         @endif
+                                        @if($shipping->status == "1")
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
+
+                                                @if(Session::has('billing_details'))
+                                                <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
+                                                <p>
+                                                <p class="">
+                                                    Shipping to <strong>ghhhhhhhhhhhhhh, ccc Northern Territory
+                                                        ghhhhhhhhhhhhh</strong>. </p>
+                                                </p>
+
+                                                <form action="" class="change-address-form">
+                                                    <a class="change-address calculat-shipping" id="change-address">Change
+                                                        address</a>
+                                                    <div class="calculate-shipping">
+                                                        <select class="form-control" id="country" name="products" >
+                                                            <option value="volvo">Volvo</option>
+                                                            <option value="saab">Saab</option>
+                                                            <option value="mercedes">Mercedes</option>
+                                                            <option value="audi">Audi</option>                               
+                                                        </select>	
+                                                        <select class="form-control" id="state" name="products" >
+                                                            <option value="volvo">Volvo</option>
+                                                            <option value="saab">Saab</option>
+                                                            <option value="mercedes">Mercedes</option>
+                                                            <option value="audi">Audi</option>                               
+                                                        </select>	
+                                                        <p class="form-row">
+                                                            <input type="text" name="city" placeholder="city">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <input type="text" name="city"
+                                                                placeholder="postcode/ ZIP">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <button type="button"
+                                                                class="update-btn">Update</button>
+                                                        </p>
+                                                    </div>
+                                                </form>
+                                                @endif
+
+                                                @if(!Session::has('billing_details'))
                                                 <p class="woocommerce-shipping-destination">
                                                     Shipping options will be updated during checkout. </p>
-                                                <a href="#" class="calculat-shipping">Calculate shipping</a>
+
+                                                <form action="" class="change-calculate-form">
+                                                    <a class="calculat-shipping"
+                                                        id="calculat-shipping">Calculate shipping</a>
+                                                    <div class="calculate-shipping">
+                                                        <select class="form-control" id="country" name="products[]" >
+                                                            <option value="saab" selected>{{ $countries->name }}</option>
+                                                                                           
+                                                        </select>	
+                                                        <select class="form-control" id="state" name="products[]" >
+                                                            <option value="volvo">State</option>
+                                                             @foreach ($countries->states as $state)
+                                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                                                 
+                                                             @endforeach
+                                                       option>                               
+                                                        </select>	
+                                                        <p class="form-row">
+                                                            <input type="text" name="city" placeholder="city">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <input type="text" name="city"
+                                                                placeholder="postcode/ ZIP">
+                                                        </p>
+                                                        <p class="form-row">
+                                                            <button type="button"
+                                                                class="update-btn">Update</button>
+                                                        </p>
+                                                    </div>
+                                                </form>
+                                                @endif
                                             </td>
                                         </tr>
+                                        @endif
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td data-title="Total">
@@ -132,7 +209,7 @@
             $("#coupon_code").addClass('validator');
           }
           else
-           {
+          {
              var couponCode = $("#coupon_code").val();
              $.post("{{ route('apply-coupon') }}",
                 {
@@ -140,10 +217,42 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 function(res){
-                    console.log(res);
+                    if(res.success === false)
+                      {
+                        $("#coupon_code").addClass('validator');
+                        $(".coupon-errors").html(res.message);
+                      }
+                      else
+                      {
+                        location.reload();
+                      }
                 });
            }
      })
   </script>
+
+<script>
+
+    $(document).ready(function () {
+        $(".calculat-shipping").click(function () {
+            $(".calculate-shipping").slideToggle();
+        });
+    });
+
+</script>
+<script>    
+    $(document).ready(function() {
+        $('#country').select2({
+            placeholder: 'Select products',
+            allowClear: true
+        });
+		   $('#state').select2({
+            placeholder: 'Select products',
+            allowClear: true
+        });
+
+    });
+</script>
+
 @endsection
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cart;
+use App\Models\Shipping;
 use Illuminate\Support\Facades\Session;
 
 class CartService
@@ -22,4 +23,10 @@ class CartService
 
         return $total;
     }
+
+    public function getShippingCharge()
+     {
+        $shipping = Shipping::first();
+        return $shipping;
+     }
 }
