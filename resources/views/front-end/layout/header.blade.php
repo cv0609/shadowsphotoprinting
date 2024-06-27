@@ -1,6 +1,7 @@
 @php
     $PageDataService = app(App\Services\PageDataService::class);
     $productCategories = $PageDataService->getProductCategories();
+
 @endphp
 <header class="header">
     <!-- main header -->

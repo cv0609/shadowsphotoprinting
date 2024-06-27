@@ -15,7 +15,7 @@ echo"<pre>";
         <div class="kt-woo-cart-form-wrap">
             <div class="row">
                 <div class="col-lg-8">
-                    <form action="#" class="intero">
+
                         <div class="cart-summary">
                             <h2>Cart Summary</h2>
                         </div>
@@ -47,7 +47,7 @@ echo"<pre>";
                                     <span class=""><bdi><span class="">$</span>{{ number_format($item->product->product_price,2) }}</bdi></span>
                                 </td>
                                 <td class="product-quantity">
-                                    <input type="number" name="" id="" placeholder="0" value="{{ $item->quantity }}">
+                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}">
                                 </td>
                                 <td class="product-subtotal">
                                     <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span>
@@ -64,14 +64,14 @@ echo"<pre>";
                                         <button type="button" class="button" id="apply_coupon">Apply coupon</button>
                                         <span class="text-danger coupon-errors"></span>
                                     </div>
-                                    <button type="submit " class="button satay" name="update_cart"
-                                        value="Update cart">Update cart</button>
+                                    <button type="button" class="button satay" name="update_cart"
+                                        value="Update cart" id="update_cart">Update cart</button>
                                 </td>
                             </tr>
                             @endif
                         </tbody>
                     </table>
-                </form>
+
             </div>
             <div class="col-lg-4">
                 <div class="cart-collaterals">
@@ -259,6 +259,33 @@ echo"<pre>";
         });
 
     });
+</script>
+
+<script>
+   $("#update_cart").on('click',function(){
+      var data = [];
+        $("input[name='product_quantity[]']").each(function(i,v) {
+            if($(v).val() > 0)
+             {
+                data.push({'quantity':$(v).val(),'rowId':$(v).data('row')})
+
+             }
+             else
+              {
+                 $(this).addClass('validator');
+                 return false;
+              }
+
+        });
+        $.post("{{ route('update-cart') }}",
+        {
+            data: data,
+            "_token": "{{ csrf_token() }}"
+        },
+        function(data, status){
+            location.reload();
+        });
+   })
 </script>
 
 @endsection

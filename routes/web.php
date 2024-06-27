@@ -86,6 +86,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/shipping-save',[ShippingController::class,'shippingSave'])->name('shipping-save');
         Route::get('/shipping-show/{id}', [ShippingController::class, 'shippingShow'])->name('shipping-show');
         Route::post('/shipping-update',[ShippingController::class,'shippingUpdate'])->name('shipping-update');
+        Route::post('/shipping-status-update',[ShippingController::class,'updateStatus'])->name('shipping-status-update');
     });
 });
 
@@ -103,7 +104,8 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
-Route::Post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
+Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
+Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

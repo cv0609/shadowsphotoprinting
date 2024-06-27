@@ -29,4 +29,10 @@ class CartService
         $shipping = Shipping::first();
         return $shipping;
      }
+
+    public function getCartCount()
+     {
+
+     }
+
 }

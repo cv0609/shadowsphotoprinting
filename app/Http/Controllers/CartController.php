@@ -175,4 +175,20 @@ class CartController extends Controller
         Session::put('billing_details', $session_data);
         return  redirect('cart');
     }
+
+    public function getCartCount(Request $request)
+    {
+        $session_id = Session::getId();
+
+        // Fetch the cart with items
+        $cart = Cart::where('session_id', $session_id)->with('items')->first();
+
+        // Calculate the total count of items in the cart
+        $itemCount = 0;
+        if ($cart) {
+            $itemCount = $cart->items->sum('quantity');
+        }
+
+        return $itemCount;
+    }
 }
