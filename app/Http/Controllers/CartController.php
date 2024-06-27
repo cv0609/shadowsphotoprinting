@@ -176,6 +176,15 @@ class CartController extends Controller
         return  redirect('cart');
     }
 
+    public function updateCart(Request $request)
+    {
+        foreach($request->data as $data)
+        {
+            CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
+
+        }
+    }
+
     public function getCartCount(Request $request)
     {
         $session_id = Session::getId();
