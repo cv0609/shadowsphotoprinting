@@ -22,7 +22,7 @@ class ShippingController extends Controller
     public function shippingSave(ShippingRequest $request)
     {
         Shipping::create(['country'=>$request->country,'shipping_method'=>$request->shipping_method,'amount'=>$request->amount,]);
-        return redirect()->route('shipping-list')->with('success', 'Shipping Add successfully!');  
+        return redirect()->route('shipping-list')->with('success', 'Shipping Add successfully!');
     }
 
     public function shippingShow($id)
@@ -32,8 +32,13 @@ class ShippingController extends Controller
     }
 
     public function shippingUpdate(Request $request)
-    {  
+    {
         Shipping::whereId($request->shipping_id)->update(['shipping_method'=>$request->shipping_method,'amount'=>$request->amount,'status'=>$request->status]);
         return redirect()->route('shipping-list')->with('success', 'Shipping updated successfully!');
     }
+
+    public function updateStatus(Request $request)
+      {
+        Shipping::whereId($request->shipping_id)->update(["status"=>$request->status]);
+      }
 }

@@ -47,9 +47,9 @@
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $shipping->country }}</td>
                         <td>{{ $shipping->amount }}</td>
-                        <td>                          
+                        <td>
                           <label  class="switch">
-                            <input type="checkbox" id="{{ $shipping->id }}" onchange="updateShipping(this)" name="status" class="toggle-class"  {{$shipping->status?'checked':''}}>
+                            <input type="checkbox" data-shipping_id="{{ $shipping->id }}"  name="status" class="toggle-class" {{ $shipping->status == "1" ? "checked" : "" }}>
                             <span class="slider round"></span>
                           </label>
                         </td>
@@ -78,10 +78,8 @@
         var status = $(this).prop('checked') == true ? 1 : 0;
         var id = $(this).data('shipping_id');
         $.ajax({
-
             type: "POST",
-            dataType: "json",
-            url: "{{ route('shipping-update') }}",
+            url: "{{ route('shipping-status-update') }}",
             data: {
                 'status': status,
                 'shipping_id': id,
@@ -90,10 +88,10 @@
 
             success: function(data) {
                 console.log(data.success)
-          
+
             }
         });
     })
 </script>
- 
+
 @endsection
