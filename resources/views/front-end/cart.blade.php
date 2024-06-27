@@ -54,7 +54,7 @@ echo"<pre>";
                                 </td>
                             </tr>
                             @endforeach
-                            
+
                             @if(!Session::has('coupon'))
                             <tr>
                                 <td colspan="6" class="actions">
@@ -103,7 +103,7 @@ echo"<pre>";
                                     @if(Session::has('billing_details'))
                                         <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
                                         <p>
-                                        <p class="">    
+                                        <p class="">
                                             Shipping to <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state'].' '.Session::get('billing_details')['postcode']}}</strong>. </p>
                                         </p>
 
@@ -114,15 +114,15 @@ echo"<pre>";
                                                 <div class="calculate-shipping">
                                                     <select class="form-control" id="country" name="country" >
                                                         <option  selected >{{ $countries->name }}</option>
-                                                                                        
-                                                    </select>	
+
+                                                    </select>
                                                     <select class="form-control" id="state" name="state" >
                                                         <option value="">State</option>
                                                         @foreach ($countries->states as $state)
                                                           <option value="{{ $state->id }} "  <?= ($state->id ==  Session::get('billing_details')['state_id'] ) ? 'selected' : '' ?>>{{ $state->name }}</option>
                                                         @endforeach
-                                                                                  
-                                                    </select>	
+
+                                                    </select>
                                                     <p class="form-row">
                                                         <input type="text" name="city" placeholder="city" value="{{ Session::get('billing_details')['city'] }}">
                                                     </p>
@@ -135,7 +135,7 @@ echo"<pre>";
                                                             class="update-btn">Update</button>
                                                     </p>
                                                 </div>
-                                           
+
                                         </form>
                                         @endif
 
@@ -150,16 +150,16 @@ echo"<pre>";
                                             <div class="calculate-shipping">
                                                 <select class="form-control" id="country" name="country" >
                                                     <option value="saab" selected>{{ $countries->name }}</option>
-                                                                                    
-                                                </select>	
+
+                                                </select>
                                                 <select class="form-control" id="state" name="state" >
                                                     <option value="volvo">State</option>
                                                         @foreach ($countries->states as $state)
                                                     <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                                            
+
                                                         @endforeach
-                                                option>                               
-                                                </select>	
+                                                option>
+                                                </select>
                                                 <p class="form-row">
                                                     <input type="text" name="city" placeholder="city">
                                                 </p>
@@ -247,7 +247,7 @@ echo"<pre>";
     });
 
 </script>
-<script>    
+<script>
     $(document).ready(function() {
         $('#country').select2({
             placeholder: 'Select products',

@@ -38,22 +38,44 @@ class CartController extends Controller
            foreach ($cart_items as $cart_item) {
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
+
                 // If the product does not exist in the cart, create a new cart item
                 if (isset($request->selectedImages)) {
                     foreach ($request->selectedImages as $selectedImage) {
-                        $tempImagePath = $selectedImage;
-                        $permanentImagePath = '/assets/images/order_images/' . basename($tempImagePath);
+                        $tempFileName = basename($selectedImage); // Extracts the filename from the URL/path
 
-                        // Move the image from temp to permanent storage
-                        Storage::disk('public')->move($tempImagePath, $permanentImagePath);
+                        // Example: Temporary storage path
+                        $tempImagePath = 'public/temp/' . $tempFileName;
 
-                        $insertData[] = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity,"selected_images"=>$permanentImagePath];
+                        // Example: Permanent storage path
+                        $permanentImagePath = 'public/assets/images/order_images/' . $tempFileName;
+                        Storage::move($tempImagePath, $permanentImagePath);
+                        $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
+
+                        $insertData = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity,"selected_images"=>$ImagePath];
+
+                        $existingCartItem = CartData::where('cart_id', $cartId)
+                        ->where('product_id', $product_id)
+                        ->where('selected_images', $ImagePath)
+                        ->first();
+
+                        if ($existingCartItem) {
+                        // If the product already exists in the cart, increase the quantity
+                        $existingCartItem->quantity += $quantity;
+                        $existingCartItem->save();
+                        }
+                        else
+                         {
+                            CartData::create($insertData);
+
+                         }
                     }
 
                 }
-                dd($insertData);
-                CartData::create($insertData);
+
+
             }
+
         }
     }
 
