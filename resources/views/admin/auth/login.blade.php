@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Gentelella Alela! | </title>
-
+    <link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="{{ asset('assets/admin/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
@@ -29,6 +29,11 @@
 
       <div class="login_wrapper">
         <div class="animate form login_form">
+            <div class="logo">
+                <a href="{{ url('/') }}">
+                    <img src="{{asset('assets/images/logo.png')}}" alt="logo">
+                </a>
+            </div>
           <section class="login_content">
             <form action="{{ route('admin.login.post') }}" method="POST">
               @csrf
