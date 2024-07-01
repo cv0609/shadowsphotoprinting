@@ -87,11 +87,11 @@ echo"<pre>";
                             </tr>
                             @if(Session::has('coupon'))
                             <tr class="cart-discount coupon-eofy-discount">
-                                <th>Coupon: {{ Session::get('coupon')['code'] }} discount</th>
-                                <td data-title="Coupon: {{ Session::get('coupon')['code'] }} discount">-<span
+                                <th>Coupon: {{ $CartTotal['coupon_code'] }} discount</th>
+                                <td data-title="Coupon: {{ $CartTotal['coupon_code'] }} discount">-<span
                                         class="woocommerce-Price-amount amount"><span
                                             class="woocommerce-Price-currencySymbol">$</span>
-                                            {{ number_format(Session::get('coupon')['discount_amount'],2) }}</span>
+                                            {{ number_format($CartTotal['coupon_discount'],2) }}</span>
                                 </td>
                             </tr>
                             @endif
