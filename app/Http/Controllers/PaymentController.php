@@ -4,15 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Services\StripeService;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\Country;
+use App\Services\CartService;
+use Session;
 
 class PaymentController extends Controller
 {
     protected $stripe;
+    protected $CartService;
 
-    public function __construct(StripeService $stripe)
+    public function __construct(StripeService $stripe,CartService $CartService)
     {
         $this->stripe = $stripe;
+        $this->CartService = $CartService;
+
     }
+
+    public function checkout()
+     {
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        $countries = Country::find(14);
+        $total = $this->CartService->getCartTotal();
+        $shipping = $this->CartService->getShippingCharge();
+        return view('front-end.checkout',compact('cart','total','shipping','countries'));
+     }
 
     public function createCustomer(Request $request)
     {

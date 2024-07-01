@@ -1,3 +1,5 @@
+@extends('front-end.layout.main')
+@section('content')
 <section class="coupon-main">
     <div class="container">
         <div class="coupon-inner">
@@ -203,115 +205,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($cart->items as $item)
                                         <tr>
-                                            <td> 5”x5” Prints&nbsp; <strong>×&nbsp;2</strong> </td>
-                                            <td> <span><bdi><span>$</span>1.10</bdi></span> </td>
+                                            <td> {{ $item->product->product_title }}&nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong> </td>
+                                            <td> <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span> </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                5”x5” Prints&nbsp; <strong>×&nbsp;2</strong> </td>
-                                            <td>
-                                                <span><bdi><span>$</span>1.10</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5”x5” Prints&nbsp; <strong>×&nbsp;2</strong> </td>
-                                            <td>
-                                                <span><bdi><span>$</span>1.10</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5”x5” Prints&nbsp; <strong>×&nbsp;2</strong> </td>
-                                            <td>
-                                                <span><bdi><span>$</span>1.10</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x5” Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.20</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x5” Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.20</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x5” Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.20</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x5” Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.20</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x 7" Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.80</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x 7" Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.80</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x 7" Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.80</bdi></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                5"x 7" Prints - With 4mm White Border&nbsp;
-                                                <strong>×&nbsp;4</strong>
-                                            </td>
-                                            <td>
-                                                <span><bdi><span>$</span>2.80</bdi></span>
-                                            </td>
-                                        </tr>
+                                       @endforeach
                                     </tbody>
                                     <tfoot>
 
                                         <tr>
                                             <th>Subtotal</th>
-                                            <td><span><bdi><span>$</span>24.40</bdi></span> </td>
+                                            <td><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span> </td>
                                         </tr>
-
+                                        @if(Session::has('coupon'))
                                         <tr>
-                                            <th>Coupon: eofy discount</th>
-                                            <td>-<span><span>$</span>12.20</span> </td>
+                                            <th>Coupon: {{ Session::get('coupon')['code'] }}</th>
+                                            <td>-<span><span>$</span>{{ number_format(Session::get('coupon')['discount_amount'],2) }}</span> </td>
                                         </tr>
+                                        @endif
+                                        @if($shipping->status == "1")
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
@@ -319,12 +232,13 @@
                                                     <li>
                                                         <input type="hidden" data-index="0">
                                                         <label>Flat rate:
-                                                            <span><bdi><span>$</span>20.00</bdi></span>
+                                                            <span><bdi><span>$</span>{{ number_format($shipping->amount,2) }}</bdi></span>
                                                         </label>
                                                     </li>
                                                 </ul>
                                             </td>
                                         </tr>
+                                        @endif
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td><strong><span><bdi><span>$</span>32.20</bdi></span></strong>
@@ -414,3 +328,4 @@
     </div>
  </div>
 </section>
+@endsection

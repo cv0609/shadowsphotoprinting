@@ -12,6 +12,7 @@ use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\admin\ShippingController;
 
 /*
@@ -106,6 +107,7 @@ Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFrom
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
+Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

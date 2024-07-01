@@ -189,7 +189,7 @@ echo"<pre>";
                             </tbody>
                         </table>
                         <div class="wc-proceed-to-checkout">
-                            <a href="" class="checkout-button button alt wc-forward">
+                            <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward">
                                 Proceed to checkout</a>
                         </div>
                         <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}" class="shop_cont_button">Continue
