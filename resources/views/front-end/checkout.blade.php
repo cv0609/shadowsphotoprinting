@@ -216,12 +216,12 @@
 
                                         <tr>
                                             <th>Subtotal</th>
-                                            <td><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span> </td>
+                                            <td><span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span> </td>
                                         </tr>
                                         @if(Session::has('coupon'))
                                         <tr>
-                                            <th>Coupon: {{ Session::get('coupon')['code'] }}</th>
-                                            <td>-<span><span>$</span>{{ number_format(Session::get('coupon')['discount_amount'],2) }}</span> </td>
+                                            <th>Coupon: {{ $CartTotal['coupon_code'] }}</th>
+                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_discount'],2) }}</span> </td>
                                         </tr>
                                         @endif
                                         @if($shipping->status == "1")
@@ -241,7 +241,7 @@
                                         @endif
                                         <tr class="order-total">
                                             <th>Total</th>
-                                            <td><strong><span><bdi><span>$</span>32.20</bdi></span></strong>
+                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
                                                 <small class="includes_tax">(includes
                                                     <span><span>$</span>1.12</span>
                                                     GST)</small>

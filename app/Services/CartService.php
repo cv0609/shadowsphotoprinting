@@ -43,7 +43,7 @@ class CartService
         $totalAfterDiscount = $subtotal - $discount;
         $shipping = $this->getShippingCharge();
 
-        if($shipping->status == "1"){
+        if($shipping->status == "1" && Session::has('billing_details')){
             $shippingCharge = $shipping->amount; // Example shipping charge
         }
         else

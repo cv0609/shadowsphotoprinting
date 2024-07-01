@@ -169,8 +169,8 @@ class CartController extends Controller
 
    public function billingDetails(Request $request)
     {
-        $state_name = State::whereId($request->state)->select('name')->first();
 
+        $state_name = State::whereId($request->state)->select('name')->first();
         $session_data = ['country'=>$request->country,'state'=>$state_name['name'],'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
         Session::put('billing_details', $session_data);
         return  redirect('cart');

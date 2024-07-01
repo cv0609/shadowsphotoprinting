@@ -26,9 +26,9 @@ class PaymentController extends Controller
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
-        $total = $this->CartService->getCartTotal();
+        $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
-        return view('front-end.checkout',compact('cart','total','shipping','countries'));
+        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries'));
      }
 
     public function createCustomer(Request $request)
