@@ -11,3 +11,7 @@
 #slash{
 	display: none;
 }
+
+.logo img {
+    max-width: 206px
+}

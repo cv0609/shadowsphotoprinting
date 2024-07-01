@@ -82,16 +82,16 @@ echo"<pre>";
                         <tbody>
                             <tr class="cart-subtotal">
                                 <th>Subtotal</th>
-                                <td data-title="Subtotal"><span><bdi><span>$</span>{{ number_format($total,2) }}</bdi></span>
+                                <td data-title="Subtotal"><span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span>
                                 </td>
                             </tr>
                             @if(Session::has('coupon'))
                             <tr class="cart-discount coupon-eofy-discount">
-                                <th>Coupon: {{ Session::get('coupon')['code'] }} discount</th>
-                                <td data-title="Coupon: {{ Session::get('coupon')['code'] }} discount">-<span
+                                <th>Coupon: {{ $CartTotal['coupon_code'] }} discount</th>
+                                <td data-title="Coupon: {{ $CartTotal['coupon_code'] }} discount">-<span
                                         class="woocommerce-Price-amount amount"><span
                                             class="woocommerce-Price-currencySymbol">$</span>
-                                            {{ number_format(Session::get('coupon')['discount_amount'],2) }}</span>
+                                            {{ number_format($CartTotal['coupon_discount'],2) }}</span>
                                 </td>
                             </tr>
                             @endif
@@ -153,7 +153,7 @@ echo"<pre>";
 
                                                 </select>
                                                 <select class="form-control" id="state" name="state" >
-                                                    <option value="volvo">State</option>
+                                                    <option>State</option>
                                                         @foreach ($countries->states as $state)
                                                     <option value="{{ $state->id }}">{{ $state->name }}</option>
 
@@ -180,7 +180,7 @@ echo"<pre>";
                                 <tr class="order-total">
                                     <th>Total</th>
                                     <td data-title="Total">
-                                        <strong><span><bdi><span>$</span>0.28</bdi></span></strong>
+                                        <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
                                         <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small>
@@ -189,7 +189,7 @@ echo"<pre>";
                             </tbody>
                         </table>
                         <div class="wc-proceed-to-checkout">
-                            <a href="" class="checkout-button button alt wc-forward">
+                            <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward">
                                 Proceed to checkout</a>
                         </div>
                         <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}" class="shop_cont_button">Continue

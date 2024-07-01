@@ -87,12 +87,12 @@ class CartController extends Controller
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
-        $total = $this->CartService->getCartTotal();
+        $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
         if(!empty($cart) && isset($cart->items) && !$cart->items->isEmpty())
           {
 
-            return view('front-end.cart',compact('cart','total','shipping','countries'));
+            return view('front-end.cart',compact('cart','CartTotal','shipping','countries'));
           }
           else
            {
@@ -169,8 +169,8 @@ class CartController extends Controller
 
    public function billingDetails(Request $request)
     {
-        $state_name = State::whereId($request->state)->select('name')->first();
 
+        $state_name = State::whereId($request->state)->select('name')->first();
         $session_data = ['country'=>$request->country,'state'=>$state_name['name'],'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
         Session::put('billing_details', $session_data);
         return  redirect('cart');
