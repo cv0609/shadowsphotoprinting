@@ -28,6 +28,7 @@ class PaymentController extends Controller
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
+
         return view('front-end.checkout',compact('cart','CartTotal','shipping','countries'));
      }
 
