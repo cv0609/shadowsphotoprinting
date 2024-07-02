@@ -116,6 +116,7 @@ echo"<pre>";
                                                         <option  selected >{{ $countries->name }}</option>
 
                                                     </select>
+
                                                     <select class="form-control" id="state" name="state" >
                                                         <option value="">State</option>
                                                         @foreach ($countries->states as $state)

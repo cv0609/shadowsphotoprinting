@@ -50,29 +50,13 @@
                                     <input type="text" name="suburb" id="suburb" placeholder="">
                                 </p>
                                 <p class="form-row">
-                                <div class="custom-select">
-                                    <div class="select-box">
-                                        <div class="selected-item">
-                                            Select an option
-                                        </div>
-                                        <div class="arrow">
-                                            <i class="fa-solid fa-caret-down"></i>
-                                        </div>
-                                    </div>
-                                    <ul class="options">
-                                        <input type="text" class="search-box" placeholder="Search options">
-                                        <li class="option">Australian Capital Territory</li>
-                                        <li class="option">New South Wales</li>
-                                        <li class="option">Northern Territory</li>
-                                        <li class="option">Queensland</li>
-                                        <li class="option">South Australia</li>
-                                        <li class="option">Tasmania</li>
-                                        <li class="option">Victoria</li>
-                                        <li class="option">Western Australia</li>
-                                        <!-- Add more options as needed -->
-                                    </ul>
-                                </div>
+                                    <select class="form-control" id="state" name="state" >
+                                        <option value="">State</option>
+                                        @foreach ($countries->states as $state)
+                                          <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                        @endforeach
 
+                                    </select>
                                 </p>
                                 <p class="form-row">
                                     <label> Postcode *
@@ -147,29 +131,13 @@
                                                 <input type="text" name="suburb" placeholder="">
                                             </p>
                                             <p class="form-row">
-                                            <div class="custom-select">
-                                                <div class="select-box">
-                                                    <div class="selected-item">
-                                                        Select an option
-                                                    </div>
-                                                    <div class="arrow">
-                                                        <i class="fa-solid fa-caret-down"></i>
-                                                    </div>
-                                                </div>
-                                                <ul class="options">
-                                                    <input type="text" class="search-box"
-                                                        placeholder="Search options">
-                                                    <li class="option">Australian Capital Territory</li>
-                                                    <li class="option">New South Wales</li>
-                                                    <li class="option">Northern Territory</li>
-                                                    <li class="option">Queensland</li>
-                                                    <li class="option">South Australia</li>
-                                                    <li class="option">Tasmania</li>
-                                                    <li class="option">Victoria</li>
-                                                    <li class="option">Western Australia</li>q
-                                                    <!-- Add more options as needed -->
-                                                </ul>
-                                            </div>
+                                                <select class="form-control" id="ship-state" name="state" >
+                                                    <option value="">State</option>
+                                                    @foreach ($countries->states as $state)
+                                                      <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                                    @endforeach
+
+                                                </select>
 
                                             </p>
                                             <p class="form-row">
@@ -252,61 +220,13 @@
                                     </tfoot>
                                 </table>
                                 <div id="payment">
+                                    <form id="payment-form">
                                     <div class="payment_methods ">
                                         <ul>
                                             <li>
                                                 <label for=""> Credit Card (Stripe) </label>
-                                                <div class="payment_box_payment_method_stripe">
-                                                    <div class="stripe-payment-data">
-                                                        <p>Pay with your credit card via Stripe.</p>
-                                                    </div>
-                                                    <div class="wc-stripe-cc-form">
-                                                        <fieldset class="wc-stripe">
-                                                            <div class="wc-content">
-                                                                <span>Card Number *</span>
-                                                                <div class="stripeElement ">
-                                                                    <input type="number"
-                                                                        placeholder="1234 1234 1234 1234">
-                                                                    <div class="credit-link">
-                                                                        <button type="button"
-                                                                            class="button-link">
-                                                                            Autofill <span><a
-                                                                                    href="#">link</a></span>
-                                                                        </button>
-                                                                        <span>
-                                                                            <i
-                                                                                class="fa-solid fa-credit-card"></i>
-                                                                        </span>
-
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="throughout ">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6">
-                                                                        <label for=""> Expiry Date * </label>
-                                                                        <input type="text" name=""
-                                                                            placeholder="MM/YY">
-                                                                    </div>
-                                                                    <div class="col-lg-6">
-                                                                        <label for=""> Card Code (CVC) *
-                                                                        </label>
-                                                                        <input type="text" name=""
-                                                                            placeholder="CVC">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </fieldset>
-
-                                                    </div>
-                                                    <fieldset class="checkbox-wrapper">
-                                                        <input type="checkbox"> <span>
-                                                            Save payment information to my account for
-                                                            future purchases. </span>
-                                                    </fieldset>
-                                                </div>
+                                                  <div id="card-element"></div>
+                                                    {{-- <button id="submit">Submit Payment</button> --}}
                                             </li>
                                         </ul>
                                     </div>
@@ -315,9 +235,11 @@
                                             experience throughout this website, and for other purposes described
                                             in our <a href="#" target="_blank">privacy policy</a>.</p>
                                         <div class="place-order">
-                                            <button type="button"> Place order </button>
+                                            <button id="submit"> Place order </button>
                                         </div>
                                     </div>
+                                </form>
+
                                 </div>
                             </div>
                         </div>
@@ -328,4 +250,79 @@
     </div>
  </div>
 </section>
+@endsection
+@section('scripts')
+<script>
+    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                // Display error.message in your UI
+            } else {
+                // Send the token to your server
+                fetch('/create-customer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value,
+                        source: result.token.id
+                    })
+                })
+                .then(response => response.json())
+                .then(customer => {
+                    fetch('/charge-customer', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            customer_id: customer.id,
+                            amount: 1000 // amount in cents
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(charge => {
+                         console.log(charge);
+                    });
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        $("#chkPassport").click(function () {
+            if ($(this).is(":checked")) {
+                $("#dvPassport").show();
+                $("#AddPassport").hide();
+            } else {
+                $("#dvPassport").hide();
+                $("#AddPassport").show();
+            }
+        });
+    });
+
+    $('#state').select2({
+            placeholder: 'Select products',
+            allowClear: true
+        });
+
+    $('#ship-state').select2({
+        placeholder: 'Select products',
+        allowClear: true
+    });
+
+</script>
 @endsection

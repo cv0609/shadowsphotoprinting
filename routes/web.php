@@ -108,6 +108,8 @@ Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('appl
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
+Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
