@@ -6,23 +6,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Order extends Model
+class OrderBillingDetails extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'user_session_id',
-        'order_number',
-        'coupon_id',
-        'discount',
-        'sub_total',
-        'shipping_charge',
-        'total',
-        'payment_id',
-        'is_paid',
-        'status',
+        'fname',
+        'lname',
+        'street1',
+        'street2',
+        'state',
+        'postcode',
+        'phone',
+        'suburb',
+        'email',
+        'username',
+        'password',
+        // 'stripeToken',
+        'ship_fname',
+        'ship_lname',
+        'ship_company',
+        'ship_street1',
+        'ship_street2',
+        'ship_suburb',
+        'ship_state',
+        'ship_postcode',
+        'order_comments',
+        'order_id'
     ];
+    
 
     public function user()
     {

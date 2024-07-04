@@ -12,7 +12,7 @@ use App\Models\State;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -83,8 +83,10 @@ class CartController extends Controller
 
 
     public function cart()
-    {
+    {   
+
         $session_id = Session::getId();
+      
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();

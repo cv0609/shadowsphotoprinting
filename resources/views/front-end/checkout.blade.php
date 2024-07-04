@@ -177,6 +177,7 @@
                                         <tr>
                                             <td> {{ $item->product->product_title }}&nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong> </td>
                                             <td> <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span> </td>
+                                            <input type="hidden" value="{{ number_format($item->quantity * $item->product->product_price,2) }}">
                                         </tr>
                                        @endforeach
                                     </tbody>
@@ -318,6 +319,7 @@
         if (!isValid) {
             return; // Stop form submission
         }
+       
 
         stripe.createToken(card).then(function(result) {
             if (result.error) {
