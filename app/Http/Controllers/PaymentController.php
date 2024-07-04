@@ -9,8 +9,9 @@ use App\Models\Country;
 use App\Models\Customer as Customer_user;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Session;
-use Stripe\Customer;
 
 class PaymentController extends Controller
 {
@@ -126,7 +127,8 @@ class PaymentController extends Controller
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
 
         if(isset($charge) && $charge->status == 'succeeded'){
-
+            $orderNumber = Order::generateOrderNumber();
+            Order::insert(['user_id','user_session_id','order_id','order_number','order_total']);
         }else{
            // store logs
         }

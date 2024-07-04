@@ -20,7 +20,6 @@ class CreateOrdersTable extends Migration
             $table->string('order_id');
             $table->string('order_number');
             $table->decimal('order_total',10,2);
-            $table->decimal('total_amount', 8, 2);
             $table->string('payment_id');
             $table->string('is_paid');
             $table->string('status')->default('pending');
