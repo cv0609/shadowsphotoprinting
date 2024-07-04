@@ -19,7 +19,9 @@ class CreateOrdersTable extends Migration
             $table->string('user_session_id');
             $table->string('order_id');
             $table->string('order_number');
-            $table->decimal('order_total',10,2);
+            $table->decimal('sub_total',10,2);
+            $table->decimal('shipping_charge',10,2);
+            $table->decimal('total',10,2);
             $table->string('payment_id');
             $table->string('is_paid');
             $table->string('status')->default('pending');
