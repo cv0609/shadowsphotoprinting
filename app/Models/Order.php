@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
+class Order extends Model
+{
+    use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
+    public static function generateOrderNumber()
+    {
+        do {
+            $orderNumber = 'ORD-' . strtoupper(Str::random(10));
+        } while (self::where('order_number', $orderNumber)->exists());
+
+        return $orderNumber;
+    }
+}

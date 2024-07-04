@@ -17,7 +17,7 @@
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>First name * </label>
-                                            <input type="text" name="name" placeholder="developer ">
+                                            <input type="text" name="name" id="fname" placeholder="developer ">
                                         </p>
                                     </div>
                                     <div class="col-lg-6">
@@ -30,7 +30,7 @@
                                 </div>
                                 <p class="form-row">
                                     <label>Company name (optional) </label>
-                                    <input type="text" name="company-name" placeholder="test ">
+                                    <input type="text" name="company_name" id="company_name" placeholder="test ">
                                 </p>
                                 <p class="form-row">
                                     <label>Country / Region *
@@ -40,9 +40,9 @@
                                 <p class="form-row">
                                     <label> Street address *
                                     </label>
-                                    <input type="text" name="street"
+                                    <input type="text" name="street1" id="street1"
                                         placeholder="House number and street name ">
-                                    <input type="text" name="suite"
+                                    <input type="text" name="street2" id="street2"
                                         placeholder="Apartment, suite, unit, etc. (optional) ">
                                 </p>
                                 <p class="form-row">
@@ -61,34 +61,34 @@
                                 <p class="form-row">
                                     <label> Postcode *
                                     </label>
-                                    <input type="text" name="postcode">
+                                    <input type="text" name="postcode" id="postcode">
                                 </p>
                                 <p class="form-row">
                                     <label> Phone (optional)
                                     </label>
-                                    <input type="number" name="number1">
+                                    <input type="number" name="phone" id="phone">
                                 </p>
                                 <p class="form-row">
                                     <label> Email address *
                                     </label>
-                                    <input type="email" name="email12">
+                                    <input type="email" name="email" id="email">
                                 </p>
                                 <p class="form-row">
                                     <label> Account username * </label>
-                                    <input type="text" name="username" id="postcode" placeholder="Username">
+                                    <input type="text" name="username" id="username" placeholder="Username">
                                 </p>
                                 <p class="form-row">
                                     <label> Create account password *
                                     </label>
-                                    <input type="password" name="password" placeholder="Password">
+                                    <input type="password" name="password" id="password" placeholder="Password">
                                 </p>
 
                             </div>
                             <div class="Ship-field">
                                 <div class="ship-to-different">
                                     <h3 class="ship-to-different-address">
-                                        <label for="chkPassport">
-                                            <input type="checkbox" id="chkPassport"> <span> Ship to a different
+                                        <label for="shipcheckbox">
+                                            <input type="checkbox" id="shipcheckbox"> <span> Ship to a different
                                                 address?</span>
                                         </label>
                                     </h3>
@@ -98,20 +98,20 @@
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>First name * </label>
-                                                        <input type="text" name="name" placeholder="developer ">
+                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="developer ">
                                                     </p>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>Last name *
                                                         </label>
-                                                        <input type="text" name="lname" placeholder="dev ">
+                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="dev ">
                                                     </p>
                                                 </div>
                                             </div>
                                             <p class="form-row">
                                                 <label>Company name (optional) </label>
-                                                <input type="text" name="company-name" placeholder="test ">
+                                                <input type="text" name="ship_company" id="ship_company" placeholder="test ">
                                             </p>
                                             <p class="form-row">
                                                 <label>Country / Region *
@@ -121,17 +121,17 @@
                                             <p class="form-row">
                                                 <label> Street address *
                                                 </label>
-                                                <input type="text" name="street1"
-                                                    placeholder="House number and street name ">
-                                                <input type="text" name="street2"
-                                                    placeholder="Apartment, suite, unit, etc. (optional) ">
+                                                <input type="text" name="ship_street1"
+                                                    placeholder="House number and street name " id="ship_street1">
+                                                <input type="text" name="ship_street2"
+                                                    placeholder="Apartment, suite, unit, etc. (optional) " id="ship_street2">
                                             </p>
                                             <p class="form-row">
                                                 <label> Suburb * </label>
-                                                <input type="text" name="suburb" placeholder="">
+                                                <input type="text" name="ship_suburb" placeholder="" id="ship_suburb">
                                             </p>
                                             <p class="form-row">
-                                                <select class="form-control" id="ship-state" name="state" >
+                                                <select class="form-control" id="ship_state" name="ship_state" >
                                                     <option value="">State</option>
                                                     @foreach ($countries->states as $state)
                                                       <option value="{{ $state->id }}">{{ $state->name }}</option>
@@ -143,7 +143,7 @@
                                             <p class="form-row">
                                                 <label> Postcode *
                                                 </label>
-                                                <input type="text" name="postcode0">
+                                                <input type="text" name="ship_postcode" id="ship_postcode">
                                             </p>
 
 
@@ -152,7 +152,7 @@
                                     <div class="order-notes">
                                         <p class="form-row">
                                             <label>Order notes (optional) </label>
-                                            <textarea name="order_comments" class="input-text "
+                                            <textarea name="order_comments" id="order_comments" class="input-text "
                                                 placeholder="Notes about your order, e.g. special notes for delivery."
                                                 rows="2" cols=""></textarea>
                                         </p>
@@ -262,24 +262,108 @@
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
+        $('.error-message').remove();
+
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var street1 = $('#street1').val();
+        var street2 = $('#street2').val();
+        var state = $('#state').val();
+        var postcode = $('#postcode').val();
+        var phone = $('#phone').val();
+        var suburb = $('#suburb').val();
+        var email = $('#email').val();
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var company_name = $('#company_name').val();
+
+        if ($('#shipcheckbox').is(':checked')) {
+            var ship_fname = $('#ship_fname').val();
+            var ship_lname = $('#ship_lname').val();
+            var ship_company = $('#ship_company').val();
+            var ship_street1 = $('#ship_street1').val();
+            var ship_street2 = $('#ship_street2').val();
+            var ship_suburb = $('#ship_suburb').val();
+            var ship_state = $('#ship_state').val();
+            var ship_state = $('#ship_state').val();
+            var ship_postcode = $('#ship_postcode').val();
+            var order_comments = $('#order_comments').val();
+        }
+
+
+        var isValid = true;
+
+        // Primary address validation
+        var requiredFields = ['#fname', '#lname', '#street1','#street2', '#postcode', '#email', '#username', '#password','#suburb'];
+        requiredFields.forEach(function(field) {
+            var $field = $(field);
+            if ($field.val().trim() === '') {
+                isValid = false;
+                $field.after('<span class="error-message" style="color: red;">This field is required.</span>');
+            }
+        });
+
+        // Shipping address validation if checkbox is checked
+        if ($('#shipcheckbox').is(':checked')) {
+            var shipRequiredFields = ['#ship_fname', '#ship_lname', '#ship_street1','#ship_street2', '#ship_postcode','#ship_suburb'];
+            shipRequiredFields.forEach(function(field) {
+                var $field = $(field);
+                if ($field.val().trim() === '') {
+                    isValid = false;
+                    $field.after('<span class="error-message" style="color: red;">This field is required.</span>');
+                }
+            });
+        }
+
+        if (!isValid) {
+            return; // Stop form submission
+        }
+
         stripe.createToken(card).then(function(result) {
             if (result.error) {
                 // Display error.message in your UI
             } else {
                 // Send the token to your server
+                var formData = {
+                    fname: fname,
+                    lname: lname,
+                    street1: street1,
+                    street2: street2,
+                    state: state,
+                    postcode: postcode,
+                    phone: phone,
+                    suburb: suburb,
+                    email: email,
+                    username: username,
+                    password: password,
+                    company_name:company_name,
+                    stripeToken: result.token.id
+                };
+
+                if ($('#shipcheckbox').is(':checked')) {
+                    formData.ship_fname = ship_fname;
+                    formData.ship_lname = ship_lname;
+                    formData.ship_company = ship_company;
+                    formData.ship_street1 = ship_street1;
+                    formData.ship_street2 = ship_street2;
+                    formData.ship_suburb = ship_suburb;
+                    formData.ship_state = ship_state;
+                    formData.ship_postcode = ship_postcode;
+                    formData.order_comments = order_comments;
+                }
+
+
                 fetch('/create-customer', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({
-                        email: document.getElementById('email').value,
-                        source: result.token.id
-                    })
+                    body: JSON.stringify(formData)
                 })
                 .then(response => response.json())
-                .then(customer => {
+                
+                .then(response => {
                     fetch('/charge-customer', {
                         method: 'POST',
                         headers: {
@@ -287,7 +371,7 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         body: JSON.stringify({
-                            customer_id: customer.id,
+                            customer_id: response.id,
                             amount: 1000 // amount in cents
                         })
                     })
@@ -303,7 +387,7 @@
 
 <script>
     $(function () {
-        $("#chkPassport").click(function () {
+        $("#shipcheckbox").click(function () {
             if ($(this).is(":checked")) {
                 $("#dvPassport").show();
                 $("#AddPassport").hide();
@@ -315,12 +399,12 @@
     });
 
     $('#state').select2({
-            placeholder: 'Select products',
+            placeholder: 'Select state',
             allowClear: true
         });
 
     $('#ship-state').select2({
-        placeholder: 'Select products',
+        placeholder: 'Select state',
         allowClear: true
     });
 
