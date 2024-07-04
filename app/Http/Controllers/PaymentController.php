@@ -94,7 +94,7 @@ class PaymentController extends Controller
         }
 
          $is_exist = $this->stripe->searchCustomerByEmail($email);
-         $is_exist;
+
         if(isset($is_exist) && $is_exist == false){
 
             $stripeCustomer = $this->stripe->createCustomer($email, $source);
@@ -124,10 +124,9 @@ class PaymentController extends Controller
         $amount = $request->input('amount');
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
-
+        dd($charge);
         if(isset($charge) && $charge->status == 'succeeded'){
-            // store data in order table
-            // store items in order table
+
         }else{
            // store logs
         }
