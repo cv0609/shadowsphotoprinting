@@ -124,15 +124,12 @@ class PaymentController extends Controller
         $amount = $request->input('amount');
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
-        dd($charge);
+
         if(isset($charge) && $charge->status == 'succeeded'){
 
         }else{
            // store logs
         }
-        // dump(Session::get('address'));
-        // dd($charge);
-
         return response()->json($charge);
     }
 }
