@@ -92,11 +92,10 @@ class PaymentController extends Controller
                 'order_comments' => $order_comments
             ];
         }
-    
 
-        $customer = Customer_user::where('email',$email)->first();
-
-        if(!isset($customer) && empty($customer)){
+         $is_exist = $this->stripe->searchCustomerByEmail($email);
+         $is_exist;
+        if(isset($is_exist) && $is_exist == false){
 
             $stripeCustomer = $this->stripe->createCustomer($email, $source);
 
@@ -109,10 +108,10 @@ class PaymentController extends Controller
 
             $customer_id = $stripeCustomer->id;
         }else{
-            $customer_id = $customer->customer_id;
+            $customer_id = $is_exist->id;
         }
 
-        Session::put('address', $address);
+        Session::put('order_address', $address);
 
         $customerIdArr = ['id' => $customer_id];
 

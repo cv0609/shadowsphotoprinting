@@ -38,4 +38,16 @@ class StripeService
             return $e->getMessage();
         }
     }
+
+
+    public function searchCustomerByEmail($email)
+    {
+        $customers = Customer::search(['query' => 'email:\''.$email.'\'','limit'=>1]);
+        if (count($customers->data) > 0) {
+            return $customers->data[0]; // Return the list of customers
+        } else {
+            return false; // No customers found
+        }
+    }
+
 }
