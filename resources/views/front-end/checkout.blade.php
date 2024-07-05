@@ -256,7 +256,23 @@
 <script>
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
-    var card = elements.create('card');
+    // var card = elements.create('card');
+    var card = elements.create('card', {
+    style: {
+        base: {
+        iconColor: '#666EE8',
+        color: '#ffffff',
+        lineHeight: '40px',
+        fontWeight: 300,
+        fontFamily: 'Helvetica Neue',
+        fontSize: '15px',
+
+        '::placeholder': {
+            color: '#CFD7E0',
+        },
+        },
+    }
+    });
     card.mount('#card-element');
 
     var form = document.getElementById('payment-form');
@@ -319,7 +335,7 @@
         if (!isValid) {
             return; // Stop form submission
         }
-       
+
 
         stripe.createToken(card).then(function(result) {
             if (result.error) {
@@ -364,7 +380,7 @@
                     body: JSON.stringify(formData)
                 })
                 .then(response => response.json())
-                
+
                 .then(response => {
                     fetch('/charge-customer', {
                         method: 'POST',
