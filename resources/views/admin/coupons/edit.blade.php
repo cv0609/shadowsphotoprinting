@@ -55,6 +55,7 @@
                             @error('amount')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
+
                         </div>
                     </div>
 
@@ -66,6 +67,9 @@
                             @error('minimum_spend')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
+                           @if(Session::has('minimum_amount'))
+                           <span class="text-danger">{{ Session::get('minimum_amount') }}</span>
+                           @endif
                         </div>
                     </div>
 

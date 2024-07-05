@@ -3194,7 +3194,7 @@ li.dropdown a.signup {
 }
 
 .coupon-wrapper {
-    padding: 15px;
+    /* padding: 15px; */
     margin-bottom: 24px;
     background-color: #16a085;
     margin-left: 0;
@@ -4034,4 +4034,35 @@ div#card-cvc-element {
 .payment_methods .save-info label::before {
     width: 0;
     opacity: 0;
+}
+/*  */
+section.sans-ser h5 {
+    color: #fff;
+    font-size: 36px;
+}
+section.sans-ser {
+    padding: 30px 0;
+    text-align: center;
+}
+.shortly {
+    background: #d7f5da;
+    padding: 30px;
+    margin-top: 30px;
+}
+.shortly h1 {
+    font-size: 26px;
+    color: #000;
+    font-weight: 500;
+}
+.shortly span {
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.been-orders a {
+    color: #fff;
+    margin-top: 19px;
+    display: block;
+    font-size: 20px;
 }

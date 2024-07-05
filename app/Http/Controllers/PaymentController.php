@@ -82,7 +82,7 @@ class PaymentController extends Controller
             'username' => $username,
             'password' => $password,
         ];
-        
+
         // Check if shipping details are provided
         if (isset($ship_fname) || isset($ship_lname) || isset($ship_street1) || isset($ship_suburb) || isset($ship_state) || isset($ship_postcode)) {
             $address += [ // Use the += operator to merge arrays
@@ -92,7 +92,7 @@ class PaymentController extends Controller
                 'ship_street1' => $ship_street1,
                 'ship_street2' => $ship_street2,
                 'ship_suburb' => $ship_suburb,
-                'ship_state' => $ship_state_name->name,
+                'ship_state' => $ship_state_name->name ?? '',
                 'ship_postcode' => $ship_postcode,
                 'order_comments' => $order_comments
             ];
@@ -177,6 +177,6 @@ class PaymentController extends Controller
     }
 
     public function thankyou(){
-        return view('front-end.thankyou');
+        return view('front-end.order_thank_you');
     }
 }

@@ -88,10 +88,10 @@ class CartController extends Controller
 
 
     public function cart()
-    {   
+    {
 
         $session_id = Session::getId();
-      
+
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
@@ -125,6 +125,7 @@ class CartController extends Controller
      {
        $coupon = Coupon::where('code', $request->coupon_code)->first();
         $total = $this->CartService->getCartTotal();
+
         // $product = Product::find($request->product_id);
         // $productCategories = $product->categories->pluck('id')->toArray();
 
@@ -143,11 +144,11 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
-        if ($total < $coupon->minimum_cart_total) {
+        if ($total['subtotal'] < $coupon->minimum_cart_total) {
             return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
         }
 
-        if($total < $coupon->minimum_spend || $total > $coupon->maximum_spend)
+        if($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend)
         {
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
         }
@@ -182,7 +183,7 @@ class CartController extends Controller
             'code' => $coupon->code,
             'discount_amount' => $amount,
         ]);
-        return ['success' => true, 'total' => $total - $coupon->discount_amount];
+        return ['success' => true, 'total' => $total['subtotal'] - $coupon->discount_amount];
 
 
 

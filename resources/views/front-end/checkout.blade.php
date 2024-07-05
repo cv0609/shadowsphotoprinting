@@ -17,20 +17,20 @@
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>First name * </label>
-                                            <input type="text" name="name" id="fname" placeholder="developer ">
+                                            <input type="text" name="name" id="fname" placeholder="John">
                                         </p>
                                     </div>
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>Last name *
                                             </label>
-                                            <input type="text" name="lname" id="lname" placeholder="dev ">
+                                            <input type="text" name="lname" id="lname" placeholder="Smith">
                                         </p>
                                     </div>
                                 </div>
                                 <p class="form-row">
                                     <label>Company name (optional) </label>
-                                    <input type="text" name="company_name" id="company_name" placeholder="test ">
+                                    <input type="text" name="company_name" id="company_name" placeholder="Example">
                                 </p>
                                 <p class="form-row">
                                     <label>Country / Region *
@@ -98,20 +98,20 @@
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>First name * </label>
-                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="developer ">
+                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="john">
                                                     </p>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>Last name *
                                                         </label>
-                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="dev ">
+                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="Smith">
                                                     </p>
                                                 </div>
                                             </div>
                                             <p class="form-row">
                                                 <label>Company name (optional) </label>
-                                                <input type="text" name="ship_company" id="ship_company" placeholder="test ">
+                                                <input type="text" name="ship_company" id="ship_company" placeholder="Example">
                                             </p>
                                             <p class="form-row">
                                                 <label>Country / Region *
@@ -244,11 +244,11 @@
                                                         <div id="card-cvc-errors" role="alert"></div>
                                                     </div>
                                                 </div>
-                                                <div class="save-info">
+                                                {{-- <div class="save-info">
                                                     <input type="checkbox" id="save_card">
                                                     <label for="save_card">
                                                         Save payment information to my account for future purchases.</label>
-                                                </div>
+                                                </div> --}}
                                                   {{-- <div id="card-element">
 
                                                   </div> --}}
