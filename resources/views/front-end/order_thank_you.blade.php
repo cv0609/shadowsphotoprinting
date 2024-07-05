@@ -7,11 +7,11 @@
             <div class="shortly">
                 <h1>ORDER CONFIRMATION
                 </h1>
-                <span>Your order #2465 has been sucessful! </span>
-                <p>Thank you for choosing Oui Oui fashion. You will shortly receive a confirmation email.
+                <span>Your order #{{$orderId}} has been sucessful! </span>
+                <p>Thank you for choosing Shadows Photo Printing.
                 </p>
             </div>
-            <a href="#">Back to shop</a>
+            <a href="{{ route('shop') }}">Back to shop</a>
         </div>
     </div>
 </section>

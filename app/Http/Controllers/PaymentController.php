@@ -168,15 +168,15 @@ class PaymentController extends Controller
             CartData::where('cart_id',$cart->id)->delete();
 
             Session::forget('order_address');
-
-            return response()->json(['error' => false,'message'=>'success']);
+            return redirect()->route('thankyou',['order-id'=>$order->id]);
+            // return response()->json(['error' => false,'message'=>'success']);
 
         }else{
            return response()->json(['error' => true,'message' => 'Something went wrong']);
         }
     }
 
-    public function thankyou(){
-        return view('front-end.order_thank_you');
+    public function thankyou($orderId){
+        return view('front-end.order_thank_you',compact($orderId));
     }
 }
