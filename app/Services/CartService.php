@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\Shipping;
+use App\Models\Coupon;
 use Illuminate\Support\Facades\Session;
 
 class CartService

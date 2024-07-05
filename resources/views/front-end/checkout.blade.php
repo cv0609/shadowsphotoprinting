@@ -189,8 +189,8 @@
                                         </tr>
                                         @if(Session::has('coupon'))
                                         <tr>
-                                            <th>Coupon: {{ $CartTotal['coupon_code'] }}</th>
-                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_discount'],2) }}</span> </td>
+                                            <th>Coupon: {{ $CartTotal['coupon_code']['code'] }}</th>
+                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}</span> </td>
                                         </tr>
                                         @endif
                                         @if($shipping->status == "1")

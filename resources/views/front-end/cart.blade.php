@@ -2,8 +2,9 @@
 @section('content')
 {{-- @php
 echo"<pre>";
-    print_r(Session::get('billing_details'));
-    die;
+    // print_r(Session::get('billing_details'));
+    // die;
+    dd($CartTotal);
 @endphp --}}
 <section class="coupon-main">
 <div class="container">
@@ -89,11 +90,11 @@ echo"<pre>";
                             </tr>
                             @if(Session::has('coupon'))
                             <tr class="cart-discount coupon-eofy-discount">
-                                <th>Coupon: {{ $CartTotal['coupon_code'] }} discount</th>
-                                <td data-title="Coupon: {{ $CartTotal['coupon_code'] }} discount">-<span
+                                <th>Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
+                                <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">-<span
                                         class="woocommerce-Price-amount amount"><span
                                             class="woocommerce-Price-currencySymbol">$</span>
-                                            {{ number_format($CartTotal['coupon_discount'],2) }}</span>
+                                            {{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}</span>
                                 </td>
                             </tr>
                             @endif
