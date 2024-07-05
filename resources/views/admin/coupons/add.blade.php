@@ -101,7 +101,21 @@
                         </div>
                     </div>
 
-                    
+                    <div class="item form-group ">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Category<span ></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6">
+                            <select class="form-control " id="optcatelist" name="product_category[]" multiple="multiple">
+                                @foreach ($ProductCategory as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('products')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="item form-group ">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Products<span ></span>
                         </label>
@@ -125,7 +139,7 @@
                             <label>
                                 <input type="checkbox" value="1" name="auto_applied"> Automatic coupon applied
                             </label>
-                             
+
                            </div>
                         </div>
                     </div>
@@ -170,6 +184,13 @@
       $(document).ready(function() {
         $('#optlist').select2({
             placeholder: 'Select products',
+            allowClear: true
+        });
+    });
+
+    $(document).ready(function() {
+        $('#optcatelist').select2({
+            placeholder: 'Select product category',
             allowClear: true
         });
     });

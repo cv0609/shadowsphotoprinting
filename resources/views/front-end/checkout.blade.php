@@ -177,6 +177,7 @@
                                         <tr>
                                             <td> {{ $item->product->product_title }}&nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong> </td>
                                             <td> <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span> </td>
+                                            <input type="hidden" value="{{ number_format($item->quantity * $item->product->product_price,2) }}">
                                         </tr>
                                        @endforeach
                                     </tbody>
@@ -225,7 +226,32 @@
                                         <ul>
                                             <li>
                                                 <label for=""> Credit Card (Stripe) </label>
-                                                  <div id="card-element"></div>
+                                                <p>Pay with your credit card via Stripe.</p>
+                                                <div class="payment_form-wrap">
+                                                    <div class="form-group">
+                                                        <label>Card Number</label>
+                                                        <div id="card-number-element"></div>
+                                                        <div id="card-number-errors" role="alert"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Expiration Date</label>
+                                                        <div id="card-expiry-element"></div>
+                                                        <div id="card-expiry-errors" role="alert"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>CVC Number</label>
+                                                        <div id="card-cvc-element"></div>
+                                                        <div id="card-cvc-errors" role="alert"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="save-info">
+                                                    <input type="checkbox" id="save_card">
+                                                    <label for="save_card">
+                                                        Save payment information to my account for future purchases.</label>
+                                                </div>
+                                                  {{-- <div id="card-element">
+
+                                                  </div> --}}
                                                     {{-- <button id="submit">Submit Payment</button> --}}
                                             </li>
                                         </ul>
@@ -253,10 +279,33 @@
 @endsection
 @section('scripts')
 <script>
-    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
-    var card = elements.create('card');
-    card.mount('#card-element');
+    var elements = stripe.elements();
+    var style =  {
+        base: {
+        iconColor: '#666EE8',
+        color: '#000',
+        lineHeight: '40px',
+        fontWeight: 300,
+        fontFamily: 'Helvetica Neue',
+        fontSize: '15px',
+        padding:'10px',
+        background:'red',
+
+        '::placeholder': {
+            color: '#CFD7E0',
+        },
+        },
+    }
+    var cardNumber = elements.create('cardNumber', {style: style});
+		    cardNumber.mount('#card-number-element');
+
+		    var cardExpiry = elements.create('cardExpiry', {style: style});
+		    cardExpiry.mount('#card-expiry-element');
+
+		    var cardCvc = elements.create('cardCvc', {style: style});
+		    cardCvc.mount('#card-cvc-element');
 
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {
@@ -319,6 +368,7 @@
             return; // Stop form submission
         }
 
+
         stripe.createToken(card).then(function(result) {
             if (result.error) {
                 // Display error.message in your UI
@@ -362,7 +412,7 @@
                     body: JSON.stringify(formData)
                 })
                 .then(response => response.json())
-                
+
                 .then(response => {
                     fetch('/charge-customer', {
                         method: 'POST',
@@ -377,7 +427,11 @@
                     })
                     .then(response => response.json())
                     .then(charge => {
-                         console.log(charge);
+                         if(charge.error == false){
+                            window.location.href = '/thankyou';
+                         }else{
+                            console.log('something went wrong.');
+                         }
                     });
                 });
             }
@@ -400,12 +454,12 @@
 
     $('#state').select2({
             placeholder: 'Select state',
-            allowClear: true
+            allowClear: false
         });
 
-    $('#ship-state').select2({
+    $('#ship_state').select2({
         placeholder: 'Select state',
-        allowClear: true
+        allowClear: false
     });
 
 </script>

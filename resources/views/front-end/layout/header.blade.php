@@ -1,6 +1,8 @@
 @php
     $PageDataService = app(App\Services\PageDataService::class);
     $productCategories = $PageDataService->getProductCategories();
+    $cartModel = app(App\Models\Cart::class);
+    $CartCount = $cartModel::getCartCount();
 
 @endphp
 <header class="header">
@@ -71,7 +73,7 @@
                                         </span>
                                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 
-                                        <span class="kt-cart-total">0</span>
+                                        <span class="kt-cart-total">{{ $CartCount }}</span>
                                     </a>
                                 </li>
                                 <li class="social-media"><a href="https://www.facebook.com/Shadows-Photo-Printing-635792569950635"><i class="fa-brands fa-facebook-f"></i> </a></li>

@@ -107,9 +107,10 @@ Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFrom
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
-Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');
 Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
+Route::get('/thank-you', [PaymentController::class,'thankyou']);
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
