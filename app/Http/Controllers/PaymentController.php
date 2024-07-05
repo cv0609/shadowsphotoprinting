@@ -177,6 +177,6 @@ class PaymentController extends Controller
     }
 
     public function thankyou($orderId){
-        return view('front-end.order_thank_you',compact($orderId));
+        return view('front-end.order_thank_you',compact('orderId'));
     }
 }
