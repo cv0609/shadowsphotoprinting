@@ -168,8 +168,8 @@ class PaymentController extends Controller
             CartData::where('cart_id',$cart->id)->delete();
 
             Session::forget('order_address');
-            return redirect()->route('thankyou',['order-id'=>$order->id]);
-            // return response()->json(['error' => false,'message'=>'success']);
+
+            return response()->json(['error' => false,'message'=>'success','order_id'=>$order->id]);
 
         }else{
            return response()->json(['error' => true,'message' => 'Something went wrong']);
