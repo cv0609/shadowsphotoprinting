@@ -125,8 +125,8 @@ class CartController extends Controller
      {
        $coupon = Coupon::where('code', $request->coupon_code)->first();
         $total = $this->CartService->getCartTotal();
-        $product = Product::find($request->product_id);
-        $productCategories = $product->categories->pluck('id')->toArray();
+        // $product = Product::find($request->product_id);
+        // $productCategories = $product->categories->pluck('id')->toArray();
 
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
@@ -156,13 +156,13 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
-        if (!empty($coupon->categories) && !array_intersect($productCategories, explode(',',$coupon->categories))) {
-            return back()->withErrors(['code' => 'This coupon is not applicable to the selected product\'s category.']);
-        }
+        // if (!empty($coupon->categories) && !array_intersect($productCategories, explode(',',$coupon->categories))) {
+        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product\'s category.']);
+        // }
 
-        if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
-            return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
-        }
+        // if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
+        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
+        // }
 
         $amount = 0;
         if($coupon->type == "0")
