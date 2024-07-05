@@ -226,7 +226,32 @@
                                         <ul>
                                             <li>
                                                 <label for=""> Credit Card (Stripe) </label>
-                                                  <div id="card-element"></div>
+                                                <p>Pay with your credit card via Stripe.</p>
+                                                <div class="payment_form-wrap">
+                                                    <div class="form-group">
+                                                        <label>Card Number</label>
+                                                        <div id="card-number-element"></div>
+                                                        <div id="card-number-errors" role="alert"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Expiration Date</label>
+                                                        <div id="card-expiry-element"></div>
+                                                        <div id="card-expiry-errors" role="alert"></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>CVC Number</label>
+                                                        <div id="card-cvc-element"></div>
+                                                        <div id="card-cvc-errors" role="alert"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="save-info">
+                                                    <input type="checkbox" id="save_card">
+                                                    <label for="save_card">
+                                                        Save payment information to my account for future purchases.</label>
+                                                </div>
+                                                  {{-- <div id="card-element">
+
+                                                  </div> --}}
                                                     {{-- <button id="submit">Submit Payment</button> --}}
                                             </li>
                                         </ul>
@@ -256,24 +281,31 @@
 <script>
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
-    // var card = elements.create('card');
-    var card = elements.create('card', {
-    style: {
+    var elements = stripe.elements();
+    var style =  {
         base: {
         iconColor: '#666EE8',
-        color: '#ffffff',
+        color: '#000',
         lineHeight: '40px',
         fontWeight: 300,
         fontFamily: 'Helvetica Neue',
         fontSize: '15px',
+        padding:'10px',
+        background:'red',
 
         '::placeholder': {
             color: '#CFD7E0',
         },
         },
     }
-    });
-    card.mount('#card-element');
+    var cardNumber = elements.create('cardNumber', {style: style});
+		    cardNumber.mount('#card-number-element');
+
+		    var cardExpiry = elements.create('cardExpiry', {style: style});
+		    cardExpiry.mount('#card-expiry-element');
+
+		    var cardCvc = elements.create('cardCvc', {style: style});
+		    cardCvc.mount('#card-cvc-element');
 
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {

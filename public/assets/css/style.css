@@ -3958,3 +3958,80 @@ li.option:hover {
     background-color: #16a085;
     color: #fff;
 }
+
+
+/* payment-card-form  */
+.payment_methods {
+    border: 1px solid #eeeeee4a;
+    padding: 15px;
+}
+.payment_methods li > p {
+    line-height: 24px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    font-style: normal;
+    color: #ffc205;
+    margin: 20px 0 0;
+}
+.payment_methods .payment_form-wrap {
+    border: 1px solid #fff;
+    padding: 15px;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+}
+.payment_methods .payment_form-wrap label {
+    border: 0;
+}
+.payment_methods  li > label {
+    margin-left: -15px;
+    margin-top: -15px;
+}
+.payment_methods .payment_form-wrap label::before {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+.payment_methods .payment_form-wrap .form-group:first-child {
+    grid-column: 1/-1;
+}
+
+.payment_methods .payment_form-wrap .form-group {
+    width: 100%;
+}
+
+div#card-number-element {
+    width: 100%;
+    background: #fff;
+    padding: 0 10px;
+}
+
+div#card-expiry-element {
+    background: #fff;
+    padding: 0 10px;
+}
+
+div#card-cvc-element {
+    background: #fff;
+    padding: 0 10px;
+}
+
+.payment_methods  .save-info {
+    display: flex;
+    align-items: center;
+    border: 1px solid #fff;
+    margin-top: 20px;
+    padding: 5px 10px;
+    gap: 5px;
+}
+
+.payment_methods .save-info label {
+    padding: 0;
+    border: 0;
+}
+
+.payment_methods .save-info label::before {
+    width: 0;
+    opacity: 0;
+}
