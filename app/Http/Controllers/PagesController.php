@@ -20,7 +20,7 @@ class PagesController extends Controller
   }
   public function pages(Request $request)
   {
-       // Get the full path
+    // Get the full path
         $path = $request->path();
 
         // Extract the last segment
