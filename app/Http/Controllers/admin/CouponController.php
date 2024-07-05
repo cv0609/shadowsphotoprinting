@@ -37,7 +37,9 @@ class CouponController extends Controller
    {
       $products = Product::get();
       $coupon_detail = Coupon::whereId($id)->first();
-      return view('admin.coupons.edit', compact('coupon_detail','products'));
+      $ProductCategory = ProductCategory::get();
+
+      return view('admin.coupons.edit', compact('coupon_detail','products','ProductCategory'));
    }
 
    public function couponUpdate(Request $request)
