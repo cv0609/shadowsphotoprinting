@@ -61,7 +61,7 @@
                                 <p class="form-row">
                                     <label> Postcode *
                                     </label>
-                                    <input type="text" name="postcode" id="postcode">
+                                    <input type="number" name="postcode" id="postcode">
                                 </p>
                                 <p class="form-row">
                                     <label> Phone (optional)
@@ -143,7 +143,7 @@
                                             <p class="form-row">
                                                 <label> Postcode *
                                                 </label>
-                                                <input type="text" name="ship_postcode" id="ship_postcode">
+                                                <input type="number" name="ship_postcode" id="ship_postcode">
                                             </p>
 
 

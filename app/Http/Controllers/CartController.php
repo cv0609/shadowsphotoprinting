@@ -87,10 +87,10 @@ class CartController extends Controller
 
 
     public function cart()
-    {
+    {   
 
         $session_id = Session::getId();
-
+      
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
@@ -148,11 +148,6 @@ class CartController extends Controller
         {
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
         }
-
-        if ($coupon->use_limit && $coupon->total_use >= $coupon->use_limit) {
-            return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
-        }
-
         $amount = 0;
         if($coupon->type == "0")
           {
