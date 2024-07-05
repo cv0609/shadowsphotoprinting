@@ -3,10 +3,10 @@
 <section class="coupon-main">
     <div class="container">
         <div class="coupon-inner">
-            <div class="coupon-wrapper">
+            {{-- <div class="coupon-wrapper">
                 <p> Returning customer? <a href="#">Click here to login</a> </p>
                 <p> Have a coupon? <a href="#">Click here to enter your code</a> </p>
-            </div>
+            </div> --}}
             <div class="billing-row">
                 <div class="row">
                     <div class="col-lg-6">
@@ -281,7 +281,6 @@
 <script>
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
-    var elements = stripe.elements();
     var style =  {
         base: {
         iconColor: '#666EE8',
@@ -369,7 +368,7 @@
         }
 
 
-        stripe.createToken(card).then(function(result) {
+        stripe.createToken(cardNumber).then(function(result) {
             if (result.error) {
                 // Display error.message in your UI
             } else {
@@ -428,7 +427,7 @@
                     .then(response => response.json())
                     .then(charge => {
                          if(charge.error == false){
-                            window.location.href = '/thankyou';
+                            window.location.href = "{{ route('thankyou') }}";
                          }else{
                             console.log('something went wrong.');
                          }

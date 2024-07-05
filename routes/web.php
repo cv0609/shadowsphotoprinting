@@ -110,7 +110,7 @@ Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');
 Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
-Route::get('/thank-you', [PaymentController::class,'thankyou']);
+Route::get('/thank-you', [PaymentController::class,'thankyou'])->name('thankyou');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

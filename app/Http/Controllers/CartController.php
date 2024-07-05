@@ -117,7 +117,6 @@ class CartController extends Controller
                                 ->where('product_id', $product_id)
                                 ->delete();
         }
-
         return redirect()->route('cart')->with('success','Item removed from cart');
     }
 
@@ -189,6 +188,7 @@ class CartController extends Controller
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
 
         }
+        session()->flash('success', 'Cart updated successfully.');
     }
 
     public function getCartCount(Request $request)

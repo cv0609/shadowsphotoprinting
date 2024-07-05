@@ -22,8 +22,8 @@ class Cart extends Model
     {
         if (Auth::check()) {
             // User is logged in, sum quantities by user ID
-            $userId = Auth::id();
-            return self::where('user_id', $userId)
+            $auth_user = Auth::user();
+            return self::where('user_id', $auth_user->id)
                         ->with('items')
                         ->get()
                         ->sum(function($cart) {
