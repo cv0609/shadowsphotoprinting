@@ -427,7 +427,7 @@
                     .then(response => response.json())
                     .then(charge => {
                          if(charge.error == false){
-                            window.location.href = "{{ route('thankyou') }}";
+                            //window.location.href = "{{ route('thankyou') }}";
                          }else{
                             console.log('something went wrong.');
                          }
