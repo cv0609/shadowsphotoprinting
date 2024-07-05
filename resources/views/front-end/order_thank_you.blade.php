@@ -11,7 +11,7 @@
                 <p>Thank you for choosing Shadows Photo Printing.
                 </p>
             </div>
-            <a href="{{ route('shop') }}">Back to shop</a>
+            <a href="{{ url('shop') }}">Back to shop</a>
         </div>
     </div>
 </section>
