@@ -24,7 +24,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="coupon_type" >Coupon Type <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6">
-                           
+
                            <select class="form-control" name="coupon_type" >
                                <option value="">Select</option>
                                 <option value="0" <?= ($coupon_detail->type == "0" ? "selected" : "") ?> >Amount</option>
@@ -55,6 +55,7 @@
                             @error('amount')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
+
                         </div>
                     </div>
 
@@ -66,6 +67,9 @@
                             @error('minimum_spend')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
+                           @if(Session::has('minimum_amount'))
+                           <span class="text-danger">{{ Session::get('minimum_amount') }}</span>
+                           @endif
                         </div>
                     </div>
 
@@ -110,7 +114,7 @@
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}"<?= (in_array($product->id,explode(',',$coupon_detail->products))) ? "selected" : ""  ?>>{{ $product->product_title }}</option>
                                 @endforeach
-                               
+
                             </select>
                             @error('products')
                                 <span class="text-danger">{{ $message }}</span>
@@ -118,6 +122,31 @@
                         </div>
                     </div>
 
+                    <div class="item form-group ">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Only Category<span ></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6">
+                            <select class="form-control " id="optcatelist" name="product_category[]" multiple="multiple">
+                                @foreach ($ProductCategory as $category)
+                                    <option value="{{ $category->id }}" <?= (in_array($category->id,explode(',',$coupon_detail->product_category))) ? "selected" : ""  ?>>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('products')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="item form-group ">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Usage Limit<span ></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="number" class="form-control inputDate" name="use_limit" placeholder="Usage Limit" value="{{ $coupon_detail->use_limit }}">
+                            @error('products')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="item form-group control-label">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="auto_applied">Automatic coupon applied<span class="required"></span>
                         </label>
@@ -126,7 +155,7 @@
                             <label>
                                 <input type="checkbox" value="1" name="auto_applied" {{ $coupon_detail->auto_applied ? 'checked' : '' }}> Automatic coupon applied
                             </label>
-                             
+
                            </div>
                         </div>
                     </div>
@@ -166,12 +195,20 @@
 
         $('.inputDate').attr('min', maxDate);
     });
-    
+
     $(document).ready(function() {
         $('#optlist').select2({
             placeholder: 'Select products',
             allowClear: true
         });
     });
+
+    $(document).ready(function() {
+        $('#optcatelist').select2({
+            placeholder: 'Select product category',
+            allowClear: true
+        });
+    });
+
 </script>
 @endsection

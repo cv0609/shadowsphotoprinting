@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Coupon;
 use App\Models\Shipping;
 use App\Models\State;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
@@ -87,10 +88,10 @@ class CartController extends Controller
 
 
     public function cart()
-    {   
+    {
 
         $session_id = Session::getId();
-      
+
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
@@ -117,7 +118,6 @@ class CartController extends Controller
                                 ->where('product_id', $product_id)
                                 ->delete();
         }
-
         return redirect()->route('cart')->with('success','Item removed from cart');
     }
 
@@ -125,6 +125,9 @@ class CartController extends Controller
      {
        $coupon = Coupon::where('code', $request->coupon_code)->first();
         $total = $this->CartService->getCartTotal();
+
+        // $product = Product::find($request->product_id);
+        // $productCategories = $product->categories->pluck('id')->toArray();
 
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
@@ -141,14 +144,27 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
-        if ($total < $coupon->minimum_cart_total) {
+        if ($total['subtotal'] < $coupon->minimum_cart_total) {
             return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
         }
 
-        if($total < $coupon->minimum_spend || $total > $coupon->maximum_spend)
+        if($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend)
         {
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
         }
+
+        if ($coupon->use_limit && $coupon->total_use >= $coupon->use_limit) {
+            return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
+        }
+
+        // if (!empty($coupon->categories) && !array_intersect($productCategories, explode(',',$coupon->categories))) {
+        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product\'s category.']);
+        // }
+
+        // if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
+        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
+        // }
+
         $amount = 0;
         if($coupon->type == "0")
           {
@@ -167,7 +183,7 @@ class CartController extends Controller
             'code' => $coupon->code,
             'discount_amount' => $amount,
         ]);
-        return ['success' => true, 'total' => $total - $coupon->discount_amount];
+        return ['success' => true, 'total' => $total['subtotal'] - $coupon->discount_amount];
 
 
 
@@ -189,6 +205,7 @@ class CartController extends Controller
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
 
         }
+        session()->flash('success', 'Cart updated successfully.');
     }
 
     public function getCartCount(Request $request)

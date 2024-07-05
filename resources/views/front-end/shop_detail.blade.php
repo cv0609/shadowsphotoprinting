@@ -4,8 +4,9 @@
 
 <section class="envira-gallery">
     <div class="container">
-        <div class="coupon-wrapper">
-            <p class="text-center"> Coupon code applied successfully </p>
+        <div class="coupon-wrapper d-none" id="add_to_cart_msg">
+            <p class="text-center">Item added to cart successfully.
+            </p>
         </div>
         <div class="decoding">
                     
@@ -160,10 +161,12 @@ $(document).ready(function() {
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
+                    $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
+                    $('#add_to_cart_msg').removeClass('d-none');
+                    // alert(response.total_items);
                     // Update the cart totals and item count
-                    $("#cart-total-itmes").text(response.total_items + ' items');
-                    $("#cart-total-price").text('$' + response.total_price.toFixed(2));
-                    // alert('Items added to cart successfully!');
+                    // $("#cart-total-itmes").text(response.total_items + ' items');
+                    // $("#cart-total-price").text('$' + response.total_price.toFixed(2));
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

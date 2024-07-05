@@ -26,7 +26,10 @@ class Coupon extends Model
         'use_limit_per_user',
         'use_device',
         'multiple_use',
-        'total_use'
+        'total_use',
+        'usage_limit',
+        'used',
+        'product_category',
     ];
 
     public function isExpired()

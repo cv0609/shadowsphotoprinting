@@ -3,10 +3,10 @@
 <section class="coupon-main">
     <div class="container">
         <div class="coupon-inner">
-            <div class="coupon-wrapper">
+            {{-- <div class="coupon-wrapper">
                 <p> Returning customer? <a href="#">Click here to login</a> </p>
                 <p> Have a coupon? <a href="#">Click here to enter your code</a> </p>
-            </div>
+            </div> --}}
             <div class="billing-row">
                 <div class="row">
                     <div class="col-lg-6">
@@ -17,20 +17,20 @@
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>First name * </label>
-                                            <input type="text" name="name" id="fname" placeholder="developer ">
+                                            <input type="text" name="name" id="fname" placeholder="John">
                                         </p>
                                     </div>
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>Last name *
                                             </label>
-                                            <input type="text" name="lname" id="lname" placeholder="dev ">
+                                            <input type="text" name="lname" id="lname" placeholder="Smith">
                                         </p>
                                     </div>
                                 </div>
                                 <p class="form-row">
                                     <label>Company name (optional) </label>
-                                    <input type="text" name="company_name" id="company_name" placeholder="test ">
+                                    <input type="text" name="company_name" id="company_name" placeholder="Example">
                                 </p>
                                 <p class="form-row">
                                     <label>Country / Region *
@@ -61,7 +61,7 @@
                                 <p class="form-row">
                                     <label> Postcode *
                                     </label>
-                                    <input type="text" name="postcode" id="postcode">
+                                    <input type="number" name="postcode" id="postcode">
                                 </p>
                                 <p class="form-row">
                                     <label> Phone (optional)
@@ -98,20 +98,20 @@
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>First name * </label>
-                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="developer ">
+                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="john">
                                                     </p>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>Last name *
                                                         </label>
-                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="dev ">
+                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="Smith">
                                                     </p>
                                                 </div>
                                             </div>
                                             <p class="form-row">
                                                 <label>Company name (optional) </label>
-                                                <input type="text" name="ship_company" id="ship_company" placeholder="test ">
+                                                <input type="text" name="ship_company" id="ship_company" placeholder="Example">
                                             </p>
                                             <p class="form-row">
                                                 <label>Country / Region *
@@ -143,7 +143,7 @@
                                             <p class="form-row">
                                                 <label> Postcode *
                                                 </label>
-                                                <input type="text" name="ship_postcode" id="ship_postcode">
+                                                <input type="number" name="ship_postcode" id="ship_postcode">
                                             </p>
 
 
@@ -189,8 +189,8 @@
                                         </tr>
                                         @if(Session::has('coupon'))
                                         <tr>
-                                            <th>Coupon: {{ $CartTotal['coupon_code'] }}</th>
-                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_discount'],2) }}</span> </td>
+                                            <th>Coupon: {{ $CartTotal['coupon_code']['code'] }}</th>
+                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}</span> </td>
                                         </tr>
                                         @endif
                                         @if($shipping->status == "1")
@@ -244,11 +244,11 @@
                                                         <div id="card-cvc-errors" role="alert"></div>
                                                     </div>
                                                 </div>
-                                                <div class="save-info">
+                                                {{-- <div class="save-info">
                                                     <input type="checkbox" id="save_card">
                                                     <label for="save_card">
                                                         Save payment information to my account for future purchases.</label>
-                                                </div>
+                                                </div> --}}
                                                   {{-- <div id="card-element">
 
                                                   </div> --}}
@@ -280,7 +280,6 @@
 @section('scripts')
 <script>
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
-    var elements = stripe.elements();
     var elements = stripe.elements();
     var style =  {
         base: {
@@ -369,7 +368,7 @@
         }
 
 
-        stripe.createToken(card).then(function(result) {
+        stripe.createToken(cardNumber).then(function(result) {
             if (result.error) {
                 // Display error.message in your UI
             } else {
@@ -428,7 +427,7 @@
                     .then(response => response.json())
                     .then(charge => {
                          if(charge.error == false){
-                            window.location.href = '/thankyou';
+                            window.location.href = "{{ route('thankyou') }}";
                          }else{
                             console.log('something went wrong.');
                          }
