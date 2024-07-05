@@ -254,7 +254,7 @@
 @endsection
 @section('scripts')
 <script>
-    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
     var card = elements.create('card');
     card.mount('#card-element');
@@ -379,7 +379,11 @@
                     })
                     .then(response => response.json())
                     .then(charge => {
-                         console.log(charge);
+                         if(charge.error == false){
+                            window.location.href = '/thankyou';
+                         }else{
+                            console.log('something went wrong.');
+                         }
                     });
                 });
             }
@@ -402,12 +406,12 @@
 
     $('#state').select2({
             placeholder: 'Select state',
-            allowClear: true
+            allowClear: false
         });
 
-    $('#ship-state').select2({
+    $('#ship_state').select2({
         placeholder: 'Select state',
-        allowClear: true
+        allowClear: false
     });
 
 </script>

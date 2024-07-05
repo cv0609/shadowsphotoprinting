@@ -25,9 +25,13 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+        $auth_id = '';
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+        }
 
         $session_id = Session::getId();
-        $cart = Cart::firstOrCreate(["user_email" => "", "coupon_id" => null, "session_id" => $session_id]);
+        $cart = Cart::firstOrCreate(["user_email" => $auth_id, "coupon_id" => null, "session_id" => $session_id]);
         $insertData = [];
 
         if ($cart) {
