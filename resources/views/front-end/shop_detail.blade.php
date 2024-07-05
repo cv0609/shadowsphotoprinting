@@ -1,18 +1,24 @@
 @extends('front-end.layout.main')
 @section('content')
+
+
 <section class="envira-gallery">
-            <div class="container">
-                <div class="decoding">
-                    @if(Session::has('temImages'))
-                    @foreach($imageName as $temImages)
-                    <div class="decoding-wrapper selected-images">
-                        <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
-                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}">
-                         <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
-                         <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
-                    </div>
-                    @endforeach
-                    @endif
+    <div class="container">
+        <div class="coupon-wrapper">
+            <p class="text-center"> Coupon code applied successfully </p>
+        </div>
+        <div class="decoding">
+                    
+            @if(Session::has('temImages'))
+            @foreach($imageName as $temImages)
+            <div class="decoding-wrapper selected-images">
+                <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
+                <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}">
+                    <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
+                    <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
+            </div>
+            @endforeach
+            @endif
 
                 </div>
                 <div class="quanti-wrapper">
@@ -157,7 +163,7 @@ $(document).ready(function() {
                     // Update the cart totals and item count
                     $("#cart-total-itmes").text(response.total_items + ' items');
                     $("#cart-total-price").text('$' + response.total_price.toFixed(2));
-                    alert('Items added to cart successfully!');
+                    // alert('Items added to cart successfully!');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

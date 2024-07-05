@@ -177,6 +177,7 @@
                                         <tr>
                                             <td> {{ $item->product->product_title }}&nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong> </td>
                                             <td> <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span> </td>
+                                            <input type="hidden" value="{{ number_format($item->quantity * $item->product->product_price,2) }}">
                                         </tr>
                                        @endforeach
                                     </tbody>
@@ -253,7 +254,7 @@
 @endsection
 @section('scripts')
 <script>
-    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
     var card = elements.create('card');
     card.mount('#card-element');
@@ -318,6 +319,7 @@
         if (!isValid) {
             return; // Stop form submission
         }
+       
 
         stripe.createToken(card).then(function(result) {
             if (result.error) {
@@ -377,7 +379,11 @@
                     })
                     .then(response => response.json())
                     .then(charge => {
-                         console.log(charge);
+                         if(charge.error == false){
+                            window.location.href = '/thankyou';
+                         }else{
+                            console.log('something went wrong.');
+                         }
                     });
                 });
             }
@@ -400,12 +406,12 @@
 
     $('#state').select2({
             placeholder: 'Select state',
-            allowClear: true
+            allowClear: false
         });
 
-    $('#ship-state').select2({
+    $('#ship_state').select2({
         placeholder: 'Select state',
-        allowClear: true
+        allowClear: false
     });
 
 </script>
