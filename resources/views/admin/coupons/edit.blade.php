@@ -198,5 +198,13 @@
             allowClear: true
         });
     });
+
+    $(document).ready(function() {
+        $('#optcatelist').select2({
+            placeholder: 'Select product category',
+            allowClear: true
+        });
+    });
+
 </script>
 @endsection
