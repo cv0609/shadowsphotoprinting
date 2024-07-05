@@ -8,9 +8,11 @@ echo"<pre>";
 <section class="coupon-main">
 <div class="container">
 <div class="coupon-inner">
-    <div class="coupon-wrapper">
-        <p> Coupon code applied successfully </p>
-    </div>
+    @if(Session::has('success'))
+        <div class="coupon-wrapper">
+            <p class="text-center">{{Session::get('success')}}</p>
+        </div>
+    @endif
     <div class="entry-content">
         <div class="kt-woo-cart-form-wrap">
             <div class="row">

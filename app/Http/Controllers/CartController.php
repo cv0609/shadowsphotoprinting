@@ -88,10 +88,10 @@ class CartController extends Controller
 
 
     public function cart()
-    {
+    {   
 
         $session_id = Session::getId();
-
+      
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
@@ -118,7 +118,6 @@ class CartController extends Controller
                                 ->where('product_id', $product_id)
                                 ->delete();
         }
-
         return redirect()->route('cart')->with('success','Item removed from cart');
     }
 
@@ -205,6 +204,7 @@ class CartController extends Controller
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
 
         }
+        session()->flash('success', 'Cart updated successfully.');
     }
 
     public function getCartCount(Request $request)
