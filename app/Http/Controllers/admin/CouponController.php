@@ -27,8 +27,9 @@ class CouponController extends Controller
    public function couponSave(CouponRequest $request)
    {
       $productsId =(isset($request->products) && !empty($request->products)) ? implode(',',$request->products) : null;
+      $product_category =(isset($request->product_category) && !empty($request->product_category)) ? implode(',',$request->product_category) : null;
 
-      Coupon::create(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit]);
+      Coupon::create(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'product_category'=>$product_category,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit]);
       return redirect()->route('coupons-list')->with('success', 'Coupon created successfully!');
    }
 
@@ -42,8 +43,9 @@ class CouponController extends Controller
    public function couponUpdate(Request $request)
    {
       $productsId =(isset($request->products) && !empty($request->products)) ? implode(',',$request->products) : null;
+      $product_category =(isset($request->product_category) && !empty($request->product_category)) ? implode(',',$request->product_category) : null;
 
-      Coupon::whereId($request->coupon_id)->update(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit]);
+      Coupon::whereId($request->coupon_id)->update(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'product_category'=>$product_category]);
       return redirect()->route('coupons-list')->with('success', 'Coupon updated successfully!');
    }
 
