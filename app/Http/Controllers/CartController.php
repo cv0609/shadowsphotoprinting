@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Coupon;
 use App\Models\Shipping;
 use App\Models\State;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
@@ -124,6 +125,8 @@ class CartController extends Controller
      {
        $coupon = Coupon::where('code', $request->coupon_code)->first();
         $total = $this->CartService->getCartTotal();
+        $product = Product::find($request->product_id);
+        $productCategories = $product->categories->pluck('id')->toArray();
 
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
@@ -148,6 +151,19 @@ class CartController extends Controller
         {
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
         }
+
+        if ($coupon->use_limit && $coupon->total_use >= $coupon->use_limit) {
+            return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
+        }
+
+        if (!empty($coupon->categories) && !array_intersect($productCategories, explode(',',$coupon->categories))) {
+            return back()->withErrors(['code' => 'This coupon is not applicable to the selected product\'s category.']);
+        }
+
+        if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
+            return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
+        }
+
         $amount = 0;
         if($coupon->type == "0")
           {
