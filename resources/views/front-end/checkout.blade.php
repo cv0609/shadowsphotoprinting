@@ -427,7 +427,9 @@
                     .then(response => response.json())
                     .then(charge => {
                          if(charge.error == false){
-                            window.location.href = "{{ route('thankyou',['order-id'=>"+charge.order_id+"]) }}";
+                            let url = "{{ route('thankyou', ['order-id' => ':orderId']) }}";
+                            url = url.replace(':orderId', charge.order_id);
+                            window.location.href = url;
                          }else{
                             console.log('something went wrong.');
                          }
