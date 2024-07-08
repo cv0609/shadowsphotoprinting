@@ -24,7 +24,7 @@ class CreateOrdersTable extends Migration
             $table->decimal('total',10,2);
             $table->string('payment_id');
             $table->string('is_paid');
-            $table->string('status')->default('pending');
+            $table->enum('status',['0','1'])->default('0')->comment('0 for unpaid, 1 for paid');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\Shipping;
 use App\Models\Coupon;
+use App\Models\Order;
 use Illuminate\Support\Facades\Session;
 
 class CartService
@@ -14,6 +15,7 @@ class CartService
         $session_id = Session::getId();
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         $data = [];
+
         if (!$cart) {
             return 0;
         }

@@ -45,16 +45,23 @@
                       <thead>
                           <tr>
                               <th>#</th>
-                              <th>Pages Name</th>
-                              <th>Action</th>
+                              <th>Order Number</th>
+                              <th>Total</th>
+                              <th>Status</th>
+                              <th>Created At</th>
                           </tr>
                       </thead>
                       <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
+                      @foreach ($orders as $key => $order)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $order->order_number }}</td>
+                            <td>{{ $order->total }}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                      @endforeach
+
                       </tbody>
                   </table>
               </div>
