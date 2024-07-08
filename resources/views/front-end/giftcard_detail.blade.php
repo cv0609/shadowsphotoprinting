@@ -204,17 +204,12 @@ $(document).ready(function() {
                     from:from,
                     giftcard_msg:giftcard_msg,
                     reciept_email:reciept_email,
-                    item_type:'gift_card'
+                    item_type:'gift_card',
+                    card_price:card_price,
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
-                    console.log(response);
-                    // $('#add_to_cart_msg').removeClass('d-none');
-                    // alert(response.total_items);
-                    // Update the cart totals and item count
-                    // $("#cart-total-itmes").text(response.total_items + ' items');
-                    // $("#cart-total-price").text('$' + response.total_price.toFixed(2));
+                    location.href = "{{ route('cart') }}";
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

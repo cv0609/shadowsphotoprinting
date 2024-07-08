@@ -30,8 +30,15 @@ class PaymentController extends Controller
 
     public function checkout()
      {
-        $session_id = Session::getId();
-        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
+
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
@@ -122,12 +129,18 @@ class PaymentController extends Controller
         $amount = $request->input('amount');
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
-
+        $cart = '';
         if(isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')){
             $orderNumber = Order::generateOrderNumber();
 
-            $session_id = Session::getId();
-            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+            if (Auth::check() && !empty(Auth::user())) {
+                $auth_id = Auth::user()->id;
+                $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            }else{
+                $session_id = Session::getId();
+                $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+            }
+
             $cartTotal = $this->CartService->getCartTotal();
            
             $subtotal = $cartTotal['subtotal'] ?? 0;
@@ -135,13 +148,13 @@ class PaymentController extends Controller
             $cart_total = $cartTotal['total'] ?? 0;
             $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
             $coupon_code = $cartTotal['coupon_code'] ?? '';
-            $coupon_id = $cartTotal['coupon_id'] ?? '';
+            $coupon_id = $cartTotal['coupon_id'] ?? 0;
 
             $order = Order::create([
                 'user_id' => isset(Auth::user()->id) ? Auth::user()->id : null,
                 'user_session_id' => isset(Auth::user()->id) ? null : $session_id,
                 'order_number' => $orderNumber,
-                'coupon_id' => $coupon_id,
+                // 'coupon_id' => $coupon_id,
                 'coupon_code' => $coupon_code,
                 'discount' => $coupon_discount,
                 'sub_total' => $subtotal,
@@ -169,6 +182,7 @@ class PaymentController extends Controller
             }
 
             CartData::where('cart_id',$cart->id)->delete();
+            Cart::where('id', $cart->id)->delete();
 
             Session::forget(['order_address', 'coupon']);
 

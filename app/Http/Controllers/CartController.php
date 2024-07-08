@@ -10,6 +10,7 @@ use App\Models\Coupon;
 use App\Models\Shipping;
 use App\Models\State;
 use App\Models\Product;
+use App\Models\GiftCardCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
@@ -23,104 +24,102 @@ class CartController extends Controller
         $this->CartService = $CartService;
     }
 
-
     public function addToCart(Request $request)
     {
-        $auth_id = '';
-        if (Auth::check() && !empty(Auth::user())) {
-            $auth_id = Auth::user()->id;
-        }
+        $auth_id = Auth::check() && !empty(Auth::user()) ? Auth::user()->id : null;
+        $session_id = $auth_id ? null : Session::getId();
 
-        $session_id = Session::getId();
-        $cart = Cart::firstOrCreate(["user_email" => $auth_id, "coupon_id" => null, "session_id" => $session_id]);
-        $insertData = [];
+        $cart = Cart::firstOrCreate([
+            "user_id" => $auth_id, 
+            "coupon_id" => null, 
+            "session_id" => $session_id
+        ]);
 
         if ($cart) {
-            $cart_items = $request->cart_items;
-
-            if($request->item_type == 'gift_card'){
-                $giftcard['from'] = $request->from;
-                $giftcard['giftcard_msg'] = $request->giftcard_msg;
-                $giftcard['reciept_email'] = $request->reciept_email;
-            }
-
             $cartId = $cart->id;
+            $itemType = $request->item_type;
+            $giftcard = $itemType == 'gift_card' ? [
+                'from' => $request->from,
+                'giftcard_msg' => $request->giftcard_msg,
+                'reciept_email' => $request->reciept_email
+            ] : [];
 
-           foreach ($cart_items as $cart_item) {
+
+            foreach ($request->cart_items as $cart_item) {
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
 
-                // If the product does not exist in the cart, create a new cart item
-                if (isset($request->selectedImages)) {
-                    foreach ($request->selectedImages as $selectedImage) {
-                        $tempFileName = basename($selectedImage); // Extracts the filename from the URL/path
+                foreach ($request->selectedImages ?? [] as $selectedImage) {
+                    $tempFileName = basename($selectedImage);
+                    $tempImagePath = 'public/temp/' . $tempFileName;
+                    $permanentImagePath = 'public/assets/images/order_images/' . $tempFileName;
+                    Storage::move($tempImagePath, $permanentImagePath);
+                    $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
 
-                        // Example: Temporary storage path
-                        $tempImagePath = 'public/temp/' . $tempFileName;
+                    $insertData = [
+                        "cart_id" => $cartId,
+                        "product_id" => $product_id,
+                        "quantity" => $quantity,
+                        "selected_images" => $ImagePath,
+                        "product_type" => $itemType,
+                        "product_price" => $request->card_price ?? 0
+                    ];
 
-                        // Example: Permanent storage path
-                        $permanentImagePath = 'public/assets/images/order_images/' . $tempFileName;
-                        Storage::move($tempImagePath, $permanentImagePath);
-                        $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
+                    if ($itemType == 'gift_card') {
+                        $insertData = array_merge($insertData, [
+                            'product_desc' => json_encode($giftcard),
+                            'product_type' => $itemType,
+                            'product_price' => $request->card_price
+                        ]);
+                    }
 
-                        // $insertData = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity,"selected_images"=>$ImagePath];
-
-                        $insertData = [
-                            "cart_id" => $cartId,
-                            "product_id" => $product_id,
-                            "quantity" => $quantity,
-                            "selected_images" => $ImagePath,
-                            "item_type" => "ddd"
-                        ];
-    
-                        if($request->item_type == 'gift_card'){
-                            $insertData = array_merge($insertData, [
-                                'item_desc' => json_decode($giftcard),
-                            ]);
-                        }
-
-
-
-                        $existingCartItem = CartData::where('cart_id', $cartId)
+                    $existingCartItem = CartData::where('cart_id', $cartId)
                         ->where('product_id', $product_id)
                         ->where('selected_images', $ImagePath)
                         ->first();
 
-                        if ($existingCartItem) {
-                        // If the product already exists in the cart, increase the quantity
+                    if ($existingCartItem) {
                         $existingCartItem->quantity += $quantity;
-                        $existingCartItem->save();
+                        if ($itemType == 'gift_card') {
+                            $existingCartItem->product_desc = json_encode($giftcard) ?? '';
+                            $existingCartItem->product_type = $itemType ?? '';
+                            $existingCartItem->product_price = $request->card_price ?? '';
                         }
-                        else
-                         {
-                            CartData::create($insertData);
-
-                         }
+                        $existingCartItem->save();
+                    } else {
+                        CartData::create($insertData);
+                        if($itemType == 'gift_card'){
+                            $message = '“Gift Card” has been added to your cart.';
+                        }
+                        // \flash('success', $message);
                     }
-
                 }
-
-
             }
-
         }
     }
 
 
 
 
+
     public function cart()
     {
-
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
+        
         $session_id = Session::getId();
-
-        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        
         $countries = Country::find(14);
+        
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
-        if(!empty($cart) && isset($cart->items) && !$cart->items->isEmpty())
-          {
-
+        if(!empty($cart))
+        {
             return view('front-end.cart',compact('cart','CartTotal','shipping','countries'));
           }
           else
@@ -132,8 +131,13 @@ class CartController extends Controller
 
     public function removeFromCart($product_id)
     {
-        $session_id = Session::getId();
-        $cart = Cart::where('session_id', $session_id)->first();
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->first();
+        }
 
         if ($cart) {
             $CartData = CartData::where('cart_id', $cart->id)
@@ -234,8 +238,15 @@ class CartController extends Controller
     {
         $session_id = Session::getId();
 
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items')->first();
+        }
+
         // Fetch the cart with items
-        $cart = Cart::where('session_id', $session_id)->with('items')->first();
 
         // Calculate the total count of items in the cart
         $itemCount = 0;

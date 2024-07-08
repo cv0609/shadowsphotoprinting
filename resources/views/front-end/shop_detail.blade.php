@@ -158,6 +158,7 @@ $(document).ready(function() {
                     cart_items: cartItems,
                     total: total,
                     selectedImages:selectedImages,
+                    item_type:'shop',
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
