@@ -15,3 +15,8 @@
 .logo img {
     max-width: 206px
 }
+
+.login_form .logo a {
+    display: block;
+    text-align: center;
+}

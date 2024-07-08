@@ -14,6 +14,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\admin\ShippingController;
+use App\Http\Controllers\admin\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/shipping-show/{id}', [ShippingController::class, 'shippingShow'])->name('shipping-show');
         Route::post('/shipping-update',[ShippingController::class,'shippingUpdate'])->name('shipping-update');
         Route::post('/shipping-status-update',[ShippingController::class,'updateStatus'])->name('shipping-status-update');
+
+        Route::get('/orders',[OrderController::class,'index'])->name('orders-list');
+        Route::get('/order-detail/{order_number}',[OrderController::class,'orderDetail'])->name('order-detail');
+
     });
 });
 

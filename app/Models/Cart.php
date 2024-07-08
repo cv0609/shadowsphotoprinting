@@ -11,7 +11,7 @@ class Cart extends Model
 {
     use HasFactory;
     protected $table = 'cart';
-    protected $fillable = ['user_email','coupon_id','session_id'];
+    protected $fillable = ['user_id','coupon_id','session_id'];
 
     public function items()
     {
@@ -23,7 +23,7 @@ class Cart extends Model
         if (Auth::check()) {
             // User is logged in, sum quantities by user ID
             $userId = Auth::id();
-            return self::where('user_email', $userId)
+            return self::where('user_id', $userId)
                         ->with('items')
                         ->get()
                         ->sum(function($cart) {
