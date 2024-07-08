@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Cart;
 use App\Models\CartData;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckoutMiddleware
@@ -19,7 +20,14 @@ class CheckoutMiddleware
     public function handle(Request $request, Closure $next)
     {
         $session_id = Session::getId();
-        $cart = Cart::where('session_id', $session_id)->first();
+
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->first();
+        }
 
         if ($cart) {
             $cart_data = CartData::where('cart_id', $cart->id)->get();

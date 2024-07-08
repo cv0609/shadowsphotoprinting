@@ -1,11 +1,8 @@
 @extends('front-end.layout.main')
 @section('content')
-{{-- @php
-echo"<pre>";
-    // print_r(Session::get('billing_details'));
-    // die;
-    dd($CartTotal);
-@endphp --}}
+@php
+   $CartService = app(App\Services\CartService::class);
+@endphp
 <section class="coupon-main">
 <div class="container">
 <div class="coupon-inner">
@@ -26,7 +23,6 @@ echo"<pre>";
                             <thead>
                                 <th>
                                     <tr>
-
                                         <th colspan="3" class="product-name">Product</th>
                                         <th class="product-price">Price</th>
                                         <th class="product-quantity">Quantity</th>
@@ -36,24 +32,28 @@ echo"<pre>";
                             </thead>
                         <tbody>
                             @foreach ($cart->items as $item)
+                           
+                            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); 
+                      
+                            ?>
                                 <tr>
                                 <td class="product-remove">
                                     <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                 </td>
                                 <td class="product-thumbnail">
-                                    <a href="#"><img src="{{ asset($item->selected_images) }}" alt=""></a>
+                                    <a href="#"><img src="{{ $item->product_type == "gift_card" ? asset($product_detail->image) : asset($item->selected_images) }}" alt=""></a>
                                 </td>
                                 <td class="product-name">
-                                    <a href="">{{ $item->product->product_title }}</a>
+                                    <a href="">{{ ($item->product_type == "gift_card") ? $product_detail->name : $item->product->product_title}}</a>
                                 </td>
                                 <td class="product-price">
-                                    <span class=""><bdi><span class="">$</span>{{ number_format($item->product->product_price,2) }}</bdi></span>
+                                    <span class=""><bdi><span class="">$</span>{{ ($item->product_type == "gift_card") ? number_format($item->product_price,2) : number_format($product_detail->product_price,2) }}</bdi></span>
                                 </td>
                                 <td class="product-quantity">
                                     <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}">
                                 </td>
                                 <td class="product-subtotal">
-                                    <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span>
+                                    <span><bdi><span>$</span>{{ ($item->product_type == "gift_card") ? number_format($item->quantity * $item->product_price,2) : number_format($item->quantity * $item->product->product_price,2) }}</bdi></span>
                                 </td>
                             </tr>
                             @endforeach
