@@ -37,7 +37,7 @@ class CartController extends Controller
 
         if ($cart) {
             $cartId = $cart->id;
-            $itemType = $request->item_type;
+            $itemType = $request->item_type ?? '';
             $giftcard = $itemType == 'gift_card' ? [
                 'from' => $request->from,
                 'giftcard_msg' => $request->giftcard_msg,
