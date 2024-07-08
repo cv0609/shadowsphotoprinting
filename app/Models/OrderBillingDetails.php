@@ -34,7 +34,7 @@ class OrderBillingDetails extends Model
         'order_comments',
         'order_id'
     ];
-    
+
 
     public function user()
     {
@@ -44,6 +44,11 @@ class OrderBillingDetails extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public static function generateOrderNumber()

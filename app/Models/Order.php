@@ -42,4 +42,9 @@ class Order extends Model
 
         return $orderNumber;
     }
+
+    public function OrderBillingDetail()
+    {
+        return $this->hasOne(OrderBillingDetails::class);
+    }
 }
