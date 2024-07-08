@@ -91,6 +91,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/shipping-status-update',[ShippingController::class,'updateStatus'])->name('shipping-status-update');
 
         Route::get('/orders',[OrderController::class,'index'])->name('orders-list');
+        Route::get('/order-detail/{order_number}',[OrderController::class,'orderDetail'])->name('order-detail');
 
     });
 });

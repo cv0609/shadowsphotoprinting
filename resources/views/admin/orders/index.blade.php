@@ -35,9 +35,6 @@
             <div class="x_panel">
               <div class="x_title">
                 <h2>Orders List</h2>
-                <a href="{{ route('pages.create') }}">
-                  <button class="btn btn-info panel_toolbox">Create Page</button>
-                </a>
                 <div class="clearfix"></div>
               </div>
               <div class="x_content">
@@ -55,10 +52,10 @@
                       @foreach ($orders as $key => $order)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $order->order_number }}</td>
+                            <td> <a href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a> </td>
                             <td>{{ $order->total }}</td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ $order->status }}</td>
+                            <td>{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
                         </tr>
                       @endforeach
 
