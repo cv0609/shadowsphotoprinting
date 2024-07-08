@@ -25,6 +25,7 @@ class CartService
         $couponCode = Session::get('coupon'); // Assume coupon code is stored in session
         $discount = 0;
         $coupon_code = "";
+        $coupon_id = "";
         if ($couponCode) {
             $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
             $coupon_code = $couponCode;
@@ -37,6 +38,7 @@ class CartService
 
                 // Ensure the discount does not exceed the total
                 $discount = min($discount, $subtotal);
+                $coupon_id = $coupon->id;
             }
         }
 
@@ -53,7 +55,7 @@ class CartService
          }
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
-        $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code];
+        $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
         return $data;
 
 

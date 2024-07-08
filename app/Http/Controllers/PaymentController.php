@@ -123,30 +123,33 @@ class PaymentController extends Controller
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
 
-        if(isset($charge) && $charge->status == 'succeeded'){
+        if(isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')){
             $orderNumber = Order::generateOrderNumber();
 
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
             $cartTotal = $this->CartService->getCartTotal();
-            $shipping = $this->CartService->getShippingCharge();
-
+           
             $subtotal = $cartTotal['subtotal'] ?? 0;
-            $shipping_amount = $shipping->amount ?? 0;
+            $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
             $cart_total = $cartTotal['total'] ?? 0;
+            $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
+            $coupon_code = $cartTotal['coupon_code'] ?? '';
+            $coupon_id = $cartTotal['coupon_id'] ?? '';
 
             $order = Order::create([
                 'user_id' => isset(Auth::user()->id) ? Auth::user()->id : null,
                 'user_session_id' => isset(Auth::user()->id) ? null : $session_id,
                 'order_number' => $orderNumber,
-                'coupon_id' => '0',
-                'discount' => '0.00',
+                'coupon_id' => $coupon_id,
+                'coupon_code' => $coupon_code,
+                'discount' => $coupon_discount,
                 'sub_total' => $subtotal,
                 'shipping_charge' => $shipping_amount,
                 'total' => $cart_total,
-                'payment_id' => $charge->id,
-                'is_paid' => 'complete',
-                'status' => 0,
+                'payment_id' => (isset($charge->id)) ? $charge->id : "",
+                'is_paid' => (isset($charge->captured)) ? $charge->captured : false,
+                'status' => $charge->status,
             ]);
 
             foreach ($cart->items as $item) {
@@ -167,7 +170,7 @@ class PaymentController extends Controller
 
             CartData::where('cart_id',$cart->id)->delete();
 
-            Session::forget('order_address');
+            Session::forget(['order_address', 'coupon']);
 
             return response()->json(['error' => false,'message'=>'success','order_id'=>$order->id]);
 

@@ -38,6 +38,12 @@ class CartController extends Controller
         if ($cart) {
             $cart_items = $request->cart_items;
 
+            if($request->item_type == 'gift_card'){
+                $giftcard['from'] = $request->from;
+                $giftcard['giftcard_msg'] = $request->giftcard_msg;
+                $giftcard['reciept_email'] = $request->reciept_email;
+            }
+
             $cartId = $cart->id;
 
            foreach ($cart_items as $cart_item) {
@@ -57,7 +63,23 @@ class CartController extends Controller
                         Storage::move($tempImagePath, $permanentImagePath);
                         $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
 
-                        $insertData = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity,"selected_images"=>$ImagePath];
+                        // $insertData = ["cart_id" => $cartId, "product_id" => $product_id, "quantity" => $quantity,"selected_images"=>$ImagePath];
+
+                        $insertData = [
+                            "cart_id" => $cartId,
+                            "product_id" => $product_id,
+                            "quantity" => $quantity,
+                            "selected_images" => $ImagePath,
+                            "item_type" => "ddd"
+                        ];
+    
+                        if($request->item_type == 'gift_card'){
+                            $insertData = array_merge($insertData, [
+                                'item_desc' => json_decode($giftcard),
+                            ]);
+                        }
+
+
 
                         $existingCartItem = CartData::where('cart_id', $cartId)
                         ->where('product_id', $product_id)
