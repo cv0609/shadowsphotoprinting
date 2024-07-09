@@ -21,7 +21,11 @@
                 <div class="count ">{{ $cards }}</div>
                 {{-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> --}}
               </div>
-
+              <div class="col-md-4 col-sm-4 tile_stats_count">
+                <span class="count_top"> Total Orders</span>
+                <div class="count ">{{ $orders }}</div>
+                {{-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> --}}
+              </div>
             </div>
           </div>
           {{-- <div class="col-md-4 col-sm-6  widget_tally_box">

@@ -30,8 +30,8 @@ class CartController extends Controller
         $session_id = $auth_id ? null : Session::getId();
 
         $cart = Cart::firstOrCreate([
-            "user_id" => $auth_id, 
-            "coupon_id" => null, 
+            "user_id" => $auth_id,
+            "coupon_id" => null,
             "session_id" => $session_id
         ]);
 
@@ -111,11 +111,11 @@ class CartController extends Controller
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         }
-        
+
         $session_id = Session::getId();
-        
+
         $countries = Country::find(14);
-        
+
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
         if(!empty($cart))
@@ -150,8 +150,8 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
      {
        $coupon = Coupon::where('code', $request->coupon_code)->first();
-        $total = $this->CartService->getCartTotal();
-
+       $total = $this->CartService->getCartTotal();
+       $cart = [];
         // $product = Product::find($request->product_id);
         // $productCategories = $product->categories->pluck('id')->toArray();
 
@@ -162,11 +162,15 @@ class CartController extends Controller
         if ($coupon->isExpired()) {
             return ['success' => false, 'message' => 'Coupon has expired'];
         }
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
 
-        $session_id = Session::getId();
-        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
-
-        if (!$cart) {
+       if (!$cart) {
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
