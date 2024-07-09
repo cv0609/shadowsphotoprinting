@@ -96,14 +96,66 @@
                                     Product Description <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <textarea id="product_description" name="product_description" 
+                                    <textarea id="product_description" name="product_description"
                                         class="form-control "></textarea>
                                     @error('product_description')
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
+                            <div class="size-and-type-wrap">
+                                <div class="size-and-type">
+                                    <div class="size">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="size">Select size</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select name="cars" id="size">
+                                                    <option value="volvo">Volvo</option>
+                                                    <option value="saab">Saab</option>
+                                                    <option value="mercedes">Mercedes</option>
+                                                    <option value="audi">Audi</option>
+                                                  </select>
+                                            </div>
+                                        </div>
 
+
+                                    </div>
+                                    <div class="type" >
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="type">Select type</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select name="cars" id="type">
+                                                    <option value="volvo">Volvo</option>
+                                                    <option value="saab">Saab</option>
+                                                    <option value="mercedes">Mercedes</option>
+                                                    <option value="audi">Audi</option>
+                                                  </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="selcet-price">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="price">select price</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" id="price">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row read-more">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <button type="button" class="read_more-btn" id="add-more-attribute">Add More</button>
+                                </div>
+                            </div>
                             <div class="ln_solid"></div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 offset-md-3">
@@ -121,7 +173,18 @@
 
 <script>
     CKEDITOR.replace('description');
-
 </script>
 
+@endsection
+@section('custom-script')
+<script>
+     $("#add-more-attribute").on('click',function(){
+      $(".size-and-type-wrap").append('<div class="size-and-type"><button type="button" class="close-button" onclick="removeAddMore(this)">×</button><div class="size"><div class="row"><div class="col-md-3"><label for="size">Select size</label></div><div class="col-md-6"><select name="cars" id="size"><option value="volvo">Volvo</option><option value="saab">Saab</option><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></div></div></div><div class="type"><div class="row"><div class="col-md-3"><label for="type">Select type</label></div><div class="col-md-6"><select name="cars" id="type"><option value="volvo">Volvo</option><option value="saab">Saab</option><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></div></div></div><div class="selcet-price"><div class="row"><div class="col-md-3"><label for="price">select price</label></div><div class="col-md-6"><input type="text" id="price"></div></div></div></div>');
+ })
+
+ function removeAddMore(that)
+  {
+     $(that).parent(".size-and-type").remove();
+  }
+</script>
 @endsection
