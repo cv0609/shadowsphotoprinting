@@ -46,6 +46,12 @@
                   <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>
                   <li><a href="{{route('shipping-list')}}"><i class="fa fa-truck"></i>Shipping</a></li>
                   <li><a href="{{route('orders-list')}}"><i class="fa fa-first-order"></i>Orders</a></li>
+                  <li><a href="#"><i class="fa fa-list-alt"></i> Variations</a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('sizes-list') }}">Sizes</a></li>
+                      <li><a href="{{ route('photos-for-sale-product-list') }}">Sizes Type</a></li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
 use App\Http\Controllers\admin\GiftCardController;
 use App\Http\Controllers\admin\CouponController;
+use App\Http\Controllers\admin\VariationsController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
@@ -92,6 +93,10 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/orders',[OrderController::class,'index'])->name('orders-list');
         Route::get('/order-detail/{order_number}',[OrderController::class,'orderDetail'])->name('order-detail');
+
+        Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
+        Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
+        Route::post('size-save',[VariationsController::class,'saveSize'])->name('size-save');
 
     });
 });
