@@ -57,7 +57,7 @@
                     <li class="type-product">
                         <div class="clearfix kold">
 
-                            <a href="javascript:void(0)">
+                            <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
                                 <div class="noflipper" id="image-div">
                                   <div class="product-animation">
                                      @foreach (explode(',',$product->product_images) as $key => $product_image)

@@ -75,6 +75,12 @@ class PagesController extends Controller
     return view('front-end/photos-for-sale',compact('products','productCategories'));
   }
 
+  public function PhotosForSaleDetails($slug = null){
+    $productDetails = PhotoForSaleProduct::where('slug',$slug)->first();
+    $relatedProduct = PhotoForSaleProduct::where('slug','!=',$slug)->paginate(10);
+    return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct'));
+  }
+
 
   public function PhotoForSaleByCategory($slug)
   {

@@ -1,0 +1,336 @@
+@extends('front-end.layout.main')
+@section('content')
+
+<div class="kt-bc-nomargin">
+    <div class="adbreadcrumbs never">
+        <div class="container">
+            <div class="breadcrumbs-wrapper">
+                <span><a href="index.html">Home</a></span>
+                <span class="bc-delimiter">»</span>
+                <span><a href="order-prints.html">Order prints</a></span>
+                <span class="bc-delimiter">»</span>
+                <span><a href="order-prints.html">images</a></span>
+                <span class="bc-delimiter">»</span>
+                <span>A PLATYPUS DOWN UNDER</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="description">
+    <div class="container">
+        <div class="description-wrapper">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="on-sale">
+                        <div class="dirty">
+                            <div class="chirs-img">
+                                <div class="slider slider-for">
+                                @php
+                                    if(isset($productDetails)){
+                                        $imageArray = explode(",", $productDetails->product_images);
+                                        $image1 = $imageArray[0] ?? '';
+                                        $image2 = $imageArray[1] ?? '';  
+                                    }
+                                @endphp
+                                    <div>
+                                        <div class="billboard">
+                                            <img src="{{ asset($image1) }}" alt="">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="billboard">
+                                            <img src="{{ asset($image2) }}" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="chirs">
+                                <div class="slider slider-nav">
+                                    <div>
+                                        <div class="billboards">
+                                            <img src="{{ asset($image1) }}" alt="">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="billboards">
+                                            <img src="{{ asset($image2) }}" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="canvas-summary">
+                        <p>IMAGE</p>
+                        <h2>{{$productDetails->product_title ?? ''}}</h2>
+                        <p class="incl"> ${{$productDetails->min_price}} – ${{$productDetails->max_price}} incl. GST
+
+                        </p>
+                        <div class="print_paper">
+                            <form action="">
+                                <div class="under">
+                                        <div class="size-wrapper">
+                                            <label for="">SIZE</label>
+                                            <select id="size" class="kad-select" name="attribute_size"
+                                                data-attribute_name="attribute_size" data-show_option_none="yes">
+                                                <option value="">Choose an option</option>
+                                                <option value="12”x12”" class="attached enabled">12”x12”</option>
+                                                <option value="16”x16”" class="attached enabled">16”x16”</option>
+                                                <option value="20”x20”" class="attached enabled">20”x20”</option>
+                                                <option value="30”x30”" class="attached enabled">30”x30”</option>
+                                                <option value="30”x30&quot;" class="attached enabled">30”x30"
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="size-wrapper">
+                                            <label for="">TYPE</label>
+                                            <select id="type" class="kad-select" name="attribute_type"
+                                                data-attribute_name="attribute_type" data-show_option_none="yes">
+                                                <option value="">Choose an option</option>
+                                                <option value="Canvas Sizes" class="attached enabled">Canvas Sizes
+                                                </option>
+                                                <option value="Print sizes" class="attached enabled">Print sizes
+                                                </option>
+                                            </select>
+                                        </div>
+                                </div>
+
+                                <div class="quanti add">
+                                    <button type="button">Add to cart</button>
+                                </div>
+                        </form>
+                            <div class="product_meta">
+                                <span>SKU: N/A</span>
+                                <span class="posted_in">
+                                    Category: <a href="poems.html">IMAGE, POMES AND QUOTES PHOTOS</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="wonderful">
+    <div class="container">
+        <div class="wonderful-box">
+            <ul class="tab-title">
+                <li><a> Description</a></li>
+            </ul>
+            <div class="woocommerce-tabs">
+                <h2>Description</h2>
+                <p>At Shadows Photo Printing we offer professional photo printing by professional Photographers
+                    who take the time to check the quality of your image before we print, as we understand how
+                    important your beautiful memories are.</p>
+                <p>Once we have checked the quality of your wonderful image and there are no issues we will go
+                    ahead and carefully print your beautiful memories and dispatch them as quickly as possible.
+                </p>
+                <p>12”x30” Canvas (30.5cm x 76cm) Canvas Print.</p>
+                <p>Dimensions: Width: 30.5cm, Height: 76cm</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="related-products">
+    <div class="container">
+        <div class="dimensions">
+            <h2>Related Products </h2>
+
+            <div class="related-slider">
+                <div class="slider responsive">
+                    @foreach ($relatedProduct as $item)
+                    @php
+                        if(isset($item)){
+                            $imageArray = explode(",", $item->product_images);
+                            $image1 = $imageArray[0] ?? '';
+                            $image2 = $imageArray[1] ?? '';  
+                        }
+                    @endphp
+                    <div>
+                        <div class="sets">
+                            <div class="products-img">
+                                <img src="{{ asset($image1) }}" alt="">
+                                <div class="onsale">
+                                    <span>Sale!</span>
+                                </div>
+                            </div>
+                            <div class="text-slider">
+                                <h3>{{$item->product_title}}</h3>
+                                <p>${{$item->min_price}} - ${{$item->max_price}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+@endsection
+@section('scripts')
+
+<script>
+
+
+$(document).ready(function() {
+    $('#addToCartBtn').click(function() {
+      
+        var isValid = true;
+        $('.error-message').css('color','red');
+        $('.error-message').closest('input').addClass('validator');
+        $('.error-message').text(''); // Clear previous error messages
+        $('.error-message').css('color', 'red').each(function() {
+            $(this).siblings('input').addClass('validator');
+        });
+
+        var card_price = $('#card_price').val();
+        var from = $('#from').val();
+        var giftcard_msg = $('#giftcard_msg').val();
+        var reciept_email = $('#reciept_email').val();
+        var quantity = $('#quantity').val();
+        var giftcard_id = $('#giftcard_id').val();
+        var giftcard_image = $('#giftcard_image').val();
+        
+        if (card_price == '') {
+            $('#card_price_error').text('This field is required');
+            isValid = false;
+        }
+        if (from == '') {
+            $('#from_error').text('This field is required');
+            isValid = false;
+        }
+        if (giftcard_msg == '') {
+            $('#giftcard_msg_error').text('This field is required');
+            isValid = false;
+        }
+        if (reciept_email == '') {
+            $('#reciept_email_error').text('This field is required');
+            isValid = false;
+        }
+        if (quantity == '') {
+            $('#quantity_error').text('This field is required');
+            isValid = false;
+        }
+
+        if (isValid) {
+
+        let cartItems = [];
+        let total = 0;
+        let selectedImages = [];
+
+        if (quantity !== '' && quantity > 0) {
+            let price = parseFloat(card_price);
+            let productId = giftcard_id; 
+            let totalPrice = quantity * price;
+            total += totalPrice;
+            cartItems.push({
+                product_id: productId,
+                quantity: parseFloat(quantity),
+                price: price
+            });
+        }
+
+        selectedImages.push(giftcard_image);
+
+        if (cartItems.length > 0) {
+            // Send cart items to the server
+            $.ajax({
+                url: "{{ route('add-to-cart') }}", // Replace with your route
+                method: 'POST',
+                data: {
+                    cart_items: cartItems,
+                    total: total,
+                    selectedImages:selectedImages,
+                    from:from,
+                    giftcard_msg:giftcard_msg,
+                    reciept_email:reciept_email,
+                    item_type:'gift_card',
+                    card_price:card_price,
+                    '_token': "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    location.href = "{{ route('cart') }}";
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error adding items to cart:', error);
+                }
+            });
+        } else {
+            alert('No items to add to cart!');
+        }
+        }
+    });
+});
+
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: false,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true
+    });
+
+</script>
+ <script>
+    $('.responsive').slick({
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    dots: false
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: false
+                }
+            }
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
+    });
+</script>
+
+@endsection
