@@ -97,11 +97,12 @@ Route::prefix('admin')->group(function () {
         Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
         Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
         Route::post('size-save',[VariationsController::class,'saveSize'])->name('size-save');
+        Route::delete('size-delete/{id}',[VariationsController::class,'deleteSize'])->name('size-delete');
 
         Route::get('size-types',[VariationsController::class,'sizesType'])->name('size-types-list');
         Route::get('size-type-add',[VariationsController::class,'addSizeType'])->name('size-type-add');
         Route::post('size-type-save',[VariationsController::class,'saveSizeType'])->name('size-type-save');
-
+        Route::delete('size-type-delete/{id}',[VariationsController::class,'deleteSizeType'])->name('size-type-delete');
     });
 });
 

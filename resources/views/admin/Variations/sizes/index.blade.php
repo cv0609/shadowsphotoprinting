@@ -1,6 +1,15 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="#">Sizes</a></li>
+        </ol>
+      </nav>
+      @if(Session::has('success'))
+        <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+      @endif
     <div class="">
       <div class="page-title">
         <div class="title_left">
@@ -48,7 +57,7 @@
                             <td>
                               <div class="x_content">
                                 <a href="{{ route('shipping-show', ['id' => $size->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                <form action="{{ route('coupon-delete', ['id' => $size->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
+                                <form action="{{ route('size-delete', ['id' => $size->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this size?');" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
