@@ -1,5 +1,9 @@
 @extends('front-end.layout.main')
 @section('content')
+@php
+   $CartService = app(App\Services\CartService::class);
+@endphp
+
 <section class="coupon-main">
     <div class="container">
         <div class="coupon-inner">
@@ -174,10 +178,44 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($cart->items as $item)
+                                        <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);?>
+
                                         <tr>
-                                            <td> {{ $item->product->product_title }}&nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong> </td>
-                                            <td> <span><bdi><span>$</span>{{ number_format($item->quantity * $item->product->product_price,2) }}</bdi></span> </td>
-                                            <input type="hidden" value="{{ number_format($item->quantity * $item->product->product_price,2) }}">
+
+                                            <td>
+                                                @if($item->product_type == 'gift_card')
+                                                    {{ $product_detail->name }}
+                                                @elseif($item->product_type == 'photo_for_sale')
+                                                    {{ $product_detail->product_title }}
+                                                @else
+                                                    {{ $item->product->product_title }}
+                                                @endif
+                                                &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
+                                            </td>
+
+                                            <td>
+                                                <span>
+                                                    <bdi>
+                                                        <span>$</span>
+                                                        @if($item->product_type == 'gift_card')
+                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+                                                        @elseif($item->product_type == 'photo_for_sale')
+                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+                                                        @else
+                                                            {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                                        @endif
+                                                    </bdi>
+                                                </span>
+                                            </td>
+
+                                            <input type="hidden" value="@if($item->product_type == 'gift_card')
+                                                {{ number_format($item->quantity * $product_detail->product_price, 2) }}
+                                            @elseif($item->product_type == 'photo_for_sale')
+                                                {{ number_format($item->quantity * $product_detail->product_price, 2) }}
+                                            @else
+                                                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                            @endif">
+
                                         </tr>
                                        @endforeach
                                     </tbody>

@@ -35,13 +35,29 @@ class CartController extends Controller
             "session_id" => $session_id
         ]);
 
+        // cart_items: cartItems,
+        // total: total,
+        // selectedImages:selectedImages,
+        // photo_for_sale_size:product_size,
+        // photo_for_sale_type:product_type,
+        // product_min_max_price:product_min_max_price,
+        // item_type:'photo_for_sale',
+        // product_price:product_price,
+
         if ($cart) {
             $cartId = $cart->id;
             $itemType = $request->item_type ?? '';
+
             $giftcard = $itemType == 'gift_card' ? [
                 'from' => $request->from,
                 'giftcard_msg' => $request->giftcard_msg,
                 'reciept_email' => $request->reciept_email
+            ] : [];
+
+            $photoForSale = $itemType == 'photo_for_sale' ? [
+                'photo_for_sale_size' => $request->photo_for_sale_size,
+                'photo_for_sale_type' => $request->photo_for_sale_type,
+                'product_min_max_price' => $request->product_min_max_price
             ] : [];
 
 
@@ -73,6 +89,14 @@ class CartController extends Controller
                         ]);
                     }
 
+                    if ($itemType == 'photo_for_sale') {
+                        $insertData = array_merge($insertData, [
+                            'product_desc' => json_encode($photoForSale),
+                            'product_type' => $itemType,
+                            'product_price' => $request->card_price
+                        ]);
+                    }
+
                     $existingCartItem = CartData::where('cart_id', $cartId)
                         ->where('product_id', $product_id)
                         ->where('selected_images', $ImagePath)
@@ -85,13 +109,20 @@ class CartController extends Controller
                             $existingCartItem->product_type = $itemType ?? '';
                             $existingCartItem->product_price = $request->card_price ?? '';
                         }
+
+                        if ($itemType == 'photo_for_sale') {
+                            $existingCartItem->product_desc = json_encode($photoForSale) ?? '';
+                            $existingCartItem->product_type = $itemType ?? '';
+                            $existingCartItem->product_price = $request->card_price ?? '';
+                        }
+
                         $existingCartItem->save();
                     } else {
                         CartData::create($insertData);
-                        if($itemType == 'gift_card'){
-                            $message = '“Gift Card” has been added to your cart.';
-                        }
-                        // \flash('success', $message);
+                        // if($itemType == 'gift_card'){
+                        //     $message = '“Gift Card” has been added to your cart.';
+                        // }
+                        // // \flash('success', $message);
                     }
                 }
             }

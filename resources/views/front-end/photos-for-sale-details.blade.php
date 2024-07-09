@@ -82,7 +82,8 @@
                                 <input type="hidden" id="product_price" value="200.00 ">
                                 <input type="hidden" id="product_qty" value="4">
                                 <input type="hidden" id="product_min_max_price" value="{{$productDetails->min_price.','.$productDetails->max_price}}">
-                                <input type="hidden" id="giftcard_image" value="{{$blog_detail->image}}">
+                                <input type="hidden" id="product_image" value="{{$image1 ?? ''}}">
+                                <input type="hidden" id="product_id" value="{{$productDetails->id}}">
 
                                 <div class="under">
                                         <div class="size-wrapper">
@@ -199,6 +200,15 @@
 
 
 $(document).ready(function() {
+
+   $('#product_type').on('change',function(){
+      if($('#product_size').val() != '' && $(this).val() != ''){
+         $(this).css({'opacity':'none','cursor' : 'allowed'});
+      }else{
+        $(this).css({'opacity':'.8','cursor' : 'not-allowed'});
+      }
+   })
+
     $('#addToCartBtn').click(function() {
       
         var isValid = true;
@@ -210,10 +220,12 @@ $(document).ready(function() {
         });
 
         var product_price = $('#product_price').val();
-        var product_qty = $('#product_qty').val();
+        var quantity = $('#product_qty').val();
         var product_size = $('#product_size').val();
         var product_type = $('#product_type').val();
-        var product_min_max_price = $('#product_min_max_price').val();
+        var product_min_max_price = $('#product_min_max_price').val();product_image
+        var product_image = $('#product_image').val();
+        var product_id = $('#product_id').val();
         
         if (product_size == '') {
             $('#product_size_error').text('This field is required');
@@ -231,8 +243,8 @@ $(document).ready(function() {
         let selectedImages = [];
 
         if (quantity !== '' && quantity > 0) {
-            let price = parseFloat(card_price);
-            let productId = giftcard_id; 
+            let price = parseFloat(product_price);
+            let productId = product_id; 
             let totalPrice = quantity * price;
             total += totalPrice;
             cartItems.push({
@@ -242,7 +254,7 @@ $(document).ready(function() {
             });
         }
 
-        selectedImages.push(giftcard_image);
+        selectedImages.push(product_image);
 
         if (cartItems.length > 0) {
             // Send cart items to the server
@@ -253,11 +265,11 @@ $(document).ready(function() {
                     cart_items: cartItems,
                     total: total,
                     selectedImages:selectedImages,
-                    from:from,
-                    giftcard_msg:giftcard_msg,
-                    reciept_email:reciept_email,
-                    item_type:'gift_card',
-                    card_price:card_price,
+                    photo_for_sale_size:product_size,
+                    photo_for_sale_type:product_type,
+                    product_min_max_price:product_min_max_price,
+                    item_type:'photo_for_sale',
+                    card_price:product_price,
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
