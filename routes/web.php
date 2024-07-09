@@ -97,12 +97,16 @@ Route::prefix('admin')->group(function () {
         Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
         Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
         Route::post('size-save',[VariationsController::class,'saveSize'])->name('size-save');
+        Route::post('edit-size-save',[VariationsController::class,'saveEditSize'])->name('edit-size-save');
         Route::delete('size-delete/{id}',[VariationsController::class,'deleteSize'])->name('size-delete');
+        Route::get('size-edit/{id}',[VariationsController::class,'editSize'])->name('size-edit');
 
         Route::get('size-types',[VariationsController::class,'sizesType'])->name('size-types-list');
         Route::get('size-type-add',[VariationsController::class,'addSizeType'])->name('size-type-add');
         Route::post('size-type-save',[VariationsController::class,'saveSizeType'])->name('size-type-save');
         Route::delete('size-type-delete/{id}',[VariationsController::class,'deleteSizeType'])->name('size-type-delete');
+        Route::get('size-type-edit/{id}',[VariationsController::class,'editSizeType'])->name('size-type-edit');
+        Route::post('edit-size-type-save',[VariationsController::class,'editSizeTypeSave'])->name('edit-size-type-save');
     });
 });
 

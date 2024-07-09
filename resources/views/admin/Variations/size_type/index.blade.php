@@ -45,7 +45,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Size Name</th>
+                            <th>Size Type Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -56,7 +56,7 @@
                             <td>{{ ucfirst($SizeType->name) }}</td>
                             <td>
                               <div class="x_content">
-                                <a href="{{ route('shipping-show', ['id' => $SizeType->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                <a href="{{ route('size-type-edit', ['id' => $SizeType->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
                                 <form action="{{ route('size-type-delete', ['id' => $SizeType->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
                                     @csrf
                                     @method('DELETE')

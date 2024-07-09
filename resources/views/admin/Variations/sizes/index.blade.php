@@ -56,7 +56,7 @@
                             <td>{{ ucfirst($size->name) }}</td>
                             <td>
                               <div class="x_content">
-                                <a href="{{ route('shipping-show', ['id' => $size->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                <a href="{{ route('size-edit', ['id' => $size->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
                                 <form action="{{ route('size-delete', ['id' => $size->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this size?');" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
