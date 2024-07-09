@@ -195,9 +195,14 @@ class CartController extends Controller
             }
         }
 
-        // if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
-        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
-        // }
+        if (!empty($coupon->products)) {
+            $couponProducts = explode(',', $coupon->products);
+            foreach ($cart->items as $item) {
+                if (!in_array($item->product->id, $couponProducts)) {
+                    return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
+                }
+            }
+        }
 
         $amount = 0;
         if($coupon->type == "0")
