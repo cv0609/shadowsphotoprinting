@@ -24,7 +24,7 @@ class VariationsController extends Controller
 
     public function saveSize(SizeRequest $request)
      {
-        Size::insert(['name'=>$request->name]);
+        Size::create(['name'=>$request->name]);
         return redirect()->route('sizes-list')->with('success','Size added successfully');
      }
 
@@ -57,7 +57,7 @@ class VariationsController extends Controller
 
      public function saveSizeType(sizetypeRequest $request)
       {
-        SizeType::insert(['name'=>$request->name]);
+        SizeType::create(['name'=>$request->name]);
         return redirect()->route('size-types-list')->with('success','Size type added successfully');
       }
 

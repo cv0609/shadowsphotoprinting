@@ -111,12 +111,13 @@
                                                 <label for="size">Select size</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <select name="cars" id="size">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="mercedes">Mercedes</option>
-                                                    <option value="audi">Audi</option>
-                                                  </select>
+                                                <select name="size_arr[]" id="size_arr">
+                                                    <option value="">Select size</option>
+                                                    @foreach($size as $val)
+                                                      <option value="{{$val->id}}">{{$val->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <span class="validation-error" id="size_arr_error"></span>
                                             </div>
                                         </div>
 
@@ -128,11 +129,11 @@
                                                 <label for="type">Select type</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <select name="cars" id="type">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="mercedes">Mercedes</option>
-                                                    <option value="audi">Audi</option>
+                                                <select name="type[]" id="type">
+                                                    <option value="">Select type</option>
+                                                    @foreach($size_type as $val)
+                                                      <option value="{{$val->id}}">{{$val->name}}</option>
+                                                    @endforeach
                                                   </select>
                                             </div>
                                         </div>
@@ -144,7 +145,7 @@
                                                 <label for="price">select price</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" id="price">
+                                                <input type="text" id="price" name="price">
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +160,7 @@
                             <div class="ln_solid"></div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 offset-md-3">
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-success" id="submitBtn">Submit</button>
                                 </div>
                             </div>
 
@@ -178,9 +179,76 @@
 @endsection
 @section('custom-script')
 <script>
-     $("#add-more-attribute").on('click',function(){
-      $(".size-and-type-wrap").append('<div class="size-and-type"><button type="button" class="close-button" onclick="removeAddMore(this)">×</button><div class="size"><div class="row"><div class="col-md-3"><label for="size">Select size</label></div><div class="col-md-6"><select name="cars" id="size"><option value="volvo">Volvo</option><option value="saab">Saab</option><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></div></div></div><div class="type"><div class="row"><div class="col-md-3"><label for="type">Select type</label></div><div class="col-md-6"><select name="cars" id="type"><option value="volvo">Volvo</option><option value="saab">Saab</option><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></div></div></div><div class="selcet-price"><div class="row"><div class="col-md-3"><label for="price">select price</label></div><div class="col-md-6"><input type="text" id="price"></div></div></div></div>');
- })
+    var sizes = @json($size);
+    var sizeTypes = @json($size_type);
+
+    $("#add-more-attribute").on('click', function() {
+        let sizeOptions = '<option value="">Select size</option>';
+        sizes.forEach(size => {
+            sizeOptions += `<option value="${size.id}">${size.name}</option>`;
+        });
+
+        let typeOptions = '<option value="">Select type</option>';
+        sizeTypes.forEach(type => {
+            typeOptions += `<option value="${type.id}">${type.name}</option>`;
+        });
+
+        $(".size-and-type-wrap").append(`
+            <div class="size-and-type">
+                <button type="button" class="close-button" onclick="removeAddMore(this)">×</button>
+                <div class="size">
+                    <div class="row">
+                        <div class="col-md-3"><label for="size">Select size</label></div>
+                        <div class="col-md-6">
+                            <select name="size_arr[]" class="form-control size-select">
+                                ${sizeOptions}
+                            </select>
+                            <span id="size_arr_error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="type">
+                    <div class="row">
+                        <div class="col-md-3"><label for="type">Select type</label></div>
+                        <div class="col-md-6">
+                            <select name="type[]" class="form-control type-select">
+                                ${typeOptions}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="select-price">
+                    <div class="row">
+                        <div class="col-md-3"><label for="price">Select price</label></div>
+                        <div class="col-md-6">
+                            <input type="text" name="price[]" class="form-control price-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+    });
+
+    $('#submitBtn').on('click',function(){
+            let sizeEmpty = false;
+            $('select[name="size[]"]').each(function() {
+                console.log('jjjj');
+                if ($(this).val() === '') {
+                    sizeEmpty = true;
+                    return false; 
+                }
+            });
+
+            if (sizeEmpty) {
+                $('#size_arr_error').text('Size field(s) are required.');
+            } else {
+                $('#size_arr_error').text(''); // Clear error message if all fields are filled
+                // Optionally, you can submit the form here as well
+                // $('#demo-form2').submit();
+            }
+    })
+
+
 
  function removeAddMore(that)
   {

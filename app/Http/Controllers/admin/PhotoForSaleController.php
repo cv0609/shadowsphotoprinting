@@ -8,6 +8,8 @@ use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Http\Requests\PhotoForSaleCategoryRequest;
 use App\Http\Requests\PhotoForSaleProductRequest;
+use App\Models\Size;
+use App\Models\SizeType;
 
 class PhotoForSaleController extends Controller
 {
@@ -80,9 +82,11 @@ class PhotoForSaleController extends Controller
 
     public function productAdd()
     {
-
         $productCategories = PhotoForSaleCategory::get();
-        return view('admin.photo_for_sale.add',compact('productCategories'));
+        $size = Size::all();
+        $size_type = SizeType::all();
+
+        return view('admin.photo_for_sale.add',compact('productCategories','size','size_type'));
     }
 
     public function productSave(PhotoForSaleProductRequest $request)
