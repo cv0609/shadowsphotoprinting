@@ -187,9 +187,13 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
-        // if (!empty($coupon->categories) && !array_intersect($productCategories, explode(',',$coupon->categories))) {
-        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product\'s category.']);
-        // }
+        $couponCategories = explode(',', $coupon->categories);
+        foreach ($cart->items as $item) {
+            $productCategories = $item->product->categories->pluck('id')->toArray();
+            if (!array_intersect($productCategories, $couponCategories)) {
+                return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+            }
+        }
 
         // if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
         //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
