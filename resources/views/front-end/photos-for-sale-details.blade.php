@@ -65,6 +65,10 @@
                     </div>
                 </div>
 
+                {{-- @php
+                    
+                @endphp --}}
+
                 <div class="col-lg-6">
                     <div class="canvas-summary">
                         <p>IMAGE</p>
@@ -73,11 +77,17 @@
 
                         </p>
                         <div class="print_paper">
-                            <form action="">
+                            <form id="submitForm" method="post">
+                                @csrf
+                                <input type="hidden" id="product_price" value="200.00 ">
+                                <input type="hidden" id="product_qty" value="4">
+                                <input type="hidden" id="product_min_max_price" value="{{$productDetails->min_price.','.$productDetails->max_price}}">
+                                <input type="hidden" id="giftcard_image" value="{{$blog_detail->image}}">
+
                                 <div class="under">
                                         <div class="size-wrapper">
                                             <label for="">SIZE</label>
-                                            <select id="size" class="kad-select" name="attribute_size"
+                                            <select id="product_size" class="kad-select" name="attribute_size"
                                                 data-attribute_name="attribute_size" data-show_option_none="yes">
                                                 <option value="">Choose an option</option>
                                                 <option value="12”x12”" class="attached enabled">12”x12”</option>
@@ -86,23 +96,25 @@
                                                 <option value="30”x30”" class="attached enabled">30”x30”</option>
                                                 <option value="30”x30&quot;" class="attached enabled">30”x30"
                                                 </option>
+                                                <span class="error-message" id="product_size_error"></span>
                                             </select>
                                         </div>
                                         <div class="size-wrapper">
                                             <label for="">TYPE</label>
-                                            <select id="type" class="kad-select" name="attribute_type"
+                                            <select id="product_type" class="kad-select" name="attribute_type"
                                                 data-attribute_name="attribute_type" data-show_option_none="yes">
                                                 <option value="">Choose an option</option>
                                                 <option value="Canvas Sizes" class="attached enabled">Canvas Sizes
                                                 </option>
                                                 <option value="Print sizes" class="attached enabled">Print sizes
                                                 </option>
+                                                <span class="error-message" id="product_type_error"></span>
                                             </select>
                                         </div>
                                 </div>
 
                                 <div class="quanti add">
-                                    <button type="button">Add to cart</button>
+                                    <button type="button" id="addToCartBtn">Add to cart</button>
                                 </div>
                         </form>
                             <div class="product_meta">
@@ -197,35 +209,21 @@ $(document).ready(function() {
             $(this).siblings('input').addClass('validator');
         });
 
-        var card_price = $('#card_price').val();
-        var from = $('#from').val();
-        var giftcard_msg = $('#giftcard_msg').val();
-        var reciept_email = $('#reciept_email').val();
-        var quantity = $('#quantity').val();
-        var giftcard_id = $('#giftcard_id').val();
-        var giftcard_image = $('#giftcard_image').val();
+        var product_price = $('#product_price').val();
+        var product_qty = $('#product_qty').val();
+        var product_size = $('#product_size').val();
+        var product_type = $('#product_type').val();
+        var product_min_max_price = $('#product_min_max_price').val();
         
-        if (card_price == '') {
-            $('#card_price_error').text('This field is required');
+        if (product_size == '') {
+            $('#product_size_error').text('This field is required');
             isValid = false;
         }
-        if (from == '') {
-            $('#from_error').text('This field is required');
+        if (product_type == '') {
+            $('#product_type_error').text('This field is required');
             isValid = false;
         }
-        if (giftcard_msg == '') {
-            $('#giftcard_msg_error').text('This field is required');
-            isValid = false;
-        }
-        if (reciept_email == '') {
-            $('#reciept_email_error').text('This field is required');
-            isValid = false;
-        }
-        if (quantity == '') {
-            $('#quantity_error').text('This field is required');
-            isValid = false;
-        }
-
+        
         if (isValid) {
 
         let cartItems = [];
