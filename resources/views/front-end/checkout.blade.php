@@ -249,9 +249,9 @@
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
-                                                <small class="includes_tax">(includes
+                                                {{-- <small class="includes_tax">(includes
                                                     <span><span>$</span>1.12</span>
-                                                    GST)</small>
+                                                    GST)</small> --}}
                                             </td>
                                         </tr>
 

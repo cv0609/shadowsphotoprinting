@@ -73,9 +73,7 @@
                     <div class="canvas-summary">
                         <p>IMAGE</p>
                         <h2>{{$productDetails->product_title ?? ''}}</h2>
-                        <p class="incl"> ${{$productDetails->min_price}} – ${{$productDetails->max_price}} incl. GST
-
-                        </p>
+                        <p class="incl"> ${{$productDetails->min_price}} – ${{$productDetails->max_price}}</p>
                         <div class="print_paper">
                             <form id="submitForm" method="post">
                                 @csrf
@@ -97,8 +95,9 @@
                                                 <option value="30”x30”" class="attached enabled">30”x30”</option>
                                                 <option value="30”x30&quot;" class="attached enabled">30”x30"
                                                 </option>
-                                                <span class="error-message" id="product_size_error"></span>
                                             </select>
+                                            <br>
+                                            <span class="error-message" id="product_size_error"></span>
                                         </div>
                                         <div class="size-wrapper">
                                             <label for="">TYPE</label>
@@ -109,8 +108,8 @@
                                                 </option>
                                                 <option value="Print sizes" class="attached enabled">Print sizes
                                                 </option>
-                                                <span class="error-message" id="product_type_error"></span>
-                                            </select>
+                                            </select><br>
+                                            <span class="error-message" id="product_type_error"></span>
                                         </div>
                                 </div>
 
@@ -213,10 +212,10 @@ $(document).ready(function() {
       
         var isValid = true;
         $('.error-message').css('color','red');
-        $('.error-message').closest('input').addClass('validator');
+        $('.error-message').closest('input select').addClass('validator');
         $('.error-message').text(''); // Clear previous error messages
         $('.error-message').css('color', 'red').each(function() {
-            $(this).siblings('input').addClass('validator');
+            $(this).siblings('input select').addClass('validator');
         });
 
         var product_price = $('#product_price').val();
