@@ -15,7 +15,7 @@
 
                   {{-- <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a> --}}
                   {{-- <div class="dropdown-divider"></div> --}}
-                                 @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
                  <a class="dropdown-item"  href="{{ route('admin-logout') }}"
                     onclick="event.preventDefault() ;
                           document.getElementById('admin-logout-form').submit();">

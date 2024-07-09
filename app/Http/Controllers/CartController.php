@@ -30,8 +30,8 @@ class CartController extends Controller
         $session_id = $auth_id ? null : Session::getId();
 
         $cart = Cart::firstOrCreate([
-            "user_id" => $auth_id, 
-            "coupon_id" => null, 
+            "user_id" => $auth_id,
+            "coupon_id" => null,
             "session_id" => $session_id
         ]);
 
@@ -142,11 +142,11 @@ class CartController extends Controller
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         }
-        
+
         $session_id = Session::getId();
-        
+
         $countries = Country::find(14);
-        
+
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
         if(!empty($cart))
@@ -181,8 +181,8 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
      {
        $coupon = Coupon::where('code', $request->coupon_code)->first();
-        $total = $this->CartService->getCartTotal();
-
+       $total = $this->CartService->getCartTotal();
+       $cart = [];
         // $product = Product::find($request->product_id);
         // $productCategories = $product->categories->pluck('id')->toArray();
 
@@ -193,11 +193,15 @@ class CartController extends Controller
         if ($coupon->isExpired()) {
             return ['success' => false, 'message' => 'Coupon has expired'];
         }
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
 
-        $session_id = Session::getId();
-        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
-
-        if (!$cart) {
+       if (!$cart) {
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
@@ -214,13 +218,22 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
-        // if (!empty($coupon->categories) && !array_intersect($productCategories, explode(',',$coupon->categories))) {
-        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product\'s category.']);
-        // }
+        $couponCategories = explode(',', $coupon->categories);
+        foreach ($cart->items as $item) {
+            $productCategories = $item->product->categories->pluck('id')->toArray();
+            if (!array_intersect($productCategories, $couponCategories)) {
+                return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+            }
+        }
 
-        // if (!empty($coupon->products) && !in_array($product->id, explode(',',$coupon->products))) {
-        //     return back()->withErrors(['code' => 'This coupon is not applicable to the selected product.']);
-        // }
+        if (!empty($coupon->products)) {
+            $couponProducts = explode(',', $coupon->products);
+            foreach ($cart->items as $item) {
+                if (!in_array($item->product->id, $couponProducts)) {
+                    return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
+                }
+            }
+        }
 
         $amount = 0;
         if($coupon->type == "0")
