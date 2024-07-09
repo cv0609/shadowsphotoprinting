@@ -10,6 +10,7 @@ use App\Http\Requests\PhotoForSaleCategoryRequest;
 use App\Http\Requests\PhotoForSaleProductRequest;
 use App\Models\Size;
 use App\Models\SizeType;
+use App\Models\PhotoForSaleSizePrices;
 
 class PhotoForSaleController extends Controller
 {
@@ -104,8 +105,29 @@ class PhotoForSaleController extends Controller
             }
             $data["product_images"] = implode(',',$product_image_array);
          }
-       
-         PhotoForSaleProduct::insert($data);
+
+         $productId = PhotoForSaleProduct::insertGetId($data);
+
+         if(isset($request->type_arr) && isset($request->size_arr) && isset($request->price_arr)){
+            $typeArr = $request->type_arr;
+            $sizeArr = $request->size_arr;
+            $priceArr = $request->price_arr;
+        
+            $count = count($typeArr);
+        
+            for ($i = 0; $i < $count; $i++) {
+                $sizeId = $sizeArr[$i]; 
+                $typeId = $typeArr[$i]; 
+                $price = $priceArr[$i];
+        
+                $photoForSaleSizePrice = new PhotoForSaleSizePrices();
+                $photoForSaleSizePrice->size_id = $sizeId;
+                $photoForSaleSizePrice->type_id = $typeId;
+                $photoForSaleSizePrice->price = $price;
+                $photoForSaleSizePrice->product_id = $productId;
+                $photoForSaleSizePrice->save();
+            }
+        }
         return redirect()->route('photos-for-sale-product-list')->with('success','Product inserted successfully');
     }
 

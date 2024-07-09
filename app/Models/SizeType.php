@@ -11,4 +11,9 @@ class SizeType extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function photoForSaleSizePrices()
+    {
+        return $this->hasMany(PhotoForSaleSizePrices::class, 'type_id');
+    }
 }

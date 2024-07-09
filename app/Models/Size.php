@@ -12,4 +12,9 @@ class Size extends Model
         'name',
     ];
 
+    public function photoForSaleSizePrices()
+    {
+        return $this->hasMany(PhotoForSaleSizePrices::class, 'size_id');
+    }
+
 }
