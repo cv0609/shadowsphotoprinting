@@ -48,7 +48,7 @@ class VariationsController extends Controller
      public function saveSizeType(sizetypeRequest $request)
       {
         SizeType::insert(['name'=>$request->name]);
-        return redirect()->route('size-types-list')->with('success','Size added successfully');
+        return redirect()->route('size-types-list')->with('success','Size type added successfully');
       }
 
     public function deleteSizeType($id)
