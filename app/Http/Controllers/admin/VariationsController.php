@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Size;
+use App\Models\SizeType;
 use App\Http\Requests\SizeRequest;
+use App\Http\Requests\SizetypeRequest;
 
 class VariationsController extends Controller
 {
@@ -28,18 +30,18 @@ class VariationsController extends Controller
 
      public function sizesType()
      {
-       $sizes = Size::paginate();
-       return view('admin.Variations.sizes.index',compact('sizes'));
+       $SizeTypes = SizeType::paginate();
+       return view('admin.Variations.size_type.index',compact('SizeTypes'));
      }
 
     public function addSizeType()
       {
-         return view('admin.Variations.sizes.add');
+         return view('admin.Variations.size_type.add');
       }
 
-     public function saveSizeType(SizeRequest $request)
+     public function saveSizeType(sizetypeRequest $request)
       {
-         Size::insert(['name'=>$request->name]);
-         return redirect()->route('sizes-list')->with('success','Size added successfully');
+        SizeType::insert(['name'=>$request->name]);
+         return redirect()->route('size-types-list')->with('success','Size added successfully');
       }
 }

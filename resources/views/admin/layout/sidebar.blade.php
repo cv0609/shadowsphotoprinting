@@ -49,7 +49,7 @@
                   <li><a href="#"><i class="fa fa-list-alt"></i> Variations</a>
                     <ul class="nav child_menu">
                       <li><a href="{{ route('sizes-list') }}">Sizes</a></li>
-                      <li><a href="{{ route('photos-for-sale-product-list') }}">Sizes Type</a></li>
+                      <li><a href="{{ route('size-types-list') }}">Sizes Type</a></li>
                     </ul>
                   </li>
                 </ul>
