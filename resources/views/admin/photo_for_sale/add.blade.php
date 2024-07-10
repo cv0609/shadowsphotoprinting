@@ -215,7 +215,7 @@
                 '<div class="size">' +
                     '<div class="row">' +
                         '<div class="col-md-3"><label for="size">Select size</label></div>' +
-                        '<div class="col-md-6">' +
+                        '<div class="col-md-6 last-row">' +
                             '<select class="form-control append-size multi_size size-select" multiple name="size_arr[]">' + sizeOptions + '</select>' +
                             ' <span class="size_arr_error"></span>' +
                         '</div>' +
@@ -250,14 +250,15 @@
         });
 
         $('#submitBtn').on('click', function() {
-            console.log($('.added-section:last'));
-            
-            $('.added-section:last').append('<span class="new-span validator">Please dont select duplicate type and size.</span>');
+
+            $(document).find('.text-danger').text('');    
+
             var error = false;
 
             $('select[name^="size_arr"]').each(function() {
                 if (!$(this).val()) {
                     $(this).siblings('.size_arr_error').text('Size field is required.');
+                    $(this).siblings('.size_arr_error').addClass('text-danger');
                     error = true;
                 }
             });
@@ -265,6 +266,7 @@
             $('select[name^="type_arr"]').each(function() {
                 if (!$(this).val()) {
                     $(this).siblings('.type_arr_error').text('Type field is required.');
+                    $(this).siblings('.type_arr_error').addClass('text-danger');
                     error = true;
                 }
             });
@@ -272,37 +274,44 @@
             $('input[name^="price_arr"]').each(function() {
                 if (!$(this).val()) {
                     $(this).siblings('.price_arr_error').text('Price field is required.');
+                    $(this).siblings('.price_arr_error').addClass('text-danger');
                     error = true;
                 }
             });
 
             if ($('#category_id').val() == '') {
                 $('.category_id_error').text('Category field is required.');
+                $('.category_id_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#product_title').val() == '') {
                 $('.product_title_error').text('Product title field is required.');
+                $('.product_title_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#min_price').val() == '') {
                 $('.min_price_error').text('Min price field is required.');
+                $('.min_price_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#max_price').val() == '') {
                 $('.max_price_error').text('Max price field is required.');
+                $('.max_price_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#product_image').val() == '') {
                 $('.product_image_error').text('Product image field is required.');
+                $('.product_image_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#product_description').val() == '') {
                 $('.product_description_error').text('Product description field is required.');
+                $('.product_description_error').addClass('text-danger');
                 error = true;
             }
 
@@ -327,37 +336,12 @@
                 });
 
                 if (hasDuplicates(size) && hasDuplicates(type)) {
-                    $('.duplicate-size-type-msg').text('Duplicate size and type!');
-                    return false;
-                }
-
-                var size = [];
-                $('select[name^="size_arr"]').each(function() {
-                    var selectedValues = $(this).val(); 
-                    if (selectedValues) {
-                        size = size.concat(selectedValues); 
-                    }
-                });
-
-                var type = [];
-                $('select[name^="type_arr"]').each(function() {
-                    var selectedValues = $(this).val(); 
-                    if (selectedValues) {
-                        type = type.concat(selectedValues); 
-                    }
-                });
-
-                if (hasDuplicates(size) && hasDuplicates(type)) {
-                    // $('.size-and-type:last').append('<span class="new-span validator">Please dont select duplicate type and size.</span>');
-                    console.log($('.added-section:last'));
+                    $('.last-row:last').prepend('<span class="new-span text-danger">You can not add duplicate entry for size and type</span>');
                     return false;
                 }
 
                 $('#demo-form2').submit();
             }
-
-
-
         });
     });
 
