@@ -88,3 +88,41 @@
     line-height: 20px;
     text-align: center;
 }
+
+.size-and-type button.close-button {
+right: 22%;
+transform: translateX(-50%);
+top: 11px;
+}
+.added-section {
+border-top: 1px solid #e5e5e5;
+padding-top: 18px;
+}
+
+.validator {
+    border-color: red !important;
+}
+
+
+.order-address-details ul li {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  div#Shipping-address {
+    display: none;
+    }
+    .diffrent-address {
+    height: 100%;
+    position: relative;
+    min-height: 400px;
+    }
+    .diffrent-address p {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    width: 300px;
+    text-align: center;
+    }
