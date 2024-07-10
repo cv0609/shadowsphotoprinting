@@ -15,6 +15,7 @@ class Order extends Model
         'user_session_id',
         'order_number',
         'coupon_id',
+        'coupon_code',
         'discount',
         'sub_total',
         'shipping_charge',

@@ -35,6 +35,8 @@ class CartService
 
             if($item->product_type == 'gift_card'){
                 $product_price = $item->product_price;
+            }else if($item->product_type == 'photo_for_sale'){
+                $product_price = $item->product_price;
             }else{
                 $product_price = $item->product->product_price;
             }
@@ -50,11 +52,10 @@ class CartService
             $coupon_code = $couponCode;
             if ($coupon) {
                 if ($coupon->type == '1') {
-                    $discount = ($subtotal * $coupon->value) / 100;
+                    $discount = ($subtotal * $coupon->amount) / 100;
                 } elseif ($coupon->type == '0') {
-                    $discount = $coupon->value;
+                    $discount = $coupon->amount;
                 }
-
                 // Ensure the discount does not exceed the total
                 $discount = min($discount, $subtotal);
                 $coupon_id = $coupon->id;
@@ -64,7 +65,7 @@ class CartService
         // Calculate the total after applying the discount
         $totalAfterDiscount = $subtotal - $discount;
         $shipping = $this->getShippingCharge();
-
+       
         if($shipping->status == "1" && Session::has('billing_details')){
             $shippingCharge = $shipping->amount; // Example shipping charge
         }

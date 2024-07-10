@@ -21,10 +21,14 @@
                 <div class="count ">{{ $cards }}</div>
                 {{-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> --}}
               </div>
-
+              <div class="col-md-4 col-sm-4 tile_stats_count">
+                <span class="count_top"> Total Orders</span>
+                <div class="count ">{{ $orders }}</div>
+                {{-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> --}}
+              </div>
             </div>
           </div>
-          <div class="col-md-4 col-sm-6  widget_tally_box">
+          {{-- <div class="col-md-4 col-sm-6  widget_tally_box">
             <div class="x_panel">
               <div class="x_title">
                 <h2>User Uptake</h2>
@@ -47,7 +51,7 @@
                 <div id="graph_bar" style="width:100%; height:200px;"></div>
               </div>
             </div>
-          </div>
+          </div> --}}
           </div>
 @endsection
 @section('custom-script')

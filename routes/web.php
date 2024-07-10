@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
 use App\Http\Controllers\admin\GiftCardController;
 use App\Http\Controllers\admin\CouponController;
+use App\Http\Controllers\admin\VariationsController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
@@ -93,11 +94,25 @@ Route::prefix('admin')->group(function () {
         Route::get('/orders',[OrderController::class,'index'])->name('orders-list');
         Route::get('/order-detail/{order_number}',[OrderController::class,'orderDetail'])->name('order-detail');
 
+        Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
+        Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
+        Route::post('size-save',[VariationsController::class,'saveSize'])->name('size-save');
+        Route::post('edit-size-save',[VariationsController::class,'saveEditSize'])->name('edit-size-save');
+        Route::delete('size-delete/{id}',[VariationsController::class,'deleteSize'])->name('size-delete');
+        Route::get('size-edit/{id}',[VariationsController::class,'editSize'])->name('size-edit');
+
+        Route::get('size-types',[VariationsController::class,'sizesType'])->name('size-types-list');
+        Route::get('size-type-add',[VariationsController::class,'addSizeType'])->name('size-type-add');
+        Route::post('size-type-save',[VariationsController::class,'saveSizeType'])->name('size-type-save');
+        Route::delete('size-type-delete/{id}',[VariationsController::class,'deleteSizeType'])->name('size-type-delete');
+        Route::get('size-type-edit/{id}',[VariationsController::class,'editSizeType'])->name('size-type-edit');
+        Route::post('edit-size-type-save',[VariationsController::class,'editSizeTypeSave'])->name('edit-size-type-save');
     });
 });
 
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
+Route::get('/our-products/photos-for-sale-details/{slug?}',[BasePagesController::class,'PhotosForSaleDetails'])->name('photos-for-sale-details');
 Route::get('/our-products/gift-card',[BasePagesController::class,'giftCard'])->name('gift-card');
 Route::get('/our-products/gift-card-detail/{slug}',[BasePagesController::class,'giftCard_detail'])->name('gift-card-detail');
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
@@ -116,6 +131,7 @@ Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout'
 Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
 Route::get('/thank-you/{order_id}', [PaymentController::class,'thankyou'])->name('thankyou');
+
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

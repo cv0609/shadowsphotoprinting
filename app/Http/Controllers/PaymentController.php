@@ -148,18 +148,18 @@ class PaymentController extends Controller
             $cart_total = $cartTotal['total'] ?? 0;
             $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
             $coupon_code = $cartTotal['coupon_code'] ?? '';
-            $coupon_id = $cartTotal['coupon_id'] ?? 0;
-
+            $coupon_id = (isset($cartTotal['coupon_id']) && !empty($cartTotal['coupon_id'])) ? $cartTotal['coupon_id'] : null;
+       
             $order = Order::create([
                 'user_id' => isset(Auth::user()->id) ? Auth::user()->id : null,
                 'user_session_id' => isset(Auth::user()->id) ? null : $session_id,
                 'order_number' => $orderNumber,
-                // 'coupon_id' => $coupon_id,
-                'coupon_code' => $coupon_code,
-                'discount' => $coupon_discount,
-                'sub_total' => $subtotal,
-                'shipping_charge' => $shipping_amount,
-                'total' => $cart_total,
+                'coupon_id' => $coupon_id,
+                'coupon_code' => $coupon_code['code'] ?? '',
+                'discount' => $coupon_discount ?? 0,
+                'sub_total' => $subtotal ?? 0,
+                'shipping_charge' => $shipping_amount ?? 0,
+                'total' => $cart_total ?? 0,
                 'payment_id' => (isset($charge->id)) ? $charge->id : "",
                 'is_paid' => (isset($charge->captured)) ? $charge->captured : false,
                 'status' => $charge->status,

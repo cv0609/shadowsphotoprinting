@@ -41,20 +41,83 @@
                                     <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                 </td>
                                 <td class="product-thumbnail">
-                                    <a href="#"><img src="{{ $item->product_type == "gift_card" ? asset($product_detail->image) : asset($item->selected_images) }}" alt=""></a>
+                                    <a href="#">
+                                        <img src="
+                                            @if($item->product_type == 'gift_card')
+                                                {{ asset($product_detail->image) }}
+                                            @elseif($item->product_type == 'photo_for_sale')
+                                                @php
+                                                    $image1 = '';
+                                                    $image2 = '';
+                                                    if(isset($product_detail->product_images)){
+                                                        $imageArray = explode(',', $product_detail->product_images);
+                                                        $image1 = $imageArray[0] ?? '';
+                                                        $image2 = $imageArray[1] ?? '';
+                                                    }
+                                                @endphp
+                                                {{ asset($image1) }}
+                                            @else
+                                                {{ asset($item->selected_images) }}
+                                            @endif
+                                        " alt="">
+                                    </a>                                                                 
                                 </td>
                                 <td class="product-name">
-                                    <a href="">{{ ($item->product_type == "gift_card") ? $product_detail->name : $item->product->product_title}}</a>
+                                    @php
+                                        $photo_product_desc = '';
+                                        $giftcard_product_desc = '';
+                                        
+                                        if($item->product_type == "photo_for_sale"){
+                                            $photo_product_desc = json_decode($item->product_desc);
+                                        }
+                                        if($item->product_type == "gift_card"){
+                                            $giftcard_product_desc = json_decode($item->product_desc);
+                                        }
+                                        
+                                    @endphp
+                                    <a href="#">
+                                        @if($item->product_type == "gift_card")
+                                            {{ $product_detail->name }}
+                                            <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
+                                        @elseif($item->product_type == "photo_for_sale")
+                                            {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                                        @else
+                                            {{ $item->product->product_title ?? ''}}
+                                        @endif
+                                    </a>
+
                                 </td>
                                 <td class="product-price">
-                                    <span class=""><bdi><span class="">$</span>{{ ($item->product_type == "gift_card") ? number_format($item->product_price,2) : number_format($product_detail->product_price,2) }}</bdi></span>
+                                    <span class="">
+                                        <bdi>
+                                            <span>$</span>
+                                            @if($item->product_type == "gift_card")
+                                                {{ number_format($item->product_price, 2) }}
+                                            @elseif($item->product_type == "photo_for_sale")
+                                                {{ number_format($item->product_price, 2) }}
+                                            @else
+                                                {{ number_format($product_detail->product_price, 2) }}
+                                            @endif
+                                        </bdi>
+                                    </span>                                    
                                 </td>
                                 <td class="product-quantity">
                                     <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}">
                                 </td>
                                 <td class="product-subtotal">
-                                    <span><bdi><span>$</span>{{ ($item->product_type == "gift_card") ? number_format($item->quantity * $item->product_price,2) : number_format($item->quantity * $item->product->product_price,2) }}</bdi></span>
-                                </td>
+                                    <span>
+                                        <bdi>
+                                            <span>$</span>
+                                            @if($item->product_type == "gift_card")
+                                                {{ number_format($item->quantity * $item->product_price, 2) }}
+                                            @elseif($item->product_type == "photo_for_sale")
+                                                {{ number_format($item->quantity * $item->product_price, 2) }}
+                                            @else
+                                                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                            @endif
+                                        </bdi>
+                                    </span>
+                                </td>                                
                             </tr>
                             @endforeach
 
@@ -185,9 +248,9 @@
                                     <th>Total</th>
                                     <td data-title="Total">
                                         <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
-                                        <small class="includes_tax">(includes
+                                        {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
-                                            GST)</small>
+                                            GST)</small> --}}
                                     </td>
                                 </tr>
                             </tbody>

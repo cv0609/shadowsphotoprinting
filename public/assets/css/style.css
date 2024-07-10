@@ -2200,8 +2200,8 @@ span.kad-breadcurrent {
 }
 
 .quanti.add button {
-    opacity: .8;
-    cursor: not-allowed;
+    /* opacity: .8;
+    cursor: not-allowed; */
 }
 
 .dimensions h2 {

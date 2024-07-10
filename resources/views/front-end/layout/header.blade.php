@@ -67,7 +67,7 @@
                                 <li class="update-menu" data-bs-toggle="modal" data-bs-target="#login-form"><a
                                     class=""><span> Login/Signup</span> </a></li>
                                 @endif
-                                <li><a>
+                                <li><a href="{{ route('cart') }}">
                                         <span class="kt-extras-label">
                                             <span class="cart-extras-title">Cart</span>
                                         </span>
