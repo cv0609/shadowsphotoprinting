@@ -32,10 +32,8 @@
                             </thead>
                         <tbody>
                             @foreach ($cart->items as $item)
-                           
-                            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); 
-                      
-                            ?>
+
+                            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); ?>
                                 <tr>
                                 <td class="product-remove">
                                     <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
@@ -60,20 +58,20 @@
                                                 {{ asset($item->selected_images) }}
                                             @endif
                                         " alt="">
-                                    </a>                                                                 
+                                    </a>
                                 </td>
                                 <td class="product-name">
                                     @php
                                         $photo_product_desc = '';
                                         $giftcard_product_desc = '';
-                                        
+
                                         if($item->product_type == "photo_for_sale"){
                                             $photo_product_desc = json_decode($item->product_desc);
                                         }
                                         if($item->product_type == "gift_card"){
                                             $giftcard_product_desc = json_decode($item->product_desc);
                                         }
-                                        
+
                                     @endphp
                                     <a href="#">
                                         @if($item->product_type == "gift_card")
@@ -99,7 +97,7 @@
                                                 {{ number_format($product_detail->product_price, 2) }}
                                             @endif
                                         </bdi>
-                                    </span>                                    
+                                    </span>
                                 </td>
                                 <td class="product-quantity">
                                     <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}">
@@ -117,7 +115,7 @@
                                             @endif
                                         </bdi>
                                     </span>
-                                </td>                                
+                                </td>
                             </tr>
                             @endforeach
 

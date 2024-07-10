@@ -1,5 +1,8 @@
 @extends('admin.layout.main')
 @section('page-content')
+@php
+   $CartService = app(App\Services\CartService::class);
+@endphp
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -33,19 +36,50 @@
             <tr>
               <th class="center">#</th>
               <th>Item</th>
-              <th>Description</th>
               <th class="right">Unit Cost</th>
               <th class="center">Qty</th>
               <th class="right">Total</th>
             </tr>
           </thead>
           <tbody>
-            @foreach ($orderDetail->orderDetails as $item)
+            @foreach ($orderDetail->orderDetails as $key => $item)
+            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); dd($product_detail);?>
             <tr>
-              <td class="center">1</td>
-              <td class="strong">Origin License</td>
-              <td>Extended License</td>
-              <td class="right">$999,00</td>
+              <td class="center">{{ $key + 1}}</td>
+              <td class="strong">
+                @php
+                    $photo_product_desc = '';
+                    $giftcard_product_desc = '';
+
+                    if($item->product_type == "photo_for_sale"){
+                        $photo_product_desc = json_decode($item->product_desc);
+                    }
+                    if($item->product_type == "gift_card"){
+                        $giftcard_product_desc = json_decode($item->product_desc);
+                    }
+
+                @endphp
+                <a href="#">
+                    @if($item->product_type == "gift_card")
+                        {{ $product_detail->name }}
+                        <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
+                    @elseif($item->product_type == "photo_for_sale")
+                        {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                    @else
+                        {{ $item->product->product_title ?? ''}}
+                    @endif
+                </a>
+
+            </td>
+            <td class="right">
+                <span class="">
+                    <bdi>
+                        <span>$</span>
+
+                    </bdi>
+                </span>
+            </td>
+
               <td class="center">1</td>
               <td class="right">$999,00</td>
             </tr>
