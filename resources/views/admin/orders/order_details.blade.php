@@ -43,7 +43,7 @@
           </thead>
           <tbody>
             @foreach ($orderDetail->orderDetails as $key => $item)
-            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); dd($product_detail);?>
+            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);?>
             <tr>
               <td class="center">{{ $key + 1}}</td>
               <td class="strong">
