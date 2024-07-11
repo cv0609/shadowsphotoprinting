@@ -61,6 +61,7 @@ class PaymentController extends Controller
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
+        $company_name = $request->input('company_name');
         // $stripeToken = $request->input('stripeToken');
 
         $ship_fname = $request->input('ship_fname');
@@ -81,6 +82,9 @@ class PaymentController extends Controller
             'lname' => $lname,
             'street1' => $street1,
             'street2' => $street2,
+            'state' => $state_name->name ?? '',
+            'company_name' => $company_name ?? '',
+            'country_region' => config('constant.default_country'),
             'state' => $state_name->name ?? '',
             'postcode' => $postcode,
             'phone' => $phone,

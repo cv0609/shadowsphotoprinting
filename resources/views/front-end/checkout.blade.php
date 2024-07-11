@@ -39,7 +39,7 @@
                                 <p class="form-row">
                                     <label>Country / Region *
                                     </label>
-                                    <span> <strong>Australia </strong></span>
+                                    <span> <strong>{{ config('constant.default_country') }} </strong></span>
                                 </p>
                                 <p class="form-row">
                                     <label> Street address *

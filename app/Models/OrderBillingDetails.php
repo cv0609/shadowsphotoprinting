@@ -16,6 +16,8 @@ class OrderBillingDetails extends Model
         'street1',
         'street2',
         'state',
+        'company_name',
+        'country_region',
         'postcode',
         'phone',
         'suburb',
