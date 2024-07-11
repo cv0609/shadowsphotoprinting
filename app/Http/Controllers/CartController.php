@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
+use App\Mail\MakeOrder;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {

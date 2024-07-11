@@ -117,7 +117,7 @@
                                                 <label for="size">Select size</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <select name="size_arr[]" id="size_arr" multiple="multiple" class="multi_size">
+                                                <select name="size_arr[size][1][children][]" id="size_arr" multiple="multiple" class="multi_size">
                                                     <option value="">Select size</option>
                                                     @foreach($size as $val)
                                                       <option value="{{$val->id}}">{{$val->name}}</option>
@@ -133,7 +133,7 @@
                                                 <label for="type">Select type</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <select name="type_arr[]" id="type_arr" class="multi_type" multiple="multiple">
+                                                <select name="type_arr[type][1][children][]" id="type_arr" class="multi_type" multiple="multiple">
                                                     <option value="">Select type</option>
                                                     @foreach($size_type as $val)
                                                       <option value="{{$val->id}}">{{$val->name}}</option>
@@ -150,7 +150,7 @@
                                                 <label for="price">select price</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="number" id="price" name="price_arr[]">
+                                                <input type="number" id="price" name="price_arr[price][1][children][]">
                                                 <span class="validation-error price_arr_error"></span>
                                             </div>
                                         </div>
@@ -195,7 +195,7 @@
             allowClear: true
         });
 
-        var count = 0;
+        var count = 1;
 
         $("#add-more-attribute").on('click', function() {
             let sizeOptions = '<option value="">Select size</option>';
@@ -216,7 +216,7 @@
                     '<div class="row">' +
                         '<div class="col-md-3"><label for="size">Select size</label></div>' +
                         '<div class="col-md-6 last-row">' +
-                            '<select class="form-control append-size multi_size size-select" multiple name="size_arr[]">' + sizeOptions + '</select>' +
+                            '<select class="form-control append-size multi_size size-select" multiple name="size_arr[size]['+count+'][children][]">' + sizeOptions + '</select>' +
                             ' <span class="size_arr_error"></span>' +
                         '</div>' +
                     '</div>' +
@@ -225,7 +225,7 @@
                     '<div class="row">' +
                         '<div class="col-md-3"><label for="type">Select type</label></div>' +
                         '<div class="col-md-6">' +
-                            '<select class="form-control append-type multi_type type-select" multiple name="type_arr[]">' + typeOptions + '</select>' +
+                            '<select class="form-control append-type multi_type type-select" multiple name="type_arr[type]['+count+'][children][]">' + typeOptions + '</select>' +
                             ' <span class="type_arr_error"></span>' +
                         '</div>' +
                     '</div>' +
@@ -234,7 +234,7 @@
                     '<div class="row">' +
                         '<div class="col-md-3"><label for="price">Select price</label></div>' +
                         '<div class="col-md-6">' +
-                            '<input class="form-control price-input" name="price_arr[]" type="number">' +
+                            '<input class="form-control price-input" name="price_arr[price]['+count+'][children][]" type="number">' +
                             ' <span class="price_arr_error"></span>' +
                         '</div>' +
                     '</div>' +
@@ -335,10 +335,10 @@
                     }
                 });
 
-                if (hasDuplicates(size) && hasDuplicates(type)) {
-                    $('.last-row:last').prepend('<span class="new-span text-danger">You can not add duplicate entry for size and type</span>');
-                    return false;
-                }
+                // if (hasDuplicates(size) && hasDuplicates(type)) {
+                //     $('.last-row:last').prepend('<span class="new-span text-danger">You can not add duplicate entry for size and type</span>');
+                //     return false;
+                // }
 
                 $('#demo-form2').submit();
             }

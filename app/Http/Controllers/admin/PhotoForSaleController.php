@@ -92,6 +92,7 @@ class PhotoForSaleController extends Controller
 
     public function productSave(PhotoForSaleProductRequest $request)
     {
+        // dd($request->all());
         $slug = \Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->min_price,'slug'=>$slug];

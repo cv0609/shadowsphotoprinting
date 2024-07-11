@@ -15,6 +15,8 @@ use App\Models\State;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
+use App\Mail\MakeOrder;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -193,6 +195,14 @@ class PaymentController extends Controller
 
             CartData::where('cart_id',$cart->id)->delete();
             Cart::where('id', $cart->id)->delete();
+
+            
+            if(isset($order) && !empty($order)){
+                
+                $orderDetail = $order->whereId($order->id)->with('orderDetails','OrderBillingDetail')->first();
+
+                Mail::to('ashishyadav.avology@gmail.com')->send(new MakeOrder($orderDetail));
+            }
 
             Session::forget(['order_address', 'coupon']);
 
