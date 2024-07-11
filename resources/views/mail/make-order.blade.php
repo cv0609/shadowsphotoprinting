@@ -80,7 +80,6 @@
 
                 <tr>
 
-
                     @if($item->product_type == 'photo_for_sale')
 
                     <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{$product_detail->product_title ?? ''}}<br><strong style="color:#636363;">Size</strong>: {{$photo_product_desc->photo_for_sale_size  ?? ''}}<br><strong
@@ -92,12 +91,11 @@
                         style="color: #636363;">From</strong>: {{$giftcard_product_desc->from ?? ''}}<br>
                         <strong
                         style="color: #636363;">Message</strong>: {{$giftcard_product_desc->giftcard_msg ?? ''}}
-                    
                     </td>
 
                     @else
 
-                       {{ $item->product->product_title ?? ''}}
+                    <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $item->product->product_title ?? '' }}</td>
 
                     @endif
 
@@ -106,11 +104,11 @@
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">
                         
                         @if($item->product_type == "gift_card")
-                        {{ number_format($item->product_price, 2) }}
+                        {{ number_format($item->product_price, 2) ?? 0}}
                         @elseif($item->product_type == "photo_for_sale")
-                            {{ number_format($item->product_price, 2) }}
+                            {{ number_format($item->product_price, 2) ?? 0}}
                         @else
-                            {{ number_format($product_detail->product->product_price, 2) }}
+                            {{ number_format($item->product->product_price, 2) ?? 0 }}
                         @endif
                     
                     </td>
@@ -148,11 +146,21 @@
                             <tr>
                                 <td
                                     style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    developer dev <br>
-                                    test <br> 7 Edward Bennett Drive <br>gg
-                                    <br>Pendle Hill New South Wales 2145 <br>
-                                    <a href="mailto:devavology12@gmail.com"
-                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">devavology12@gmail.com</a>
+                                    {{$order->OrderBillingDetails['fname'] ?? ''}} <br>
+                                    {{$order->OrderBillingDetails['lname'] ?? ''}} <br> {{$order->OrderBillingDetails['street1'] ?? ''}} <br>{{$order->OrderBillingDetails['street2'] ?? ''}}
+                                    <br>{{$order->OrderBillingDetails['postcode'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['phone'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['suburb'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['state'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['company_name'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['country_region'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['order_comments'] ?? ''}}<br>
+                                    <br>
+                                    <a href="mailto:{{$order->OrderBillingDetails['email'] ?? ''}}" 
+                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">
+                                         {{$order->OrderBillingDetails['email'] ?? ''}}
+                                     </a>
+                                     
 
                                 </td>
                             </tr>
@@ -165,12 +173,13 @@
                             <tr>
                                 <td
                                     style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    developer dev <br>
-                                    test <br>
-                                    7 Edward Bennett Drive
-                                    <br>gg
-                                    <br>Pendle Hill New South Wales 2145
-
+                                    {{$order->OrderBillingDetails['ship_fname'] ?? ''}} <br>
+                                    {{$order->OrderBillingDetails['ship_lname'] ?? ''}} <br> {{$order->OrderBillingDetails['ship_company'] ?? ''}} <br>{{$order->OrderBillingDetails['ship_street1'] ?? ''}}
+                                    <br>{{$order->OrderBillingDetails['ship_street2'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['ship_suburb'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['ship_state'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['ship_postcode'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetails['ship_country_region'] ?? ''}}<br>
                                 </td>
                             </tr>
                         </table>
