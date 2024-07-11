@@ -172,6 +172,9 @@ class PaymentController extends Controller
                     'quantity' => $item->quantity,
                     'selected_images' => $item->product->product_image,
                     'price' => $item->quantity * $item->product->product_price,
+                    'product_type' => $item->product_type ?? null,
+                    'product_desc' => $item->product_desc,
+                    'product_price' => $item->product_price,
                 ]);
             }
 
