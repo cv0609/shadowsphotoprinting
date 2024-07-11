@@ -192,51 +192,54 @@
 
               </div>
               <div class="col-md-6">
-                <div class="order-address-details" id="Shipping-address">
-                    <h4 class="mb-3">Shipping details</h4>
-                <ul class="m-0 list-unstyled">
-                <li>
-                  <h6>First name </h6>
-                  <p>Webz </p>
-                </li>
-                <li>
-                  <h6>Last name</h6>
-                  <p>Poland</p>
-                </li>
-                <li>
-                  <h6>Company name (optional)</h6>
-                  <p>avology</p>
-                </li>
-                <li>
-                  <h6>Country / Region</h6>
-                  <p>india</p>
-                </li>
-                <li>
-                  <h6>Street address</h6>
-                  <p>Madalinskiego 871-101 Szczecin, Poland</p>
-                </li>
-                <li>
-                  <h6>Suburb</h6>
-                  <p></p>
-                </li>
-                <li>
-                  <h6>State</h6>
-                  <p>Punjab</p>
-                </li>
-                <li>
-                  <h6>Postcode</h6>
-                  <p>160796</p>
-                </li>
-                <li>
-                  <h6>Order notes (optional)</h6>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, ducimus.</p>
-                </li>
-              </ul>
-                </div>
+                @if($orderDetail->isShippingAddress)
+                    <div class="order-address-details" id="Shipping-address">
+                        <h4 class="mb-3">Shipping details</h4>
+                        <ul class="m-0 list-unstyled">
+                            <li>
+                            <h6>First name </h6>
+                            <p>{{Str::ucfirst($orderDetail->OrderBillingDetail['ship_fname'])}} </p>
+                            </li>
+                            <li>
+                            <h6>Last name</h6>
+                            <p>{{Str::ucfirst($orderDetail->OrderBillingDetail['ship_lname'])}}</p>
+                            </li>
+                            <li>
+                            <h6>Company name</h6>
+                            <p>{{Str::ucfirst($orderDetail->OrderBillingDetail['ship_company'])}}</p>
+                            </li>
+                            <li>
+                            <h6>Country / Region</h6>
+                            <p>{{Str::ucfirst($orderDetail->OrderBillingDetail['ship_country_region'])}}</p>
+                            </li>
+                            <li>
+                            <h6>Street address</h6>
+                            <p>{{$orderDetail->OrderBillingDetail['ship_street1'].','.$orderDetail->OrderBillingDetail['ship_street2']}}</p>
+                            </li>
+                            <li>
+                            <h6>Suburb</h6>
+                            <p>{{Str::ucfirst($orderDetail->OrderBillingDetail['ship_suburb'])}}</p>
+                            </li>
+                            <li>
+                            <h6>State</h6>
+                            <p>{{Str::ucfirst($orderDetail->OrderBillingDetail['ship_state'])}}</p>
+                            </li>
+                            <li>
+                            <h6>Postcode</h6>
+                            <p>{{$orderDetail->OrderBillingDetail['ship_state']}}</p>
+                            </li>
+                            <li>
+                            <h6>Order notes</h6>
+                            <p>{{$orderDetail->OrderBillingDetail['order_comments']}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                @else
                 <div class="diffrent-address">
                   <h4 class="mb-3">Shipping details</h4>
                   <p>The shipping address is the same as the billing address.</p>
                 </div>
+                @endif
               </div>
             </div>
           </div>
