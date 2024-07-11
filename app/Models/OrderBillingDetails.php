@@ -34,7 +34,9 @@ class OrderBillingDetails extends Model
         'ship_state',
         'ship_postcode',
         'order_comments',
-        'order_id'
+        'order_id',
+        'isShippingAddress',
+        'ship_country_region'
     ];
 
 

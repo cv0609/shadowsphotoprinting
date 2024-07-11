@@ -120,7 +120,7 @@
                                             <p class="form-row">
                                                 <label>Country / Region *
                                                 </label>
-                                                <span> <strong>Australia </strong></span>
+                                                <span> <strong>{{ config('constant.default_country') }}</strong></span>
                                             </p>
                                             <p class="form-row">
                                                 <label> Street address *
@@ -350,6 +350,8 @@
 
         $('.error-message').remove();
 
+        var isShippingAddress = false;
+
         var fname = $('#fname').val();
         var lname = $('#lname').val();
         var street1 = $('#street1').val();
@@ -374,6 +376,7 @@
             var ship_state = $('#ship_state').val();
             var ship_postcode = $('#ship_postcode').val();
             var order_comments = $('#order_comments').val();
+            isShippingAddress = true;
         }
 
 
@@ -437,6 +440,7 @@
                     formData.ship_state = ship_state;
                     formData.ship_postcode = ship_postcode;
                     formData.order_comments = order_comments;
+                    formData.isShippingAddress = isShippingAddress;
                 }
 
 

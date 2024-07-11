@@ -72,6 +72,7 @@ class PaymentController extends Controller
         $ship_suburb = $request->input('ship_suburb');
         $ship_state = $request->input('ship_state');
         $ship_postcode = $request->input('ship_postcode');
+        $isShippingAddress = $request->input('isShippingAddress');
         $order_comments = $request->input('order_comments');
 
         $state_name = State::whereId($state)->select('name')->first();
@@ -105,6 +106,8 @@ class PaymentController extends Controller
                 'ship_suburb' => $ship_suburb,
                 'ship_state' => $ship_state_name->name ?? '',
                 'ship_postcode' => $ship_postcode,
+                'isShippingAddress' => isset($isShippingAddress) && ($isShippingAddress == true) ? $isShippingAddress : false,
+                'ship_country_region' => config('constant.default_country'),
                 'order_comments' => $order_comments
             ];
         }
