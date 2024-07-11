@@ -24,7 +24,7 @@
           <thead>
             <tr>
               <th class="center">#</th>
-              <th>Item</th>
+              <th>Product</th>
               <th class="right">Unit Cost</th>
               <th class="center">Qty</th>
               <th class="right">Total</th>
