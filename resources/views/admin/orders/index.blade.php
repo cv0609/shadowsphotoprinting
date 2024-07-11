@@ -11,10 +11,30 @@
       <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
     @endif
       <div class="">
-        <div class="page-title">
-          <div class="title_left">
+        <div class="page-title order-range-list">
+          <div class="title_left order-list-range">
             <h3>Orders</h3>
           </div>
+
+          <div class="date-range-picker">
+            <div class="date-range-wrapper">
+                <input type="text" name="datetimes" />
+            </div>
+
+            <div class="serach-bar-range">
+                <input type="search" name="search" id="serach-bar-range" placeholder="search by order number">
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
 
           {{-- <div class="title_right">
             <div class="col-md-5 col-sm-5   form-group pull-right top_search">
@@ -67,4 +87,18 @@
         </div>
       </div>
     </div>
+@endsection
+@section('custom-script')
+<script>
+  $(function () {
+      $('input[name="datetimes"]').daterangepicker({
+          timePicker: false,
+          startDate: moment().startOf('hour'),
+          endDate: moment().startOf('hour').add(32, 'hour'),
+          locale: {
+              format: 'M/DD hh:mm A'
+          }
+      });
+  });
+</script>
 @endsection
