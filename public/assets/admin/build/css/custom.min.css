@@ -89,40 +89,45 @@
     text-align: center;
 }
 
-.size-and-type button.close-button {
-right: 22%;
-transform: translateX(-50%);
-top: 11px;
-}
-.added-section {
-border-top: 1px solid #e5e5e5;
-padding-top: 18px;
+/*  */
+.order-range-list {
+    height: auto;
 }
 
-.validator {
-    border-color: red !important;
+.order-list-range {
+    width: 100% !important;
+    float: none !important;
 }
-
-
-.order-address-details ul li {
+.date-range-picker {
     display: flex;
     justify-content: space-between;
-  }
+    align-items: center;
+    width: 100%;
 
-  div#Shipping-address {
-    display: none;
-    }
-    .diffrent-address {
-    height: 100%;
-    position: relative;
-    min-height: 400px;
-    }
-    .diffrent-address p {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 22px;
-    width: 300px;
-    text-align: center;
-    }
+}
+.date-range-wrapper,
+.serach-bar-range{
+    width: 50%;
+}.serach-bar-range{
+    text-align: right;
+}
+.date-range-wrapper input {
+    padding: 7px 13px;
+    color: #73879c;
+    font-size: 14px;
+    border: 1px solid #73879c;
+    width: 100%;
+    max-width: 300px;
+
+
+}
+
+.serach-bar-range input {
+    padding: 7px 10px ;
+    color: #73879c;
+    font-size: 14px;
+    border: 1px solid #73879c;
+    text-transform: capitalize;
+    width: 100%;
+    max-width: 300px;
+}
