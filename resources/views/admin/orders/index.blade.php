@@ -20,12 +20,12 @@
             <div class="date-range-wrapper">
                 <input type="text" name="datetimes" />
             </div>
-    
+
             <div class="serach-bar-range">
                 <input type="search" name="search" id="serach-bar-range" placeholder="search by order number">
             </div>
-    
-    
+
+
         </div>
 
 
@@ -92,7 +92,7 @@
 <script>
   $(function () {
       $('input[name="datetimes"]').daterangepicker({
-          timePicker: true,
+          timePicker: false,
           startDate: moment().startOf('hour'),
           endDate: moment().startOf('hour').add(32, 'hour'),
           locale: {
