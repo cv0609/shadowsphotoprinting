@@ -17,6 +17,6 @@ class OrderController extends Controller
     public function orderDetail($orderNumber)
     {
       $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','OrderBillingDetail')->first();
-
+      return view('admin.orders.order_details',compact('orderDetail'));
     }
 }

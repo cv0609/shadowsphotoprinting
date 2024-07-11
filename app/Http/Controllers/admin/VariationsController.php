@@ -70,7 +70,7 @@ class VariationsController extends Controller
     public function editSizeType($id){
       $sizeTypes = SizeType::whereId($id)->first();
       return view('admin.variations.size_type.edit',compact('sizeTypes'));
-    }  
+    }
 
     public function editSizeTypeSave(Request $request){
       SizeType::where('id', $request->edit_size_type_id)->update(['name' => $request->name]);
