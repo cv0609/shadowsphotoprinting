@@ -24,7 +24,7 @@ class OrderController extends Controller
     public function orderDetail($orderNumber)
     {
       $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','OrderBillingDetail')->first();
-      dd($orderDetail->OrderBillingDetail);
+      //dd($orderDetail->OrderBillingDetail);
       $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
       return view('admin.orders.order_details',compact('orderDetail','OrderTotal'));
     }
