@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\Coupon;
 use App\Models\Product;
@@ -65,7 +66,7 @@ class CartService
         // Calculate the total after applying the discount
         $totalAfterDiscount = $subtotal - $discount;
         $shipping = $this->getShippingCharge();
-       
+
         if($shipping->status == "1" && Session::has('billing_details')){
             $shippingCharge = $shipping->amount; // Example shipping charge
         }
@@ -107,8 +108,64 @@ class CartService
         return $shipping;
      }
 
-     public function getCartCount()
+     public function getOrderTotal($OrderNumber)
      {
+
+        $order = Order::where(["order_number"=>$OrderNumber])->with('orderDetails.product')->first();
+         $data = [];
+
+         if (!$order) {
+             return 0;
+         }
+
+
+         $subtotal = $order->orderDetails->reduce(function ($carry, $item) {
+
+             if($item->product_type == 'gift_card'){
+                 $product_price = $item->product_price;
+             }else if($item->product_type == 'photo_for_sale'){
+                 $product_price = $item->product_price;
+             }else{
+                 $product_price = $item->product->product_price;
+             }
+             return $carry + ($product_price * $item->quantity);
+         }, 0);
+
+         $couponCode = $order->coupon_code;
+         $discount = 0;
+         $coupon_code = "";
+         $coupon_id = "";
+         if ($couponCode) {
+             $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
+             $coupon_code = $couponCode;
+             if ($coupon) {
+                 if ($coupon->type == '1') {
+                     $discount = ($subtotal * $coupon->amount) / 100;
+                 } elseif ($coupon->type == '0') {
+                     $discount = $coupon->amount;
+                 }
+                 // Ensure the discount does not exceed the total
+                 $discount = min($discount, $subtotal);
+                 $coupon_id = $coupon->id;
+             }
+         }
+
+         // Calculate the total after applying the discount
+         $totalAfterDiscount = $subtotal - $discount;
+         $shipping = $this->getShippingCharge();
+
+         if($shipping->status == "1" && isset($order->shipping_charge) && !empty($order->shipping_charge)){
+             $shippingCharge = $order->shipping_charge; // Example shipping charge
+         }
+         else
+          {
+             $shippingCharge = 0;
+          }
+
+         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
+         $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
+         return $data;
+
 
      }
 

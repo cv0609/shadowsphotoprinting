@@ -5,9 +5,16 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Services\CartService;
 
 class OrderController extends Controller
 {
+    protected $CartService;
+    public function __construct(CartService $CartService)
+    {
+        $this->CartService = $CartService;
+    }
+
     public function index()
     {
         $orders = Order::get();
@@ -17,6 +24,7 @@ class OrderController extends Controller
     public function orderDetail($orderNumber)
     {
       $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','OrderBillingDetail')->first();
-      return view('admin.orders.order_details',compact('orderDetail'));
+      $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
+      return view('admin.orders.order_details',compact('orderDetail','OrderTotal'));
     }
 }

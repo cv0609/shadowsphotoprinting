@@ -75,13 +75,25 @@
                 <span class="">
                     <bdi>
                         <span>$</span>
-
+                        @if($item->product_type == "gift_card")
+                        {{ number_format($item->product_price, 2) }}
+                    @elseif($item->product_type == "photo_for_sale")
+                        {{ number_format($item->product_price, 2) }}
+                    @else
+                        {{ number_format($product_detail->product_price, 2) }}
+                    @endif
                     </bdi>
                 </span>
             </td>
 
-              <td class="center">1</td>
-              <td class="right">$999,00</td>
+              <td class="center">{{ $item->quantity }}</td>
+              <td class="right">$  @if($item->product_type == "gift_card")
+                {{ number_format($item->quantity * $item->product_price, 2) }}
+            @elseif($item->product_type == "photo_for_sale")
+                {{ number_format($item->quantity * $item->product_price, 2) }}
+            @else
+                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+            @endif</td>
             </tr>
             @endforeach
           </tbody>
@@ -97,26 +109,29 @@
                 <td>
                   <strong>Subtotal</strong>
                 </td>
-                <td class="right">$8.497,00</td>
+                <td class="right">${{ number_format($OrderTotal['subtotal'],2) }}</td>
               </tr>
+              @if(Session::has('coupon'))
               <tr>
                 <td>
-                  <strong>Discount (20%)</strong>
+                  <strong>Coupon ({{ $OrderTotal['coupon_code']['code'] }})</strong>
                 </td>
-                <td class="right">$1,699,40</td>
+                <td class="right">${{ number_format($OrderTotal['coupon_code']['discount_amount'],2) }}</td>
               </tr>
+              @endif
+
               <tr>
                 <td>
-                  <strong>VAT (10%)</strong>
+                  <strong>Shipping Charges</strong>
                 </td>
-                <td class="right">$679,76</td>
+                <td class="right">${{ number_format($OrderTotal['shippingCharge'],2) }}</td>
               </tr>
               <tr>
                 <td>
                   <strong>Total</strong>
                 </td>
                 <td class="right">
-                  <strong>$7.477,36</strong>
+                  <strong>${{ number_format($OrderTotal['total'],2) }}</strong>
                 </td>
               </tr>
             </tbody>
