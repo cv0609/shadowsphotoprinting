@@ -15,18 +15,7 @@
       <div class="col-md-12">
           <div class="x_panel">
       <div class="x_title">
-        <h2>Shipping Details <small>basic table subtitle</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Settings 1</a>
-              <a class="dropdown-item" href="#">Settings 2</a>
-            </div>
-          </li>
-          <li><a class="close-link"><i class="fa fa-close"></i></a></li>
-        </ul>
+        <h2>Order Details</h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
@@ -102,6 +91,7 @@
       <div class="row">
         <div class="col-lg-4 col-sm-5">
         </div>
+        <div class="col-lg-4 col-sm-5"></div>
         <div class="col-lg-4 col-sm-5 ml-auto">
           <table class="table table-clear">
             <tbody>
@@ -151,15 +141,15 @@
                 <ul class="m-0 list-unstyled">
                 <li>
                   <h6>First name </h6>
-                  <p>Webz </p>
+                  <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['fname']) }}</p>
                 </li>
                 <li>
                   <h6>Last name</h6>
-                  <p>Poland</p>
+                  <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['lname']) }}</p>
                 </li>
                 <li>
-                  <h6>Company name (optional)</h6>
-                  <p>avology</p>
+                  <h6>Company name</h6>
+                  <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['lname']) }}</p>
                 </li>
                 <li>
                   <h6>Country / Region</h6>
@@ -245,7 +235,7 @@
                 </div>
                 <div class="diffrent-address">
                   <h4 class="mb-3">Shipping details</h4>
-                  <p>Ship to a different address?</p>
+                  <p>The shipping address is the same as the billing address.</p>
                 </div>
               </div>
             </div>
