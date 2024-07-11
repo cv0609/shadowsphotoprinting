@@ -153,39 +153,39 @@
                 </li>
                 <li>
                   <h6>Country / Region</h6>
-                  <p>india</p>
+                  <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['lname']) }}</p>
                 </li>
                 <li>
                   <h6>Street address</h6>
-                  <p>Madalinskiego 871-101 Szczecin, Poland</p>
+                  <p>{{ $orderDetail->OrderBillingDetail['street1'].','.$orderDetail->OrderBillingDetail['street2'] }}</p>
                 </li>
                 <li>
                   <h6>Suburb</h6>
-                  <p></p>
+                  <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['suburb']) }}</p>
                 </li>
                 <li>
                   <h6>State</h6>
-                  <p>Punjab</p>
+                  <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['state']) }}</p>
                 </li>
                 <li>
                   <h6>Postcode</h6>
-                  <p>160796</p>
+                  <p>{{ $orderDetail->OrderBillingDetail['postcode'] }}</p>
                 </li>
                 <li>
-                  <h6>Phone (optional)</h6>
-                  <p>8558879462</p>
+                  <h6>Phone</h6>
+                  <p>{{ $orderDetail->OrderBillingDetail['phone'] }}</p>
                 </li>
                 <li>
                   <h6>Email address</h6>
-                  <p>test123@gmail.com</p>
+                  <p>{{ $orderDetail->OrderBillingDetail['email'] }}</p>
                 </li>
                 <li>
                   <h6>Account username</h6>
-                  <p>tesing</p>
+                  <p>{{ $orderDetail->OrderBillingDetail['username'] }}</p>
                 </li>
                 <li>
-                  <h6>Create account password</h6>
-                  <p>********</p>
+                  <h6>Account password</h6>
+                  <p>{{ $orderDetail->OrderBillingDetail['password'] }}</p>
                 </li>
               </ul>
                 </div>
