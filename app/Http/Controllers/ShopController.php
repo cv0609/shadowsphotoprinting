@@ -46,10 +46,10 @@ class ShopController extends Controller
   public function shopDetail($category_slug = null)
   {
 
-       $orderDetail = Order::whereId(36)->with('orderDetails.product','OrderBillingDetail')->first();
-      // $orderDetail['domain']='http://127.0.0.1:8000';
+      //  $order = Order::whereId(36)->with('orderDetails.product','OrderBillingDetail')->first();
+      // // $orderDetail['domain']='http://127.0.0.1:8000';
       
-      // // $orderDetail = $order->whereId($order->id)->with('orderDetails','OrderBillingDetail')->first();
+      // // // $orderDetail = $order->whereId($order->id)->with('orderDetails','OrderBillingDetail')->first();
 
       // return view('mail.make-order',compact('order'));
 

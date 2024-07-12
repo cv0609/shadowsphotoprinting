@@ -115,8 +115,6 @@ class PagesController extends Controller
       if(isset($data) && !empty($data)){
         Mail::to('ashishyadav.avology@gmail.com')->send(new QuoteMail($data));
       }
-
-      dd('success');
-      
+      return redirect()->back()->with('success', 'Quote message sent successfully.');
   }
 }

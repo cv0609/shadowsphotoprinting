@@ -21,7 +21,7 @@
             <tr style="background-color: #000; padding: 20px; text-align: center; color: #ffffff;">
                 <td style="padding: 10px;">
                     <a href="https://shadowsphotoprinting.com.au/" target="_blank">
-                        <img src="img/logo.png" alt="Shadows Photo Printing" style="max-width: 300px; width:100%;">
+                        <img src="{{ env('SITE_DOMAIN') }}{{asset('assets/images/logo.png')}}" alt="Shadows Photo Printing" style="max-width: 300px; width:100%;">
                     </a>
                 </td>
             </tr>

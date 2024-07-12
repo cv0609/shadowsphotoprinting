@@ -238,16 +238,18 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
         $('#selectall').click(function() {
-            $('.selected-images input[type="checkbox"]').each(function() {
+            $('input[name="selected-image[]"]').each(function() {
                 $(this).prop('checked', true);
-                $(this).nextAll('#unchecked-img').addClass('d-none');
-                $(this).nextAll('#checked-img').removeClass('d-none');
-            });
+                $(this).val("1");
+                $(this).siblings('#unchecked-img').addClass('d-none');
+                $(this).siblings('#checked-img').removeClass('d-none');
+            });;
         });
 
         $('#deselectall').click(function() {
             $('.selected-images input[type="checkbox"]').each(function() {
                 $(this).prop('checked', false);
+                $(this).val("0");
                 $(this).nextAll('#checked-img').addClass('d-none');
                 $(this).nextAll('#unchecked-img').removeClass('d-none');
             });

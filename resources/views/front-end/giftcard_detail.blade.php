@@ -163,6 +163,12 @@ $(document).ready(function() {
             $('#giftcard_msg_error').text('This field is required');
             isValid = false;
         }
+
+        if (giftcard_msg.length > 300) {
+            $('#giftcard_msg_error').text('Message must be 300 characters or less');
+            isValid = false;
+        }
+
         if (reciept_email == '') {
             $('#reciept_email_error').text('This field is required');
             isValid = false;

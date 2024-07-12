@@ -15,6 +15,12 @@
 
 <section class="get-quote">
     <div class="container">
+        @if(Session::has('success'))
+            <div class="coupon-wrapper">
+                <p class="text-center">{{Session::get('success')}}</p>
+            </div>
+        @endif
+
         <div class="get-quote-inner">
             <form id="submitForm" action="{{route('send-quote')}}" method="post">
                 @csrf
