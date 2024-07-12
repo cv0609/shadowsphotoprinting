@@ -93,6 +93,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/orders',[OrderController::class,'index'])->name('orders-list');
         Route::get('/order-detail/{order_number}',[OrderController::class,'orderDetail'])->name('order-detail');
+        Route::get('/search-orders', [OrderController::class, 'search'])->name('orders.search');
 
         Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
         Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
