@@ -46,14 +46,18 @@ class ShopController extends Controller
   public function shopDetail($category_slug = null)
   {
 
-      $orderDetail = Order::whereId(36)->with('orderDetails.product','OrderBillingDetail')->first();
-      $orderDetail['domain']='http://127.0.0.1:8000';
+       $order = Order::whereId(36)->with('orderDetails.product','OrderBillingDetail')->first();
+      // $orderDetail['domain']='http://127.0.0.1:8000';
       
-      // $orderDetail = $order->whereId($order->id)->with('orderDetails','OrderBillingDetail')->first();
+      // // $orderDetail = $order->whereId($order->id)->with('orderDetails','OrderBillingDetail')->first();
 
-      Mail::to('ashishyadav.avology@gmail.com')->send(new MakeOrder($orderDetail));
+      return view('mail.make-order',compact('order'));
 
-      dd('succes');
+      // $orderDetail
+
+      // Mail::to('ashishyadav.avology@gmail.com')->send(new MakeOrder($orderDetail));
+
+      // dd('succes');
 
     $imageName = Session::get('temImages'); 
     if(isset($category_slug) && $category_slug != null)

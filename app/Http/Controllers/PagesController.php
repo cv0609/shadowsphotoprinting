@@ -9,6 +9,8 @@ use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Services\PageDataService;
+use App\Mail\QuoteMail;
+use Illuminate\Support\Facades\Mail;
 
 class PagesController extends Controller
 {
@@ -100,7 +102,21 @@ class PagesController extends Controller
     return view('front-end/giftcard_detail',compact('blog_detail','related_products'));
   }
 
-  public function sendQuote(Request){
+  public function sendQuote(Request $request){
+      $email = $request->email;
 
+      $data['name'] = $request->name;
+      $data['last_name'] = $request->last_name;
+      $data['phone_number'] = $request->phone_number;
+      $data['requested'] = $request->requested;
+      $data['message'] = $request->message;
+      $data['email'] = $request->email;
+
+      if(isset($data) && !empty($data)){
+        Mail::to('ashishyadav.avology@gmail.com')->send(new QuoteMail($data));
+      }
+
+      dd('success');
+      
   }
 }
