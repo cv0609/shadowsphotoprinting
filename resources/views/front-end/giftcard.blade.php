@@ -123,28 +123,6 @@
                  $('.list-view').removeClass('active');
             })
 
-
-            // $('#giftcard-search').on('change', function() {
-            //     var search_val = $(this).val();
-            //     $.get("{{ route('giftcard-search') }}",
-            //     {
-            //         search_val: search_val,
-            //         "_token": "{{ csrf_token() }}"
-            //     },
-            //     function(res){
-            //         if(res.success === false)
-            //         {
-            //             $("#coupon_code").addClass('validator');
-            //             $(".coupon-errors").html(res.message);
-            //         }
-            //         else
-            //         {
-            //             // location.reload();
-            //             console.log('success');
-            //         }
-            //     });
-            // });
-
         })
     </script>
 @endsection
