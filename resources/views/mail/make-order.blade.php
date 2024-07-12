@@ -204,15 +204,21 @@
                 </tr>
             </table> --}}
 
-
             <table style="padding: 0 30px;" cellspacing="0" width="100%">
                 <tr>
-                    <td valign="top">
-                        <h2 style="color: #16a085;"> Billing address </h2>
-                        <table cellspacing="0" width="100%" style="width: 100%; height: 100%;">
+                    <td style="padding: 12px"> <h2 style="color: #16a085; margin:0;"> Billing address </h2></td>
+                    <td style="padding: 12px"><h2 style="color: #16a085; margin:0;">Shipping address </h2></td>
+                </tr>
+            </table>
+
+            <table style="padding: 0 30px;" cellspacing="12" width="100%">
+                <tr>
+                    <td  valign="top" style="width: 50%;  border: 1px solid #e5e5e5;">
+                       
+                        <table cellspacing="" width="100%" style="width: 100%; ">
                             <tr>
                                 <td  valign="top" id="billing-cell"
-                                    style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
+                                    style=" padding: 12px; font-style: italic;  color: #8f8f8f; text-align: left; line-height: 26px;">
                                     {{$order->OrderBillingDetail->fname ?? ''}} <br>
                                     {{$order->OrderBillingDetail->lname ?? ''}} <br> {{$order->OrderBillingDetail->street1 ?? ''}} <br>{{$order->OrderBillingDetail->street2 ?? ''}}
                                     <br>{{$order->OrderBillingDetail->postcode ?? ''}}<br>
@@ -230,12 +236,12 @@
 
                         </table>
                     </td>
-                    <td valign="top">
-                        <h2 style="color: #16a085;">Shipping address </h2>
-                        <table cellspacing="0" width="100%" style="width: 100%; height: 100%;">
+                    <td valign="top" style="width: 50%; border: 1px solid #e5e5e5;">
+                        {{-- <h2 style="color: #16a085;">Shipping address </h2> --}}
+                        <table cellspacing="0" width="100%" style="width: 100%; ">
                             <tr>
                                 <td  valign="top" id="shipping-cell"
-                                    style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
+                                    style=" padding: 12px; font-style: italic;    color: #8f8f8f; text-align: left; line-height: 26px;">
                                     {{$order->OrderBillingDetail->ship_fname ?? ''}} <br>
                                     {{$order->OrderBillingDetail->ship_lname ?? ''}} <br> {{$order->OrderBillingDetail->ship_company ?? ''}} <br>{{$order->OrderBillingDetail->ship_street1 ?? ''}}
                                     <br>{{$order->OrderBillingDetail->ship_street2 ?? ''}}<br>
@@ -264,22 +270,25 @@
 
         </table>
     </div>
+
+
+    <script>
+        // JavaScript to ensure both cells have the same height
+        window.onload = function () {
+            var billingCell = document.getElementById('billing-cell');
+            var shippingCell = document.getElementById('shipping-cell');
+    
+            var billingHeight = billingCell.offsetHeight;
+            var shippingHeight = shippingCell.offsetHeight;
+    
+            var maxHeight = Math.max(billingHeight, shippingHeight);
+    
+            billingCell.style.height = maxHeight + 'px';
+            shippingCell.style.height = maxHeight + 'px';
+        };
+    </script>
+
 </body>
 
 </html>
 
-<script>
-    // JavaScript to ensure both cells have the same height
-    window.onload = function () {
-        var billingCell = document.getElementById('billing-cell');
-        var shippingCell = document.getElementById('shipping-cell');
-
-        var billingHeight = billingCell.offsetHeight;
-        var shippingHeight = shippingCell.offsetHeight;
-
-        var maxHeight = Math.max(billingHeight, shippingHeight);
-
-        billingCell.style.height = maxHeight + 'px';
-        shippingCell.style.height = maxHeight + 'px';
-    };
-</script>
