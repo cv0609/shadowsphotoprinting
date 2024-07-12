@@ -11,6 +11,7 @@ use App\Models\PhotoForSaleProduct;
 use App\Services\PageDataService;
 use App\Mail\QuoteMail;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\Expr\FuncCall;
 
 class PagesController extends Controller
 {
@@ -113,8 +114,12 @@ class PagesController extends Controller
       $data['email'] = $request->email;
 
       if(isset($data) && !empty($data)){
-        Mail::to('ashishyadav.avology@gmail.com')->send(new QuoteMail($data));
+        Mail::to(env('APP_MAIL'))->send(new QuoteMail($data));
       }
       return redirect()->back()->with('success', 'Quote message sent successfully.');
   }
+
+  // public function giftcardSearch(Request $request){
+  //    dd($request->all());
+  // }
 }

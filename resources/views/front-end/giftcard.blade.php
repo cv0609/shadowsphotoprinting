@@ -24,7 +24,7 @@
                 </div>
                 <div class="kad-woo-ordering">
                     <form method="get">
-                        <select name="orderby" class="orderby" aria-label="Shop order">
+                        <select name="orderby giftcard-search" class="orderby" aria-label="Shop order">
                             <option value="menu_order" selected="selected">Default sorting</option>
                             <option value="popularity">Sort by popularity</option>
                             <option value="date">Sort by latest</option>
@@ -38,7 +38,7 @@
                     <span class="list-view"><i class="fa fa-bars" aria-hidden="true"></i> </span>
                 </div>
             </div>
-            <ul class="isotope-intrinsic">
+            <ul class="isotope-intrinsic grid-view-section">
               @foreach ($blogs as $blog)
               <li class="type-product">
                 <div class="clearfix ">
@@ -64,6 +64,35 @@
         </div>
     </div>
 </section>
+
+<section class="product_item-clearfix d-none list-view-section">
+    <div class="container">
+        <div class="product_item-clearfix-inner">
+            <div class="row">
+                @foreach ($blogs as $blog)
+                <div class="col-lg-6">
+                    <div class="instock-oant">
+                        <div class="instock-udik">
+                            <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
+                                <img
+                                    src="{{ asset($blog['image']) }}">
+                            </a>
+                        </div>
+
+                        <div class="details_product-crlf">
+                            <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
+                                <h3>{{ $blog->name }}</h3>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
 @endsection
 @section('scripts')
     <script>
@@ -75,5 +104,47 @@
             fade: true,
             cssEase: 'linear'
         });
+
+
+        $(document).ready(function(){
+
+
+            $('.list-view').on('click',function(){
+                 $('.list-view-section').removeClass('d-none');
+                 $('.grid-view-section').addClass('d-none');
+                 $(this).addClass('active');
+                 $('.grid-view').removeClass('active');
+            })
+
+            $('.grid-view').on('click',function(){
+                 $('.grid-view-section').removeClass('d-none');
+                 $('.list-view-section').addClass('d-none');
+                 $(this).addClass('active');
+                 $('.list-view').removeClass('active');
+            })
+
+
+            // $('#giftcard-search').on('change', function() {
+            //     var search_val = $(this).val();
+            //     $.get("{{ route('giftcard-search') }}",
+            //     {
+            //         search_val: search_val,
+            //         "_token": "{{ csrf_token() }}"
+            //     },
+            //     function(res){
+            //         if(res.success === false)
+            //         {
+            //             $("#coupon_code").addClass('validator');
+            //             $(".coupon-errors").html(res.message);
+            //         }
+            //         else
+            //         {
+            //             // location.reload();
+            //             console.log('success');
+            //         }
+            //     });
+            // });
+
+        })
     </script>
 @endsection

@@ -1379,6 +1379,12 @@ span.grid-view.active {
     color: #fff;
 }
 
+span.list-view.active {
+    background: #16a085;
+    border-color: #16a085;
+    color: #fff;
+}
+
 .product-toggleouter span:hover {
     border: 2px solid #0d6c5a;
 }
