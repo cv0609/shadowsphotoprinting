@@ -49,13 +49,13 @@ class ShopController extends Controller
     $imageName = Session::get('temImages'); 
     if(isset($category_slug) && $category_slug != null)
     {
-      $productCategories = ProductCategory::get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     }
     else
     {
-      $productCategories = ProductCategory::get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     }
-    $productCategories = ProductCategory::get();
+    $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     $products = Product::select(['id','product_title','product_price'])->get();
     return view('front-end/shop_detail', compact('imageName','products','productCategories'));
   }  

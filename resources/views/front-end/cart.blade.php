@@ -36,7 +36,7 @@
                             <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); ?>
                                 <tr>
                                 <td class="product-remove">
-                                    <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
+                                    <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                 </td>
                                 <td class="product-thumbnail">
                                     <a href="#">

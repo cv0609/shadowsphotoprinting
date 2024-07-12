@@ -174,7 +174,7 @@ class CartController extends Controller
 
         if ($cart) {
             $CartData = CartData::where('cart_id', $cart->id)
-                                ->where('product_id', $product_id)
+                                ->where('id', $product_id)
                                 ->delete();
         }
         return redirect()->route('cart')->with('success','Item removed from cart');
