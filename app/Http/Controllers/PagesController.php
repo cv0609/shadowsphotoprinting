@@ -99,4 +99,8 @@ class PagesController extends Controller
     $related_products =  GiftCardCategory::where("slug","!=",$slug)->get();
     return view('front-end/giftcard_detail',compact('blog_detail','related_products'));
   }
+
+  public function sendQuote(Request){
+
+  }
 }

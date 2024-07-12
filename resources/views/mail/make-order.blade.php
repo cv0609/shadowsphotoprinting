@@ -19,7 +19,7 @@
         <table width="100%" cellspacing="0">
             <tr style="background-color: #000; padding: 20px; text-align: center; color: #ffffff;">
                 <td style="padding: 10px;">
-                    <a href="https://shadowsphotoprinting.com.au/" target="_blank"> <img src="{{asset('assets/images/logo.png')}}" alt="Shadows Photo Printing"
+                    <a href="https://shadowsphotoprinting.com.au/" target="_blank"> <img src="{{ env('SITE_DOMAIN') }}{{asset('assets/images/logo.png')}}" alt="Shadows Photo Printing"
                             style="max-width: 300px; width:100%;">
                     </a>
                 </td>
@@ -138,7 +138,7 @@
                     <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">${{number_format($order->total,2)}}</td>
                 </tr>
             </table>
-            <table style="padding: 0 30px;" cellspacing="0" width="100%">
+            {{-- <table style="padding: 0 30px;" cellspacing="0" width="100%">
                 <tr>
                     <td valign="top">
                         <h2 style="color: #16a085;"> Billing address </h2>
@@ -146,19 +146,19 @@
                             <tr>
                                 <td
                                     style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->OrderBillingDetails['fname'] ?? ''}} <br>
-                                    {{$order->OrderBillingDetails['lname'] ?? ''}} <br> {{$order->OrderBillingDetails['street1'] ?? ''}} <br>{{$order->OrderBillingDetails['street2'] ?? ''}}
-                                    <br>{{$order->OrderBillingDetails['postcode'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['phone'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['suburb'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['state'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['company_name'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['country_region'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['order_comments'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->fname ?? ''}} <br>
+                                    {{$order->OrderBillingDetail->lname ?? ''}} <br> {{$order->OrderBillingDetail->street1 ?? ''}} <br>{{$order->OrderBillingDetail->street2 ?? ''}}
+                                    <br>{{$order->OrderBillingDetail->postcode ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->phone ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->suburb ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->state ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->company_name ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->country_region ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->order_comments ?? ''}}<br>
                                     <br>
-                                    <a href="mailto:{{$order->OrderBillingDetails['email'] ?? ''}}" 
+                                    <a href="mailto:{{$order->OrderBillingDetail->email ?? ''}}" 
                                         style="color: #16a085; text-decoration: underline; font-weight: normal;">
-                                         {{$order->OrderBillingDetails['email'] ?? ''}}
+                                         {{$order->OrderBillingDetail->email ?? ''}}
                                      </a>
                                      
 
@@ -167,19 +167,82 @@
 
                         </table>
                     </td>
+
+                    @if($order->OrderBillingDetail->isShippingAddress == true)
+
                     <td valign="top">
                         <h2 style="color: #16a085;">Shipping address </h2>
                         <table>
                             <tr>
                                 <td
                                     style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->OrderBillingDetails['ship_fname'] ?? ''}} <br>
-                                    {{$order->OrderBillingDetails['ship_lname'] ?? ''}} <br> {{$order->OrderBillingDetails['ship_company'] ?? ''}} <br>{{$order->OrderBillingDetails['ship_street1'] ?? ''}}
-                                    <br>{{$order->OrderBillingDetails['ship_street2'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['ship_suburb'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['ship_state'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['ship_postcode'] ?? ''}}<br>
-                                    {{$order->OrderBillingDetails['ship_country_region'] ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_fname ?? ''}} <br>
+                                    {{$order->OrderBillingDetail->ship_lname ?? ''}} <br> {{$order->OrderBillingDetail->ship_company ?? ''}} <br>{{$order->OrderBillingDetail->ship_street1 ?? ''}}
+                                    <br>{{$order->OrderBillingDetail->ship_street2 ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_suburb ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_state ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_postcode ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_country_region ?? ''}}<br>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    @endif
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p style="font-size: 14px; color: #636363; margin-top: 40px; margin-bottom: 16px;">Thanks for
+                            using <a style="color: #15c;"
+                                href="https://shadowsphotoprinting.com.au/">shadowsphotoprinting.com.au!</a></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"
+                        style="color: #555; font-size: 12px; text-align: center; padding-bottom: 48px; padding-left: 48px; padding-top: 20px; padding-right: 48px;">
+                        Shadows Photo Printing </td>
+                </tr>
+            </table> --}}
+
+
+            <table style="padding: 0 30px;" cellspacing="0" width="100%">
+                <tr>
+                    <td valign="top">
+                        <h2 style="color: #16a085;"> Billing address </h2>
+                        <table cellspacing="0" width="100%">
+                            <tr>
+                                <td
+                                    style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
+                                    {{$order->OrderBillingDetail->fname ?? ''}} <br>
+                                    {{$order->OrderBillingDetail->lname ?? ''}} <br> {{$order->OrderBillingDetail->street1 ?? ''}} <br>{{$order->OrderBillingDetail->street2 ?? ''}}
+                                    <br>{{$order->OrderBillingDetail->postcode ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->phone ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->suburb ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->state ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->company_name ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->country_region ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->order_comments ?? ''}}<br>
+                                    <a href="mailto:{{$order->OrderBillingDetail->email ?? ''}}"
+                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">{{$order->OrderBillingDetail->email ?? ''}}</a>
+
+                                </td>
+                            </tr>
+
+                        </table>
+                    </td>
+                    <td valign="top">
+                        <h2 style="color: #16a085;">Shipping address </h2>
+                        <table cellspacing="0" width="100%">
+                            <tr>
+                                <td
+                                    style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
+                                    {{$order->OrderBillingDetail->ship_fname ?? ''}} <br>
+                                    {{$order->OrderBillingDetail->ship_lname ?? ''}} <br> {{$order->OrderBillingDetail->ship_company ?? ''}} <br>{{$order->OrderBillingDetail->ship_street1 ?? ''}}
+                                    <br>{{$order->OrderBillingDetail->ship_street2 ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_suburb ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_state ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_postcode ?? ''}}<br>
+                                    {{$order->OrderBillingDetail->ship_country_region ?? ''}}
                                 </td>
                             </tr>
                         </table>
