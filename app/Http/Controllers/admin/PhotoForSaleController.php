@@ -92,6 +92,7 @@ class PhotoForSaleController extends Controller
 
     public function productSave(PhotoForSaleProductRequest $request)
     {
+        // dd($request->all());
         $slug = \Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->min_price,'slug'=>$slug];
@@ -108,25 +109,29 @@ class PhotoForSaleController extends Controller
 
          $productId = PhotoForSaleProduct::insertGetId($data);
 
+        
          if(isset($request->type_arr) && isset($request->size_arr) && isset($request->price_arr)){
-            $typeArr = $request->type_arr;
-            $sizeArr = $request->size_arr;
-            $priceArr = $request->price_arr;
-        
-            $count = count($typeArr);
-        
-            for ($i = 0; $i < $count; $i++) {
-                $sizeId = $sizeArr[$i]; 
-                $typeId = $typeArr[$i]; 
-                $price = $priceArr[$i];
-        
-                $photoForSaleSizePrice = new PhotoForSaleSizePrices();
-                $photoForSaleSizePrice->size_id = $sizeId;
-                $photoForSaleSizePrice->type_id = $typeId;
-                $photoForSaleSizePrice->price = $price;
-                $photoForSaleSizePrice->product_id = $productId;
-                $photoForSaleSizePrice->save();
-            }
+            $type_arr = $request->type_arr;
+            $size_arr = $request->size_arr;
+            $price_arr = $request->price_arr;
+ 
+        //    foreach ($sizeArr as $size) {
+        //         foreach ($typeArr as $type) {
+        //             foreach ($priceArr as $price) {
+        //                $is_exist = PhotoForSaleSizePrices::where(['size_id' => $size,'type_id' => $type,'product_id' =>$productId])->count();
+        //                if($is_exist == 0)
+        //                  {}
+                         
+        //                     PhotoForSaleSizePrices::create([
+        //                         'size_id' => $size,
+        //                         'type_id' => $type,
+        //                         'price' => $price,
+        //                         'product_id' =>$productId
+        //                     ]);
+                      
+        //             }
+        //         }
+        //     }
         }
         return redirect()->route('photos-for-sale-product-list')->with('success','Product inserted successfully');
     }

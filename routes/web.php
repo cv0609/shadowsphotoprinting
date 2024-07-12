@@ -122,7 +122,7 @@ Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('s
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
-Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('checkout');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');

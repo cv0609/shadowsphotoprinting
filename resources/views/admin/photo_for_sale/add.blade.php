@@ -10,7 +10,7 @@
     </nav>
     <div class="">
         <div class="row">
-            <div class="col-md-12 col-sm-12 ">
+            <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Add Products</h2>
@@ -117,7 +117,7 @@
                                                 <label for="size">Select size</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <select name="size_arr[]" id="size_arr">
+                                                <select name="size_arr[size][1][children][]" id="size_arr" multiple="multiple" class="multi_size">
                                                     <option value="">Select size</option>
                                                     @foreach($size as $val)
                                                       <option value="{{$val->id}}">{{$val->name}}</option>
@@ -126,16 +126,14 @@
                                                 <span class="validation-error size_arr_error"></span>
                                             </div>
                                         </div>
-
-
                                     </div>
-                                    <div class="type" >
+                                    <div class="type">
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label for="type">Select type</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <select name="type_arr[]" id="type">
+                                                <select name="type_arr[type][1][children][]" id="type_arr" class="multi_type" multiple="multiple">
                                                     <option value="">Select type</option>
                                                     @foreach($size_type as $val)
                                                       <option value="{{$val->id}}">{{$val->name}}</option>
@@ -152,7 +150,7 @@
                                                 <label for="price">select price</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="number" id="price" name="price_arr[]">
+                                                <input type="number" id="price" name="price_arr[price][1][children][]">
                                                 <span class="validation-error price_arr_error"></span>
                                             </div>
                                         </div>
@@ -180,9 +178,9 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     CKEDITOR.replace('description');
-</script>
+</script> --}}
 
 @endsection
 @section('custom-script')
@@ -190,88 +188,195 @@
     var sizes = @json($size);
     var sizeTypes = @json($size_type);
 
-    $("#add-more-attribute").on('click', function() {
-        let sizeOptions = '<option value="">Select size</option>';
-        sizes.forEach(size => {
-            sizeOptions += `<option value="${size.id}">${size.name}</option>`;
+    $(document).ready(function() {
+
+        $('.multi_type, .multi_size').select2({
+            placeholder: 'Select type',
+            allowClear: true
         });
 
-        let typeOptions = '<option value="">Select type</option>';
-        sizeTypes.forEach(type => {
-            typeOptions += `<option value="${type.id}">${type.name}</option>`;
+        var count = 1;
+
+        $("#add-more-attribute").on('click', function() {
+            let sizeOptions = '<option value="">Select size</option>';
+            sizes.forEach(size => {
+                sizeOptions += `<option value="${size.id}">${size.name}</option>`;
+            });
+
+            let typeOptions = '<option value="">Select type</option>';
+            sizeTypes.forEach(type => {
+                typeOptions += `<option value="${type.id}">${type.name}</option>`;
+            });
+
+            count++;
+
+            let html = '<div class="added-section size-and-type">' +
+                '<button class="close-button" onclick="removeAddMore(this)" type="button">×</button>' +
+                '<div class="size">' +
+                    '<div class="row">' +
+                        '<div class="col-md-3"><label for="size">Select size</label></div>' +
+                        '<div class="col-md-6 last-row">' +
+                            '<select class="form-control append-size multi_size size-select" multiple name="size_arr[size]['+count+'][children][]">' + sizeOptions + '</select>' +
+                            ' <span class="size_arr_error"></span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="type">' +
+                    '<div class="row">' +
+                        '<div class="col-md-3"><label for="type">Select type</label></div>' +
+                        '<div class="col-md-6">' +
+                            '<select class="form-control append-type multi_type type-select" multiple name="type_arr[type]['+count+'][children][]">' + typeOptions + '</select>' +
+                            ' <span class="type_arr_error"></span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="select-price">' +
+                    '<div class="row">' +
+                        '<div class="col-md-3"><label for="price">Select price</label></div>' +
+                        '<div class="col-md-6">' +
+                            '<input class="form-control price-input" name="price_arr[price]['+count+'][children][]" type="number">' +
+                            ' <span class="price_arr_error"></span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+            $(".size-and-type-wrap").append(html);
+
+            $('.multi_type, .multi_size').select2({
+                placeholder: 'Select type',
+                allowClear: true
+            });
         });
 
-        $(".size-and-type-wrap").append('<div class=size-and-type><button class=close-button onclick=removeAddMore(this) type=button>×</button><div class=size><div class=row><div class=col-md-3><label for=size>Select size</label></div><div class=col-md-6><select class="form-control size-select"name=size_arr[]>'+sizeOptions+'</select> <span class=size_arr_error></span></div></div></div><div class=type><div class=row><div class=col-md-3><label for=type>Select type</label></div><div class=col-md-6><select class="form-control type-select"name=type_arr[]>'+typeOptions+'</select> <span class=type_arr_error></span></div></div></div><div class=select-price><div class=row><div class=col-md-3><label for=price>Select price</label></div><div class=col-md-6><input class="form-control price-input"name=price_arr[] type=number> <span class=price_arr_error></span></div></div></div></div>');
-    });
+        $('#submitBtn').on('click', function() {
 
-    $('#submitBtn').on('click',function(){
+            $(document).find('.text-danger').text('');    
 
             var error = false;
 
-            $('select[name="size_arr[]"]').each(function(i,v) {
+            $('select[name^="size_arr"]').each(function() {
                 if (!$(this).val()) {
-                    $('.size_arr_error').text('Size field is required.');
+                    $(this).siblings('.size_arr_error').text('Size field is required.');
+                    $(this).siblings('.size_arr_error').addClass('text-danger');
                     error = true;
                 }
             });
 
-            $('select[name="type_arr[]"]').each(function(i,v) {
+            $('select[name^="type_arr"]').each(function() {
                 if (!$(this).val()) {
-                    $('.type_arr_error').text('Type field is required.');
+                    $(this).siblings('.type_arr_error').text('Type field is required.');
+                    $(this).siblings('.type_arr_error').addClass('text-danger');
                     error = true;
                 }
             });
 
-            $('input[name="price_arr[]"]').each(function(i,v) {
+            $('input[name^="price_arr"]').each(function() {
                 if (!$(this).val()) {
-                    $('.price_arr_error').text('Price field is required.');
+                    $(this).siblings('.price_arr_error').text('Price field is required.');
+                    $(this).siblings('.price_arr_error').addClass('text-danger');
                     error = true;
                 }
             });
 
             if ($('#category_id').val() == '') {
                 $('.category_id_error').text('Category field is required.');
+                $('.category_id_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#product_title').val() == '') {
                 $('.product_title_error').text('Product title field is required.');
+                $('.product_title_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#min_price').val() == '') {
                 $('.min_price_error').text('Min price field is required.');
+                $('.min_price_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#max_price').val() == '') {
                 $('.max_price_error').text('Max price field is required.');
+                $('.max_price_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#product_image').val() == '') {
                 $('.product_image_error').text('Product image field is required.');
+                $('.product_image_error').addClass('text-danger');
                 error = true;
             }
 
             if ($('#product_description').val() == '') {
-                $('.product_description_error').text('Product descriptiion field is required.');
+                $('.product_description_error').text('Product description field is required.');
+                $('.product_description_error').addClass('text-danger');
                 error = true;
             }
 
-           if(error){
-              return false;
-           }else{
-             $('#demo-form2').submit();
-           }
+            if (error) {
+                return false;
+            } else {
 
-    })
+                var size = [];
+                $('select[name^="size_arr"]').each(function() {
+                    var selectedValues = $(this).val(); 
+                    if (selectedValues) {
+                        size = size.concat(selectedValues); 
+                    }
+                });
 
+                var type = [];
+                $('select[name^="type_arr"]').each(function() {
+                    var selectedValues = $(this).val(); 
+                    if (selectedValues) {
+                        type = type.concat(selectedValues); 
+                    }
+                });
 
+                // if (hasDuplicates(size) && hasDuplicates(type)) {
+                //     $('.last-row:last').prepend('<span class="new-span text-danger">You can not add duplicate entry for size and type</span>');
+                //     return false;
+                // }
 
- function removeAddMore(that)
-  {
-     $(that).parent(".size-and-type").remove();
-  }
+                $('#demo-form2').submit();
+            }
+        });
+    });
+
+    function hasDuplicates(array) {
+        for (let i = 0; i < array.length; i++) {
+            for (let j = i + 1; j < array.length; j++) {
+                if (array[i] === array[j]) {
+                    return true; 
+                }
+            }
+        }
+        return false; 
+    }
+
+    function hideSelectOption(){
+        var selectedValues = $("select[name='size_arr[]']").val();
+            if (selectedValues !== null) {
+                selectedValues.forEach(function(value) {
+                    $(".append-size option[value='" + value + "']").remove();
+                });
+            }
+
+            var sizeValues = $("select[name='type_arr[]']").val();
+            if (sizeValues !== null) {
+                sizeValues.forEach(function(value) {
+                    $(".append-size option[value='" + value + "']").remove();
+                });
+            }
+    }
+
+    function removeAddMore(that) {
+        $(that).closest(".added-section.size-and-type").remove();
+    }
+
+    
 </script>
 @endsection
+

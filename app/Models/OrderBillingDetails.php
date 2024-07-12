@@ -16,6 +16,8 @@ class OrderBillingDetails extends Model
         'street1',
         'street2',
         'state',
+        'company_name',
+        'country_region',
         'postcode',
         'phone',
         'suburb',
@@ -32,7 +34,9 @@ class OrderBillingDetails extends Model
         'ship_state',
         'ship_postcode',
         'order_comments',
-        'order_id'
+        'order_id',
+        'isShippingAddress',
+        'ship_country_region'
     ];
 
 
