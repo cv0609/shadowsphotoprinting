@@ -108,7 +108,6 @@
 
         $(document).ready(function(){
 
-
             $('.list-view').on('click',function(){
                  $('.list-view-section').removeClass('d-none');
                  $('.grid-view-section').addClass('d-none');

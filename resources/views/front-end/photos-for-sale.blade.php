@@ -52,7 +52,7 @@
                     <span class="list-view"><i class="fa fa-bars" aria-hidden="true"></i> </span>
                 </div>
             </div>
-            <ul class="isotope-intrinsic">
+            <ul class="isotope-intrinsic grid-view-section">
                 @foreach ($products as $product)
                     <li class="type-product">
                         <div class="clearfix kold">
@@ -62,7 +62,7 @@
                                   <div class="product-animation">
                                      @foreach (explode(',',$product->product_images) as $key => $product_image)
                                        <img src="{{ asset($product_image) }}" alt="">
-                                    @endforeach
+                                     @endforeach
                                  </div>
                                </div>
                             </a>
@@ -79,21 +79,44 @@
                     </li>
                 @endforeach
             </ul>
-            <div class="paginations">
-                {{ $products->links('pagination::bootstrap-4') }}
-                {{-- <ul class="page-numbers">
-                    <li> <a class="current">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">6</a></li>
-                    <li><a href="#"><i class="fa-solid fa-arrow-right"></i></a></li>
-                </ul> --}}
-            </div>
         </div>
     </div>
 </section>
+
+<section class="product_item-clearfix d-none list-view-section">
+    <div class="container">
+        <div class="product_item-clearfix-inner">
+            <div class="row">
+                @foreach ($products as $product)
+                <div class="col-lg-6">
+                    <div class="instock-oant">
+                        <div class="instock-udik">
+                            <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
+                                     @foreach (explode(',',$product->product_images) as $key => $product_image)
+                                       <img src="{{ asset($product_image) }}" alt="">
+                                     @endforeach
+                            </a>
+                        </div>
+
+                        <div class="details_product-crlf">
+                            <a href="#">
+                                <h3>{{ ucfirst($product->product_title) }}</h3>
+                                <span>${{ $product->min_price }} - ${{ $product->max_price }} incl. GST</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="paginations">
+    {{ $products->links('pagination::bootstrap-4') }}
+</div>
 
 @endsection
 @section('scripts')
@@ -106,6 +129,27 @@
             fade: true,
             cssEase: 'linear'
         });
+
+        $(document).ready(function(){
+            $('.list-view').on('click',function(){
+                $('.list-view-section').removeClass('d-none');
+                $('.grid-view-section').addClass('d-none');
+                $(this).addClass('active');
+                $('.grid-view').removeClass('active');
+                $('.paginations').addClass('d-none');
+            })
+
+            $('.grid-view').on('click',function(){
+                $('.grid-view-section').removeClass('d-none');
+                $('.list-view-section').addClass('d-none');
+                $(this).addClass('active');
+                $('.list-view').removeClass('active');
+                $('.paginations').removeClass('d-none');
+            })
+        })
+
+
+
     </script>
 
 @endsection

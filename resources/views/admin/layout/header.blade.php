@@ -8,7 +8,7 @@
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="{{ asset('assets/admin/images/img.jpg') }}" alt="">John Doe
+                  <img src="{{ asset('assets/admin/images/admin-logo.JFIF') }}" alt="">Admin
                 </a>
                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                   {{-- <a class="dropdown-item"  href="javascript:;"> Profile</a> --}}
@@ -30,10 +30,10 @@
               </li>
 
               <li role="presentation" class="nav-item dropdown open">
-                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                {{-- <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                   <i class="fa fa-envelope-o"></i>
                   <span class="badge bg-green">6</span>
-                </a>
+                </a> --}}
                 <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
                   <li class="nav-item">
                     <a class="dropdown-item">
