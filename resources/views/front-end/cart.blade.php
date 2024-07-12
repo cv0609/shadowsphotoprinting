@@ -36,7 +36,7 @@
                             <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); ?>
                                 <tr>
                                 <td class="product-remove">
-                                    <a href="{{ route('remove-from-cart',['product_id'=>$item->product_id]) }}" onclick="return confirm('Are you sure!')">×</a>
+                                    <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                 </td>
                                 <td class="product-thumbnail">
                                     <a href="#">
@@ -128,7 +128,7 @@
                                         <button type="button" class="button" id="apply_coupon">Apply coupon</button>
                                         <span class="text-danger coupon-errors"></span>
                                     </div>
-                                    <button type="button" class="button satay" name="update_cart"
+                                    <button type="button" class="button satay3" name="update_cart"
                                         value="Update cart" id="update_cart">Update cart</button>
                                 </td>
                             </tr>

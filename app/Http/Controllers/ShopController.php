@@ -11,6 +11,8 @@ use App\Models\OrderBillingDetails;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
+use App\Mail\MakeOrder;
+use Illuminate\Support\Facades\Mail;
 
 use Session;
 class ShopController extends Controller
@@ -44,33 +46,16 @@ class ShopController extends Controller
   public function shopDetail($category_slug = null)
   {
 
-    // $orderDetail = Order::whereId(40)->with('orderDetails.product','OrderBillingDetail')->first();
-
-    // foreach($orderDetail->orderDetails as $details){
-    //   if($details->product_type == 'photo_for_sale'){
-
-    //     echo $details->product_type;
-          
-    //   }elseif($details->product_type == 'gift_card'){
-    //     echo $details->product_type;
-    //   }else{
-    //      echo "no";
-    //   }
-    //   // $this->CartService->getProductDetailsByType($details->product_id,$details->product_type);
-    // }
-
-  
-
     $imageName = Session::get('temImages'); 
     if(isset($category_slug) && $category_slug != null)
     {
-      $productCategories = ProductCategory::get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     }
     else
     {
-      $productCategories = ProductCategory::get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     }
-    $productCategories = ProductCategory::get();
+    $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     $products = Product::select(['id','product_title','product_price'])->get();
     return view('front-end/shop_detail', compact('imageName','products','productCategories'));
   }  

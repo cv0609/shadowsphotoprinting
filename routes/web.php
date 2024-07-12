@@ -93,6 +93,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/orders',[OrderController::class,'index'])->name('orders-list');
         Route::get('/order-detail/{order_number}',[OrderController::class,'orderDetail'])->name('order-detail');
+        Route::get('/search-orders', [OrderController::class, 'search'])->name('orders.search');
 
         Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
         Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
@@ -111,6 +112,7 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
+Route::post('/send-quote',[BasePagesController::class,'sendQuote'])->name('send-quote');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
 Route::get('/our-products/photos-for-sale-details/{slug?}',[BasePagesController::class,'PhotosForSaleDetails'])->name('photos-for-sale-details');
 Route::get('/our-products/gift-card',[BasePagesController::class,'giftCard'])->name('gift-card');

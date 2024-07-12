@@ -199,9 +199,9 @@ class PaymentController extends Controller
             
             if(isset($order) && !empty($order)){
                 
-                $orderDetail = $order->whereId($order->id)->with('orderDetails','OrderBillingDetail')->first();
+                $orderDetail = $order->whereId($order->id)->with('orderDetails.product','OrderBillingDetail')->first();
 
-                Mail::to('ashishyadav.avology@gmail.com')->send(new MakeOrder($orderDetail));
+                Mail::to($order_address['email'])->send(new MakeOrder($orderDetail));
             }
 
             Session::forget(['order_address', 'coupon']);

@@ -184,17 +184,20 @@ $(document).ready(function() {
         let totalQuantity = 0;
 
         $("input[name=quantity]").each(function() {
-            let quantity = $(this).val();
+            var quantity = $(this).val();
+            var rowId = $(this).attr('id').split('-')[1];
+
+            var price = parseFloat($(this).data('price'));
+            var totalPrice = quantity * price;
+            total += totalPrice;
+            totalQuantity += quantity;
+
+            if(quantity == ''){
+                totalPrice=0;
+                $("#quantity-price-" + rowId).text('$' + totalPrice.toFixed(2));
+            }
+
             if (quantity !== '' && quantity > 0) {
-                quantity = parseFloat(quantity);
-                let price = parseFloat($(this).data('price'));
-                let totalPrice = quantity * price;
-                total += totalPrice;
-                totalQuantity += quantity;
-
-                // Update the total price for the individual product
-                let rowId = $(this).attr('id').split('-')[1];
-
                 $("#quantity-price-" + rowId).text('$' + totalPrice.toFixed(2));
             }
         });
@@ -238,16 +241,18 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
         $('#selectall').click(function() {
-            $('.selected-images input[type="checkbox"]').each(function() {
+            $('input[name="selected-image[]"]').each(function() {
                 $(this).prop('checked', true);
-                $(this).nextAll('#unchecked-img').addClass('d-none');
-                $(this).nextAll('#checked-img').removeClass('d-none');
-            });
+                $(this).val("1");
+                $(this).siblings('#unchecked-img').addClass('d-none');
+                $(this).siblings('#checked-img').removeClass('d-none');
+            });;
         });
 
         $('#deselectall').click(function() {
             $('.selected-images input[type="checkbox"]').each(function() {
                 $(this).prop('checked', false);
+                $(this).val("0");
                 $(this).nextAll('#checked-img').addClass('d-none');
                 $(this).nextAll('#unchecked-img').removeClass('d-none');
             });

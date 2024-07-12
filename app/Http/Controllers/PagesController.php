@@ -9,6 +9,9 @@ use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Services\PageDataService;
+use App\Mail\QuoteMail;
+use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\Expr\FuncCall;
 
 class PagesController extends Controller
 {
@@ -99,4 +102,24 @@ class PagesController extends Controller
     $related_products =  GiftCardCategory::where("slug","!=",$slug)->get();
     return view('front-end/giftcard_detail',compact('blog_detail','related_products'));
   }
+
+  public function sendQuote(Request $request){
+      $email = $request->email;
+
+      $data['name'] = $request->name;
+      $data['last_name'] = $request->last_name;
+      $data['phone_number'] = $request->phone_number;
+      $data['requested'] = $request->requested;
+      $data['message'] = $request->message;
+      $data['email'] = $request->email;
+
+      if(isset($data) && !empty($data)){
+        Mail::to(env('APP_MAIL'))->send(new QuoteMail($data));
+      }
+      return redirect()->back()->with('success', 'Quote message sent successfully.');
+  }
+
+  // public function giftcardSearch(Request $request){
+  //    dd($request->all());
+  // }
 }

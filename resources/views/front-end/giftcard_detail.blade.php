@@ -5,13 +5,11 @@
     <div class="adbreadcrumbs">
         <div class="container">
             <div class="breadcrumbs-wrapper">
-                <span><a href="index.html">Home</a></span>
+                <span><a href="{{url('home')}}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="order-prints.html">Order prints</a></span>
+                <span><a href="{{url('shop')}}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="order-prints.html">images</a></span>
-                <span class="bc-delimiter">»</span>
-                <span> GIFT CARD</span>
+                <span>Gift Card</span>
             </div>
         </div>
     </div>
@@ -67,7 +65,7 @@
                                             </div>
                                         </div>
                                         <span class="preview-email">
-                                            <a id="">PREVIEW</a>
+                                            <a id="giftcard-preview">PREVIEW</a>
                                         </span>
                                     </div>
                                 </div>
@@ -80,7 +78,7 @@
 
                             <div class="product_meta">
                                 <span class="posted_in">
-                                    Category: <a href="giftcard.html">Gift Card</a>
+                                    Category: <a href="{{route('gift-card')}}">Gift Card</a>
                                 </span>
                             </div>
 
@@ -125,6 +123,7 @@
         </div>
     </div>
 </section>
+
 @endsection
 
 
@@ -155,6 +154,12 @@ $(document).ready(function() {
             $('#card_price_error').text('This field is required');
             isValid = false;
         }
+
+        if (card_price <= 1) {
+            $('#card_price_error').text('Please enter minimum card price 1');
+            isValid = false;
+        }
+
         if (from == '') {
             $('#from_error').text('This field is required');
             isValid = false;
@@ -163,6 +168,12 @@ $(document).ready(function() {
             $('#giftcard_msg_error').text('This field is required');
             isValid = false;
         }
+
+        if (giftcard_msg.length > 300) {
+            $('#giftcard_msg_error').text('Message must be 300 characters or less');
+            isValid = false;
+        }
+
         if (reciept_email == '') {
             $('#reciept_email_error').text('This field is required');
             isValid = false;
@@ -219,17 +230,9 @@ $(document).ready(function() {
             alert('No items to add to cart!');
         }
     // });
-
-
-
-
-
-
-
-
-
         }
     });
+
 });
 
 </script>

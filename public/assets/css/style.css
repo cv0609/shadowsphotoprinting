@@ -1379,6 +1379,12 @@ span.grid-view.active {
     color: #fff;
 }
 
+span.list-view.active {
+    background: #16a085;
+    border-color: #16a085;
+    color: #fff;
+}
+
 .product-toggleouter span:hover {
     border: 2px solid #0d6c5a;
 }
@@ -4067,4 +4073,34 @@ section.sans-ser {
     font-size: 20px;
 }
 
+.instock-oant {
+    transform: translate3d(0, 0, 0);
+    background: #fff;
+    box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+    -webkit-transition: box-shadow .2s cubic-bezier(.17,.67,.35,.95);
+    display: flex;
+    margin-bottom: 30px;
+}
+.instock-udik img {
+    max-width: 141px;
+}
 
+.details_product-crlf h3 {
+    font-family: "Source Sans Pro";
+    text-transform: none;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+    font-style: normal;
+    color: #444444;
+    font-size: 22px;
+    line-height: 1.2;
+}
+.instock-udik a {
+    margin-right: 1%;
+    display: block;
+}
+.details_product-crlf a {
+    display: block;
+    padding-top: 20px;
+    padding-left: 10px;
+}
