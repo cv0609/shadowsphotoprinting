@@ -128,7 +128,7 @@
                                         <button type="button" class="button" id="apply_coupon">Apply coupon</button>
                                         <span class="text-danger coupon-errors"></span>
                                     </div>
-                                    <button type="button" class="button satay" name="update_cart"
+                                    <button type="button" class="button satay3" name="update_cart"
                                         value="Update cart" id="update_cart">Update cart</button>
                                 </td>
                             </tr>
