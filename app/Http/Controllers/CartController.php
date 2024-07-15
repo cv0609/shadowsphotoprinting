@@ -220,8 +220,9 @@ class CartController extends Controller
         }
 
         $couponCategories = explode(',', $coupon->categories);
+
         foreach ($cart->items as $item) {
-            $productCategories = $item->product->categories->pluck('id')->toArray();
+            $productCategories = $item->product->product_category->pluck('id')->toArray();
             if (!array_intersect($productCategories, $couponCategories)) {
                 return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
             }
