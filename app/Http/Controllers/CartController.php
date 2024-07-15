@@ -219,16 +219,20 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
-        $couponCategories = explode(',', $coupon->categories);
+        if(isset($coupon->categories) && !empty($coupon->categories) && $coupon->categories != null)
+        {
+            $couponCategories = explode(',', $coupon->categories);
 
-        foreach ($cart->items as $item) {
-            $productCategories = $item->product->product_category->pluck('id')->toArray();
-            if (!array_intersect($productCategories, $couponCategories)) {
-                return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+            foreach ($cart->items as $item) {
+                $productCategories = $item->product->product_category->pluck('id')->toArray();
+                if (!array_intersect($productCategories, $couponCategories)) {
+                    return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+                }
             }
         }
 
-        if (!empty($coupon->products)) {
+        if(isset($coupon->products) && !empty($coupon->products) && $coupon->products != null)
+        {
             $couponProducts = explode(',', $coupon->products);
             foreach ($cart->items as $item) {
                 if (!in_array($item->product->id, $couponProducts)) {
