@@ -275,7 +275,7 @@
   <script>
      $("#apply_coupon").on('click',function(){
         $("#coupon_code").removeClass('validator');
-
+        $(".coupon-errors").html('');
         if(!$("#coupon_code").val())
           {
             $("#coupon_code").addClass('validator');
@@ -283,12 +283,14 @@
           else
           {
              var couponCode = $("#coupon_code").val();
+             console.log(couponCode);
              $.post("{{ route('apply-coupon') }}",
                 {
                     coupon_code: couponCode,
                     "_token": "{{ csrf_token() }}"
                 },
                 function(res){
+
                     if(res.success === false)
                       {
                         $("#coupon_code").addClass('validator');
