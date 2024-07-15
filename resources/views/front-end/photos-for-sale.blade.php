@@ -83,7 +83,7 @@
     </div>
 </section>
 
-<section class="product_item-clearfix d-none list-view-section">
+<section class="product_item-clearfix d-none photo-for-sale list-view-section">
     <div class="container">
         <div class="product_item-clearfix-inner">
             <div class="row">
