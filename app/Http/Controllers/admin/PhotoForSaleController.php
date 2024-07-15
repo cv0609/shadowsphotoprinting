@@ -11,9 +11,18 @@ use App\Http\Requests\PhotoForSaleProductRequest;
 use App\Models\Size;
 use App\Models\SizeType;
 use App\Models\PhotoForSaleSizePrices;
+use App\Services\PageDataService;
+use Illuminate\Support\Facades\Session;
 
 class PhotoForSaleController extends Controller
 {
+
+    protected $PageDataService;
+    public function __construct(PageDataService $PageDataService)
+    {
+        $this->PageDataService = $PageDataService;
+    }
+
     public function productCategory()
     {
        $categories = PhotoForSaleCategory::get();
@@ -92,45 +101,65 @@ class PhotoForSaleController extends Controller
 
     public function productSave(PhotoForSaleProductRequest $request)
     {
-        
         $size_arr = $request->size_arr['size'];
         $type_arr = $request->type_arr['type'];
         $price_arr = $request->price_arr['price'];
-    
-        $rows = [];
-    
+
+        $uniqueCombinations = [];
+
         foreach ($size_arr as $size_index => $size_data) {
-            foreach ($type_arr as $type_index => $type_data) {
+            if (isset($type_arr[$size_index])) {
+                $type_data = $type_arr[$size_index];
+
                 foreach ($size_data['children'] as $size_id) {
                     foreach ($type_data['children'] as $type_id) {
-                        foreach ($price_arr[$type_index]['children'] as $price_id) {
-                            $combinationExists = PhotoForSaleSizePrices::where('product_id', 2)
-                                ->where('size_id', $size_id)
-                                ->where('type_id', $type_id)
-                                // ->where('price', $price_id)
-                                ->exists();
-    
-                            if (!$combinationExists) {
-                                $rows[] = [
-                                    'product_id' => 2,
-                                    'size_id' => $size_id,
-                                    'type_id' => $type_id,
-                                    'price' => $price_id,
-                                ];
-                            }
+                        echo $combinationKey = $size_id . '-' . $type_id."<br>";
+
+                        // Check if this combination has already been processed
+                        if (in_array($combinationKey, $uniqueCombinations)) {
+                            return response()->json(['message' => 'Combination already exists: ' . $combinationKey], 400);
                         }
+                        $uniqueCombinations[] = $combinationKey; 
                     }
                 }
             }
         }
+
+        dd($uniqueCombinations);
+        dd('d');
+
+        
+        // $size_arr = $request->size_arr['size'];
+        // $type_arr = $request->type_arr['type'];
+        // $price_arr = $request->price_arr['price'];
+
+        // $uniqueCombinations = [];
+
+        // foreach ($size_arr as $size_index => $size_data) {
+        //     foreach ($type_arr as $type_index => $type_data) {
+        //         foreach ($size_data['children'] as $size_id) {
+        //             foreach ($type_data['children'] as $type_id) {
+        //                 foreach ($price_arr[$type_index]['children'] as $price_id) {
+        //                     $combinationExists = PhotoForSaleSizePrices::where('product_id', 2)
+        //                         ->where('size_id', $size_id)
+        //                         ->where('type_id', $type_id)
+        //                         ->exists();
     
-        // Insert new combinations
-        foreach ($rows as $row) {
-            PhotoForSaleSizePrices::create($row);
-        }
+        //                     if (!$combinationExists) {
+        //                         PhotoForSaleSizePrices::create([
+        //                             'product_id' => 2,
+        //                             'size_id' => $size_id,
+        //                             'type_id' => $type_id,
+        //                             'price' => $price_id,
+        //                         ]);
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     
         return response()->json(['message' => 'Data stored successfully.']);
-    
 
 
 
