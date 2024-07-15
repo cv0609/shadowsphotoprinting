@@ -4137,3 +4137,11 @@ font-style: normal;
 color: #ffc205;
 font-size: 16px;
 }
+
+.reset_variations {
+    font-size: 14px;
+    bottom: -15px;
+    color: #16a085;
+    cursor: pointer;
+    padding: 1px 60px;
+}
