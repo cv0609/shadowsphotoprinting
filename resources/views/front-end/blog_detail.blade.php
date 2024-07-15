@@ -73,5 +73,10 @@
             fade: true,
             cssEase: 'linear'
         });
+
+        $(document).ready(function(){
+            $('.restoration-cls').attr('href', "{{ url('home') }}");
+        });
     </script>
+
 @endsection
