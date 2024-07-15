@@ -101,7 +101,7 @@
                 </td>
                 <td class="right">${{ number_format($OrderTotal['subtotal'],2) }}</td>
               </tr>
-              @if(Session::has('coupon'))
+              @if(isset($OrderTotal['coupon_code']) && !empty($OrderTotal['coupon_code']) && $OrderTotal['coupon_code'] != null)
               <tr>
                 <td>
                   <strong>Coupon ({{ $OrderTotal['coupon_code']['code'] }})</strong>
