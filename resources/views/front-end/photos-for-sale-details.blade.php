@@ -35,12 +35,12 @@
                                 @endphp
                                     <div>
                                         <div class="billboard">
-                                            <img src="{{ asset($image1) }}" alt="">
+                                            <img src="{{ asset($image1) ?? ''}}" alt="">
                                         </div>
                                     </div>
                                     <div>
                                         <div class="billboard">
-                                            <img src="{{ asset($image2) }}" alt="">
+                                            <img src="{{ asset($image2) ?? ''}}" alt="">
                                         </div>
                                     </div>
 
@@ -50,12 +50,12 @@
                                 <div class="slider slider-nav">
                                     <div>
                                         <div class="billboards">
-                                            <img src="{{ asset($image1) }}" alt="">
+                                            <img src="{{ asset($image1) ?? ''}}" alt="">
                                         </div>
                                     </div>
                                     <div>
                                         <div class="billboards">
-                                            <img src="{{ asset($image2) }}" alt="">
+                                            <img src="{{ asset($image2) ?? ''}}" alt="">
                                         </div>
                                     </div>
 
@@ -65,10 +65,6 @@
                     </div>
                 </div>
 
-                {{-- @php
-                    
-                @endphp --}}
-
                 <div class="col-lg-6">
                     <div class="canvas-summary">
                         <p>IMAGE</p>
@@ -77,8 +73,7 @@
                         <div class="print_paper">
                             <form id="submitForm" method="post">
                                 @csrf
-                                <input type="hidden" id="product_price" value="200.00 ">
-                                <input type="hidden" id="product_qty" value="4">
+                                <input type="hidden" id="product_price">
                                 <input type="hidden" id="product_min_max_price" value="{{$productDetails->min_price.','.$productDetails->max_price}}">
                                 <input type="hidden" id="product_image" value="{{$image1 ?? ''}}">
                                 <input type="hidden" id="product_id" value="{{$productDetails->id}}">
@@ -89,12 +84,9 @@
                                             <select id="product_size" class="kad-select" name="attribute_size"
                                                 data-attribute_name="attribute_size" data-show_option_none="yes">
                                                 <option value="">Choose an option</option>
-                                                <option value="12”x12”" class="attached enabled">12”x12”</option>
-                                                <option value="16”x16”" class="attached enabled">16”x16”</option>
-                                                <option value="20”x20”" class="attached enabled">20”x20”</option>
-                                                <option value="30”x30”" class="attached enabled">30”x30”</option>
-                                                <option value="30”x30&quot;" class="attached enabled">30”x30"
-                                                </option>
+                                                @foreach($uniqueSizeRecords as $item)
+                                                  <option value="{{$item->size_id}}" class="attached enabled">{{$item->getSizeById->name}}</option>
+                                                @endforeach
                                             </select>
                                             <br>
                                             <span class="error-message" id="product_size_error"></span>
@@ -104,23 +96,28 @@
                                             <select id="product_type" class="kad-select" name="attribute_type"
                                                 data-attribute_name="attribute_type" data-show_option_none="yes">
                                                 <option value="">Choose an option</option>
-                                                <option value="Canvas Sizes" class="attached enabled">Canvas Sizes
-                                                </option>
-                                                <option value="Print sizes" class="attached enabled">Print sizes
-                                                </option>
+                                                @foreach($uniqueTyepeRecords as $item)
+                                                    <option value="{{$item->type_id}}" class="attached enabled">{{$item->getTypeById->name}}</option>
+                                                @endforeach
                                             </select><br>
+                                            <span class="reset_variations d-none">Clear selection</span>
                                             <span class="error-message" id="product_type_error"></span>
                                         </div>
                                 </div>
 
+                                <div class="product-price">
+                                     
+                                </div>
+
                                 <div class="quanti add">
+                                    <span><input type="number" id="product_qty" class="d-none"></span>
                                     <button type="button" id="addToCartBtn">Add to cart</button>
                                 </div>
                         </form>
                             <div class="product_meta">
                                 <span>SKU: N/A</span>
                                 <span class="posted_in">
-                                    Category: <a href="poems.html">IMAGE, POMES AND QUOTES PHOTOS</a>
+                                    Category: <a href="{{ route('photos-for-sale') }}">IMAGE, POMES AND QUOTES PHOTOS</a>
                                 </span>
                             </div>
                         </div>
@@ -171,7 +168,7 @@
                     <div>
                         <div class="sets">
                             <div class="products-img">
-                                <img src="{{ asset($image1) }}" alt="">
+                                <img src="{{ asset($image1) ?? ''}}" alt="">
                                 <div class="onsale">
                                     <span>Sale!</span>
                                 </div>
@@ -197,16 +194,66 @@
 
 <script>
 
-
+var photoForSaleSizePricesData = @json($photoForSaleSizePricesData);
 $(document).ready(function() {
+    console.log(photoForSaleSizePricesData);
+    var productId = "{{$productDetails->id}}";
 
-   $('#product_type').on('change',function(){
-      if($('#product_size').val() != '' && $(this).val() != ''){
-         $(this).css({'opacity':'none','cursor' : 'allowed'});
-      }else{
-        $(this).css({'opacity':'.8','cursor' : 'not-allowed'});
-      }
+//    $('#product_type').on('change',function(){
+//       if($('#product_size').val() != '' && $(this).val() != ''){
+//          $(this).css({'opacity':'none','cursor' : 'allowed'});
+//       }else{
+//         $(this).css({'opacity':'.8','cursor' : 'not-allowed'});
+//       }
+//    })
+
+   $('.reset_variations').on('click',function(){
+        $('.product-price').text('');
+        $('#product_price').val('');
+        $('#product_qty').addClass('d-none');
+        $('.reset_variations').addClass('d-none');
+        $('#product_size').val('');
+        $('#product_type').val('');
+        $('#product_size_error').text('');
+        $('#product_type_error').text('');
    })
+
+   $('#product_size').on('change', function() {
+        var sizeId = $(this).val();
+        var typeId = $('#product_type').val();
+        if (sizeId && typeId) {
+            var price = findPrice(sizeId, typeId, productId);
+            if (price !== null) {
+                $('.product-price').text('$' + price);
+                $('#product_price').val(price);
+                $('#product_qty').removeClass('d-none');
+                $('.reset_variations').removeClass('d-none');
+            } else {
+                $('.product-price').text('');
+                $('#product_price').val('');
+                $('#product_qty').addClass('d-none');
+                $('.reset_variations').addClass('d-none');
+            }
+        }
+    });
+
+    $('#product_type').on('change', function() {
+        var typeId = $(this).val();
+        var sizeId = $('#product_size').val();
+        if (sizeId && typeId) {
+            var price = findPrice(sizeId, typeId, productId);
+            if (price !== null) {
+                $('.product-price').text('$' + price).css({'color':'#ffc205','font-size':'24px','line-height':'2'});
+                $('#product_price').val(price);
+                $('#product_qty').removeClass('d-none');
+                $('.reset_variations').removeClass('d-none');
+            } else {
+                $('.product-price').text('');
+                $('#product_qty').addClass('d-none');
+                $('.reset_variations').addClass('d-none');
+            }
+        }
+    });
 
     $('#addToCartBtn').click(function() {
       
@@ -284,6 +331,19 @@ $(document).ready(function() {
         }
     });
 });
+
+
+    function findPrice(sizeId, typeId,productId) {
+        var price = null;
+        for (var i = 0; i < photoForSaleSizePricesData.length; i++) {
+            var item = photoForSaleSizePricesData[i];
+            if (item.size_id == sizeId && item.type_id == typeId && item.product_id == productId) {
+                price = item.price;
+                break;
+            }
+        }
+        return price;
+    }
 
     $('.slider-for').slick({
         slidesToShow: 1,

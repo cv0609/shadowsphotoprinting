@@ -58,7 +58,6 @@ class PhotoForSaleController extends Controller
 
     public function productCategoryUpdate(Request $request)
     {
-
         $slug = \Str::slug($request->name);
         $data = ["name"=>$request->name,'slug'=>$slug];
         if($request->has('image'))
@@ -113,7 +112,7 @@ class PhotoForSaleController extends Controller
 
         $slug = \Str::slug($request->product_title);
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->min_price,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
          
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $key => $image) {

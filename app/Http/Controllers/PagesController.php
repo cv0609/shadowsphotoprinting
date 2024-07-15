@@ -8,6 +8,7 @@ use App\Models\Blog;
 use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
+use App\Models\PhotoForSaleSizePrices;
 use App\Services\PageDataService;
 use App\Http\Requests\GetAQuoteRequest;
 use App\Mail\QuoteMail;
@@ -81,8 +82,22 @@ class PagesController extends Controller
 
   public function PhotosForSaleDetails($slug = null){
     $productDetails = PhotoForSaleProduct::where('slug',$slug)->first();
+    
+    // Get unique size_id records with their size names for the given product_id
+    $uniqueSizeRecords = PhotoForSaleSizePrices::with('getSizeById')->select('size_id')
+            ->where('product_id', $productDetails->id)
+            ->groupBy('size_id')
+            ->get();
+
+    $uniqueTyepeRecords = PhotoForSaleSizePrices::with('getTypeById')->select('type_id')
+            ->where('product_id', $productDetails->id)
+            ->groupBy('type_id')
+            ->get(); 
+
+    $photoForSaleSizePricesData = PhotoForSaleSizePrices::where('product_id',$productDetails->id)->get();
+               
     $relatedProduct = PhotoForSaleProduct::where('slug','!=',$slug)->paginate(10);
-    return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct'));
+    return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct','uniqueSizeRecords','uniqueTyepeRecords','photoForSaleSizePricesData'));
   }
 
 
