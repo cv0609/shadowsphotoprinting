@@ -9,6 +9,7 @@ use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Services\PageDataService;
+use App\Http\Requests\GetAQuoteRequest;
 use App\Mail\QuoteMail;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Expr\FuncCall;
@@ -103,7 +104,7 @@ class PagesController extends Controller
     return view('front-end/giftcard_detail',compact('blog_detail','related_products'));
   }
 
-  public function sendQuote(Request $request){
+  public function sendQuote(GetAQuoteRequest $request){
       $email = $request->email;
 
       $data['name'] = $request->name;
