@@ -8,6 +8,9 @@
           <li class="breadcrumb-item"><a href="#">Add Product</a></li>
         </ol>
     </nav>
+    @if(Session::has('success'))
+      <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+    @endif
     <div class="">
         <div class="row">
             <div class="col-md-12 col-sm-12">
@@ -18,7 +21,7 @@
                     </div>
                     <div class="x_content">
                         <br>
-                        <form action="{{ route('photos-for-sale-product-save') }}" method="POST" id="demo-form2"
+                        <form method="POST" id="demo-form2"
                             data-parsley-validate="" class="form-horizontal form-label-left"
                             enctype="multipart/form-data" novalidate="">
                             @csrf
@@ -250,7 +253,6 @@
         });
 
         $('#submitBtn').on('click', function() {
-            $('#demo-form2').submit();
 
             $(document).find('.text-danger').text('');    
 
@@ -341,7 +343,24 @@
                 //     return false;
                 // }
 
-                $('#demo-form2').submit();
+                // $('#demo-form2').submit();
+
+                var formData = new FormData($('#demo-form2')[0]);
+
+                $.ajax({
+                    url: "{{ route('photos-for-sale-product-save') }}",
+                    type: "POST",
+                    data: formData,
+                    contentType: false, // Required for FormData
+                    processData: false, // Required for FormData
+                    success: function(res) {
+                        if (res.error == true) {
+                            $('.last-row:last').prepend('<span class="new-span text-danger">You can not add duplicate entry for size and type</span>');
+                        } else {
+                            location.reload();
+                        }
+                    }
+                });
             }
         });
     });

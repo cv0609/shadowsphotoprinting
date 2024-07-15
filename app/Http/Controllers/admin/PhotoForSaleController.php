@@ -105,68 +105,11 @@ class PhotoForSaleController extends Controller
         $type_arr = $request->type_arr['type'];
         $price_arr = $request->price_arr['price'];
 
-        $uniqueCombinations = [];
+        $validation = $this->PageDataService->photoForSaleDuplicateSizeTypeValidation($size_arr,$type_arr);
 
-        foreach ($size_arr as $size_index => $size_data) {
-            if (isset($type_arr[$size_index])) {
-                $type_data = $type_arr[$size_index];
-
-                foreach ($size_data['children'] as $size_id) {
-                    foreach ($type_data['children'] as $type_id) {
-                        echo $combinationKey = $size_id . '-' . $type_id."<br>";
-
-                        // Check if this combination has already been processed
-                        if (in_array($combinationKey, $uniqueCombinations)) {
-                            return response()->json(['message' => 'Combination already exists: ' . $combinationKey], 400);
-                        }
-                        $uniqueCombinations[] = $combinationKey; 
-                    }
-                }
-            }
+        if(isset($validation) && $validation==true){
+            return response()->json(['error' => true,'message' => 'Duplicate entry']);
         }
-
-        dd($uniqueCombinations);
-        dd('d');
-
-        
-        // $size_arr = $request->size_arr['size'];
-        // $type_arr = $request->type_arr['type'];
-        // $price_arr = $request->price_arr['price'];
-
-        // $uniqueCombinations = [];
-
-        // foreach ($size_arr as $size_index => $size_data) {
-        //     foreach ($type_arr as $type_index => $type_data) {
-        //         foreach ($size_data['children'] as $size_id) {
-        //             foreach ($type_data['children'] as $type_id) {
-        //                 foreach ($price_arr[$type_index]['children'] as $price_id) {
-        //                     $combinationExists = PhotoForSaleSizePrices::where('product_id', 2)
-        //                         ->where('size_id', $size_id)
-        //                         ->where('type_id', $type_id)
-        //                         ->exists();
-    
-        //                     if (!$combinationExists) {
-        //                         PhotoForSaleSizePrices::create([
-        //                             'product_id' => 2,
-        //                             'size_id' => $size_id,
-        //                             'type_id' => $type_id,
-        //                             'price' => $price_id,
-        //                         ]);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-    
-        return response()->json(['message' => 'Data stored successfully.']);
-
-
-
-
-
-
-
 
         $slug = \Str::slug($request->product_title);
 
@@ -183,32 +126,35 @@ class PhotoForSaleController extends Controller
          }
 
          $productId = PhotoForSaleProduct::insertGetId($data);
-
         
          if(isset($request->type_arr) && isset($request->size_arr) && isset($request->price_arr)){
-            $type_arr = $request->type_arr;
-            $size_arr = $request->size_arr;
-            $price_arr = $request->price_arr;
- 
-        //    foreach ($sizeArr as $size) {
-        //         foreach ($typeArr as $type) {
-        //             foreach ($priceArr as $price) {
-        //                $is_exist = PhotoForSaleSizePrices::where(['size_id' => $size,'type_id' => $type,'product_id' =>$productId])->count();
-        //                if($is_exist == 0)
-        //                  {}
-                         
-        //                     PhotoForSaleSizePrices::create([
-        //                         'size_id' => $size,
-        //                         'type_id' => $type,
-        //                         'price' => $price,
-        //                         'product_id' =>$productId
-        //                     ]);
-                      
-        //             }
-        //         }
-        //     }
+        
+            foreach ($size_arr as $size_index => $size_data) {
+                foreach ($type_arr as $type_index => $type_data) {
+                    foreach ($size_data['children'] as $size_id) {
+                        foreach ($type_data['children'] as $type_id) {
+                            foreach ($price_arr[$type_index]['children'] as $price_id) {
+                                $combinationExists = PhotoForSaleSizePrices::where('product_id', $productId)
+                                    ->where('size_id', $size_id)
+                                    ->where('type_id', $type_id)
+                                    ->exists();
+        
+                                if (!$combinationExists) {
+                                    PhotoForSaleSizePrices::create([
+                                        'product_id' => $productId,
+                                        'size_id' => $size_id,
+                                        'type_id' => $type_id,
+                                        'price' => $price_id,
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-        return redirect()->route('photos-for-sale-product-list')->with('success','Product inserted successfully');
+        Session::flash('success', 'Product inserted successfully');
+        return response()->json(['error'=>false,'message' => 'Product inserted successfully.']);
     }
 
     public function productShow($slug)
