@@ -187,7 +187,6 @@ class CartController extends Controller
        $cart = [];
         // $product = Product::find($request->product_id);
         // $productCategories = $product->categories->pluck('id')->toArray();
-
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
@@ -213,22 +212,27 @@ class CartController extends Controller
 
         if($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend)
         {
-            return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.'amount' ];
+            return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.' amount' ];
         }
 
         if ($coupon->use_limit && $coupon->total_use >= $coupon->use_limit) {
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
-        $couponCategories = explode(',', $coupon->categories);
-        foreach ($cart->items as $item) {
-            $productCategories = $item->product->categories->pluck('id')->toArray();
-            if (!array_intersect($productCategories, $couponCategories)) {
-                return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+        if(isset($coupon->categories) && !empty($coupon->categories) && $coupon->categories != null)
+        {
+            $couponCategories = explode(',', $coupon->categories);
+
+            foreach ($cart->items as $item) {
+                $productCategories = $item->product->product_category->pluck('id')->toArray();
+                if (!array_intersect($productCategories, $couponCategories)) {
+                    return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+                }
             }
         }
 
-        if (!empty($coupon->products)) {
+        if(isset($coupon->products) && !empty($coupon->products) && $coupon->products != null)
+        {
             $couponProducts = explode(',', $coupon->products);
             foreach ($cart->items as $item) {
                 if (!in_array($item->product->id, $couponProducts)) {

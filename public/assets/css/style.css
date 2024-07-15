@@ -4104,3 +4104,36 @@ section.sans-ser {
     padding-top: 20px;
     padding-left: 10px;
 }
+section.product_item-clearfix.photo-for-sale .instock-udik a img:last-child {
+    display: block;
+    -webkit-transform: translate(100%, 0);
+    -ms-transform: translate(100%, 0);
+    -o-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+    z-index: 2;
+    -webkit-transition: all .4s cubic-bezier(.17, .67, .35, .95);
+    -o-transition: all .4s cubic-bezier(.17, .67, .35, .95);
+    transition: all .4s cubic-bezier(.17, .67, .35, .95);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    visibility: hidden;
+}
+section.product_item-clearfix.photo-for-sale .instock-oant:hover .instock-udik a img:last-child{
+transform: translate(0, 0);
+visibility: visible;
+}
+section.product_item-clearfix.photo-for-sale .instock-udik {
+position: relative;
+overflow: hidden;
+}
+section.product_item-clearfix.photo-for-sale .details_product-crlf a {
+font-family: "Source Sans Pro";
+line-height: 24px;
+letter-spacing: 0px;
+font-weight: 600;
+font-style: normal;
+color: #ffc205;
+font-size: 16px;
+}
