@@ -22,12 +22,12 @@ class PhotoForSaleProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'required',
-            'product_title' => 'required|string|max:255',
-            'min_price' => 'required|numeric|min:0',
-            'max_price' => 'required|numeric|min:0|gte:min_price',
-            'product_images' => 'required|array',
-            'product_images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'category_id' => 'required',
+            // 'product_title' => 'required|string|max:255',
+            // 'min_price' => 'required|numeric|min:0',
+            // 'max_price' => 'required|numeric|min:0|gte:min_price',
+            // 'product_images' => 'required|array',
+            // 'product_images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

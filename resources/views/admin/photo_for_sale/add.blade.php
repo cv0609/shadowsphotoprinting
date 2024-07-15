@@ -250,6 +250,7 @@
         });
 
         $('#submitBtn').on('click', function() {
+            $('#demo-form2').submit();
 
             $(document).find('.text-danger').text('');    
 

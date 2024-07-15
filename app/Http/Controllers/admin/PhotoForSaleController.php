@@ -92,7 +92,53 @@ class PhotoForSaleController extends Controller
 
     public function productSave(PhotoForSaleProductRequest $request)
     {
-        // dd($request->all());
+        
+        $size_arr = $request->size_arr['size'];
+        $type_arr = $request->type_arr['type'];
+        $price_arr = $request->price_arr['price'];
+    
+        $rows = [];
+    
+        foreach ($size_arr as $size_index => $size_data) {
+            foreach ($type_arr as $type_index => $type_data) {
+                foreach ($size_data['children'] as $size_id) {
+                    foreach ($type_data['children'] as $type_id) {
+                        foreach ($price_arr[$type_index]['children'] as $price_id) {
+                            $combinationExists = PhotoForSaleSizePrices::where('product_id', 2)
+                                ->where('size_id', $size_id)
+                                ->where('type_id', $type_id)
+                                // ->where('price', $price_id)
+                                ->exists();
+    
+                            if (!$combinationExists) {
+                                $rows[] = [
+                                    'product_id' => 2,
+                                    'size_id' => $size_id,
+                                    'type_id' => $type_id,
+                                    'price' => $price_id,
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        // Insert new combinations
+        foreach ($rows as $row) {
+            PhotoForSaleSizePrices::create($row);
+        }
+    
+        return response()->json(['message' => 'Data stored successfully.']);
+    
+
+
+
+
+
+
+
+
         $slug = \Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->min_price,'slug'=>$slug];
