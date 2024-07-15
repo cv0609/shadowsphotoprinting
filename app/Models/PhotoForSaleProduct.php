@@ -16,6 +16,7 @@ class PhotoForSaleProduct extends Model
         'product_description',
         'product_images',
     ];
+
     public function product_category()
     {
         return $this->belongsTo(PhotoForSaleCategory::class, 'category_id');
