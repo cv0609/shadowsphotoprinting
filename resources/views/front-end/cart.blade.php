@@ -75,7 +75,7 @@
                                     @endphp
                                     <a href="#">
                                         @if($item->product_type == "gift_card")
-                                            {{ $product_detail->name }}
+                                            {{ $product_detail->product_title }}
                                             <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
                                         @elseif($item->product_type == "photo_for_sale")
                                             {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}

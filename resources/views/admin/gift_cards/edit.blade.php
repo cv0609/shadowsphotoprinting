@@ -24,7 +24,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Card Name <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="name" name="name" required="required" class="form-control" value="{{ $category->name }}">
+                            <input type="text" id="name" name="name" required="required" class="form-control" value="{{ $category->product_title }}">
                             @error('name')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror

@@ -52,7 +52,7 @@
                     <div class="details-product-item">
                         <div class="product_details-card">
                             <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
-                                <h3>{{ $blog->name }}</h3>
+                                <h3>{{ $blog->product_title }}</h3>
                             </a>
                         </div>
                     </div>

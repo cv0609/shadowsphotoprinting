@@ -87,7 +87,7 @@
 
                     @elseif($item->product_type == 'gift_card')
 
-                    <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $product_detail->name ?? '' }}<br><strong style="color:#636363;">To</strong>: {{$giftcard_product_desc->reciept_email ?? ''}}<br><strong
+                    <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $product_detail->product_title ?? '' }}<br><strong style="color:#636363;">To</strong>: {{$giftcard_product_desc->reciept_email ?? ''}}<br><strong
                         style="color: #636363;">From</strong>: {{$giftcard_product_desc->from ?? ''}}<br>
                         <strong
                         style="color: #636363;">Message</strong>: {{$giftcard_product_desc->giftcard_msg ?? ''}}

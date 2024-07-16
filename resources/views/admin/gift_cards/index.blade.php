@@ -43,7 +43,7 @@
                         @foreach ($categories as $key => $category)
                           <tr>
                             <th scope="row">{{ $key + 1 }}</th>
-                            <td>{{ ucfirst($category->name) }}</td>
+                            <td>{{ ucfirst($category->product_title) }}</td>
                             <td><img src="{{ (isset($category['image']) && !empty($category['image'])) ? asset($category['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
                             <td>
                               <div class="x_content">

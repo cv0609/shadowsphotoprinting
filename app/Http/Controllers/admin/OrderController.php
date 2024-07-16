@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Services\CartService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\OrderDetail;
 use ZipArchive;
 
 class OrderController extends Controller
@@ -77,28 +78,28 @@ class OrderController extends Controller
         }
 
         $zip = new ZipArchive();
-        $zipFileName = "order_{$order->order_number}.zip";
-        $zipFilePath = public_path('order_zip/'.$zipFileName); // Specify the path to save the zip file
+        $zipFileName = "$order->order_number.zip";
+        $zipFilePath = public_path('order_zip/'.$zipFileName);
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
             foreach ($uniqueOrderDetails as $details) {
                 $productId = $details->product_id;
                 $quantity = $details->quantity;
+                $productType = $details->product_type;
 
-                // Create folder structure: product_id/quantity/
-                $quantityFolder = "$productId/quantity_{$quantity}/";
-                $zip->addEmptyDir($quantityFolder); // Create the quantity folder
+                $productDetails = $this->CartService->getProductDetailsByType($productId,$productType);
 
-                // Hard-coded image path
-                $hardCodedImagePath = public_path('assets/admin/images/1718088597.jpg'); // Adjust based on your actual structure
+                $producTitle = isset($productDetails->product_title) ? $productDetails->product_title : '';
 
+                $quantityFolder = "$producTitle/qty_{$quantity}/";
+                $zip->addEmptyDir($quantityFolder);
 
-
-                if (file_exists($hardCodedImagePath)) {
-
-                    $zip->addFile($hardCodedImagePath, $quantityFolder . basename($hardCodedImagePath)); // Add to the quantity folder
-                } else {
-                    dump("File does not exist: " . $hardCodedImagePath); // Debugging
+                $orderDetails = OrderDetail::where('product_id', $productId)->where('order_id', $order_id)->get();
+                foreach ($orderDetails as $image) {
+                    $imagePath = public_path($image->selected_images);
+                    if (file_exists($imagePath)) {
+                        $zip->addFile($imagePath, $quantityFolder . basename($imagePath));
+                    }
                 }
             }
 
@@ -110,8 +111,6 @@ class OrderController extends Controller
                 return response()->json(['message' => 'Failed to create the zip file.'], 500);
             }
         }
-
-
     }
 
 
