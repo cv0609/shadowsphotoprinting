@@ -77,7 +77,7 @@ class OrderController extends Controller
         }
 
         $zip = new ZipArchive();
-        $zipFileName = "order_{$order->id}.zip";
+        $zipFileName = "order_{$order->order_number}.zip";
         $zipFilePath = public_path('order_zip/'.$zipFileName); // Specify the path to save the zip file
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
@@ -86,7 +86,7 @@ class OrderController extends Controller
                 $quantity = $details->quantity;
 
                 // Create folder structure: product_id/quantity/
-                $quantityFolder = "product_{$productId}/quantity_{$quantity}/";
+                $quantityFolder = "$productId/quantity_{$quantity}/";
                 $zip->addEmptyDir($quantityFolder); // Create the quantity folder
 
                 // Hard-coded image path
