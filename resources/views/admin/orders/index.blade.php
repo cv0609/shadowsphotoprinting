@@ -44,6 +44,7 @@
                                     <th>Total</th>
                                     <th>Status</th>
                                     <th>Created At</th>
+                                    <th>Download zip</th>
                                 </tr>
                             </thead>
                             <tbody id="main-tbody">
@@ -56,6 +57,9 @@
                                     <td>{{ $order->total }}</td>
                                     <td>{{ $order->status }}</td>
                                     <td>{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
+                                    </td>
                                 </tr>
                                 @endforeach
 
@@ -100,6 +104,24 @@
             }
         });
     });
+
+
+
+    $('.order-zip').on('click', function () {
+        var dataId = $(this).data('id');
+        $.ajax({
+            url: '{{ route("download-order-zip") }}',
+            type: 'GET',
+            data: {
+                order_id: dataId,
+            },
+            success: function (data) {
+                console.log(data);
+               
+            }
+        });
+    });
+
 
     $('#date-range-picker').on('apply.daterangepicker', function (ev, picker) {
         let dateRange = $('#date-range-picker').data('daterangepicker');
