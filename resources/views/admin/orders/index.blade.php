@@ -58,7 +58,7 @@
                                     <td>{{ $order->status }}</td>
                                     <td>{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
                                     <td>
-                                        <a href="javascript:void(0)" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
+                                        <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -101,23 +101,6 @@
                     $("#main-tbody").html("<tr><td colspan='5'><p class='text-center'>No any data found!</p></td></tr>");
 
                 }
-            }
-        });
-    });
-
-
-
-    $('.order-zip').on('click', function () {
-        var dataId = $(this).data('id');
-        $.ajax({
-            url: '{{ route("download-order-zip") }}',
-            type: 'GET',
-            data: {
-                order_id: dataId,
-            },
-            success: function (data) {
-                console.log(data);
-               
             }
         });
     });
