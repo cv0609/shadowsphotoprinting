@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Services\CartService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class OrderController extends Controller
 {
@@ -52,4 +54,70 @@ class OrderController extends Controller
         }
         echo view('admin.orders.order_search',compact('orders'));
     }
+
+    public function downloadOrderzip($orderId)
+    {
+        $order_id = $orderId;
+
+        $order = Order::with('orderDetails')->where('id', $order_id)->first();
+
+        $uniqueOrderDetails = [];
+
+        $orderDetailsGrouped = $order->orderDetails->groupBy('product_id');
+
+        foreach ($orderDetailsGrouped as $productId => $details) {
+            $quantities = $details->pluck('quantity')->unique();
+            if ($quantities->count() === 1) {
+                $uniqueOrderDetails[] = $details->first();
+            } else {
+                foreach ($details as $detail) {
+                    $uniqueOrderDetails[] = $detail;
+                }
+            }
+        }
+
+        $zip = new ZipArchive();
+        $zipFileName = "order_{$order->order_number}.zip";
+        $zipFilePath = public_path('order_zip/'.$zipFileName); // Specify the path to save the zip file
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            foreach ($uniqueOrderDetails as $details) {
+                $productId = $details->product_id;
+                $quantity = $details->quantity;
+
+                // Create folder structure: product_id/quantity/
+                $quantityFolder = "$productId/quantity_{$quantity}/";
+                $zip->addEmptyDir($quantityFolder); // Create the quantity folder
+
+                // Hard-coded image path
+                $hardCodedImagePath = public_path('assets/admin/images/1718088597.jpg'); // Adjust based on your actual structure
+
+
+
+                if (file_exists($hardCodedImagePath)) {
+
+                    $zip->addFile($hardCodedImagePath, $quantityFolder . basename($hardCodedImagePath)); // Add to the quantity folder
+                } else {
+                    dump("File does not exist: " . $hardCodedImagePath); // Debugging
+                }
+            }
+
+            $zip->close();
+
+            if (file_exists($zipFilePath)) {
+                return response()->download($zipFilePath);
+            } else {
+                return response()->json(['message' => 'Failed to create the zip file.'], 500);
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
 }

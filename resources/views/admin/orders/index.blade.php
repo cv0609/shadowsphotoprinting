@@ -44,6 +44,7 @@
                                     <th>Total</th>
                                     <th>Status</th>
                                     <th>Created At</th>
+                                    <th>Download zip</th>
                                 </tr>
                             </thead>
                             <tbody id="main-tbody">
@@ -56,6 +57,9 @@
                                     <td>{{ $order->total }}</td>
                                     <td>{{ $order->status }}</td>
                                     <td>{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
+                                    <td>
+                                        <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
+                                    </td>
                                 </tr>
                                 @endforeach
 
@@ -100,6 +104,7 @@
             }
         });
     });
+
 
     $('#date-range-picker').on('apply.daterangepicker', function (ev, picker) {
         let dateRange = $('#date-range-picker').data('daterangepicker');
