@@ -28,7 +28,7 @@
                                 <div class="slider slider-for">
                                 @php
                                     if(isset($productDetails)){
-                                        $imageArray = explode(",", $productDetails->product_images);
+                                        $imageArray = explode(",", $productDetails->product_image);
                                         $image1 = $imageArray[0] ?? '';
                                         $image2 = $imageArray[1] ?? '';  
                                     }
@@ -160,7 +160,7 @@
                     @foreach ($relatedProduct as $item)
                     @php
                         if(isset($item)){
-                            $imageArray = explode(",", $item->product_images);
+                            $imageArray = explode(",", $item->product_image);
                             $image1 = $imageArray[0] ?? '';
                             $image2 = $imageArray[1] ?? '';  
                         }

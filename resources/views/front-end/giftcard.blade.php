@@ -45,7 +45,7 @@
                     <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
                         <div class="noflipper ">
                             <div class="product-animations">
-                                <img src="{{ asset($blog['image']) }}" alt="Image">
+                                <img src="{{ asset($blog['product_image']) }}" alt="Image">
                             </div>
                         </div>
                     </a>
@@ -75,7 +75,7 @@
                         <div class="instock-udik">
                             <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
                                 <img
-                                    src="{{ asset($blog['image']) }}">
+                                    src="{{ asset($blog['product_image']) }}">
                             </a>
                         </div>
 

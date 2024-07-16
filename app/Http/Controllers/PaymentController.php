@@ -175,15 +175,28 @@ class PaymentController extends Controller
             ]);
 
             foreach ($cart->items as $item) {
+
+                $product_details = $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
+
+                if($item->product_type == "gift_card"){
+                    $product_price =  number_format($item->product_price, 2);
+                }
+                elseif($item->product_type == "photo_for_sale"){
+                    $product_price = number_format($item->product_price, 2) ;
+                }
+                else{
+                    $product_price =number_format($product_details->product_price, 2) ;
+                }
+
                 OrderDetail::create([
                     'order_id' => $order->id,
-                    'product_id' => $item->product->id,
+                    'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
-                    'selected_images' => $item->product->product_image,
+                    'selected_images' => $product_details->product_image,
                     'price' => $item->quantity * $item->product->product_price,
                     'product_type' => $item->product_type ?? null,
                     'product_desc' => $item->product_desc,
-                    'product_price' => $item->product_price,
+                    'product_price' => $product_price ?? 0,
                 ]);
             }
 

@@ -42,13 +42,13 @@
                                     <a href="#">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
-                                                {{ asset($product_detail->image) }}
+                                                {{ asset($product_detail->product_image) }}
                                             @elseif($item->product_type == 'photo_for_sale')
                                                 @php
                                                     $image1 = '';
                                                     $image2 = '';
-                                                    if(isset($product_detail->product_images)){
-                                                        $imageArray = explode(',', $product_detail->product_images);
+                                                    if(isset($product_detail->product_image)){
+                                                        $imageArray = explode(',', $product_detail->product_image);
                                                         $image1 = $imageArray[0] ?? '';
                                                         $image2 = $imageArray[1] ?? '';
                                                     }

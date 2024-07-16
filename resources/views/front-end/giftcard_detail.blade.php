@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="gift-img">
-                        <img src="{{ asset($blog_detail->image) }}" alt="">
+                        <img src="{{ asset($blog_detail->product_image) }}" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -103,7 +103,7 @@
                             <a href="{{ route('gift-card-detail',['slug'=>$related_product->slug]) }}">
                                 <div class="noflipper">
                                     <div class="product-animations">
-                                        <img src="{{ asset($related_product->image) }}" alt="">
+                                        <img src="{{ asset($related_product->product_image) }}" alt="">
                                     </div>
                                 </div>
                             </a>

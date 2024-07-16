@@ -42,7 +42,7 @@
                             @endif
                             <div class="choose-file-single">
                                 <figure>
-                                    <img src="{{ asset($category->image) }}" alt="img-single">                                   
+                                    <img src="{{ asset($category->product_image) }}" alt="img-single">                                   
                                 </figure>
                             </div>
                         </div>

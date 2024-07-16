@@ -79,7 +79,7 @@
                             <input type="file" id="product_image" name="product_images[]" required="required" class="form-control" multiple>
                             <div class="choose-file-wrap">
                                 <div class="choose-file-multiple">
-                                  @foreach (explode(',',$product->product_images) as $images)
+                                  @foreach (explode(',',$product->product_image) as $images)
                                     <figure>
                                         <img src="{{ asset($images) }}" alt="img-single">
 
