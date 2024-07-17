@@ -62,4 +62,9 @@ class CouponController extends Controller
       $coupon_detail = Coupon::whereId($id)->delete();
       return redirect()->route('coupons-list')->with('success','Coupon is deleted successfully');
    }
+
+   public function couponUpdateStatus(Request $request){
+      Coupon::where('id', $request->coupon_id)->update(['is_active' => $request->checkedValue]);
+      return response()->json(['error' => false, 'message' => 'Status updated successfully.','checked' =>$request->checkedValue]);
+   }
 }

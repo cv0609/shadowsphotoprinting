@@ -53,9 +53,9 @@
                         <h4>PRODUCTS</h4>
                         <div class="fw-products-cats">
                             <select name="category" id="category">
-                                <option value="all">ALL</option>
+                                <option value="all">All</option>
                                 @foreach ($productCategories as $productCategory)
-                                    <option value="{{ $productCategory->slug }}">{{ $productCategory->name }}</option>
+                                    <option value="{{ $productCategory->slug }}">{{ ucfirst($productCategory->name) }}</option>
                                 @endforeach
                             </select>
                         </div>

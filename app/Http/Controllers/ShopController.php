@@ -27,7 +27,8 @@ class ShopController extends Controller
 
    public function uploadImage(Request $request)
     {
-        $temImagesStore = [];
+      dd($request->all());  
+      $temImagesStore = [];
         if($request->image)
         {
             foreach($request->image as $key => $image)

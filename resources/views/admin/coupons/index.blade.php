@@ -10,6 +10,7 @@
   @if(Session::has('success'))
   <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
 @endif
+<p class="alert alert-success text-center d-none coupon-status-update"></p>
     <div class="">
       <div class="page-title">
         <div class="title_left">
@@ -51,7 +52,7 @@
                                 <td>{{ date('d-m-Y',strtotime($coupon->end_date)) }}</td>
                                 <td>
                                   <label class="switch">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox" @if($coupon->is_active == 1) checked @endif data-id="{{$coupon->id}}">
                                     <span class="slider round"></span>
                                   </label>
                                 </td>
@@ -78,3 +79,38 @@
     </div>
   </div>
 @endsection
+
+
+@section('custom-script')
+<script>
+   $(document).ready(function() {
+      $('input[type=checkbox]').change(function() {
+          var coupon_id = $(this).data('id');
+          var checkedValue = $(this).is(':checked') ? 1 : 0;
+
+          var data = {
+            coupon_id: coupon_id,
+            checkedValue: checkedValue
+          };
+
+          $.ajax({
+              url: "{{ route('coupon-update-status') }}",
+              type: "GET",
+              data: data,
+              success: function(res) {
+                  if (res.checked == 1) {
+                      $('.coupon-status-update').removeClass('d-none').text('Coupon activated successfully!');
+                  } else {
+                      $('.coupon-status-update').removeClass('d-none').text('Coupon deactivated successfully!');
+                  }
+              },
+              error: function() {
+                  $('.coupon-status-update').removeClass('d-none').text('An error occurred. Please try again.');
+              }
+          });
+
+      });
+  });
+</script>
+@endsection
+

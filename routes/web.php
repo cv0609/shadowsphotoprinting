@@ -83,6 +83,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/coupon-show/{id}', [CouponController::class, 'couponShow'])->name('coupon-show');
         Route::post('/coupon-update',[CouponController::class,'couponUpdate'])->name('coupon-update');
         Route::delete('/coupon-delete/{id}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
+        Route::get('/coupon-update-status',[CouponController::class,'couponUpdateStatus'])->name('coupon-update-status');
 
         Route::get('/shipping',[ShippingController::class,'shipping'])->name('shipping-list');
         Route::get('/shipping-add',[ShippingController::class,'shippingAdd'])->name('shipping-add');
