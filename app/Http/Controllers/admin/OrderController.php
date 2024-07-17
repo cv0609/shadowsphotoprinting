@@ -87,18 +87,49 @@ class OrderController extends Controller
                 $quantity = $details->quantity;
                 $productType = $details->product_type;
 
-                $productDetails = $this->CartService->getProductDetailsByType($productId,$productType);
+                $productDetails = $this->CartService->getProductDetailsByType($productId, $productType);
 
-                $producTitle = isset($productDetails->product_title) ? $productDetails->product_title : '';
+                $productTitle = isset($productDetails->product_title) ? $productDetails->product_title : '';
 
-                $quantityFolder = "$producTitle/qty_{$quantity}/";
+                $quantityFolder = "$productTitle/qty_{$quantity}/";
                 $zip->addEmptyDir($quantityFolder);
 
-                $orderDetails = OrderDetail::where('product_id', $productId)->where('order_id', $order_id)->get();
-                foreach ($orderDetails as $image) {
-                    $imagePath = public_path($image->selected_images);
+
+                $orderDetails = OrderDetail::where('product_id', $productId)->where('order_id', $order_id)->where('quantity',$quantity)->get();
+
+                $fileCounter = [];
+
+                if($productType == 'shop'){
+                    foreach ($orderDetails as $image) {
+                        $imagePath = $image->selected_images;
+                        if (file_exists($imagePath)) {
+                            $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
+                            $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+    
+                            if (!isset($fileCounter[$baseName])) {
+                                $fileCounter[$baseName] = 0;
+                            }
+    
+                            $fileCounter[$baseName]++;
+                            $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
+                            $zip->addFile($imagePath, $uniqueFileName);
+                        }
+                    }
+                }
+
+                if($productType == 'gift_card' || $productType == 'photo_for_sale'){
+                    $imagePath = $productDetails->product_image;
                     if (file_exists($imagePath)) {
-                        $zip->addFile($imagePath, $quantityFolder . basename($imagePath));
+                        $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
+                        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+
+                        if (!isset($fileCounter[$baseName])) {
+                            $fileCounter[$baseName] = 0;
+                        }
+
+                        $fileCounter[$baseName]++;
+                        $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
+                        $zip->addFile($imagePath, $uniqueFileName);
                     }
                 }
             }
@@ -110,8 +141,14 @@ class OrderController extends Controller
             } else {
                 return response()->json(['message' => 'Failed to create the zip file.'], 500);
             }
+        } else {
+            return response()->json(['message' => 'Failed to open zip file.'], 500);
         }
     }
+
+    
+
+
 
 
 

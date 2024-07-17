@@ -11,6 +11,11 @@
             <p class="text-center">{{Session::get('success')}}</p>
         </div>
     @endif
+
+    <div class="coupon-wrapper d-none" id="qty-validation">
+        <p class="text-center"></p>
+    </div>
+
     <div class="entry-content">
         <div class="kt-woo-cart-form-wrap">
             <div class="row">
@@ -119,20 +124,22 @@
                             </tr>
                             @endforeach
 
-                            @if(!Session::has('coupon'))
                             <tr>
                                 <td colspan="6" class="actions">
-                                    <div class="coupon-icons">
-                                        <input type="text" name="coupon_code" class="input-text"
-                                            id="coupon_code" value="" placeholder="Coupon code">
-                                        <button type="button" class="button" id="apply_coupon">Apply coupon</button>
-                                        <span class="text-danger coupon-errors"></span>
-                                    </div>
+                                    
+                                    @if(!Session::has('coupon'))
+                                        <div class="coupon-icons">
+                                            <input type="text" name="coupon_code" class="input-text"
+                                                id="coupon_code" value="" placeholder="Coupon code">
+                                            <button type="button" class="button" id="apply_coupon">Apply coupon</button>
+                                            <span class="text-danger coupon-errors"></span>
+                                        </div>
+                                    @endif
+
                                     <button type="button" class="button satay3" name="update_cart"
                                         value="Update cart" id="update_cart">Update cart</button>
                                 </td>
                             </tr>
-                            @endif
                         </tbody>
                     </table>
 
@@ -155,7 +162,7 @@
                                 <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">-<span
                                         class="woocommerce-Price-amount amount"><span
                                             class="woocommerce-Price-currencySymbol">$</span>
-                                            {{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}</span>
+                                            {{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}<a href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
                                 </td>
                             </tr>
                             @endif
@@ -330,6 +337,7 @@
 
 <script>
    $("#update_cart").on('click',function(){
+    $('#qty-validation').addClass('d-none');
       var data = [];
         $("input[name='product_quantity[]']").each(function(i,v) {
             if($(v).val() > 0)
@@ -340,6 +348,8 @@
              else
               {
                  $(this).addClass('validator');
+                 $('#qty-validation').removeClass('d-none');
+                 $('#qty-validation p').text('Please enter quantity equal to or more then 1.');
                  return false;
               }
 

@@ -38,6 +38,7 @@
                             <th>Coupon Code</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -48,6 +49,12 @@
                                 <td>{{ $coupon->code }}</td>
                                 <td>{{ date('d-m-Y',strtotime($coupon->start_date)) }}</td>
                                 <td>{{ date('d-m-Y',strtotime($coupon->end_date)) }}</td>
+                                <td>
+                                  <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                  </label>
+                                </td>
                                 <td>
                                     <div class="x_content">
                                       <a href="{{ route('coupon-show', ['id' => $coupon->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>

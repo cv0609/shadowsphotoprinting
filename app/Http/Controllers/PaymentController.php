@@ -192,7 +192,7 @@ class PaymentController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
-                    'selected_images' => $product_details->product_image,
+                    'selected_images' => $item->selected_images,
                     'price' => $item->quantity * $item->product->product_price,
                     'product_type' => $item->product_type ?? null,
                     'product_desc' => $item->product_desc,

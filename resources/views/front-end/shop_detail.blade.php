@@ -164,10 +164,10 @@ $(document).ready(function() {
                 success: function(response) {
                     $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
                     $('#add_to_cart_msg').removeClass('d-none');
-                    // alert(response.total_items);
-                    // Update the cart totals and item count
-                    // $("#cart-total-itmes").text(response.total_items + ' items');
-                    // $("#cart-total-price").text('$' + response.total_price.toFixed(2));
+
+                    $("input[name=quantity]").each(function() {
+                       $(this).val('');
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

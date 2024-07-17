@@ -49,7 +49,7 @@ class CartService
         $coupon_code = "";
         $coupon_id = "";
         if ($couponCode) {
-            $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
+            $coupon = Coupon::where(['code'=>$couponCode['code']])->where('is_active', true)->first();
             $coupon_code = $couponCode;
             if ($coupon) {
                 if ($coupon->type == '1') {
@@ -76,6 +76,7 @@ class CartService
          }
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
+        
         $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
         return $data;
 
