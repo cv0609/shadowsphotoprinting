@@ -40,23 +40,23 @@
                         {!! $page_content['page_instruction_description'] !!}
                     </ol>
                 </div>
-
             </div>
+
             <div class="fcsg-wrap">
-                <form action="{{ route('shop-upload-image') }}" method="post" enctype="multipart/form-data">
+                <form id="uploadForm" action="{{ route('shop-upload-image') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="uploading">
                         <div class="uploading-img">
                             <p>{{ $page_content['select_images_for_upload_title'] }}</p>
                             <div id="selectedFiles"></div>
-                            <a id="selectfiles" href="javascript:;" class="button"
-                                style="position: relative; z-index: 1;">Select images</a>
+                            <a id="selectfiles" href="javascript:;" class="button" style="position: relative; z-index: 1;">Select images</a>
                             <input type="file" id="fileInput" name="image[]" multiple style="display: none;">
                             <button type="submit" id="uploadfiles" class="button button-primary" style="display: none;">Upload images</button>
                         </div>
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 </section>
