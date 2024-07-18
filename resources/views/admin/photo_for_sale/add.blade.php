@@ -313,7 +313,7 @@
             }
 
             if ($('#product_image').val().length > 2) {
-                $('.product_image_error').text('Product image must be equal to and less than 2');
+                $('.product_image_error').text('Product image must be equal to or less than 2');
                 $('.product_image_error').addClass('text-danger');
                 error = true;
             }
