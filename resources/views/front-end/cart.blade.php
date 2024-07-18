@@ -162,7 +162,7 @@
                                 <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">-<span
                                         class="woocommerce-Price-amount amount"><span
                                             class="woocommerce-Price-currencySymbol">$</span>
-                                            {{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}<a href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
+                                            {{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}<a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
                                 </td>
                             </tr>
                             @endif
