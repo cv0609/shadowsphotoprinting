@@ -4041,7 +4041,7 @@ div#card-cvc-element {
     width: 0;
     opacity: 0;
 }
-/*  */
+
 section.sans-ser h5 {
     color: #fff;
     font-size: 36px;
@@ -4183,8 +4183,8 @@ font-size: 16px;
     height: 0;
   }
   
-  .slider {
-    position: absolute;
+   /* .slider {
+     position: absolute; 
     cursor: pointer;
     top: 0;
     left: 0;
@@ -4205,7 +4205,7 @@ font-size: 16px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
+  }  */
   
   input:checked + .slider {
     background-color: #2196F3;
@@ -4220,9 +4220,9 @@ font-size: 16px;
     -ms-transform: translateX(26px);
     transform: translateX(26px);
   }
-  
-  /* Rounded sliders */
-  .slider.round {
+   
+ /* Rounded sliders */
+   .slider.round {
     border-radius: 34px;
   }
   
@@ -4251,5 +4251,14 @@ font-size: 16px;
     right: -24px;
 }
 .coupon-icons {
-    text-align: left;
+    text-align: left; 
+} 
+
+.sets .products-img {
+    height: 267px;
+}
+
+.sets .products-img img {
+    height: 100%;
+    object-fit: cover;
 }
