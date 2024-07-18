@@ -92,7 +92,7 @@
                     <div class="instock-oant">
                         <div class="instock-udik">
                             <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
-                                     @foreach (explode(',',$product->product_images) as $key => $product_image)
+                                     @foreach (explode(',',$product->product_image) as $key => $product_image)
                                        <img src="{{ asset($product_image) }}" alt="">
                                      @endforeach
                             </a>
