@@ -25,10 +25,8 @@ btn.on('click', function (e) {
     $('html, body').animate({ scrollTop: 0 }, '300');
 });
 
+var all_images = [];
 
-
-
-//  selectfiles
 document.getElementById('selectfiles').addEventListener('click', function () {
     document.getElementById('fileInput').click();
 });
@@ -38,6 +36,9 @@ document.getElementById('fileInput').addEventListener('change', function () {
     if (files.length > 0) {
         document.getElementById('uploadfiles').style.display = 'inline-block';
         displaySelectedFiles(files);
+        for (var i = 0; i < files.length; i++) {
+            all_images.push(files[i]);
+        }
     } else {
         document.getElementById('uploadfiles').style.display = 'none';
         document.getElementById('selectedFiles').innerHTML = ''; // Clear selected files display
@@ -51,3 +52,18 @@ function displaySelectedFiles(files) {
     }
 }
 
+document.getElementById('uploadForm').addEventListener('submit', function (event) {
+    var form = this;
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.name = 'allimages[]';
+    fileInput.multiple = true;
+    fileInput.style.display = 'none';
+
+    var dataTransfer = new DataTransfer();
+    all_images.forEach(function(file) {
+        dataTransfer.items.add(file);
+    });
+    fileInput.files = dataTransfer.files;
+    form.appendChild(fileInput);
+});

@@ -35,7 +35,7 @@ class CreateCouponsTable extends Migration
                 $table->enum("multiple_use", ['0','1'])->comment('0 for No, 1 for Yes')->default("0");
                 $table->integer("total_use")->default(0);
                 $table->integer("status")->default(0);
-                $table->enum("is_active", ['0','1'])->comment('0 for No, 1 for Yes')->default("0");
+                $table->enum("is_active", ['0','1'])->comment('0 for No, 1 for Yes')->default("1");
                 $table->timestamps();
             });
         }

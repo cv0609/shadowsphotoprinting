@@ -53,9 +53,9 @@
                         <h4>PRODUCTS</h4>
                         <div class="fw-products-cats">
                             <select name="category" id="category">
-                                <option value="all">ALL</option>
+                                <option value="all">All</option>
                                 @foreach ($productCategories as $productCategory)
-                                    <option value="{{ $productCategory->slug }}">{{ $productCategory->name }}</option>
+                                    <option value="{{ $productCategory->slug }}">{{ ucfirst($productCategory->name) }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -164,10 +164,10 @@ $(document).ready(function() {
                 success: function(response) {
                     $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
                     $('#add_to_cart_msg').removeClass('d-none');
-                    // alert(response.total_items);
-                    // Update the cart totals and item count
-                    // $("#cart-total-itmes").text(response.total_items + ' items');
-                    // $("#cart-total-price").text('$' + response.total_price.toFixed(2));
+
+                    $("input[name=quantity]").each(function() {
+                       $(this).val('');
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

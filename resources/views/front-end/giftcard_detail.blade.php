@@ -22,14 +22,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="gift-img">
-                        <img src="{{ asset($blog_detail->image) }}" alt="">
+                        <img src="{{ asset($blog_detail->product_image) }}" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="summary">
                         <div class="title-cat">
                             <p>Gift Card</p>
-                            <h2>Gift Card</h2>
+                            <h2>{{$blog_detail->product_title}}</h2>
                             <form id="submitForm" method="post">
                                 <div class="quantity">
                                     <input type="hidden" id="giftcard_id" value="{{$blog_detail->id}}">
@@ -103,14 +103,14 @@
                             <a href="{{ route('gift-card-detail',['slug'=>$related_product->slug]) }}">
                                 <div class="noflipper">
                                     <div class="product-animations">
-                                        <img src="{{ asset($related_product->image) }}" alt="">
+                                        <img src="{{ asset($related_product->product_image) }}" alt="">
                                     </div>
                                 </div>
                             </a>
                             <div class="details-product-item">
                                 <div class="product_details-card">
                                     <a href="{{ route('gift-card-detail',['slug'=>$related_product->slug]) }}">
-                                        <h3>{{ $related_product->name }}</h3>
+                                        <h3>{{ $related_product->product_title }}</h3>
                                     </a>
                                 </div>
                             </div>

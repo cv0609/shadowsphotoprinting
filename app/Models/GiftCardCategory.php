@@ -11,9 +11,9 @@ class GiftCardCategory extends Model
 
     protected $table = 'gift_card_category';
     protected $fillable = [
-        'name',
+        'product_title',
         'slug',
-        'image'
+        'product_image'
     ];
 
     public function giftcards()

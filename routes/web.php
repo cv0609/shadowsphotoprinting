@@ -83,6 +83,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/coupon-show/{id}', [CouponController::class, 'couponShow'])->name('coupon-show');
         Route::post('/coupon-update',[CouponController::class,'couponUpdate'])->name('coupon-update');
         Route::delete('/coupon-delete/{id}',[CouponController::class,'couponDistroy'])->name('coupon-delete');
+        Route::get('/coupon-update-status',[CouponController::class,'couponUpdateStatus'])->name('coupon-update-status');
 
         Route::get('/shipping',[ShippingController::class,'shipping'])->name('shipping-list');
         Route::get('/shipping-add',[ShippingController::class,'shippingAdd'])->name('shipping-add');
@@ -128,6 +129,9 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-
 Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('checkout');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+
+Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
+
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');

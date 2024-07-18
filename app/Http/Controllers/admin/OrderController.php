@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Services\CartService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\OrderDetail;
 use ZipArchive;
 
 class OrderController extends Controller
@@ -77,28 +78,59 @@ class OrderController extends Controller
         }
 
         $zip = new ZipArchive();
-        $zipFileName = "order_{$order->order_number}.zip";
-        $zipFilePath = public_path('order_zip/'.$zipFileName); // Specify the path to save the zip file
+        $zipFileName = "$order->order_number.zip";
+        $zipFilePath = public_path('order_zip/'.$zipFileName);
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
             foreach ($uniqueOrderDetails as $details) {
                 $productId = $details->product_id;
                 $quantity = $details->quantity;
+                $productType = $details->product_type;
 
-                // Create folder structure: product_id/quantity/
-                $quantityFolder = "$productId/quantity_{$quantity}/";
-                $zip->addEmptyDir($quantityFolder); // Create the quantity folder
+                $productDetails = $this->CartService->getProductDetailsByType($productId, $productType);
 
-                // Hard-coded image path
-                $hardCodedImagePath = public_path('assets/admin/images/1718088597.jpg'); // Adjust based on your actual structure
+                $productTitle = isset($productDetails->product_title) ? $productDetails->product_title : '';
+
+                $quantityFolder = "$productTitle/qty_{$quantity}/";
+                $zip->addEmptyDir($quantityFolder);
 
 
+                $orderDetails = OrderDetail::where('product_id', $productId)->where('order_id', $order_id)->where('quantity',$quantity)->get();
 
-                if (file_exists($hardCodedImagePath)) {
+                $fileCounter = [];
 
-                    $zip->addFile($hardCodedImagePath, $quantityFolder . basename($hardCodedImagePath)); // Add to the quantity folder
-                } else {
-                    dump("File does not exist: " . $hardCodedImagePath); // Debugging
+                if($productType == 'shop'){
+                    foreach ($orderDetails as $image) {
+                        $imagePath = $image->selected_images;
+                        if (file_exists($imagePath)) {
+                            $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
+                            $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+    
+                            if (!isset($fileCounter[$baseName])) {
+                                $fileCounter[$baseName] = 0;
+                            }
+    
+                            $fileCounter[$baseName]++;
+                            $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
+                            $zip->addFile($imagePath, $uniqueFileName);
+                        }
+                    }
+                }
+
+                if($productType == 'gift_card' || $productType == 'photo_for_sale'){
+                    $imagePath = $productDetails->product_image;
+                    if (file_exists($imagePath)) {
+                        $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
+                        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+
+                        if (!isset($fileCounter[$baseName])) {
+                            $fileCounter[$baseName] = 0;
+                        }
+
+                        $fileCounter[$baseName]++;
+                        $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
+                        $zip->addFile($imagePath, $uniqueFileName);
+                    }
                 }
             }
 
@@ -109,10 +141,14 @@ class OrderController extends Controller
             } else {
                 return response()->json(['message' => 'Failed to create the zip file.'], 500);
             }
+        } else {
+            return response()->json(['message' => 'Failed to open zip file.'], 500);
         }
-
-
     }
+
+    
+
+
 
 
 

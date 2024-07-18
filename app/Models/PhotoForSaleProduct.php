@@ -14,7 +14,7 @@ class PhotoForSaleProduct extends Model
         'min_price',
         'max_price',
         'product_description',
-        'product_images',
+        'product_image',
     ];
 
     public function product_category()

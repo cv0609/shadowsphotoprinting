@@ -46,7 +46,7 @@ class PhotoForSaleController extends Controller
              $file->move($destinationPath, $fileName);
              $image =  $destinationPath.'/'.$fileName;
          }
-         PhotoForSaleCategory::insert(["name"=>$request->name,'slug'=>$slug,'image'=>$image]);
+         PhotoForSaleCategory::insert(["product_title"=>$request->name,'slug'=>$slug,'product_image'=>$image]);
         return redirect()->route('photos-for-sale-categories-list')->with('success','Category inserted successfully');
     }
 
@@ -59,7 +59,7 @@ class PhotoForSaleController extends Controller
     public function productCategoryUpdate(Request $request)
     {
         $slug = \Str::slug($request->name);
-        $data = ["name"=>$request->name,'slug'=>$slug];
+        $data = ["product_title"=>$request->name,'slug'=>$slug];
         if($request->has('image'))
         {
             $file = $request->file('image');
@@ -67,7 +67,7 @@ class PhotoForSaleController extends Controller
             $destinationPath = 'assets/admin/uploads/categories';
             $file->move($destinationPath, $fileName);
             $image =  $destinationPath.'/'.$fileName;
-            $data['image']=$image;
+            $data['product_image']=$image;
         }
         PhotoForSaleCategory::whereId($request->category_id)->update($data);
 
@@ -121,7 +121,7 @@ class PhotoForSaleController extends Controller
             $product_image = 'assets/admin/images/'.$imageName;
             $product_image_array[] = $product_image;
             }
-            $data["product_images"] = implode(',',$product_image_array);
+            $data["product_image"] = implode(',',$product_image_array);
          }
 
          $productId = PhotoForSaleProduct::insertGetId($data);
@@ -176,7 +176,7 @@ class PhotoForSaleController extends Controller
             $product_image = 'assets/admin/images/'.$imageName;
             $product_image_array[] = $product_image;
             }
-            $data["product_images"] = implode(',',$product_image_array);
+            $data["product_image"] = implode(',',$product_image_array);
          }
 
         PhotoForSaleProduct::whereId($request->product_id)->update($data);

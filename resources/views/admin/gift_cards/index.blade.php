@@ -43,8 +43,8 @@
                         @foreach ($categories as $key => $category)
                           <tr>
                             <th scope="row">{{ $key + 1 }}</th>
-                            <td>{{ ucfirst($category->name) }}</td>
-                            <td><img src="{{ (isset($category['image']) && !empty($category['image'])) ? asset($category['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
+                            <td>{{ ucfirst($category->product_title) }}</td>
+                            <td><img src="{{ (isset($category['product_image']) && !empty($category['product_image'])) ? asset($category['product_image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
                             <td>
                               <div class="x_content">
                               <a href="{{ route('gift-card-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>

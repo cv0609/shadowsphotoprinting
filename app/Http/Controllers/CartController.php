@@ -37,15 +37,6 @@ class CartController extends Controller
             "session_id" => $session_id
         ]);
 
-        // cart_items: cartItems,
-        // total: total,
-        // selectedImages:selectedImages,
-        // photo_for_sale_size:product_size,
-        // photo_for_sale_type:product_type,
-        // product_min_max_price:product_min_max_price,
-        // item_type:'photo_for_sale',
-        // product_price:product_price,
-
         if ($cart) {
             $cartId = $cart->id;
             $itemType = $request->item_type ?? '';
@@ -67,10 +58,10 @@ class CartController extends Controller
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
 
-                foreach ($request->selectedImages ?? [] as $selectedImage) {
+                foreach ($request->selectedImages  as $selectedImage) {
                     $tempFileName = basename($selectedImage);
                     $tempImagePath = 'public/temp/' . $tempFileName;
-                    $permanentImagePath = 'public/assets/images/order_images/' . $tempFileName;
+                    $permanentImagePath = 'public/assets/images/order_images/'.$tempFileName;
                     Storage::move($tempImagePath, $permanentImagePath);
                     $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
 
@@ -121,10 +112,6 @@ class CartController extends Controller
                         $existingCartItem->save();
                     } else {
                         CartData::create($insertData);
-                        // if($itemType == 'gift_card'){
-                        //     $message = '“Gift Card” has been added to your cart.';
-                        // }
-                        // // \flash('success', $message);
                     }
                 }
             }
@@ -260,9 +247,11 @@ class CartController extends Controller
             'discount_amount' => $amount,
         ]);
         return ['success' => true, 'total' => $total['subtotal'] - $coupon->discount_amount];
+    }
 
-
-
+    public function resetCoupon(){
+        Session::forget('coupon');
+        return back()->with('success','Coupon code has been reset successfully.');
     }
 
    public function billingDetails(Request $request)

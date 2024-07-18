@@ -312,6 +312,12 @@
                 error = true;
             }
 
+            if ($('#product_image').val().length > 2) {
+                $('.product_image_error').text('Product image must be equal to or less than 2');
+                $('.product_image_error').addClass('text-danger');
+                error = true;
+            }
+
             if ($('#product_description').val() == '') {
                 $('.product_description_error').text('Product description field is required.');
                 $('.product_description_error').addClass('text-danger');
@@ -337,13 +343,6 @@
                         type = type.concat(selectedValues); 
                     }
                 });
-
-                // if (hasDuplicates(size) && hasDuplicates(type)) {
-                //     $('.last-row:last').prepend('<span class="new-span text-danger">You can not add duplicate entry for size and type</span>');
-                //     return false;
-                // }
-
-                // $('#demo-form2').submit();
 
                 var formData = new FormData($('#demo-form2')[0]);
 

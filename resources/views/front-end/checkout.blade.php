@@ -298,8 +298,11 @@
                                         <p>Your personal data will be used to process your order, support your
                                             experience throughout this website, and for other purposes described
                                             in our <a href="#" target="_blank">privacy policy</a>.</p>
-                                        <div class="place-order">
+                                        <div class="place-order" id="place-order-btn">
                                             <button id="submit"> Place order </button>
+                                        </div>
+                                        <div class="loader-order d-none" id="loader-order-btn">
+                                            <button type="button" disabled="disabled"> <img src="{{asset('assets/images/loader.gif')}}"> </button>
                                         </div>
                                     </div>
                                 </form>
@@ -405,14 +408,16 @@
         }
 
         if (!isValid) {
-            return; // Stop form submission
+            return;
         }
-
 
         stripe.createToken(cardNumber).then(function(result) {
             if (result.error) {
-                // Display error.message in your UI
+                $('#place-order-btn').removeClass('d-none');
+                $('#loader-order-btn').addClass('d-none');
             } else {
+                $('#place-order-btn').addClass('d-none');
+                $('#loader-order-btn').removeClass('d-none');
                 // Send the token to your server
                 var formData = {
                     fname: fname,

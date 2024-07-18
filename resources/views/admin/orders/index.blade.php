@@ -99,7 +99,6 @@
                     $("#main-tbody").html(data);
                 } else {
                     $("#main-tbody").html("<tr><td colspan='5'><p class='text-center'>No any data found!</p></td></tr>");
-
                 }
             }
         });

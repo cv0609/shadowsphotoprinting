@@ -28,37 +28,28 @@
                                 <div class="slider slider-for">
                                 @php
                                     if(isset($productDetails)){
-                                        $imageArray = explode(",", $productDetails->product_images);
-                                        $image1 = $imageArray[0] ?? '';
-                                        $image2 = $imageArray[1] ?? '';  
+                                        $imageArray = explode(",", $productDetails->product_image);
                                     }
                                 @endphp
-                                    <div>
-                                        <div class="billboard">
-                                            <img src="{{ asset($image1) ?? ''}}" alt="">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="billboard">
-                                            <img src="{{ asset($image2) ?? ''}}" alt="">
-                                        </div>
-                                    </div>
 
+                                    @foreach($imageArray as $arrImg)
+                                        <div>
+                                            <div class="billboard">
+                                                <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="chirs">
                                 <div class="slider slider-nav">
-                                    <div>
-                                        <div class="billboards">
-                                            <img src="{{ asset($image1) ?? ''}}" alt="">
+                                    @foreach($imageArray as $arrImg)
+                                        <div>
+                                            <div class="billboard">
+                                                <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="billboards">
-                                            <img src="{{ asset($image2) ?? ''}}" alt="">
-                                        </div>
-                                    </div>
-
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -160,15 +151,16 @@
                     @foreach ($relatedProduct as $item)
                     @php
                         if(isset($item)){
-                            $imageArray = explode(",", $item->product_images);
-                            $image1 = $imageArray[0] ?? '';
-                            $image2 = $imageArray[1] ?? '';  
+                            $imageArray = explode(",", $item->product_image);
                         }
                     @endphp
                     <div>
                         <div class="sets">
+                            <a href="{{ route('photos-for-sale-details',['slug'=>$item->slug]) }}">
                             <div class="products-img">
-                                <img src="{{ asset($image1) ?? ''}}" alt="">
+                                @foreach($imageArray as $arrImg)
+                                    <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                @endforeach
                                 <div class="onsale">
                                     <span>Sale!</span>
                                 </div>
@@ -177,6 +169,7 @@
                                 <h3>{{$item->product_title}}</h3>
                                 <p>${{$item->min_price}} - ${{$item->max_price}}</p>
                             </div>
+                            </a>
                         </div>
                     </div>
                     @endforeach
