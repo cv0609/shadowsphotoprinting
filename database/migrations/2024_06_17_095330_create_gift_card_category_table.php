@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('gift_card_category', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('product_title');
             $table->string('slug');
-            $table->string('image');
+            $table->string('product_image');
             $table->timestamps();
         });
     }
