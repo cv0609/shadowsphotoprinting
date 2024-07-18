@@ -4229,3 +4229,27 @@ font-size: 16px;
   .slider.round:before {
     border-radius: 50%;
   }
+
+  /*  */
+
+  span.woocommerce-Price-amount.amount a {
+    border-radius: 50%;
+    z-index: 1000;
+    color: red;
+    border: 1px solid red;
+    padding-right: 0;
+    height: 14px;
+    font-size: 12px;
+    line-height: 1;
+    transition: background .1s ease-in-out;
+    margin: 0 6px;
+    width: 14px;
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+    top: -5px;
+    right: -24px;
+}
+.coupon-icons {
+    text-align: left;
+}
