@@ -69,7 +69,7 @@
 
                             <div class="details-product-item">
                                 <div class="product_details-card">
-                                    <a href="#">
+                                    <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
                                         <h3>{{ ucfirst($product->product_title) }}</h3>
                                         <span>${{ $product->min_price }} - ${{ $product->max_price }} incl. GST</span>
                                     </a>
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="details_product-crlf">
-                            <a href="#">
+                            <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
                                 <h3>{{ ucfirst($product->product_title) }}</h3>
                                 <span>${{ $product->min_price }} - ${{ $product->max_price }} incl. GST</span>
                             </a>
