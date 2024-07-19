@@ -163,7 +163,7 @@ class PhotoForSaleController extends Controller
         return view('admin.photo_for_sale.edit', compact('product','productCategories'));
     }
 
-    public function productUpdate(Request $request)
+    public function productUpdate(PhotoForSaleProductRequest $request)
     {
         $slug = \Str::slug($request->product_title);
 

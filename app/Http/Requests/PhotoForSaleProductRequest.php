@@ -26,8 +26,8 @@ class PhotoForSaleProductRequest extends FormRequest
             'product_title' => 'required|string|max:255',
             'min_price' => 'required|numeric|min:0',
             'max_price' => 'required|numeric|min:0|gte:min_price',
-            'product_images' => 'required|array',
-            'product_images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_images' => 'nullable|array|max:2|min:2',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

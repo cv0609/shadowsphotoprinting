@@ -312,11 +312,27 @@
                 error = true;
             }
 
-            if ($('#demo-form2 input[type=file]').get(0).files.length > 2 || $('#demo-form2 input[type=file]').get(0).files.length < 2) {
+            let files = $('#demo-form2 input[type=file]').get(0).files;
+            let allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+
+            if (files.length > 2 || files.length < 2) {
                 $('.product_image_error').text('Product must have 2 images.');
                 $('.product_image_error').addClass('text-danger');
                 error = true;
             }
+
+            if(files.length == 2){
+                for (let i = 0; i < files.length; i++) {
+                    let fileExtension = files[i].name.split('.').pop().toLowerCase();
+                    if (!allowedExtensions.includes(fileExtension)) {
+                        $('.product_image_error').text('Only JPEG, PNG, JPG, GIF, and SVG formats are allowed.');
+                        $('.product_image_error').addClass('text-danger');
+                        error = true;
+                        break;
+                    }
+                }
+            }
+
 
             if ($('#product_description').val() == '') {
                 $('.product_description_error').text('Product description field is required.');
