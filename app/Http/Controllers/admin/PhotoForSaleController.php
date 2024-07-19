@@ -174,7 +174,7 @@ class PhotoForSaleController extends Controller
 
         if(isset($request->type_arr) && isset($request->size_arr) && isset($request->price_arr)){
 
-            $photoforsaledata = PhotoForSaleSizePrices::where('product_id',$request->product_id)->delete();
+            // $photoforsaledata = PhotoForSaleSizePrices::where('product_id',$request->product_id)->delete();
             
             $uniqueCombinations = [];
             foreach ($size_arr as $size_index => $size_data) {
