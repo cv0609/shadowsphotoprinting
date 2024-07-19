@@ -37,9 +37,7 @@
                                         @endforeach
                                     </select>
                                     <span class="validation-error category_id_error"></span>
-                                    @error('category_id')
-                                    <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                   
                                 </div>
 
                             </div>
@@ -51,9 +49,7 @@
                                     <input type="text" id="product_title" name="product_title" required="required"
                                         class="form-control ">
                                     <span class="validation-error product_title_error"></span>
-                                    @error('product_title')
-                                    <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                   
                                 </div>
                             </div>
 
@@ -65,9 +61,7 @@
                                     <input type="number" id="min_price" name="min_price" required="required"
                                         class="form-control" step=".01">
                                     <span class="validation-error min_price_error"></span>
-                                    @error('min_price')
-                                    <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                   
                                 </div>
                             </div>
 
@@ -79,9 +73,7 @@
                                     <input type="number" id="max_price" name="max_price" required="required"
                                         class="form-control" step=".01">
                                     <span class="validation-error max_price_error"></span>
-                                    @error('max_price')
-                                    <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                   
                                 </div>
                             </div>
 
@@ -93,9 +85,7 @@
                                     <input type="file" id="product_image" name="product_images[]" required="required"
                                         class="form-control" multiple>
                                     <span class="validation-error product_image_error"></span>  
-                                    @error('product_images')
-                                    <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                    
                                 </div>
                             </div>
 
@@ -107,9 +97,7 @@
                                     <textarea id="product_description" name="product_description"
                                         class="form-control" id="product_description"></textarea>
                                     <span class="validation-error product_description_error"></span>      
-                                    @error('product_description')
-                                    <p class="text-danger">{{ $message }}</p>
-                                    @enderror
+                                    
                                 </div>
                             </div>
                             <div class="size-and-type-wrap">
@@ -312,11 +300,27 @@
                 error = true;
             }
 
-            if ($('#demo-form2 input[type=file]').get(0).files.length > 2 || $('#demo-form2 input[type=file]').get(0).files.length < 2) {
+            let files = $('#demo-form2 input[type=file]').get(0).files;
+            let allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+
+            if (files.length > 2 || files.length < 2) {
                 $('.product_image_error').text('Product must have 2 images.');
                 $('.product_image_error').addClass('text-danger');
                 error = true;
             }
+
+            if(files.length == 2){
+                for (let i = 0; i < files.length; i++) {
+                    let fileExtension = files[i].name.split('.').pop().toLowerCase();
+                    if (!allowedExtensions.includes(fileExtension)) {
+                        $('.product_image_error').text('Only JPEG, PNG, JPG, GIF, and SVG formats are allowed.');
+                        $('.product_image_error').addClass('text-danger');
+                        error = true;
+                        break;
+                    }
+                }
+            }
+
 
             if ($('#product_description').val() == '') {
                 $('.product_description_error').text('Product description field is required.');

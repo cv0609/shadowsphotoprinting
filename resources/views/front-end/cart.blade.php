@@ -2,6 +2,7 @@
 @section('content')
 @php
    $CartService = app(App\Services\CartService::class);
+
 @endphp
 <section class="coupon-main">
 <div class="container">
@@ -175,7 +176,7 @@
                                         <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
                                         <p>
                                         <p class="">
-                                            Shipping to <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state'].' '.Session::get('billing_details')['postcode']}}</strong>. </p>
+                                            Shipping to <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>. </p>
                                         </p>
 
                                         <form action="{{ route('billing-details') }}" class="change-calculate-form" method="POST">
@@ -188,7 +189,7 @@
 
                                                     </select>
 
-                                                    <select class="form-control" id="state" name="state" >
+                                                    <select class="form-control" id="state" name="state" required>
                                                         <option value="">State</option>
                                                         @foreach ($countries->states as $state)
                                                           <option value="{{ $state->id }} "  <?= ($state->id ==  Session::get('billing_details')['state_id'] ) ? 'selected' : '' ?>>{{ $state->name }}</option>
@@ -196,11 +197,11 @@
 
                                                     </select>
                                                     <p class="form-row">
-                                                        <input type="text" name="city" placeholder="city" value="{{ Session::get('billing_details')['city'] }}">
+                                                        <input type="text" name="city" placeholder="city" value="{{ Session::get('billing_details')['city'] }}" required>
                                                     </p>
                                                     <p class="form-row">
                                                         <input type="text" name="postcode"
-                                                            placeholder="postcode/ ZIP" value="{{ Session::get('billing_details')['postcode'] }}">
+                                                            placeholder="postcode/ ZIP" value="{{ Session::get('billing_details')['postcode'] }}" required>
                                                     </p>
                                                     <p class="form-row">
                                                         <button type="submit"
@@ -221,23 +222,23 @@
                                                 id="calculat-shipping">Calculate shipping</a>
                                             <div class="calculate-shipping">
                                                 <select class="form-control" id="country" name="country" >
-                                                    <option value="saab" selected>{{ $countries->name }}</option>
+                                                    <option value="{{ $countries->id }}" selected>{{ $countries->name }}</option>
 
                                                 </select>
-                                                <select class="form-control" id="state" name="state" >
-                                                    <option>State</option>
+                                                <select class="form-control" id="state" name="state" required>
+                                                    <option value="">State</option>
                                                         @foreach ($countries->states as $state)
                                                     <option value="{{ $state->id }}">{{ $state->name }}</option>
 
                                                         @endforeach
-                                                option>
+                                               
                                                 </select>
                                                 <p class="form-row">
-                                                    <input type="text" name="city" placeholder="city">
+                                                    <input type="text" name="city" placeholder="city" required>
                                                 </p>
                                                 <p class="form-row">
                                                     <input type="text" name="postcode"
-                                                        placeholder="postcode/ ZIP">
+                                                        placeholder="postcode/ ZIP" required>
                                                 </p>
                                                 <p class="form-row">
                                                     <button type="submit"
