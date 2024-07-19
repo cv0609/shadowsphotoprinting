@@ -104,12 +104,6 @@ class PhotoForSaleController extends Controller
         $type_arr = $request->type_arr['type'];
         $price_arr = $request->price_arr['price'];
 
-        $validation = $this->PageDataService->photoForSaleDuplicateSizeTypeValidation($size_arr,$type_arr);
-
-        if(isset($validation) && $validation==true){
-            return response()->json(['error' => true,'message' => 'Duplicate entry']);
-        }
-
         $slug = \Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
@@ -124,34 +118,39 @@ class PhotoForSaleController extends Controller
             $data["product_image"] = implode(',',$product_image_array);
          }
 
-         $productId = PhotoForSaleProduct::insertGetId($data);
-        
-         if(isset($request->type_arr) && isset($request->size_arr) && isset($request->price_arr)){
-        
-            foreach ($size_arr as $size_index => $size_data) {
-                foreach ($type_arr as $type_index => $type_data) {
-                    foreach ($size_data['children'] as $size_id) {
-                        foreach ($type_data['children'] as $type_id) {
-                            foreach ($price_arr[$type_index]['children'] as $price_id) {
-                                $combinationExists = PhotoForSaleSizePrices::where('product_id', $productId)
-                                    ->where('size_id', $size_id)
-                                    ->where('type_id', $type_id)
-                                    ->exists();
-        
-                                if (!$combinationExists) {
-                                    PhotoForSaleSizePrices::create([
-                                        'product_id' => $productId,
-                                        'size_id' => $size_id,
-                                        'type_id' => $type_id,
-                                        'price' => $price_id,
-                                    ]);
-                                }
+        $productId = PhotoForSaleProduct::insertGetId($data);
+
+        $uniqueCombinations = [];
+        foreach ($size_arr as $size_index => $size_data) {
+            if (isset($type_arr[$size_index]) && isset($price_arr[$size_index])) {
+                $type_data = $type_arr[$size_index];
+                $price_data = $price_arr[$size_index];
+                foreach ($price_data['children'] as $price_id) {
+                    foreach ($type_data['children'] as $type_id) {
+                        foreach ($size_data['children'] as $size_id) {
+                            $combinationKey = $size_id . '-' . $type_id . '-' . $price_id . "<br>";
+                            if (in_array($combinationKey, $uniqueCombinations)) {
+                                return response()->json(['error' => true,'message' => 'Duplicate entry']);
                             }
+                            $uniqueCombinations[] = $combinationKey;
                         }
                     }
                 }
             }
         }
+
+        foreach ($uniqueCombinations as $combination) {
+            $cleanedCombination = str_replace('<br>', '', $combination);
+            list($size_id, $type_id, $price_id) = explode('-', $cleanedCombination);
+    
+            PhotoForSaleSizePrices::create([
+                'product_id' => 1,
+                'size_id' => $size_id,
+                'type_id' => $type_id,
+                'price' => $price_id,
+            ]);
+        }
+
         Session::flash('success', 'Product inserted successfully');
         return response()->json(['error'=>false,'message' => 'Product inserted successfully.']);
     }

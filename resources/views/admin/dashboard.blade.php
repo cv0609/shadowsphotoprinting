@@ -1,5 +1,7 @@
 @extends('admin.layout.main')
 @section('page-content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
           <!-- page content -->
           <div class="right_col" role="main">
             <!-- top tiles -->

@@ -13,6 +13,7 @@ class PhotoForSaleSizePrices extends Model
         'size_id',
         'type_id',
         'price',
+        'row_counter'
     ];
 
     public function getSizeById()
