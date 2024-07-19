@@ -29,9 +29,10 @@ class MakeOrder extends Mailable
     public function build()
     {
         return $this->from('your_email@example.com')
-            ->subject('Your Order Confirmation')
+            ->subject('Your ShadowsPhotoPrinting Order Confirmation')
             ->view('mail.make-order')
             ->with('order', $this->order);
+
     }
 }
 
