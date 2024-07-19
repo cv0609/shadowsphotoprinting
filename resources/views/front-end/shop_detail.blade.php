@@ -43,10 +43,10 @@
                     </div>
                     <div class="cart-totals">
                         <div class="cart-items">
-                            <span id="cart-total-itmes">0 items</span>
+                            <span id="cart-total-itmes"><span class="show-details">0</span>items</span>
                         </div>
                         <div class="cart-items">
-                            <span id="cart-total-price">$0.00</span>
+                            <span id="cart-total-price">$<span class="show-details">0.00</span> </span>
                         </div>
                     </div>
                     <div class="fw-products">
@@ -82,7 +82,7 @@
                                             <span>${{ $product->product_price }}</span>
                                         </td>
                                         <td>
-                                            <span id="quantity-price-{{$key}}">$0.00</span>
+                                            <span id="quantity-price-{{$key}}">$ <span class="show-details">0.00</span> </span>
                                         </td>
                                     </tr>
                                    @endforeach
@@ -168,6 +168,8 @@ $(document).ready(function() {
                     $("input[name=quantity]").each(function() {
                        $(this).val('');
                     });
+                    $(".show-details").text("0.00");
+                    $("#cart-total-itmes").children(".show-details").text("0");
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);
@@ -190,20 +192,20 @@ $(document).ready(function() {
             var price = parseFloat($(this).data('price'));
             var totalPrice = quantity * price;
             total += totalPrice;
-            totalQuantity += quantity;
+            totalQuantity += +quantity;
 
             if(quantity == ''){
                 totalPrice=0;
-                $("#quantity-price-" + rowId).text('$' + totalPrice.toFixed(2));
+                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
             }
 
             if (quantity !== '' && quantity > 0) {
-                $("#quantity-price-" + rowId).text('$' + totalPrice.toFixed(2));
+                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
             }
         });
-
-        $("#cart-total-price").text('$' + total.toFixed(2)); // Format total to 2 decimal places
-        $("#cart-total-itmes").text(totalQuantity + ' items');
+    
+        $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
+        $("#cart-total-itmes").children('.show-details').text(totalQuantity);
     }
 
     // Initial update of cart totals on page load
