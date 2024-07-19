@@ -4088,12 +4088,13 @@ section.sans-ser {
 .details_product-crlf h3 {
     font-family: "Source Sans Pro";
     text-transform: none;
+    line-height: 20px;
     letter-spacing: 1.2px;
     font-weight: 600;
     font-style: normal;
     color: #444444;
-    font-size: 22px;
-    line-height: 1.2;
+    font-size: 20px;
+    min-height: 38px;
 }
 .instock-udik a {
     margin-right: 1%;
@@ -4260,5 +4261,18 @@ font-size: 16px;
 
 .sets .products-img img {
     height: 100%;
+    object-fit: cover;
+}
+.product-animation {
+    height: 545px;
+}
+
+.product-animation img {
+    height: 100%;
+    object-fit: cover;
+}
+section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img {
+    max-width: 141px;
+    height: 141px;
     object-fit: cover;
 }
