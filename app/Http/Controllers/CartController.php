@@ -178,6 +178,10 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
 
+        if ($coupon->isStarted()) {
+            return ['success' => false, 'message' => 'Coupon is not yet valid'];
+        }
+
         if ($coupon->isExpired()) {
             return ['success' => false, 'message' => 'Coupon has expired'];
         }
@@ -256,7 +260,7 @@ class CartController extends Controller
 
    public function billingDetails(Request $request)
     {
-       
+
         $state_name = State::whereId($request->state)->select('name')->first();
         $session_data = ['country'=>$request->country,'state'=>$state_name,'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
         Session::put('billing_details', $session_data);
