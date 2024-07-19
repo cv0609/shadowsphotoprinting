@@ -312,8 +312,8 @@
                 error = true;
             }
 
-            if ($('#product_image').val().length > 2) {
-                $('.product_image_error').text('Product image must be equal to or less than 2');
+            if ($('#demo-form2 input[type=file]').get(0).files.length > 2 || $('#demo-form2 input[type=file]').get(0).files.length < 2) {
+                $('.product_image_error').text('Product image count must be exactly 2');
                 $('.product_image_error').addClass('text-danger');
                 error = true;
             }
