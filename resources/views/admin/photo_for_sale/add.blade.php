@@ -37,7 +37,7 @@
                                         @endforeach
                                     </select>
                                     <span class="validation-error category_id_error"></span>
-                                   
+
                                 </div>
 
                             </div>
@@ -49,7 +49,7 @@
                                     <input type="text" id="product_title" name="product_title" required="required"
                                         class="form-control ">
                                     <span class="validation-error product_title_error"></span>
-                                   
+
                                 </div>
                             </div>
 
@@ -61,7 +61,7 @@
                                     <input type="number" id="min_price" name="min_price" required="required"
                                         class="form-control" step=".01">
                                     <span class="validation-error min_price_error"></span>
-                                   
+
                                 </div>
                             </div>
 
@@ -73,7 +73,7 @@
                                     <input type="number" id="max_price" name="max_price" required="required"
                                         class="form-control" step=".01">
                                     <span class="validation-error max_price_error"></span>
-                                   
+
                                 </div>
                             </div>
 
@@ -84,8 +84,8 @@
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="file" id="product_image" name="product_images[]" required="required"
                                         class="form-control" multiple>
-                                    <span class="validation-error product_image_error"></span>  
-                                    
+                                    <span class="validation-error product_image_error"></span>
+
                                 </div>
                             </div>
 
@@ -96,8 +96,8 @@
                                 <div class="col-md-6 col-sm-6 ">
                                     <textarea id="product_description" name="product_description"
                                         class="form-control" id="product_description"></textarea>
-                                    <span class="validation-error product_description_error"></span>      
-                                    
+                                    <span class="validation-error product_description_error"></span>
+
                                 </div>
                             </div>
                             <div class="size-and-type-wrap">
@@ -146,6 +146,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                      <input type="hidden" name="type_size_count[click_count][1][children][]" value="1">
                                 </div>
                             </div>
                             <div class="row read-more">
@@ -178,7 +179,7 @@
 <script>
     var sizes = @json($size);
     var sizeTypes = @json($size_type);
-
+    var clickCount = 2;
     $(document).ready(function() {
 
         $('.multi_type, .multi_size').select2({
@@ -229,7 +230,7 @@
                             ' <span class="price_arr_error"></span>' +
                         '</div>' +
                     '</div>' +
-                '</div>' +
+                '</div><input type="hidden" name="type_size_count[click_count]['+count+'][children][]" value="'+clickCount+'">' +
             '</div>';
 
             $(".size-and-type-wrap").append(html);
@@ -238,11 +239,13 @@
                 placeholder: 'Select type',
                 allowClear: true
             });
+
+            clickCount++;
         });
 
         $('#submitBtn').on('click', function() {
 
-            $(document).find('.text-danger').text('');    
+            $(document).find('.text-danger').text('');
 
             var error = false;
 
@@ -334,17 +337,17 @@
 
                 var size = [];
                 $('select[name^="size_arr"]').each(function() {
-                    var selectedValues = $(this).val(); 
+                    var selectedValues = $(this).val();
                     if (selectedValues) {
-                        size = size.concat(selectedValues); 
+                        size = size.concat(selectedValues);
                     }
                 });
 
                 var type = [];
                 $('select[name^="type_arr"]').each(function() {
-                    var selectedValues = $(this).val(); 
+                    var selectedValues = $(this).val();
                     if (selectedValues) {
-                        type = type.concat(selectedValues); 
+                        type = type.concat(selectedValues);
                     }
                 });
 
@@ -372,11 +375,11 @@
         for (let i = 0; i < array.length; i++) {
             for (let j = i + 1; j < array.length; j++) {
                 if (array[i] === array[j]) {
-                    return true; 
+                    return true;
                 }
             }
         }
-        return false; 
+        return false;
     }
 
     function hideSelectOption(){
@@ -397,9 +400,10 @@
 
     function removeAddMore(that) {
         $(that).closest(".added-section.size-and-type").remove();
+        clickCount = clickCount - 1;
     }
 
-    
+
 </script>
 @endsection
 

@@ -31,7 +31,7 @@
                                 @endforeach
                             </select>
                             <span class="validation-error category_id_error"></span>
-                        
+
                     </div>
 
                     </div>
@@ -41,7 +41,7 @@
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="product_title" name="product_title" required="required" class="form-control" value="{{$product->product_title}}">
                             <span class="validation-error product_title_error"></span>
-                            
+
                         </div>
                     </div>
                     <div class="item form-group">
@@ -52,7 +52,7 @@
                             <input type="number" id="min_price" name="min_price" required="required"
                                 class="form-control" step=".01" value="{{$product->min_price}}">
                             <span class="validation-error min_price_error"></span>
-                            
+
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                             <input type="number" id="max_price" name="max_price" required="required"
                                 class="form-control" step=".01" value="{{$product->max_price}}">
                             <span class="validation-error max_price_error"></span>
-                            
+
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="file" id="product_image" name="product_images[]" required="required" class="form-control" multiple>
-                            <span class="validation-error product_image_error"></span>  
+                            <span class="validation-error product_image_error"></span>
                             <div class="choose-file-wrap">
                                 <div class="choose-file-multiple">
                                   @foreach (explode(',',$product->product_image) as $images)
@@ -85,7 +85,7 @@
                             </div>
 
                         </div>
-                           
+
                         </div>
                     </div>
 
@@ -94,11 +94,12 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <textarea id="product_description" name="product_description" required="required" class="form-control ">{{$product->product_description}}</textarea>
-                            <span class="validation-error product_description_error"></span>      
+                            <span class="validation-error product_description_error"></span>
                         </div>
                     </div>
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
+                    @foreach ($SaleSizePricesGroupBy as $SaleSizePricesGroupB)
 
                     <div class="size-and-type-wrap">
                         <div class="size-and-type">
@@ -148,6 +149,7 @@
                             </div>
                         </div>
                     </div>
+                    @endforeach
 
                     <div class="row read-more">
                         <div class="col-md-3"></div>
@@ -175,6 +177,7 @@
 
 @section('custom-script')
 <script>
+
     var sizes = @json($size);
     var sizeTypes = @json($size_type);
 
@@ -241,7 +244,7 @@
 
         $('#editSubmitBtn').on('click', function() {
 
-            $(document).find('.text-danger').text('');    
+            $(document).find('.text-danger').text('');
 
             var error = false;
 
@@ -295,7 +298,7 @@
 
             let files = $('#edit-form input[type=file]').get(0);
             let allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-    
+
             if(files.files && files.files.length > 0){
                 console.log('1');
                 console.log(files.length);
@@ -332,17 +335,17 @@
 
                 var size = [];
                 $('select[name^="size_arr"]').each(function() {
-                    var selectedValues = $(this).val(); 
+                    var selectedValues = $(this).val();
                     if (selectedValues) {
-                        size = size.concat(selectedValues); 
+                        size = size.concat(selectedValues);
                     }
                 });
 
                 var type = [];
                 $('select[name^="type_arr"]').each(function() {
-                    var selectedValues = $(this).val(); 
+                    var selectedValues = $(this).val();
                     if (selectedValues) {
-                        type = type.concat(selectedValues); 
+                        type = type.concat(selectedValues);
                     }
                 });
 
@@ -386,6 +389,6 @@
         $(that).closest(".added-section.size-and-type").remove();
     }
 
-    
+
 </script>
 @endsection

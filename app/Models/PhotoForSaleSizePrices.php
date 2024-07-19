@@ -13,7 +13,8 @@ class PhotoForSaleSizePrices extends Model
         'size_id',
         'type_id',
         'price',
-        'row_counter'
+        'row_counter',
+        'type_size_count'
     ];
 
     public function getSizeById()
@@ -24,5 +25,5 @@ class PhotoForSaleSizePrices extends Model
     public function getTypeById()
      {
         return $this->belongsTo(SizeType::class, 'type_id');
-     }  
+     }
 }
