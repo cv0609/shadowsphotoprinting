@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AdminLogin;
 use App\Models\Blog;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -35,7 +36,14 @@ class AuthController extends Controller
         $cards = GiftCardCategory::count();
         $products = Product::count();
         $orders = Order::count();
-        return view('admin.dashboard',compact('products','cards','blogs','orders'));
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+        $revenueData = Order::selectRaw('SUM(total) as total, DAY(created_at) as day')
+        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->groupBy('day')
+        ->orderBy('day', 'asc')
+        ->get();
+        return view('admin.dashboard',compact('products','cards','blogs','orders','revenueData'));
     }
 
     public function logout()
