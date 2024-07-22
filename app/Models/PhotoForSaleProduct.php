@@ -21,4 +21,9 @@ class PhotoForSaleProduct extends Model
     {
         return $this->belongsTo(PhotoForSaleCategory::class, 'category_id');
     }
+
+    public function productSizeType()
+    {
+        return $this->hasMany(PhotoForSaleSizePrices::class,'product_id');
+    }
 }

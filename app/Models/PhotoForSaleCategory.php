@@ -19,4 +19,6 @@ class PhotoForSaleCategory extends Model
     {
         return $this->hasMany(PhotoForSaleProduct::class,'category_id');
     }
+
+
 }

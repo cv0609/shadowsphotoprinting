@@ -111,11 +111,15 @@ class CartController extends Controller
 
                         $existingCartItem->save();
                     } else {
-                        CartData::create($insertData);
+                       CartData::create($insertData);
                     }
                 }
             }
-        }
+        }   
+        
+        $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
+        isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
+        return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
 
@@ -138,9 +142,12 @@ class CartController extends Controller
 
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
+
+        $page_content = ["meta_title"=>config('constant.pages_meta.cart.meta_title'),"meta_description"=>config('constant.pages_meta.cart.meta_description')]; 
+
         if(!empty($cart))
         {
-            return view('front-end.cart',compact('cart','CartTotal','shipping','countries'));
+            return view('front-end.cart',compact('cart','CartTotal','shipping','countries','page_content'));
           }
           else
            {
@@ -174,8 +181,21 @@ class CartController extends Controller
        $cart = [];
         // $product = Product::find($request->product_id);
         // $productCategories = $product->categories->pluck('id')->toArray();
+        if(empty($coupon) && !isset($coupon)){
+            return ['success' => false, 'message' => 'Coupon is not valid.'];
+        }
+
+        $currentDate = now();
+        if ($currentDate < $coupon->start_date) {
+            return ['success' => false, 'message' => 'Coupon has expired'];
+        }
+
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
+        }
+
+        if ($coupon->isStarted()) {
+            return ['success' => false, 'message' => 'Coupon is not yet valid'];
         }
 
         if ($coupon->isExpired()) {
@@ -256,7 +276,7 @@ class CartController extends Controller
 
    public function billingDetails(Request $request)
     {
-       
+
         $state_name = State::whereId($request->state)->select('name')->first();
         $session_data = ['country'=>$request->country,'state'=>$state_name,'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
         Session::put('billing_details', $session_data);
@@ -268,8 +288,18 @@ class CartController extends Controller
         foreach($request->data as $data)
         {
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
-
         }
+
+        if(Session::has('coupon'))
+        {
+            $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
+            $response = $this->applyCoupon($request_data);
+            if($response['success'] === false)
+            {
+            Session::forget('coupon');
+            }
+        }
+
         session()->flash('success', 'Cart updated successfully.');
     }
 

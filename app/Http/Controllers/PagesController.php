@@ -62,22 +62,32 @@ class PagesController extends Controller
     $nextBlog = Blog::where('id', '>', $blog_details->id)
       ->orderBy('id', 'asc')
       ->first();
-    return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog'));
+     
+      $page_content = ["meta_title"=>$blog_details['slug'],"meta_description"=>$blog_details['description']]; 
+    return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog','page_content'));
   }
 
   public function PhotosForSale($slug = null)
   {
+    $page_content = [];
     if($slug == null)
     {
       $products = PhotoForSaleProduct::paginate(10);
+      $page_content = ["meta_title"=>config('constant.pages_meta.photos_for_sale.meta_title'),"meta_description"=>config('constant.pages_meta.photos_for_sale.meta_description')]; 
     }
     else
     {
       $caregory = PhotoForSaleCategory::where('slug',$slug)->first();
       $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
+      $page_content = ["meta_title"=>$caregory['slug'],"meta_description"=>$caregory['name']]; 
+
     }
+   
+
     $productCategories = PhotoForSaleCategory::get();
-    return view('front-end/photos-for-sale',compact('products','productCategories'));
+
+
+    return view('front-end/photos-for-sale',compact('products','productCategories','page_content'));
   }
 
   public function PhotosForSaleDetails($slug = null){
@@ -97,7 +107,10 @@ class PagesController extends Controller
     $photoForSaleSizePricesData = PhotoForSaleSizePrices::where('product_id',$productDetails->id)->get();
                
     $relatedProduct = PhotoForSaleProduct::where('slug','!=',$slug)->paginate(10);
-    return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct','uniqueSizeRecords','uniqueTyepeRecords','photoForSaleSizePricesData'));
+
+    $page_content = ["meta_title"=>$productDetails['slug'],"meta_description"=>$productDetails['product_description']]; 
+
+    return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct','uniqueSizeRecords','uniqueTyepeRecords','photoForSaleSizePricesData','page_content'));
   }
 
 
@@ -109,14 +122,18 @@ class PagesController extends Controller
   public function giftCard()
   {
     $blogs =  GiftCardCategory::get();
-    return view('front-end/giftcard',compact('blogs'));
+    $page_content = ["meta_title"=>config('constant.pages_meta.gift_card.meta_title'),"meta_description"=>config('constant.pages_meta.gift_card.meta_description')]; 
+
+    return view('front-end/giftcard',compact('blogs','page_content'));
   }
 
   public function giftCard_detail($slug)
   {
     $blog_detail = GiftCardCategory::where(["slug"=>$slug])->first();
     $related_products =  GiftCardCategory::where("slug","!=",$slug)->get();
-    return view('front-end/giftcard_detail',compact('blog_detail','related_products'));
+    $page_content = ["meta_title"=>$blog_detail['slug'],"meta_description"=>$blog_detail['product_description']]; 
+
+    return view('front-end/giftcard_detail',compact('blog_detail','related_products','page_content'));
   }
 
   public function sendQuote(GetAQuoteRequest $request){

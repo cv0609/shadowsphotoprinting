@@ -110,9 +110,9 @@
 </div>
 </div>
 </div>
-
-<script>
-    CKEDITOR.replace('description');
-</script>
-
+@endsection
+@section('custom-script')
+{{-- <script>
+    CKEDITOR.replace('product_description');
+</script> --}}
 @endsection
