@@ -95,6 +95,53 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_description"> Manage Sale
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                            <label class="switch">
+                                <input type="checkbox" name="manage_sale" id="manage_sale" value="1"  {{ $product->manage_sale == 1 ? 'checked' : '' }}>
+                                <span class="slider round"></span>
+                              </label>
+                            @error('manage_sale')
+                             <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="{{ $product->manage_sale == 1 ? '' : 'd-none' }}" id="sale-div">
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Price<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="number" id="sale_price" name="sale_price" required="required" class="form-control" value="{{ $product->sale_price }}">
+                                @error('sale_price')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Start From<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="date" id="sale_start_date" name="sale_start_date" required="required" class="form-control inputDate" value="{{ $product->sale_start_date }}">
+                                @error('sale_start_date')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale End To<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="date" id="sale_end_date" name="sale_end_date" required="required" class="form-control inputDate" value="{{ $product->sale_end_date }}">
+                                @error('sale_end_date')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                   </div>
                       <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <div class="ln_solid"></div>
                         <div class="item form-group">
@@ -115,4 +162,32 @@
 {{-- <script>
     CKEDITOR.replace('product_description');
 </script> --}}
+<script>
+   $(function(){
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' + day;
+
+    $('.inputDate').attr('min', maxDate);
+});
+$("#manage_sale").on('click change', function() {
+       if($(this).prop('checked') == true)
+         {
+             $("#sale-div").removeClass('d-none');
+         }
+        else
+         {
+            $("#sale-div").addClass('d-none');
+         }
+  });
+</script>
+
 @endsection

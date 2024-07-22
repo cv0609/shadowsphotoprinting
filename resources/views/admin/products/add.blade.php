@@ -113,7 +113,7 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Start From<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="date" id="sale_start_date" name="sale_start_date" required="required" class="form-control ">
+                                <input type="date" id="sale_start_date" name="sale_start_date" required="required" class="form-control inputDate">
                                 @error('sale_start_date')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -124,7 +124,7 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale End To<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="date" id="sale_end_date" name="sale_end_date" required="required" class="form-control ">
+                                <input type="date" id="sale_end_date" name="sale_end_date" required="required" class="form-control inputDate">
                                 @error('sale_end_date')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -154,6 +154,23 @@
     CKEDITOR.replace('product_description');
 </script> --}}
   <script>
+        $(function(){
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+
+        $('.inputDate').attr('min', maxDate);
+    });
+
+
   $("#manage_sale").on('click change', function() {
        if($(this).prop('checked') == true)
          {
