@@ -1,6 +1,13 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main" style="min-height: 3963px;">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('product-list') }}">Products</a></li>
+          <li class="breadcrumb-item"><a href="#">Edit Product</a></li>
+        </ol>
+      </nav>
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -20,7 +27,7 @@
                            <select class="form-control" name="category_id">
                                <option value="">Select</option>
                                 @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}" <?= ($product->id == $productCategory->id) ? 'selected' : '' ?>>{{ $productCategory->name }}</option>
+                                <option value="{{ $productCategory->id }}" <?= ($product->category_id == $productCategory->id) ? 'selected' : '' ?>>{{ $productCategory->name }}</option>
                                 @endforeach
                         </select>
                         @error('category_id')
@@ -100,7 +107,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <label class="switch">
-                                <input type="checkbox" name="manage_sale" id="manage_sale" value="1"  {{ $product->manage_sale == 1 ? 'checked' : '' }}>
+                                <input type="checkbox" name="manage_sale" id="manage_sale" value="1"  {{ $product->manage_sale == 1 ? 'checked' : '' }}  {{ old('manage_sale') ? 'checked' : '' }}>
                                 <span class="slider round"></span>
                               </label>
                             @error('manage_sale')
@@ -108,7 +115,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="{{ $product->manage_sale == 1 ? '' : 'd-none' }}" id="sale-div">
+                    <div class="{{ ($product->manage_sale == 1 ||  old('manage_sale')) ? '' : 'd-none' }}" id="sale-div">
                         <div class="item form-group">
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Price<span class="required">*</span>
                             </label>

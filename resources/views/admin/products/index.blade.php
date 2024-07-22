@@ -1,6 +1,12 @@
 @extends('admin.layout.main')
 @section('page-content')
 <div class="right_col" role="main">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="#">Products</a></li>
+        </ol>
+      </nav>
     <div class="">
       <div class="page-title">
         <div class="title_left">
