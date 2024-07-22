@@ -125,7 +125,7 @@
                             @endforeach
 
                             <tr>
-                                <td colspan="6" class="actions" style="text-align: right">
+                                <td colspan="6" class="actions">
                                     
                                     @if(!Session::has('coupon'))
                                         <div class="coupon-icons">
