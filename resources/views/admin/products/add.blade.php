@@ -89,7 +89,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <label class="switch">
-                                <input type="checkbox" name="manage_sale" id="manage_sale" value="1">
+                                <input type="checkbox" name="manage_sale" id="manage_sale" value="1"  {{ old('manage_sale') ? 'checked' : '' }}>
                                 <span class="slider round"></span>
                               </label>
                             @error('manage_sale')
@@ -97,7 +97,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="d-none" id="sale-div">
+                    <div class="{{ old('manage_sale') ? '' : 'd-none' }}" id="sale-div">
                         <div class="item form-group">
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Price<span class="required">*</span>
                             </label>

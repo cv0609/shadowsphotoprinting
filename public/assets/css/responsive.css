@@ -1,5 +1,5 @@
 @media only screen and (max-width:1399px){
-    .logo img {
+    /* .logo img {
         max-width:160px;
     }
     .navigation div#mySidenav ul li a {
@@ -17,12 +17,12 @@
     }
     .envira-gallery .container{
         padding-left: 40px;
-    }
+    } */
 }
 
 @media only screen and (max-width:1199px)
 {
-    .envira-gallery .container{
+    /* .envira-gallery .container{
         padding-left: 0px;
     }
     .navigation {
@@ -34,18 +34,18 @@
     .second-clearfix ul li a {
         padding: 15px 10px;
         font-size: 14px;
-    }
+    } */
 }
 
 
 
 @media only screen and (max-width: 991px) {
-    .main-page {
+    /* .main-page {
         position: static;
     }
     .main-page {
         width: auto;
-    }
+    } */
     .screen-reader {
 
         display: block;
@@ -53,7 +53,6 @@
 
     .sidenavs {
         width: 0;
-        position: fixed;
         top: 0;
         right: 0;
         display: inline-block;
