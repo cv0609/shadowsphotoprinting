@@ -1,4 +1,51 @@
+@media only screen and (max-width:1399px){
+    .logo img {
+        max-width:160px;
+    }
+    .navigation div#mySidenav ul li a {
+        font-size: 14px;
+    }
+    li.social-media a i {
+        font-size: 18px;
+    }
+    .second-clearfix ul li a {
+        padding: 20px 15px;
+        font-size: 16px;
+    }
+    .navigation {
+        padding: 10px 40px;
+    }
+    .envira-gallery .container{
+        padding-left: 40px;
+    }
+}
+
+@media only screen and (max-width:1199px)
+{
+    .envira-gallery .container{
+        padding-left: 0px;
+    }
+    .navigation {
+        padding: 10px 0px;
+    }
+    .logo img {
+        max-width: 140px;
+    }
+    .second-clearfix ul li a {
+        padding: 15px 10px;
+        font-size: 14px;
+    }
+}
+
+
+
 @media only screen and (max-width: 991px) {
+    .main-page {
+        position: static;
+    }
+    .main-page {
+        width: auto;
+    }
     .screen-reader {
 
         display: block;
