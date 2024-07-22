@@ -84,6 +84,53 @@
                         </div>
                     </div>
 
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_description"> Manage Sale
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                            <label class="switch">
+                                <input type="checkbox" name="manage_sale" id="manage_sale" value="1">
+                                <span class="slider round"></span>
+                              </label>
+                            @error('manage_sale')
+                             <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="d-none" id="sale-div">
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Price<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="number" id="sale_price" name="sale_price" required="required" class="form-control ">
+                                @error('sale_price')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Start From<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="date" id="sale_start_date" name="sale_start_date" required="required" class="form-control ">
+                                @error('sale_start_date')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale End To<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="date" id="sale_end_date" name="sale_end_date" required="required" class="form-control ">
+                                @error('sale_end_date')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                   </div>
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
@@ -99,8 +146,23 @@
 </div>
 </div>
 
-<script>
-    CKEDITOR.replace('description');
-</script>
 
+
+@endsection
+@section('custom-script')
+{{-- <script>
+    CKEDITOR.replace('product_description');
+</script> --}}
+  <script>
+  $("#manage_sale").on('click change', function() {
+       if($(this).prop('checked') == true)
+         {
+             $("#sale-div").removeClass('d-none');
+         }
+        else
+         {
+            $("#sale-div").addClass('d-none');
+         }
+  });
+  </script>
 @endsection
