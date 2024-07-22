@@ -38,6 +38,10 @@ class Coupon extends Model
         return $this->end_date && Carbon::parse($this->end_date)->isPast();
     }
 
+    public function isStarted() {
+        return $this->start_date && Carbon::parse($this->start_date)->isPast();
+    }
+
     public function canBeUsed()
     {
         return !$this->usage_limit || $this->used < $this->usage_limit;
