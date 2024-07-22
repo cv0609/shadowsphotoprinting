@@ -87,10 +87,18 @@ class ProductsController extends Controller
 
     public function productSave(ProductRequest $request)
     {
-
+        $data = [];
         $slug = Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        if(isset($request->manage_sale) && $request->manage_sale == "1")
+           {
+
+              $data['manage_sale'] = $request->manage_sale;
+              $data['sale_price'] = $request->sale_price;
+              $data['sale_start_date'] = $request->sale_start_date;
+              $data['sale_end_date'] = $request->sale_end_date;
+           }
 
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');
@@ -112,9 +120,25 @@ class ProductsController extends Controller
 
     public function productUpdate(Request $request)
     {
+        $data = [];
         $slug = Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        if(isset($request->manage_sale) && $request->manage_sale == "1")
+        {
+
+           $data['manage_sale'] = $request->manage_sale;
+           $data['sale_price'] = $request->sale_price;
+           $data['sale_start_date'] = $request->sale_start_date;
+           $data['sale_end_date'] = $request->sale_end_date;
+        }
+        else
+         {
+            $data['manage_sale'] = "0";
+            $data['sale_price'] = null;
+            $data['sale_start_date'] = null;
+            $data['sale_end_date'] = null;
+         }
 
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');
