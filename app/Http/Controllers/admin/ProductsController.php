@@ -118,7 +118,7 @@ class ProductsController extends Controller
         return view('admin.products.edit', compact('product','productCategories'));
     }
 
-    public function productUpdate(Request $request)
+    public function productUpdate(ProductRequest $request)
     {
         $data = [];
         $slug = Str::slug($request->product_title);
