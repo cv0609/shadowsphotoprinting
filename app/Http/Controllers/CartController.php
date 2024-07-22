@@ -116,7 +116,12 @@ class CartController extends Controller
                 }
             }
         }   
-        
+        $CartTotal = $this->CartService->getCartTotal();
+
+        if(!Session::has('coupon')){
+            $this->CartService->autoAppliedCoupon($CartTotal['subtotal']);
+        }
+
         $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
         isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);

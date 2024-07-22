@@ -46,4 +46,11 @@ class Coupon extends Model
     {
         return !$this->usage_limit || $this->used < $this->usage_limit;
     }
+
+    public function scopeWithUsageLimit($query)
+    {
+        return $query->when($this->use_limit, function($query) {
+            $query->where('used', '<', $this->use_limit);
+        });
+    }
 }
