@@ -171,33 +171,23 @@ class CartService
 
      }
 
-     public function autoAppliedCoupon($subtotal){
+     public function autoAppliedCoupon(){
 
-        if (Auth::check() && !empty(Auth::user())) {
-            $auth_id = Auth::user()->id;
-            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
-        }else{
-            $session_id = Session::getId();
-            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
-        }
- 
-        if (!$cart) {
-            return ['success' => false, 'message' => 'Cart is empty'];
-        }
+        $CartTotal = $this->getCartTotal();
+        $currentDate = now();
 
-        $currentDate = Carbon::now();
-
-        $coupon = Coupon::where('is_active', true)
-        ->where('auto_applied', true)
+        $coupon = Coupon::where('is_active', '1')
+        ->where('auto_applied', '1')
         ->where('start_date', '<=', $currentDate)
         ->where('end_date', '>=', $currentDate)
-        ->where(function($query) use ($subtotal) {
-            $query->where('minimum_spend', '<=', $subtotal)
-                  ->where('maximum_spend', '>=', $subtotal);
+        ->where('product_category', null)
+        ->where('products', null)
+        ->where(function($query) use ($CartTotal) {
+            $query->where('minimum_spend', '<=', $CartTotal['subtotal'])
+                  ->where('maximum_spend', '>=', $CartTotal['subtotal']);
         })
-        ->scopeWithUsageLimit() 
+        ->withUsageLimit()
         ->first();
-
         
         if(isset($coupon) && !empty($coupon)){
             $amount = 0;
@@ -205,7 +195,7 @@ class CartService
               $amount = $coupon->amount;
             }
             elseif($coupon->type == "1"){
-                $amount = ($coupon->amount / 100) * $subtotal;
+                $amount = ($coupon->amount / 100) * $CartTotal['subtotal'];
             }
     
             $coupon->used++;
@@ -216,6 +206,5 @@ class CartService
                 'discount_amount' => $amount,
             ]);
         }
-        return ['success' => true, 'total' => $subtotal - $coupon->discount_amount];
      }
 }

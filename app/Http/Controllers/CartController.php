@@ -116,10 +116,10 @@ class CartController extends Controller
                 }
             }
         }   
-        $CartTotal = $this->CartService->getCartTotal();
+       
 
         if(!Session::has('coupon')){
-            $this->CartService->autoAppliedCoupon($CartTotal['subtotal']);
+            $this->CartService->autoAppliedCoupon();
         }
 
         $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
@@ -188,11 +188,6 @@ class CartController extends Controller
         // $productCategories = $product->categories->pluck('id')->toArray();
         if(empty($coupon) && !isset($coupon)){
             return ['success' => false, 'message' => 'Coupon is not valid.'];
-        }
-
-        $currentDate = now();
-        if ($currentDate < $coupon->start_date) {
-            return ['success' => false, 'message' => 'Coupon has expired'];
         }
 
         if (!$coupon) {

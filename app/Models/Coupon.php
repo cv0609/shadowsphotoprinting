@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Coupon extends Model
 {
@@ -49,8 +50,9 @@ class Coupon extends Model
 
     public function scopeWithUsageLimit($query)
     {
-        return $query->when($this->use_limit, function($query) {
-            $query->where('used', '<', $this->use_limit);
+        return $query->where(function($query) {
+            $query->whereNotNull('use_limit')
+                ->where('used', '<', DB::raw('use_limit'));
         });
     }
 }
