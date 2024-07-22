@@ -134,7 +134,7 @@ class CartController extends Controller
 
         $session_id = Session::getId();
 
-        $countries = Country::find(14);
+        $countries = Country::with('states')->find(14);
 
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
@@ -169,7 +169,7 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
      {
-       $coupon = Coupon::where('code', $request->coupon_code)->first();
+       $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
        $total = $this->CartService->getCartTotal();
        $cart = [];
         // $product = Product::find($request->product_id);
@@ -236,7 +236,7 @@ class CartController extends Controller
           }
           elseif($coupon->type == "1")
            {
-              $amount = ($coupon->amount / 100) * $total;
+              $amount = ($coupon->amount / 100) * $total['subtotal'];
 
            }
         $coupon->used++;
@@ -256,9 +256,9 @@ class CartController extends Controller
 
    public function billingDetails(Request $request)
     {
-
+       
         $state_name = State::whereId($request->state)->select('name')->first();
-        $session_data = ['country'=>$request->country,'state'=>$state_name['name'],'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
+        $session_data = ['country'=>$request->country,'state'=>$state_name,'state_id'=>$request->state, 'city'=>$request->city, 'postcode'=>$request->postcode];
         Session::put('billing_details', $session_data);
         return  redirect('cart');
     }

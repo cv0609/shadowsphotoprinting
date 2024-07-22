@@ -58,7 +58,7 @@
                         <div class="clearfix kold">
 
                             <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
-                                <div class="noflipper" id="image-div">
+                                <div class="noflipper" id="image-div">`
                                   <div class="product-animation">
                                      @foreach (explode(',',$product->product_image) as $key => $product_image)
                                        <img src="{{ asset($product_image) }}" alt="">
@@ -69,7 +69,7 @@
 
                             <div class="details-product-item">
                                 <div class="product_details-card">
-                                    <a href="#">
+                                    <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
                                         <h3>{{ ucfirst($product->product_title) }}</h3>
                                         <span>${{ $product->min_price }} - ${{ $product->max_price }} incl. GST</span>
                                     </a>
@@ -92,14 +92,14 @@
                     <div class="instock-oant">
                         <div class="instock-udik">
                             <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
-                                     @foreach (explode(',',$product->product_images) as $key => $product_image)
+                                     @foreach (explode(',',$product->product_image) as $key => $product_image)
                                        <img src="{{ asset($product_image) }}" alt="">
                                      @endforeach
                             </a>
                         </div>
 
                         <div class="details_product-crlf">
-                            <a href="#">
+                            <a href="{{ route('photos-for-sale-details',['slug'=>$product->slug]) }}">
                                 <h3>{{ ucfirst($product->product_title) }}</h3>
                                 <span>${{ $product->min_price }} - ${{ $product->max_price }} incl. GST</span>
                             </a>
