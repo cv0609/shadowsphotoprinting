@@ -162,8 +162,10 @@ $(document).ready(function() {
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
+            
                     $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
                     $('#add_to_cart_msg').removeClass('d-none');
+                    $('.kt-cart-total').text(response.count);
 
                     $("input[name=quantity]").each(function() {
                        $(this).val('');

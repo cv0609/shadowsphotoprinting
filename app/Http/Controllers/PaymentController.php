@@ -45,7 +45,9 @@ class PaymentController extends Controller
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
 
-        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries'));
+        $page_content = ["meta_title"=>config('constant.pages_meta.checkout.meta_title'),"meta_description"=>config('constant.pages_meta.checkout.meta_description')]; 
+
+        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content'));
      }
 
     public function createCustomer(Request $request)
