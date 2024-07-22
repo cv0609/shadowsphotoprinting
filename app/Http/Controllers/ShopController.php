@@ -57,7 +57,13 @@ class ShopController extends Controller
     }
     $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
     $products = Product::select(['id','product_title','product_price'])->get();
-    return view('front-end/shop_detail', compact('imageName','products','productCategories'));
+    $currentDate = date('F-j-Y-1');
+    $page_content = [
+        "meta_title" => "{$currentDate} - " . config('constant.pages_meta.shop_detail.meta_title'),
+        "meta_description" => config('constant.pages_meta.shop_detail.meta_description')
+    ];
+
+    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content'));
   }  
 
   public function getProductsBycategory(Request $request)

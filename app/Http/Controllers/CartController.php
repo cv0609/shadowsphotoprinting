@@ -111,11 +111,15 @@ class CartController extends Controller
 
                         $existingCartItem->save();
                     } else {
-                        CartData::create($insertData);
+                       CartData::create($insertData);
                     }
                 }
             }
-        }
+        }   
+        
+        $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
+        isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
+        return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
 
@@ -138,9 +142,12 @@ class CartController extends Controller
 
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
+
+        $page_content = ["meta_title"=>config('constant.pages_meta.cart.meta_title'),"meta_description"=>config('constant.pages_meta.cart.meta_description')]; 
+
         if(!empty($cart))
         {
-            return view('front-end.cart',compact('cart','CartTotal','shipping','countries'));
+            return view('front-end.cart',compact('cart','CartTotal','shipping','countries','page_content'));
           }
           else
            {
