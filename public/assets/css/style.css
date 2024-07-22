@@ -42,8 +42,6 @@ ul {
 .main-page {
     background-color: rgba(0, 0, 0, 1);
     min-height: 100vh;
-    width: calc(100% - 350px);
-    position: fixed;
 }
 
 /* HEADER CSS */
