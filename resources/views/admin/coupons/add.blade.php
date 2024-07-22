@@ -39,7 +39,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="code">Code <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="code" name="code" required="required" class="form-control ">
+                            <input type="text" id="code" name="code" value="{{ old('code') }}" required="required" class="form-control ">
                             @error('code')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
@@ -50,7 +50,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="amount">Amount <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="amount" name="amount" required="required" class="form-control" step=".01">
+                            <input type="number" id="amount" value="{{ old('amount') }}" name="amount" required="required" class="form-control" step=".01">
                             @error('amount')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
@@ -62,7 +62,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="minimum_spend"> Minimum Spend <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="minimum_spend" name="minimum_spend" required="required" class="form-control" step=".01">
+                            <input type="number" id="minimum_spend" value="{{ old('minimum_spend') }}" name="minimum_spend" required="required" class="form-control" step=".01">
                             @error('minimum_spend')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
@@ -76,7 +76,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="maximum_spend"> Maximum Spend <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="maximum_spend" name="maximum_spend" required="required" class="form-control" step=".01">
+                            <input type="number" id="maximum_spend" name="maximum_spend" value="{{ old('maximum_spend') }}"  required="required" class="form-control" step=".01">
                             @error('maximum_spend')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
@@ -87,7 +87,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="start_date">Start Date<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="date" id="start_date" name="start_date" required="required" class="form-control inputDate" step=".01">
+                            <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}" required="required" class="form-control inputDate" step=".01">
                             @error('start_date')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror
@@ -98,7 +98,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="end_date">End Date<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="date" id="end_date" name="end_date" required="required" class="form-control inputDate" step=".01">
+                            <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}" required="required" class="form-control inputDate" step=".01">
                             @error('end_date')
                             <span class="text-danger">{{ $message }}</span>
                            @enderror

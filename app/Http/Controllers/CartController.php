@@ -181,6 +181,15 @@ class CartController extends Controller
        $cart = [];
         // $product = Product::find($request->product_id);
         // $productCategories = $product->categories->pluck('id')->toArray();
+        if(empty($coupon) && !isset($coupon)){
+            return ['success' => false, 'message' => 'Coupon is not valid.'];
+        }
+
+        $currentDate = now();
+        if ($currentDate < $coupon->start_date) {
+            return ['success' => false, 'message' => 'Coupon has expired'];
+        }
+
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
@@ -275,8 +284,18 @@ class CartController extends Controller
         foreach($request->data as $data)
         {
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
-
         }
+
+        if(Session::has('coupon'))
+        {
+            $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
+            $response = $this->applyCoupon($request_data);
+            if($response['success'] === false)
+            {
+            Session::forget('coupon');
+            }
+        }
+
         session()->flash('success', 'Cart updated successfully.');
     }
 
