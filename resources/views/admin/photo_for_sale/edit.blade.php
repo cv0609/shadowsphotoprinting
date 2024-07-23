@@ -392,7 +392,7 @@
 
     // Group SaleSizePrices by product_id and type_id
     const groupedData = SaleSizePrices.reduce((acc, item) => {
-        const key = `${item.product_id}-${item.type_id}`;
+        const key = `${item.product_id}-${item.type_size_count}`;
         if (!acc[key]) {
             acc[key] = {
                 productId: item.product_id,
@@ -409,14 +409,16 @@
         return acc;
     }, {});
 
+    console.log(groupedData,'group');
+
     // Convert Sets to Arrays
     Object.values(groupedData).forEach(group => {
         const { productId, typeId, price, sizes, sizeIds, types } = group;
-
-        // Generate size options
+    
         let sizeOptions = '<option value="">Select size</option>';
         sizes.forEach(sizeId => {
             const size = sizes.find(s => s.id === sizeId);
+            console.log(size);
             if (size) {
                 const selected = sizeIds.has(sizeId) ? 'selected' : '';
                 sizeOptions += `<option value="${size.id}" ${selected}>${size.name}</option>`;
