@@ -194,7 +194,7 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
 
-        if ($coupon->isStarted()) {
+        if (!$coupon->isStarted()) {
             return ['success' => false, 'message' => 'Coupon is not yet valid'];
         }
 
