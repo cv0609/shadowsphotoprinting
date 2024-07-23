@@ -148,7 +148,6 @@ class PhotoForSaleController extends Controller
         }
 
         foreach ($uniqueCombinations as $combination) {
-            // $cleanedCombination = str_replace('<br>', '', $combination);
             list($size_id, $type_id, $price_id,$count_id) = explode('-', $combination);
 
             PhotoForSaleSizePrices::create([

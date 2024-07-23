@@ -99,7 +99,7 @@
                     </div>
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                    @foreach ($SaleSizePricesGroupBy as $SaleSizePricesGroupB)
+                    {{-- @foreach ($SaleSizePricesGroupBy as $SaleSizePricesGroupB) --}}
 
                     <div class="size-and-type-wrap">
                         <div class="size-and-type">
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    {{-- @endforeach --}}
 
                     <div class="row read-more">
                         <div class="col-md-3"></div>
@@ -180,8 +180,12 @@
 
     var sizes = @json($size);
     var sizeTypes = @json($size_type);
+    var SaleSizePrices = @json($SaleSizePrices);
+    // console.log(SaleSizePrices);
 
     $(document).ready(function() {
+        console.log(getSizeTypeDropdown());
+        return false;
 
         $('.multi_type, .multi_size').select2({
             placeholder: 'Select type',
@@ -191,6 +195,7 @@
         var count = 1;
 
         $("#add-more-attribute").on('click', function() {
+
             let sizeOptions = '<option value="">Select size</option>';
             sizes.forEach(size => {
                 sizeOptions += `<option value="${size.id}">${size.name}</option>`;
@@ -368,6 +373,128 @@
             }
         });
     });
+
+   
+
+
+    function getSizeTypeDropdown() {
+    let count = 0;
+
+    // Example SaleSizePrices data
+    const SaleSizePrices = [
+        { "id": 36, "product_id": 98, "size_id": 1, "type_id": 2, "price": "22.00", "type_size_count": 1 },
+        { "id": 37, "product_id": 98, "size_id": 2, "type_id": 2, "price": "22.00", "type_size_count": 1 },
+        { "id": 38, "product_id": 98, "size_id": 3, "type_id": 2, "price": "22.00", "type_size_count": 1 },
+        { "id": 39, "product_id": 98, "size_id": 1, "type_id": 3, "price": "55.00", "type_size_count": 2 },
+        { "id": 40, "product_id": 98, "size_id": 2, "type_id": 3, "price": "55.00", "type_size_count": 2 },
+        { "id": 41, "product_id": 98, "size_id": 3, "type_id": 3, "price": "55.00", "type_size_count": 2 }
+    ];
+
+    // Group SaleSizePrices by product_id and type_id
+    const groupedData = SaleSizePrices.reduce((acc, item) => {
+        const key = `${item.product_id}-${item.type_id}`;
+        if (!acc[key]) {
+            acc[key] = {
+                productId: item.product_id,
+                typeId: item.type_id,
+                price: item.price,
+                sizes: [],
+                sizeIds: new Set(),
+                types: new Set()
+            };
+        }
+        acc[key].sizes.push(item.size_id);
+        acc[key].sizeIds.add(item.size_id);
+        acc[key].types.add(item.type_id);
+        return acc;
+    }, {});
+
+    // Convert Sets to Arrays
+    Object.values(groupedData).forEach(group => {
+        const { productId, typeId, price, sizes, sizeIds, types } = group;
+
+        // Generate size options
+        let sizeOptions = '<option value="">Select size</option>';
+        sizes.forEach(sizeId => {
+            const size = sizes.find(s => s.id === sizeId);
+            if (size) {
+                const selected = sizeIds.has(sizeId) ? 'selected' : '';
+                sizeOptions += `<option value="${size.id}" ${selected}>${size.name}</option>`;
+            } else {
+                console.error(`Size not found for id: ${sizeId}`);
+            }
+        });
+
+        // Generate type options
+        let typeOptions = '<option value="">Select type</option>';
+        sizeTypes.forEach(type => {
+            const selected = type.id === typeId ? 'selected' : '';
+            typeOptions += `<option value="${type.id}" ${selected}>${type.name}</option>`;
+        });
+
+        // Create HTML content
+        let html = `<div class="added-section size-and-type">
+            <button class="close-button" onclick="removeAddMore(this)" type="button">×</button>
+            <div class="size">
+                <div class="row">
+                    <div class="col-md-3"><label for="size">Select size</label></div>
+                    <div class="col-md-6 last-row">
+                        <select class="form-control append-size multi_size size-select" multiple name="size_arr[size][${count}][children][]">
+                            ${sizeOptions}
+                        </select>
+                        <span class="size_arr_error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="type">
+                <div class="row">
+                    <div class="col-md-3"><label for="type">Select type</label></div>
+                    <div class="col-md-6">
+                        <select class="form-control append-type multi_type type-select" multiple name="type_arr[type][${count}][children][]">
+                            ${typeOptions}
+                        </select>
+                        <span class="type_arr_error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="select-price">
+                <div class="row">
+                    <div class="col-md-3"><label for="price">Select price</label></div>
+                    <div class="col-md-6">
+                        <input class="form-control price-input" name="price_arr[price][${count}][children][]" type="number" value="${price}">
+                        <span class="price_arr_error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        // Append HTML content to the container
+        $(".size-and-type-wrap").append(html);
+
+        // Initialize Select2 on the appended elements
+        $('.multi_type, .multi_size').select2({
+            placeholder: 'Select type',
+            allowClear: true
+        });
+
+        count++;
+    });
+}
+
+// Call the function
+
+
+// Call the function
+
+// Call the function
+
+
+// Call the function
+
+
+
+// Call the function
+
 
     function hideSelectOption(){
         var selectedValues = $("select[name='size_arr[]']").val();
