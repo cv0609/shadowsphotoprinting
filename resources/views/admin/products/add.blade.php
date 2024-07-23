@@ -137,7 +137,15 @@
                                 @enderror
                             </div>
                         </div>
-                   </div>
+                    </div>
+                    <div class="main_add_more d-none">
+                      <div class="add-more d-none">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <button type="button" class="read_more-btn" id="add-more-attribute">Add More</button>
+                        </div>
+                     </div>
+                </div>
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
@@ -182,11 +190,22 @@
        if($(this).prop('checked') == true)
          {
              $("#sale-div").removeClass('d-none');
+             $(".main_add_more").removeClass('d-none');
          }
         else
          {
             $("#sale-div").addClass('d-none');
+            $(".main_add_more").addClass('d-none');
          }
   });
+
+  $("#add-more-attribute").on('click',function(){
+      $("#sale-div").append('<div class="added-section size-and-type"><button class="close-button" onclick="removeAddMore(this)" type="button">×</button><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Price<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class=form-control id=sale_price name=sale_price required type=number> @error('sale_price')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Start From<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_start_date name=sale_start_date required type=date> @error('sale_start_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale End To<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_end_date name=sale_end_date required type=date> @error('sale_end_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div>');
+  })
+
+  function removeAddMore(that) {
+        $(that).closest(".added-section.size-and-type").remove();
+        clickCount = clickCount - 1;
+    }
   </script>
 @endsection
