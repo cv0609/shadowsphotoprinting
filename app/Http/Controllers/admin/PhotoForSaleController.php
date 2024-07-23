@@ -176,11 +176,18 @@ class PhotoForSaleController extends Controller
 
     public function productUpdate(Request $request)
     {
+        // dd('ddd');
         $slug = \Str::slug($request->product_title);
 
-        // $size_arr = $request->size_arr['size'];
-        // $type_arr = $request->type_arr['type'];
-        // $price_arr = $request->price_arr['price'];
+        $size_arr = $request->size_arr['size'];
+        $type_arr = $request->type_arr['type'];
+        $price_arr = $request->price_arr['price'];
+        $type_size_count = $request->type_size_count['click_count'];
+
+        $validator = $this->PageDataService->photoForSaleDuplicateSizeTypeValidation($size_arr,$type_arr);
+        if(isset($validator)){
+            return response()->json(['error' => true,'message' => 'Duplicate entry']);
+        }
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
 
@@ -195,6 +202,44 @@ class PhotoForSaleController extends Controller
          }
 
         PhotoForSaleProduct::whereId($request->product_id)->update($data);
+
+        if(isset($size_arr) && isset($type_arr) && isset($price_arr) && isset($type_size_count)){
+
+            PhotoForSaleSizePrices::where('product_id',$request->product_id)->delete();
+    
+            $uniqueCombinations = [];
+            foreach ($size_arr as $size_index => $size_data) {
+                if (isset($type_arr[$size_index]) && isset($price_arr[$size_index]) && isset($type_size_count[$size_index])) {
+                    $type_data = $type_arr[$size_index];
+                    $price_data = $price_arr[$size_index];
+                    $type_size_count_data = $type_size_count[$size_index];
+                    foreach ($type_size_count_data['children'] as $count_id) {
+                    foreach ($price_data['children'] as $price_id) {
+                        foreach ($type_data['children'] as $type_id) {
+                            foreach ($size_data['children'] as $size_id) {
+                                $combinationKey = $size_id . '-' . $type_id . '-' . $price_id . '-'.$count_id;
+                                $uniqueCombinations[] = $combinationKey;
+                            }
+                        }
+                    }
+                  }
+                }
+            }
+    
+            foreach ($uniqueCombinations as $combination) {
+                list($size_id, $type_id, $price_id,$count_id) = explode('-', $combination);
+    
+                PhotoForSaleSizePrices::create([
+                    'product_id' => $request->product_id,
+                    'size_id' => $size_id,
+                    'type_id' => $type_id,
+                    'price' => $price_id,
+                    'type_size_count' => $count_id,
+                ]);
+            }
+        }
+
+
         return redirect()->route('photos-for-sale-product-list')->with('success','Product updated successfully');
     }
 

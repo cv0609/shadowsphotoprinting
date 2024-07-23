@@ -73,7 +73,13 @@
                                         </span>
                                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 
-                                        <span class="kt-cart-total">{{ $CartCount }}</span>
+                                        @if($CartCount > 100)
+                                         <span class="kt-cart-total">100+</span>
+                                        @else
+                                         <span class="kt-cart-total">{{ $CartCount  }}</span>
+                                        @endif
+                                        
+                                        
                                     </a>
                                 </li>
                                 <li class="social-media"><a href="https://www.facebook.com/Shadows-Photo-Printing-635792569950635"><i class="fa-brands fa-facebook-f"></i> </a></li>
