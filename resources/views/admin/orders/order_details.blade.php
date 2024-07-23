@@ -15,7 +15,23 @@
       <div class="col-md-12">
         <div class="x_panel">
           <div class="order-address">
-            <div class="row">
+            <div class="top_row_order_address">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="upper_header">
+                        <h3>Order #15780 details</h3>
+
+                        <div class="print_btn">
+                          <a href="">Print</a>
+                        </div>
+                      </div>
+                        <div class="lower_header">
+                          <p>Payment via Credit Card (Stripe) ( <a href="ch_3PfaajF2Zj7VtYCT00WsQekf">ch_3PfaajF2Zj7VtYCT00WsQekf</a>). Paid on July 23, 2024 @ 4:44 am. Customer IP: 175.38.83.75</p>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="row g-5">
               <div class="col-md-4">
                 <div class="gerneral_billing_details">
                   <h4 class="mb-3">General</h4>
@@ -37,15 +53,7 @@
                   </div>
 
 
-                  <div class="main_input_div">
-                    <label for="">Jenny Garley : </label>
-                    <select class="form-select form-control" aria-label="Default select example">
-                      <option selected>Jenny Garley</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
+               
 
 
 
@@ -54,7 +62,12 @@
               <div class="col-md-4">
                 <div class="order-address-details">
                     <h4 class="mb-3">Billing details</h4>
-                <ul class="m-0 list-unstyled">
+                    <div class="address">
+                      <p>Jenny Garley<br>1145 Eyre Street<br>Newington Victoria 3350</p>
+                      <p><strong>Email address:</strong> <br><a href="mailto:jennygarley@hotmail.com">jennygarley@hotmail.com</a></p>
+                      <p><strong>Phone:</strong><br> <a href="tel:0401731342">0401731342</a></p>		
+                    </div>
+                {{-- <ul class="m-0 list-unstyled">
                 <li>
                   <h6>First name </h6>
                   <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['fname']) }}</p>
@@ -103,7 +116,7 @@
                   <h6>Account password</h6>
                   <p>{{ $orderDetail->OrderBillingDetail['password'] }}</p>
                 </li>
-              </ul>
+              </ul> --}}
                 </div>
 
               </div>
@@ -153,7 +166,9 @@
                 @else
                 <div class="diffrent-address">
                   <h4 class="mb-3">Shipping details</h4>
-                  <p>The shipping address is the same as the billing address.</p>
+                  <div class="address">
+                    <p>Jenny Garley<br>1145 Eyre Street<br>Newington Victoria 3350</p><p class="order_note"><strong>Customer provided note:<br></strong> Leave on front verandah</p>						</div>
+                  {{-- <p>The shipping address is the same as the billing address.</p> --}}
                 </div>
                 @endif
               </div>
@@ -170,7 +185,7 @@
       <div class="x_content">
 
       <div class="table-responsive-sm order-invoice-main">
-        <table class="table table-striped">
+        <table class="table">
           <thead>
             <tr>
               <th class="center">#</th>
@@ -208,8 +223,10 @@
                         {{ $item->product->product_title ?? ''}}
                     @endif
                 </a>
-
+                <div class="wc-order-item-sku"><strong>SKU:</strong> PE27</div> 
             </td>
+
+      
             <td class="right">
                 <span class="">
                     <bdi>
@@ -234,7 +251,37 @@
                 {{ number_format($item->quantity * $item->product->product_price, 2) }}
             @endif</td>
             </tr>
+
+            <tr>
+
+              <td>&nbsp;</td>
+        
+              <td colspan="10" style="line-height:25px;">
+        
+                  <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> img-3771-2-.jpg</p>
+        
+                <a href="https://fotovenderau.s3-ap-southeast-2.amazonaws.com/shadowsphotoprinting/july-23-2024-2024-07-23-14-33-51/original/img-3771-2-.jpg" target="_blank">Download image</a>
+        
+                
+              </td>
+        
+            </tr>
             @endforeach
+            <tr>
+
+              <td>&nbsp;</td>
+      
+              <td colspan="10">
+      
+                
+               <a href="" class="download_zip_btn">download zip</a>
+                
+              </td>
+      
+            </tr>
+
+
+            
           </tbody>
         </table>
       </div>
@@ -277,11 +324,30 @@
             </tbody>
           </table>
         </div>
+      
       </div>
+   
       </div>
+    
     </div>
+    <div class="bottom_refund_btn_class">
+      <div class="fefund_btn">
+                <a href="">refund</a>
       </div>
-  
+    
+      <div class="refund_paragraph">
+        <p>This order is no longer editable.</p>
+        
+      </div>
+    
+     </div>
     </div>
+    </div>
+
   </div>
 @endsection
+
+
+
+
+
