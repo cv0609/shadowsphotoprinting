@@ -29,7 +29,7 @@
 
         <div class="clearfix"></div>
         <div class="row" style="display: block;">
-            <div class="col-md-12 col-sm-6  ">
+            <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Orders List</h2>
