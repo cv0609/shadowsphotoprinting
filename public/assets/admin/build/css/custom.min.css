@@ -169,4 +169,33 @@
     width: 100%;
     max-width: 300px;
 }
-=
+
+
+
+/* 23-7-2-24 css */
+
+.main_input_div p {
+    border: 1px solid #0000008a;
+    width: 120px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    height: 30px;
+}
+
+.form-select {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 4px 8px;
+    border-radius: 4px!important;
+    height: 30px;
+    border: 1px solid #0000008a;
+}
+
+.order-address h4 {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+}
+.d-none {
+  display: none !important;
+}
