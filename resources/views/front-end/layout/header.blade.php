@@ -73,8 +73,8 @@
                                         </span>
                                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 
-                                        @if($CartCount > 100)
-                                         <span class="kt-cart-total">100+</span>
+                                        @if($CartCount > 99)
+                                         <span class="kt-cart-total">99+</span>
                                         @else
                                          <span class="kt-cart-total">{{ $CartCount  }}</span>
                                         @endif
