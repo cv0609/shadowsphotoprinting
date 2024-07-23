@@ -138,24 +138,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main_add_more">
-                    <div class="row add-more d-none">
+                    <div class="main_add_more d-none">
+                      <div class="add-more d-none">
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <button type="button" class="read_more-btn" id="add-more-attribute">Add More</button>
                         </div>
-                    </div>
+                     </div>
                 </div>
-
-                    {{-- <div class="btn_parent">
-                        <div class="row">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-3">
-                                <button class="add_more_btn">add more</button>
-                            </div>
-                        </div>
-
-                    </div> --}}
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
@@ -200,10 +190,12 @@
        if($(this).prop('checked') == true)
          {
              $("#sale-div").removeClass('d-none');
+             $(".main_add_more").removeClass('d-none');
          }
         else
          {
             $("#sale-div").addClass('d-none');
+            $(".main_add_more").addClass('d-none');
          }
   });
 
