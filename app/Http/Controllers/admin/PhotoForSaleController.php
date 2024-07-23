@@ -176,7 +176,6 @@ class PhotoForSaleController extends Controller
 
     public function productUpdate(Request $request)
     {
-        // dd('ddd');
         $slug = \Str::slug($request->product_title);
 
         $size_arr = $request->size_arr['size'];
@@ -238,9 +237,8 @@ class PhotoForSaleController extends Controller
                 ]);
             }
         }
-
-
-        return redirect()->route('photos-for-sale-product-list')->with('success','Product updated successfully');
+        Session::flash('success', 'Product updated successfully.');
+        return response()->json(['error'=>false,'message' => 'Product updated successfully.']);
     }
 
 

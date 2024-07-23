@@ -8,6 +8,9 @@
           <li class="breadcrumb-item"><a href="#">Edit Product</a></li>
         </ol>
     </nav>
+@if(Session::has('success'))
+    <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+@endif
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -305,8 +308,7 @@
             let allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
 
             if(files.files && files.files.length > 0){
-                console.log('1');
-                console.log(files.length);
+              
                 if (files.files.length > 2 || files.files.length < 2) {
                     console.log('dddd');
                     $('.product_image_error').text('Product must have 2 images.');
@@ -315,7 +317,6 @@
                 }
 
                 if(files.files.length == 2){
-                    console.log('3');
                     for (let i = 0; i < files.files.length; i++) {
                         let fileExtension = files.files[i].name.split('.').pop().toLowerCase();
                         if (!allowedExtensions.includes(fileExtension)) {
@@ -337,8 +338,6 @@
             if (error) {
                 return false;
             } else {
-
-                console.log('ffffff');
 
                 var size = [];
                 $('select[name^="size_arr"]').each(function() {
