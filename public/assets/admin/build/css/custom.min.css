@@ -104,10 +104,10 @@
     }
 
 
-    .order-address-details ul li {
+    /* .order-address-details ul li {
         display: flex;
         justify-content: space-between;
-      }
+      } */
 
       div#Shipping-address {
         display: none;
@@ -115,9 +115,9 @@
         .diffrent-address {
         height: 100%;
         position: relative;
-        min-height: 400px;
+        /* min-height: 400px; */
         }
-        .diffrent-address p {
+        /* .diffrent-address p {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -125,7 +125,7 @@
         font-size: 22px;
         width: 300px;
         text-align: center;
-        }
+        } */
 
 /*  */
 .order-range-list {
@@ -169,4 +169,107 @@
     width: 100%;
     max-width: 300px;
 }
-=
+
+
+
+/* 23-7-2-24 css */
+
+.main_input_div p {
+    border: 1px solid #0000008a;
+    width: 120px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    height: 30px;
+}
+
+.form-select {
+    width: 90%;
+    margin-bottom: 15px;
+    padding: 4px 8px;
+    border-radius: 4px!important;
+    height: 30px;
+    border: 1px solid #0000008a;
+}
+
+.order-address h4 {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+}
+.d-none {
+  display: none !important;
+}
+.order-address-details .list-unstyled li h6 {
+    font-size: 13px;
+}
+.top_row_order_address .upper_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.top_row_order_address .upper_header h3 {
+    color: #000;
+    font-size: 21px;
+}
+.top_row_order_address .upper_header .print_btn a {
+    background: #2271b1;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 3px;
+}
+.top_row_order_address {
+    margin-bottom: 40px;
+}
+.lower_header p a {
+    color: #2271b1;
+}
+.address p a {
+    color: #2271b1;
+    text-decoration: underline;
+}
+.address p {
+    word-break: break-word;
+}
+
+table tbody tr td a {
+    color: #2271b1;
+    text-decoration: underline;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+table .wc-order-item-sku {
+    color: #888;
+}
+
+table  thead {
+    background: #f8f8f8;
+}
+.table thead th {
+    color: #999999;
+    border-bottom: unset;
+}
+tbody tr td {
+    border-bottom: 1px solid #f8f8f8;
+}
+tbody tr td p.giftcard-message {
+    margin-bottom: 0;
+}
+a.download_zip_btn {
+    color: #2271b1;
+    border-color: #2271b1;
+    background: #f6f7f7;
+    border: 1px solid;
+    width: 110px;
+    padding: 4px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    text-decoration: unset;
+    border-radius: 3px;
+}
+.main_add_more .add-more
+{
+    display: flex!important;
+}
