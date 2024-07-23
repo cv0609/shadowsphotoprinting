@@ -43,6 +43,8 @@
                                     <th>Order Number</th>
                                     <th>Total</th>
                                     <th>Status</th>
+                                    <th>Billing</th>
+                                    <th>Ship to</th>
                                     <th>Created At</th>
                                     <th>Download zip</th>
                                 </tr>
@@ -55,7 +57,9 @@
                                             href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
                                     </td>
                                     <td>{{ $order->total }}</td>
-                                    <td>{{ $order->status }}</td>
+                                    <td class="status_td"> <p> {{ $order->status }}</p></td>
+                                    <td class="billing_address column-billing_address" data-colname="Billing">Jenny Garley, 1145 Eyre Street, Newington Victoria 3350<span class="description">via Credit Card (Stripe)</span></td>
+                                    <td class="shipping_address column-shipping_address" data-colname="Ship to"><a target="_blank" href="https://maps.google.com/maps?&amp;q=1145%20Eyre%20Street%2C%20%2C%20Newington%2C%20VIC%2C%203350%2C%20AU&amp;z=16">Jenny Garley, 1145 Eyre Street, Newington Victoria 3350</a><span class="description">via Flat rate</span></td>
                                     <td>{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
                                     <td>
                                         <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>

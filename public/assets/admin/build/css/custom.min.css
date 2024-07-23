@@ -249,7 +249,7 @@ table  thead {
     color: #999999;
     border-bottom: unset;
 }
-tbody tr td {
+tbody tr  .order_page_td {
     border-bottom: 1px solid #f8f8f8;
 }
 tbody tr td p.giftcard-message {
@@ -272,4 +272,72 @@ a.download_zip_btn {
 .main_add_more .add-more
 {
     display: flex!important;
+}
+.bottom_refund_btn_class {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #e6e9ed;
+    border-top: 0;
+    margin-top: -10px;
+}
+.fefund_btn a {
+    color: #2271b1;
+    border-color: #2271b1;
+    background: #f6f7f7;
+    border: 1px solid;
+    width: 75px;
+    padding: 4px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    text-decoration: unset;
+    border-radius: 3px;
+}
+.refund_paragraph p {
+    color: #000;
+    margin-bottom: 0;
+}
+.order-img img{
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+}
+
+
+.status_td p {
+    width: 100px;
+    height: 30px;
+    border-radius: 4px;
+    display: flex;
+    background: #c6e1c6;
+    color: #5b841b;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.processing_clr
+{
+    background: #c6e1c6!important;
+    color: #5b841b!important;
+}
+
+
+.completed_clr{
+    background: #c8d7e1!important;
+    color: #2e4453!important;
+}
+
+.cancelled_clr{
+    color: #777!important;
+    background: #e5e5e5!important;
+}
+td.billing_address {
+    width: 20ch;
+}
+td.shipping_address {
+    width: 20ch;
 }
