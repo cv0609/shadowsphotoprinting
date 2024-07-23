@@ -109,7 +109,7 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Price<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="number" id="sale_price" name="sale_price" required="required" class="form-control ">
+                                <input type="number" id="sale_price" name="sale_price[]" required="required" class="form-control ">
                                 @error('sale_price')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -120,7 +120,7 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Start From<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="date" id="sale_start_date" name="sale_start_date" required="required" class="form-control inputDate">
+                                <input type="date" id="sale_start_date" name="sale_start_date[]" required="required" class="form-control inputDate">
                                 @error('sale_start_date')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -131,7 +131,7 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale End To<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="date" id="sale_end_date" name="sale_end_date" required="required" class="form-control inputDate">
+                                <input type="date" id="sale_end_date" name="sale_end_date[]" required="required" class="form-control inputDate">
                                 @error('sale_end_date')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -200,7 +200,7 @@
   });
 
   $("#add-more-attribute").on('click',function(){
-      $("#sale-div").append('<div class="added-section size-and-type"><button class="close-button" onclick="removeAddMore(this)" type="button">×</button><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Price<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class=form-control id=sale_price name=sale_price required type=number> @error('sale_price')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Start From<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_start_date name=sale_start_date required type=date> @error('sale_start_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale End To<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_end_date name=sale_end_date required type=date> @error('sale_end_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div>');
+      $("#sale-div").append('<div class="added-section size-and-type"><button class="close-button" onclick="removeAddMore(this)" type="button">×</button><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Price<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class=form-control id=sale_price name=sale_price[] required type=number> @error('sale_price')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Start From<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_start_date name=sale_start_date[] required type=date> @error('sale_start_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale End To<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_end_date name=sale_end_date[] required type=date> @error('sale_end_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div>');
   })
 
   function removeAddMore(that) {
