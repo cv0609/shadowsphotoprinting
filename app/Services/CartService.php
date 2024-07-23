@@ -12,6 +12,7 @@ use App\Models\PhotoForSaleProduct;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 class CartService
 {
@@ -170,102 +171,40 @@ class CartService
 
      }
 
-     public function autoAppliedCoupon($subtotal){
+     public function autoAppliedCoupon(){
 
+        $CartTotal = $this->getCartTotal();
         $currentDate = now();
 
-        $coupons = Coupon::where('is_active', true)
-        ->where('auto_applied', true)
+        $coupon = Coupon::where('is_active', '1')
+        ->where('auto_applied', '1')
         ->where('start_date', '<=', $currentDate)
         ->where('end_date', '>=', $currentDate)
-        ->get();
+        ->where('product_category', null)
+        ->where('products', null)
+        ->where(function($query) use ($CartTotal) {
+            $query->where('minimum_spend', '<=', $CartTotal['subtotal'])
+                  ->where('maximum_spend', '>=', $CartTotal['subtotal']);
+        })
+        ->withUsageLimit()
+        ->first();
         
-        $total = $this->getCartTotal();
-        $cart = [];
-         // $product = Product::find($request->product_id);
-         // $productCategories = $product->categories->pluck('id')->toArray();
-         if(empty($coupon) && !isset($coupon)){
-             return ['success' => false, 'message' => 'Coupon is not valid.'];
-         }
-        
-         if ($currentDate < $coupon->start_date) {
-             return ['success' => false, 'message' => 'Coupon has expired'];
-         }
- 
-         if (!$coupon) {
-             return ['success' => false, 'message' => 'Coupon does not exist'];
-         }
- 
-         if ($coupon->isExpired()) {
-             return ['success' => false, 'message' => 'Coupon has expired'];
-         }
-         if (Auth::check() && !empty(Auth::user())) {
-             $auth_id = Auth::user()->id;
-             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
-         }else{
-             $session_id = Session::getId();
-             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
-         }
- 
-        if (!$cart) {
-             return ['success' => false, 'message' => 'Cart is empty'];
-         }
- 
-         if ($total['subtotal'] < $coupon->minimum_cart_total) {
-             return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
-         }
- 
-         if($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend)
-         {
-             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.' amount' ];
-         }
- 
-         if ($coupon->use_limit && $coupon->total_use >= $coupon->use_limit) {
-             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
-         }
- 
-         if(isset($coupon->categories) && !empty($coupon->categories) && $coupon->categories != null)
-         {
-             $couponCategories = explode(',', $coupon->categories);
- 
-             foreach ($cart->items as $item) {
-                 $productCategories = $item->product->product_category->pluck('id')->toArray();
-                 if (!array_intersect($productCategories, $couponCategories)) {
-                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
-                 }
-             }
-         }
- 
-         if(isset($coupon->products) && !empty($coupon->products) && $coupon->products != null)
-         {
-             $couponProducts = explode(',', $coupon->products);
-             foreach ($cart->items as $item) {
-                 if (!in_array($item->product->id, $couponProducts)) {
-                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
-                 }
-             }
-         }
- 
-         $amount = 0;
-         if($coupon->type == "0")
-           {
-            $amount = $coupon->amount;
- 
-           }
-           elseif($coupon->type == "1")
-            {
-               $amount = ($coupon->amount / 100) * $total['subtotal'];
- 
+        if(isset($coupon) && !empty($coupon)){
+            $amount = 0;
+            if($coupon->type == "0"){
+              $amount = $coupon->amount;
             }
-         $coupon->used++;
-         $coupon->save();
- 
-         Session::put('coupon', [
-             'code' => $coupon->code,
-             'discount_amount' => $amount,
-         ]);
-         return ['success' => true, 'total' => $total['subtotal'] - $coupon->discount_amount];
- 
+            elseif($coupon->type == "1"){
+                $amount = ($coupon->amount / 100) * $CartTotal['subtotal'];
+            }
+    
+            $coupon->used++;
+            $coupon->save();
+     
+            Session::put('coupon', [
+                'code' => $coupon->code,
+                'discount_amount' => $amount,
+            ]);
+        }
      }
-
 }

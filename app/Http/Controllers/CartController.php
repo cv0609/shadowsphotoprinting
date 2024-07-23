@@ -116,7 +116,12 @@ class CartController extends Controller
                 }
             }
         }   
-        
+       
+
+        if(!Session::has('coupon')){
+            $this->CartService->autoAppliedCoupon();
+        }
+
         $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
         isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
@@ -185,16 +190,11 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Coupon is not valid.'];
         }
 
-        $currentDate = now();
-        if ($currentDate < $coupon->start_date) {
-            return ['success' => false, 'message' => 'Coupon has expired'];
-        }
-
         if (!$coupon) {
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
 
-        if ($coupon->isStarted()) {
+        if (!$coupon->isStarted()) {
             return ['success' => false, 'message' => 'Coupon is not yet valid'];
         }
 
