@@ -231,7 +231,7 @@
     word-break: break-word;
 }
 
-table tbody tr td a {
+table tbody tr .order_page_td  a {
     color: #2271b1;
     text-decoration: underline;
     display: inline-block;
@@ -242,10 +242,10 @@ table .wc-order-item-sku {
     color: #888;
 }
 
-table  thead {
+table  .table_head {
     background: #f8f8f8;
 }
-.table thead th {
+.table .table_head th {
     color: #999999;
     border-bottom: unset;
 }
