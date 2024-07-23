@@ -231,7 +231,7 @@
     word-break: break-word;
 }
 
-table tbody tr td a {
+table tbody tr .order_page_td  a {
     color: #2271b1;
     text-decoration: underline;
     display: inline-block;
@@ -242,14 +242,14 @@ table .wc-order-item-sku {
     color: #888;
 }
 
-table  thead {
+table  .table_head {
     background: #f8f8f8;
 }
-.table thead th {
+.table .table_head th {
     color: #999999;
     border-bottom: unset;
 }
-tbody tr td {
+tbody tr  .order_page_td {
     border-bottom: 1px solid #f8f8f8;
 }
 tbody tr td p.giftcard-message {
@@ -272,4 +272,117 @@ a.download_zip_btn {
 .main_add_more .add-more
 {
     display: flex!important;
+}
+.bottom_refund_btn_class {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #e6e9ed;
+    border-top: 0;
+    margin-top: -10px;
+}
+.fefund_btn a {
+    color: #2271b1;
+    border-color: #2271b1;
+    background: #f6f7f7;
+    border: 1px solid;
+    width: 75px;
+    padding: 4px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    text-decoration: unset;
+    border-radius: 3px;
+}
+.refund_paragraph p {
+    color: #000;
+    margin-bottom: 0;
+}
+.order-img img{
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+}
+
+
+.status_td p {
+    width: 100px;
+    height: 30px;
+    border-radius: 4px;
+    display: flex;
+    background: #c6e1c6;
+    color: #5b841b;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.processing_clr
+{
+    background: #c6e1c6!important;
+    color: #5b841b!important;
+}
+
+
+.completed_clr{
+    background: #c8d7e1!important;
+    color: #2e4453!important;
+}
+
+.cancelled_clr{
+    color: #777!important;
+    background: #e5e5e5!important;
+}
+td.billing_address {
+    width: 20ch;
+}
+td.shipping_address {
+    width: 20ch;
+}
+
+
+
+@media screen and (max-width: 991px){
+    #order_table{
+        background-color: #fff;
+    }
+    #order_table tr {
+        padding: 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.05), 0px 2px 2px rgba(0, 0, 0, 0.15);
+        display: block;
+    }
+    #order_table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0 !important;
+        border: 0;
+    }
+    #order_table 
+    
+    
+    td::before {
+        content: attr(data-title);
+        display: inline-block;
+        width: 50%;
+        min-width: 160px;
+        margin-right: 10px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 110%;
+        color: #959292;
+        text-transform: capitalize;
+    }
+    td.shipping_address {
+        width: 100%;
+    }
+    td.billing_address {
+        width:100%;
+    }
+
 }

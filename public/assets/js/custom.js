@@ -40,8 +40,8 @@ document.getElementById('fileInput').addEventListener('change', function () {
             all_images.push(files[i]);
         }
     } else {
-        document.getElementById('uploadfiles').style.display = 'none';
-        document.getElementById('selectedFiles').innerHTML = ''; // Clear selected files display
+        // document.getElementById('uploadfiles').style.display = 'none';
+        // document.getElementById('selectedFiles').innerHTML = ''; // Clear selected files display
     }
 });
 

@@ -36,13 +36,15 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <table class="table">
+                        <table class="table" id="order_table">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Order Number</th>
                                     <th>Total</th>
                                     <th>Status</th>
+                                    <th>Billing</th>
+                                    <th>Ship to</th>
                                     <th>Created At</th>
                                     <th>Download zip</th>
                                 </tr>
@@ -50,14 +52,16 @@
                             <tbody id="main-tbody">
                                 @foreach ($orders as $key => $order)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td> <a
+                                    <td data-title="s_no">{{ $key + 1 }}</td>
+                                    <td data-title="order-number"> <a
                                             href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
                                     </td>
-                                    <td>{{ $order->total }}</td>
-                                    <td>{{ $order->status }}</td>
-                                    <td>{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
-                                    <td>
+                                    <td data-title="total">{{ $order->total }}</td>
+                                    <td class="status_td" data-title="status"> <p> {{ $order->status }}</p></td>
+                                    <td class="billing_address column-billing_address" data-colname="Billing" data-title="billing-add">Jenny Garley, 1145 Eyre Street, Newington Victoria 3350</td>
+                                    <td class="shipping_address column-shipping_address" data-colname="Ship to" data-title="shipp-add"><a target="_blank" href="https://maps.google.com/maps?&amp;q=1145%20Eyre%20Street%2C%20%2C%20Newington%2C%20VIC%2C%203350%2C%20AU&amp;z=16">Jenny Garley, 1145 Eyre Street, Newington Victoria 3350</a></td>
+                                    <td data-title="created-at">{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
+                                    <td data-title="zip">
                                         <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
                                     </td>
                                 </tr>
