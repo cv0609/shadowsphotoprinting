@@ -231,7 +231,7 @@
     word-break: break-word;
 }
 
-table tbody tr td a {
+table tbody tr .order_page_td  a {
     color: #2271b1;
     text-decoration: underline;
     display: inline-block;
