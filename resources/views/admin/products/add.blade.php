@@ -137,7 +137,13 @@
                                 @enderror
                             </div>
                         </div>
-                   </div>
+                    </div>
+                    <div class="row read-more d-none">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <button type="button" class="read_more-btn" id="add-more-attribute">Add More</button>
+                        </div>
+                    </div>
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
@@ -188,5 +194,10 @@
             $("#sale-div").addClass('d-none');
          }
   });
+
+  $("#add-more-attribute").on('click',function(){
+      console.log("Ok");
+      $("#sale-div").append('<div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Price<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class=form-control id=sale_price name=sale_price required type=number> @error('sale_price')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale Start From<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_start_date name=sale_start_date required type=date> @error('sale_start_date')<p class=text-danger>{{ $message }}</p>@enderror</div></div><div class="form-group item"><label class="col-form-label col-md-3 col-sm-3 label-align"for=type_of_paper_use>Sale End To<span class=required>*</span></label><div class="col-md-6 col-sm-6"><input class="form-control inputDate"id=sale_end_date name=sale_end_date required type=date> @error('sale_end_date')<p class=text-danger>{{ $message }}</p>@enderror</div>');
+  })
   </script>
 @endsection
