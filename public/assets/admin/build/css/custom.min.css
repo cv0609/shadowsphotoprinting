@@ -242,10 +242,10 @@ table .wc-order-item-sku {
     color: #888;
 }
 
-table  thead {
+table  .table_head {
     background: #f8f8f8;
 }
-.table thead th {
+.table .table_head th {
     color: #999999;
     border-bottom: unset;
 }

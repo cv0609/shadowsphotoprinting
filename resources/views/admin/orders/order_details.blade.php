@@ -186,7 +186,7 @@
 
       <div class="table-responsive-sm order-invoice-main">
         <table class="table">
-          <thead>
+          <thead class="table_head">
             <tr>
               <th class="center">Item</th>
               <th></th>
