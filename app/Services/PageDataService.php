@@ -60,7 +60,7 @@ class PageDataService
                 $type_data = $type_arr[$size_index];
                 foreach ($size_data['children'] as $size_id) {
                     foreach ($type_data['children'] as $type_id) {
-                        $combinationKey = $size_id . '-' . $type_id."<br>";
+                        $combinationKey = $size_id . '-' . $type_id;
                         if (in_array($combinationKey, $uniqueCombinations)) {
                             return true;
                         }
@@ -69,5 +69,6 @@ class PageDataService
                 }
             }
         }
+        // dd($uniqueCombinations);
     }
 }
