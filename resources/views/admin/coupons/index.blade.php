@@ -99,8 +99,10 @@
               data: data,
               success: function(res) {
                   if (res.checked == 1) {
+                      $('.coupon-status-update').addClass('d-none').text('');
                       $('.coupon-status-update').removeClass('d-none').text('Coupon activated successfully!');
                   } else {
+                      $('.coupon-status-update').addClass('d-none').text('');
                       $('.coupon-status-update').removeClass('d-none').text('Coupon deactivated successfully!');
                   }
               },

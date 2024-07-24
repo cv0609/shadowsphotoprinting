@@ -13,7 +13,8 @@ class Product extends Model
         'product_description',
         'product_price',
         'type_of_paper_use',
-        'product_image'
+        'product_image',
+        'manage_sale'
     ];
 
     public function product_category()
