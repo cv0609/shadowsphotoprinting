@@ -8,6 +8,10 @@
           <li class="breadcrumb-item"><a href="#">Edit Product</a></li>
         </ol>
       </nav>
+@if(Session::has('success'))
+    <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+@endif
+
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -18,21 +22,19 @@
             </div>
             <div class="x_content">
                 <br>
-                <form action="{{ route('product-update') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
+                <form action="{{ route('product-update') }}" method="POST" id="product_save_form" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_category" >Product Category <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6">
-                           <select class="form-control" name="category_id">
+                           <select class="form-control" name="category_id" id="category_id">
                                <option value="">Select</option>
                                 @foreach ($productCategories as $productCategory)
                                 <option value="{{ $productCategory->id }}" <?= ($product->category_id == $productCategory->id) ? 'selected' : '' ?>>{{ $productCategory->name }}</option>
                                 @endforeach
-                        </select>
-                        @error('category_id')
-                        <p class="text-danger">{{ $message }}</p>
-                       @enderror
+                           </select>
+                        <span class="validation-error category_id_error"></span>
                     </div>
 
                     </div>
@@ -41,9 +43,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="product_title" name="product_title" required="required" class="form-control" value="{{$product->product_title}}">
-                            @error('product_title')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="validation-error product_title_error"></span>
                         </div>
                     </div>
 
@@ -52,9 +52,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="number" id="product_price" name="product_price" required="required" class="form-control" step=".01" value="{{$product->product_price}}">
-                            @error('product_price')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="validation-error product_price_error"></span>
                         </div>
                     </div>
 
@@ -63,9 +61,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="type_of_paper_use" name="type_of_paper_use" required="required" class="form-control" value="{{$product->type_of_paper_use}}">
-                            @error('type_of_paper_use')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="validation-error type_of_paper_use_error"></span>
                         </div>
                     </div>
 
@@ -86,9 +82,7 @@
                             </div>
 
                         </div>
-                            @error('product_image')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                        <span class="validation-error product_image_error"></span>
                         </div>
                     </div>
 
@@ -97,9 +91,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <textarea id="product_description" name="product_description" required="required" class="form-control ">{{$product->product_description}}</textarea>
-                            @error('product_description')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <span class="validation-error product_description_error"></span>
                         </div>
                     </div>
                     <div class="item form-group">
@@ -110,9 +102,7 @@
                                 <input type="checkbox" name="manage_sale" id="manage_sale" value="1"  {{ $product->manage_sale == 1 ? 'checked' : '' }}  {{ old('manage_sale') ? 'checked' : '' }}>
                                 <span class="slider round"></span>
                               </label>
-                            @error('manage_sale')
-                             <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                              <span class="validation-error manage_sale_error"></span>
                         </div>
                     </div>
                     <div class="{{ ($product->manage_sale == 1 ||  old('manage_sale')) ? '' : 'd-none' }}" id="sale-div">
@@ -120,10 +110,8 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Price<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="number" id="sale_price" name="sale_price" required="required" class="form-control" value="{{ $product->sale_price }}">
-                                @error('sale_price')
-                                <p class="text-danger">{{ $message }}</p>
-                                @enderror
+                                <input type="number" id="sale_price" name="sale_price[]" required="required" class="form-control">
+                                <span class="validation-error sale_price_error"></span>
                             </div>
                         </div>
 
@@ -131,10 +119,8 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale Start From<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="date" id="sale_start_date" name="sale_start_date" required="required" class="form-control inputDate" value="{{ $product->sale_start_date }}">
-                                @error('sale_start_date')
-                                <p class="text-danger">{{ $message }}</p>
-                                @enderror
+                                <input type="date" id="sale_start_date" name="sale_start_date[]" required="required" class="form-control inputDate">
+                                <span class="validation-error sale_start_date_error"></span>
                             </div>
                         </div>
 
@@ -142,10 +128,8 @@
                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="type_of_paper_use">Sale End To<span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <input type="date" id="sale_end_date" name="sale_end_date" required="required" class="form-control inputDate" value="{{ $product->sale_end_date }}">
-                                @error('sale_end_date')
-                                <p class="text-danger">{{ $message }}</p>
-                                @enderror
+                                <input type="date" id="sale_end_date" name="sale_end_date[]" required="required" class="form-control inputDate">
+                                <span class="validation-error sale_end_date_error"></span>
                             </div>
                         </div>
                    </div>
@@ -153,7 +137,7 @@
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="button" id="editBtn" class="btn btn-success">Submit</button>
                             </div>
                         </div>
 
@@ -185,7 +169,7 @@
 
     $('.inputDate').attr('min', maxDate);
 });
-$("#manage_sale").on('click change', function() {
+  $("#manage_sale").on('click change', function() {
        if($(this).prop('checked') == true)
          {
              $("#sale-div").removeClass('d-none');
@@ -195,6 +179,100 @@ $("#manage_sale").on('click change', function() {
             $("#sale-div").addClass('d-none');
          }
   });
+
+
+$(document).ready(function(){
+    $('#editBtn').on('click', function() {
+
+    $(document).find('.text-danger').text('');
+
+    var error = false;
+
+    $('select[name^="sale_price"]').each(function() {
+        if (!$(this).val()) {
+            $(this).siblings('.sale_price_error').text('Sale price field is required.');
+            $(this).siblings('.sale_price_error').addClass('text-danger');
+            error = true;
+        }
+    });
+
+    $('select[name^="sale_start_date"]').each(function() {
+        console.log('dddd');
+        if (!$(this).val()) {
+            $(this).siblings('.sale_start_date_error').text('Sale start date field is required.');
+            $(this).siblings('.sale_start_date_error').addClass('text-danger');
+            error = true;
+        }
+    });
+
+    $('input[name^="sale_end_date"]').each(function() {
+        if (!$(this).val()) {
+            $(this).siblings('.sale_end_date_error').text('Sale end date field is required.');
+            $(this).siblings('.sale_end_date_error').addClass('text-danger');
+            error = true;
+        }
+    });
+
+
+    if ($('#category_id').val() == '') {
+        $('.category_id_error').text('Category field is required.');
+        $('.category_id_error').addClass('text-danger');
+        error = true;
+    }
+
+    if ($('#product_title').val() == '') {
+        $('.product_title_error').text('Product title field is required.');
+        $('.product_title_error').addClass('text-danger');
+        error = true;
+    }
+
+    if ($('#product_price').val() == '') {
+        $('.product_price_error').text('Product price field is required.');
+        $('.product_price_error').addClass('text-danger');
+        error = true;
+    }
+
+    if ($('#type_of_paper_use').val() == '') {
+        $('.type_of_paper_use_error').text('Type of paper use field is required.');
+        $('.type_of_paper_use_error').addClass('text-danger');
+        error = true;
+    }
+
+    if ($('#product_image').val() == '') {
+        $('.product_image_error').text('Product image field is required.');
+        $('.product_image_error').addClass('text-danger');
+        error = true;
+    }
+
+    let files = $('#product_save_form input[type=file]').get(0).files;
+    let allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+
+    if(files.length == 1){
+        for (let i = 0; i < files.length; i++) {
+            let fileExtension = files[i].name.split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(fileExtension)) {
+                $('.product_image_error').text('Only JPEG, PNG, JPG, GIF, and SVG formats are allowed.');
+                $('.product_image_error').addClass('text-danger');
+                error = true;
+                break;
+            }
+        }
+    }
+
+    if ($('#product_description').val() == '') {
+        $('.product_description_error').text('Product description field is required.');
+        $('.product_description_error').addClass('text-danger');
+        error = true;
+    }
+    
+    if (error) {
+        return false;
+    } else {
+      $('.product_save_form').submit();
+    }
+     });
+})
+
 </script>
 
 @endsection

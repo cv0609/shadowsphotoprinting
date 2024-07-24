@@ -121,7 +121,7 @@ class ProductsController extends Controller
 
     public function productShow($slug)
     {
-        $product = Product::where('slug', $slug)->first();
+        $product = Product::with('productSale')->where('slug', $slug)->first();
         $productCategories = ProductCategory::get();
         return view('admin.products.edit', compact('product','productCategories'));
     }
