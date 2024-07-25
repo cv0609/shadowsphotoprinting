@@ -105,11 +105,11 @@ class OrderController extends Controller
                         if (file_exists($imagePath)) {
                             $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
                             $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
-    
+
                             if (!isset($fileCounter[$baseName])) {
                                 $fileCounter[$baseName] = 0;
                             }
-    
+
                             $fileCounter[$baseName]++;
                             $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
                             $zip->addFile($imagePath, $uniqueFileName);
@@ -146,14 +146,14 @@ class OrderController extends Controller
         }
     }
 
-    
+    public function updateOrder(Request $request)
+     {
+        Order::whereId($request->order_id)->update(["order_status"=>$request->order_status]);
+     }
 
-
-
-
-
-
-
-
-
+    public function refundOrder($order_id)
+     {
+       $payment_id = Order::whereId($order_id)->pluck('payment_id');
+       dd($payment_id);
+     }
 }
