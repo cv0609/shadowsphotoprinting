@@ -33,7 +33,6 @@ class CartService
             return 0;
         }
 
-        $sale_on = false;
         
         $subtotal = $cart->items->reduce(function ($carry, $item) {
             if($item->product_type == 'gift_card'){
@@ -48,11 +47,10 @@ class CartService
 
                 if(isset($sale_price) && !empty($sale_price)){
                     $product_price = $sale_price->sale_price;
-                    $sale_on = true;
                 }else {
                     $product_price = $item->product->product_price;
                 }
-                
+
             }
             return $carry + ($product_price * $item->quantity);
         }, 0);
@@ -63,6 +61,7 @@ class CartService
         $coupon_id = "";
         if ($couponCode) {
             $coupon = Coupon::where(['code'=>$couponCode['code']])->where('is_active', true)->first();
+          
             $coupon_code = $couponCode;
             if ($coupon) {
                 if ($coupon->type == '1') {
@@ -89,8 +88,8 @@ class CartService
          }
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
-        
-        $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge,'sale_on' => $sale_on];
+
+        $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
         return $data;
 
 
@@ -146,8 +145,6 @@ class CartService
              return 0;
          }
 
-         $sale_on = false;
-
          $subtotal = $order->orderDetails->reduce(function ($carry, $item) {
 
              if($item->product_type == 'gift_card'){
@@ -162,7 +159,6 @@ class CartService
 
                 if(isset($sale_price) && !empty($sale_price)){
                     $product_price = $sale_price->sale_price;
-                    $sale_on = true;
                 }else {
                     $product_price = $item->product->product_price;
                 }
@@ -202,7 +198,7 @@ class CartService
           }
 
          $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
-         $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge,'sale_on' => $sale_on];
+         $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
          return $data;
 
      }

@@ -180,8 +180,7 @@ class CartController extends Controller
        $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
        $total = $this->CartService->getCartTotal();
        $cart = [];
-        // $product = Product::find($request->product_id);
-        // $productCategories = $product->categories->pluck('id')->toArray();
+       
         if(empty($coupon) && !isset($coupon)){
             return ['success' => false, 'message' => 'Coupon is not valid.'];
         }
@@ -190,13 +189,24 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Coupon does not exist'];
         }
 
-        if (!$coupon->isStarted()) {
+        $currentDate = date('Y-m-d');
+
+        if($coupon->start_date > $currentDate){
             return ['success' => false, 'message' => 'Coupon is not yet valid'];
         }
 
-        if ($coupon->isExpired()) {
+        if($coupon->end_date < $currentDate){
             return ['success' => false, 'message' => 'Coupon has expired'];
         }
+
+        // if (!$coupon->isStarted()) {
+        //     return ['success' => false, 'message' => 'Coupon is not yet valid'];
+        // }
+
+        // if ($coupon->isExpired()) {
+        //     return ['success' => false, 'message' => 'Coupon has expired'];
+        // }
+
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
@@ -218,7 +228,7 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.' amount' ];
         }
 
-        if ($coupon->use_limit && $coupon->total_use >= $coupon->use_limit) {
+        if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
@@ -294,6 +304,10 @@ class CartController extends Controller
             {
             Session::forget('coupon');
             }
+        }
+
+        if(!Session::has('coupon')){
+            $this->CartService->autoAppliedCoupon();
         }
 
         session()->flash('success', 'Cart updated successfully.');
