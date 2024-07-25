@@ -31,5 +31,10 @@ class Product extends Model
     {
         return $this->hasMany(product_sale::class);
     }
+
+    public function productSalePrice()
+    {
+        return $this->hasOne(product_sale::class);
+    }
     
 }

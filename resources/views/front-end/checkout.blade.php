@@ -178,7 +178,12 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($cart->items as $item)
-                                        <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);?>
+                                        <?php 
+                                        
+                                        $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+                                        $productSalePrice =  $CartService->getProductSalePrice($item->product_id);
+                                        
+                                        ?>
 
                                         <tr>
 
@@ -202,7 +207,7 @@
                                                         @elseif($item->product_type == 'photo_for_sale')
                                                             {{ number_format($item->quantity * $item->product_price, 2) }}
                                                         @else
-                                                            {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                                            {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}
                                                         @endif
                                                     </bdi>
                                                 </span>
@@ -213,7 +218,7 @@
                                             @elseif($item->product_type == 'photo_for_sale')
                                                 {{ number_format($item->quantity * $product_detail->product_price, 2) }}
                                             @else
-                                                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                                {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}
                                             @endif">
 
                                         </tr>

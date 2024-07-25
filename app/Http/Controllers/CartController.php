@@ -127,10 +127,6 @@ class CartController extends Controller
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
-
-
-
-
     public function cart()
     {
         if (Auth::check() && !empty(Auth::user())) {
