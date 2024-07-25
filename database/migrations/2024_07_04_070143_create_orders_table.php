@@ -1,5 +1,6 @@
 <?php
 
+use Egulias\EmailValidator\Parser\Comment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +25,8 @@ class CreateOrdersTable extends Migration
             $table->decimal('total',10,2);
             $table->string('payment_id');
             $table->string('is_paid');
-            $table->string('status')->default('pending');
+            $table->string('payment_status')->default('pending');
+            $table->enum("order_status", ['0','1','2','3'])->comment('0 for prcessing, 1 for completed, 2 for cancelled, 3 for refunded')->default("0");
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
