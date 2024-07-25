@@ -44,11 +44,11 @@
 
                   <div class="main_input_div">
                     <label for="">Status : </label>
-                    <select class="form-select form-control" aria-label="Default select example">
-                      <option value="0" selected>Processing</option>
-                      <option value="1">Completed</option>
-                      <option value="2">Cancelled</option>
-                      <option value="3">Refunded</option>
+                    <select class="form-select form-control" aria-label="Default select example" id="order-status">
+                      <option value="0" {{ ($orderDetail->order_status == "0") ? 'selected' : ''}}>Processing</option>
+                      <option value="1" {{ ($orderDetail->order_status == "1") ? 'selected' : ''}}>Completed</option>
+                      <option value="2"{{ ($orderDetail->order_status == "2") ? 'selected' : ''}}>Cancelled</option>
+                      <option value="3"{{ ($orderDetail->order_status == "3") ? 'selected' : ''}}>Refunded</option>
                     </select>
                   </div>
                 </div>
@@ -165,7 +165,7 @@
 
                   <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
 
-                <a href="https://fotovenderau.s3-ap-southeast-2.amazonaws.com/shadowsphotoprinting/july-23-2024-2024-07-23-14-33-51/original/img-3771-2-.jpg" target="_blank">Download image</a>
+                <a href="{{ asset($item->selected_images) }}" download>Download image</a>
 
 
               </td>
@@ -228,7 +228,7 @@
     </div>
     <div class="bottom_refund_btn_class">
       <div class="fefund_btn">
-                <a href="">refund</a>
+        <a href="{{ route('refund-order',['order_id'=>$orderDetail->id]) }}" onclick="return confirm('Are you sure!')">refund</a>
       </div>
 
       <div class="refund_paragraph">
@@ -243,7 +243,20 @@
   </div>
 @endsection
 
-
-
+@section('custom-script')
+  <script>
+     $("#order-status").on('change',function(){
+        $.post("{{ route('update-order') }}",
+        {
+           order_id : "{{ $orderDetail->id }}",
+           order_status: $(this).val(),
+           "_token": "{{ csrf_token() }}"
+        },
+        function(data){
+           console.log(data);
+        });
+     })
+  </script>
+@endsection
 
 
