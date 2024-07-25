@@ -22,7 +22,8 @@ class Order extends Model
         'total',
         'payment_id',
         'is_paid',
-        'status',
+        'order_status',
+        'payment_status',
     ];
 
     public function user()
