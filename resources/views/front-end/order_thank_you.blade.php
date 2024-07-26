@@ -7,7 +7,7 @@
             <div class="shortly">
                 <h1>ORDER CONFIRMATION
                 </h1>
-                <span>Your order #{{$orderId}} has been sucessful! </span>
+                <span>Your order #{{$order_number->order_number}} has been sucessful! </span>
                 <p>Thank you for choosing Shadows Photo Printing.
                 </p>
             </div>
