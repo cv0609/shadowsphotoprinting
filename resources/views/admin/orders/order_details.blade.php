@@ -24,10 +24,12 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="upper_header">
+                        <div class="order_detail_heading">
                         <h3>Order #{{$orderDetail->order_number}} details</h3>
-
+                        <span class="status_paragraph completed_clr p-1">Success</span>
+                      </div>
                         <div class="print_btn">
-                          <a href="">Print</a>
+                          <a href="javascript:void()" id="print">Print</a>
                         </div>
 
 
@@ -38,7 +40,7 @@
                     </div>
                   </div>
             </div>
-            <div class="row g-5">
+            <div class="billing_adress_row g-5">
               <div class="col-md-4">
                 <div class="gerneral_billing_details">
                   <h4 class="mb-3">General</h4>
@@ -49,7 +51,7 @@
                   </div>
 
 
-                  <div class="main_input_div">
+                  <div class="main_input_div main_div_status">
                     <label for="">Status : </label>
                     <select class="form-select form-control" aria-label="Default select example" id="order-status">
                       <option value="0" {{ ($orderDetail->order_status == "0") ? 'selected' : ''}}>Processing</option>
@@ -138,6 +140,9 @@
                     @endif
                 </a>
                 <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug }}</div>
+                <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
+
+                <a href="{{ asset($item->selected_images) }}" download>Download image</a>
             </td>
 
 
@@ -180,24 +185,13 @@
             @else
                 {{ number_format($item->quantity * $item->product->product_price, 2) }}
             @endif</td>
+
+            
+          
             </tr>
 
-            <tr>
-
-              <td >&nbsp;</td>
-
-              <td colspan="10" style="line-height:25px;" class="">
-
-                  <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
-
-                <a href="{{ asset($item->selected_images) }}" download>Download image</a>
-
-
-              </td>
-
-            </tr>
             @endforeach
-            <tr>
+            <tr class="download_zip_tr">
               <td>&nbsp;</td>
               <td colspan="10">
                <a href="{{ route('download-order-zip', ['order_id' => $orderDetail->id]) }}" class="download_zip_btn">download zip</a>
@@ -206,10 +200,10 @@
           </tbody>
         </table>
       </div>
-      <div class="row">
-        <div class="col-lg-4 col-sm-5">
+      <div class=" order_calculations_row">
+        {{-- <div class="col-lg-4 col-sm-5">
         </div>
-        <div class="col-lg-4 col-sm-5"></div>
+        <div class="col-lg-4 col-sm-5"></div> --}} 
         <div class="col-lg-4 col-sm-5 ml-auto">
           <table class="table table-clear">
             <tbody>
@@ -279,6 +273,10 @@
         function(data){
            console.log(data);
         });
+     })
+
+     $("#print").on('click',function(){
+        window.print();
      })
   </script>
 @endsection
