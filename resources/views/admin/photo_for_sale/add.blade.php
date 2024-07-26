@@ -324,7 +324,6 @@
                 }
             }
 
-
             if ($('#product_description').val() == '') {
                 $('.product_description_error').text('Product description field is required.');
                 $('.product_description_error').addClass('text-danger');
@@ -334,22 +333,6 @@
             if (error) {
                 return false;
             } else {
-
-                var size = [];
-                $('select[name^="size_arr"]').each(function() {
-                    var selectedValues = $(this).val();
-                    if (selectedValues) {
-                        size = size.concat(selectedValues);
-                    }
-                });
-
-                var type = [];
-                $('select[name^="type_arr"]').each(function() {
-                    var selectedValues = $(this).val();
-                    if (selectedValues) {
-                        type = type.concat(selectedValues);
-                    }
-                });
 
                 var formData = new FormData($('#demo-form2')[0]);
 
@@ -370,17 +353,6 @@
             }
         });
     });
-
-    function hasDuplicates(array) {
-        for (let i = 0; i < array.length; i++) {
-            for (let j = i + 1; j < array.length; j++) {
-                if (array[i] === array[j]) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     function hideSelectOption(){
         var selectedValues = $("select[name='size_arr[]']").val();

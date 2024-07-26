@@ -34,14 +34,14 @@ class Coupon extends Model
         'coupon_code'
     ];
 
-    public function isExpired()
-    {
-        return $this->end_date && Carbon::parse($this->end_date)->isPast();
-    }
+    // public function isExpired()
+    // {
+    //     return $this->end_date && Carbon::parse($this->end_date)->isPast();
+    // }
 
-    public function isStarted() {
-        return $this->start_date && Carbon::parse($this->start_date)->isPast();
-    }
+    // public function isStarted() {
+    //     return $this->start_date && Carbon::parse($this->start_date)->isPast();
+    // }
 
     public function canBeUsed()
     {

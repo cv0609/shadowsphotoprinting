@@ -22,7 +22,8 @@ class Order extends Model
         'total',
         'payment_id',
         'is_paid',
-        'status',
+        'order_status',
+        'payment_status',
     ];
 
     public function user()
@@ -44,8 +45,8 @@ class Order extends Model
         return $orderNumber;
     }
 
-    public function OrderBillingDetail()
+    public function orderBillingShippingDetails()
     {
-        return $this->hasOne(OrderBillingDetails::class);
+        return $this->hasOne(OrderBillingDetails::class,'order_id','id');
     }
 }

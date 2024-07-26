@@ -310,7 +310,6 @@
             if(files.files && files.files.length > 0){
               
                 if (files.files.length > 2 || files.files.length < 2) {
-                    console.log('dddd');
                     $('.product_image_error').text('Product must have 2 images.');
                     $('.product_image_error').addClass('text-danger');
                     error = true;
@@ -339,22 +338,6 @@
                 return false;
             } else {
 
-                var size = [];
-                $('select[name^="size_arr"]').each(function() {
-                    var selectedValues = $(this).val();
-                    if (selectedValues) {
-                        size = size.concat(selectedValues);
-                    }
-                });
-
-                var type = [];
-                $('select[name^="type_arr"]').each(function() {
-                    var selectedValues = $(this).val();
-                    if (selectedValues) {
-                        type = type.concat(selectedValues);
-                    }
-                });
-
                 var formData = new FormData($('#edit-form')[0]);
 
                 $.ajax({
@@ -374,9 +357,6 @@
             }
         });
     });
-
-   
-
 
     function getSizeTypeDropdown() {
         let count = 0;
@@ -406,6 +386,7 @@
             let sizeOptions = '<option value="">Select size</option>';
 
             sizes.forEach(size => {
+                console.log(size);
                 if (sizes_arr.includes(size.id)) {
                     const selected = sizeIds.has(size.id) ? 'selected' : '';
                     sizeOptions += `<option value="${size.id}" ${selected}>${size.name}</option>`;
@@ -465,7 +446,6 @@
             clickCount++;
         });
     }
-
 
     function hideSelectOption(){
         var selectedValues = $("select[name='size_arr[]']").val();

@@ -6,28 +6,33 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Services\CartService;
+use App\Services\StripeService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\OrderDetail;
+use App\Models\OrderBillingDetails;
 use ZipArchive;
 
 class OrderController extends Controller
 {
     protected $CartService;
-    public function __construct(CartService $CartService)
+    protected $StripeService;
+
+    public function __construct(CartService $CartService,StripeService $StripeService)
     {
         $this->CartService = $CartService;
+        $this->StripeService = $StripeService;
     }
 
     public function index()
     {
-        $orders = Order::get();
+        $orders = Order::with('orderBillingShippingDetails')->get();
         return view('admin.orders.index',compact('orders'));
     }
 
     public function orderDetail($orderNumber)
     {
-      $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','OrderBillingDetail')->first();
+      $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','orderBillingShippingDetails')->first();
       $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
       return view('admin.orders.order_details',compact('orderDetail','OrderTotal'));
     }
@@ -105,11 +110,11 @@ class OrderController extends Controller
                         if (file_exists($imagePath)) {
                             $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
                             $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
-    
+
                             if (!isset($fileCounter[$baseName])) {
                                 $fileCounter[$baseName] = 0;
                             }
-    
+
                             $fileCounter[$baseName]++;
                             $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
                             $zip->addFile($imagePath, $uniqueFileName);
@@ -146,14 +151,19 @@ class OrderController extends Controller
         }
     }
 
+    public function updateOrder(Request $request)
+     {
+        Order::whereId($request->order_id)->update(["order_status"=>$request->order_status]);
+     }
+
+    public function refundOrder($order_id)
+     {
+       $payment_id = Order::whereId($order_id)->select('payment_id')->first();
+       $refundedData = $this->StripeService->refundOrder($payment_id->payment_id);
     
-
-
-
-
-
-
-
-
-
+       if(isset($refundedData['id']) && !empty($refundedData['id'])){
+          Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object']]);
+        }
+        return redirect()->back()->with('success', 'Payment refunded successfully.');
+     }
 }

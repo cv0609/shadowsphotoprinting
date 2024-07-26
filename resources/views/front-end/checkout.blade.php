@@ -77,15 +77,17 @@
                                     </label>
                                     <input type="email" name="email" id="email">
                                 </p>
-                                <p class="form-row">
-                                    <label> Account username * </label>
-                                    <input type="text" name="username" id="username" placeholder="Username">
-                                </p>
-                                <p class="form-row">
-                                    <label> Create account password *
-                                    </label>
-                                    <input type="password" name="password" id="password" placeholder="Password">
-                                </p>
+                                @if(!Auth::check())
+                                    <p class="form-row">
+                                        <label> Account username * </label>
+                                        <input type="text" name="username" id="username" placeholder="Username">
+                                    </p>
+                                    <p class="form-row">
+                                        <label> Create account password *
+                                        </label>
+                                        <input type="password" name="password" id="password" placeholder="Password">
+                                    </p>
+                                @endif
 
                             </div>
                             <div class="Ship-field">
@@ -178,7 +180,12 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($cart->items as $item)
-                                        <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);?>
+                                        <?php 
+                                        
+                                        $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+                                        $productSalePrice =  $CartService->getProductSalePrice($item->product_id);
+                                        
+                                        ?>
 
                                         <tr>
 
@@ -202,7 +209,7 @@
                                                         @elseif($item->product_type == 'photo_for_sale')
                                                             {{ number_format($item->quantity * $item->product_price, 2) }}
                                                         @else
-                                                            {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                                            {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}
                                                         @endif
                                                     </bdi>
                                                 </span>
@@ -213,7 +220,7 @@
                                             @elseif($item->product_type == 'photo_for_sale')
                                                 {{ number_format($item->quantity * $product_detail->product_price, 2) }}
                                             @else
-                                                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                                {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}
                                             @endif">
 
                                         </tr>
@@ -320,6 +327,8 @@
 @endsection
 @section('scripts')
 <script>
+    var authcheck = "{{Auth::check()}}";
+    
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
     var style =  {
@@ -365,6 +374,7 @@
         var suburb = $('#suburb').val();
         var email = $('#email').val();
         var username = $('#username').val();
+        
         var password = $('#password').val();
         var company_name = $('#company_name').val();
 
@@ -385,8 +395,12 @@
 
         var isValid = true;
 
-        // Primary address validation
-        var requiredFields = ['#fname', '#lname', '#street1','#street2', '#postcode', '#email', '#username', '#password','#suburb'];
+        var requiredFields = ['#fname', '#lname', '#street1', '#street2', '#postcode', '#email', '#suburb'];
+
+        if (!authcheck) {
+            requiredFields = requiredFields.concat(['#username', '#password']);
+        }
+
         requiredFields.forEach(function(field) {
             var $field = $(field);
             if ($field.val().trim() === '') {

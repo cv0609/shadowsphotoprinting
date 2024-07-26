@@ -39,7 +39,10 @@
                         <tbody>
                             @foreach ($cart->items as $item)
 
-                            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type); ?>
+                            <?php
+                             $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+                             $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+                            ?>
                                 <tr>
                                 <td class="product-remove">
                                     <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}" onclick="return confirm('Are you sure!')">×</a>
@@ -100,7 +103,7 @@
                                             @elseif($item->product_type == "photo_for_sale")
                                                 {{ number_format($item->product_price, 2) }}
                                             @else
-                                                {{ number_format($product_detail->product_price, 2) }}
+                                                {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($product_detail->product_price, 2)  }}
                                             @endif
                                         </bdi>
                                     </span>
@@ -117,7 +120,7 @@
                                             @elseif($item->product_type == "photo_for_sale")
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
                                             @else
-                                                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                                                {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
                                             @endif
                                         </bdi>
                                     </span>
