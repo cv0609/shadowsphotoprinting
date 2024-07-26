@@ -13,8 +13,7 @@ use App\Models\PhotoForSaleProduct;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Carbon;
-
+use Carbon\Carbon;
 class CartService
 {
     public function getCartTotal()
@@ -206,21 +205,19 @@ class CartService
      public function autoAppliedCoupon(){
 
         $CartTotal = $this->getCartTotal();
-        $currentDate = now();
-
+        $currentDate = Carbon::now();
+        $todayDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
         $coupon = Coupon::where('is_active', '1')
         ->where('auto_applied', '1')
-        ->where('start_date', '<=', $currentDate)
-        ->where('end_date', '>=', $currentDate)
+        ->where('start_date', '<=', $todayDate)
+        ->where('end_date', '>=', $todayDate)
         ->where('product_category', null)
         ->where('products', null)
         ->where(function($query) use ($CartTotal) {
             $query->where('minimum_spend', '<=', $CartTotal['subtotal'])
                   ->where('maximum_spend', '>=', $CartTotal['subtotal']);
         })
-        ->withUsageLimit()
         ->first();
-        dd($coupon);
         if(isset($coupon) && !empty($coupon)){
             $amount = 0;
             if($coupon->type == "0"){
