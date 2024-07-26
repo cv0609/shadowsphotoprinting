@@ -13,8 +13,7 @@ use App\Models\PhotoForSaleProduct;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Carbon;
-
+use Carbon\Carbon;
 class CartService
 {
     public function getCartTotal()
@@ -33,14 +32,14 @@ class CartService
             return 0;
         }
 
-        
+
         $subtotal = $cart->items->reduce(function ($carry, $item) {
             if($item->product_type == 'gift_card'){
                 $product_price = $item->product_price;
             }else if($item->product_type == 'photo_for_sale'){
                 $product_price = $item->product_price;
             }else{
-                
+
                 $currentDate = now();
 
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
@@ -61,7 +60,7 @@ class CartService
         $coupon_id = "";
         if ($couponCode) {
             $coupon = Coupon::where(['code'=>$couponCode['code']])->where('is_active', true)->first();
-          
+
             $coupon_code = $couponCode;
             if ($coupon) {
                 if ($coupon->type == '1') {
@@ -119,7 +118,7 @@ class CartService
     {
         $currentDate = now();
         $product_price = null;
-    
+
         $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$product_id)->first();
 
         if(isset($sale_price) && !empty($sale_price)){
@@ -206,21 +205,19 @@ class CartService
      public function autoAppliedCoupon(){
 
         $CartTotal = $this->getCartTotal();
-        $currentDate = now();
-
+        $currentDate = Carbon::now();
+        $todayDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
         $coupon = Coupon::where('is_active', '1')
         ->where('auto_applied', '1')
-        ->where('start_date', '<=', $currentDate)
-        ->where('end_date', '>=', $currentDate)
+        ->where('start_date', '<=', $todayDate)
+        ->where('end_date', '>=', $todayDate)
         ->where('product_category', null)
         ->where('products', null)
         ->where(function($query) use ($CartTotal) {
             $query->where('minimum_spend', '<=', $CartTotal['subtotal'])
                   ->where('maximum_spend', '>=', $CartTotal['subtotal']);
         })
-        ->withUsageLimit()
         ->first();
-        
         if(isset($coupon) && !empty($coupon)){
             $amount = 0;
             if($coupon->type == "0"){
@@ -229,10 +226,10 @@ class CartService
             elseif($coupon->type == "1"){
                 $amount = ($coupon->amount / 100) * $CartTotal['subtotal'];
             }
-    
+
             $coupon->used++;
             $coupon->save();
-     
+
             Session::put('coupon', [
                 'code' => $coupon->code,
                 'discount_amount' => $amount,

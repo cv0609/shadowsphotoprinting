@@ -28,6 +28,16 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+        if(Session::has('coupon'))
+        {
+            $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
+            $response = $this->applyCoupon($request_data);
+            if($response['success'] === false)
+            {
+            Session::forget('coupon');
+            }
+        }
+
         $auth_id = Auth::check() && !empty(Auth::user()) ? Auth::user()->id : null;
         $session_id = $auth_id ? null : Session::getId();
 
@@ -127,8 +137,8 @@ class CartController extends Controller
                     }
                 }
             }
-        }   
-       
+        }
+
 
         if(!Session::has('coupon')){
             $this->CartService->autoAppliedCoupon();
@@ -156,7 +166,7 @@ class CartController extends Controller
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
 
-        $page_content = ["meta_title"=>config('constant.pages_meta.cart.meta_title'),"meta_description"=>config('constant.pages_meta.cart.meta_description')]; 
+        $page_content = ["meta_title"=>config('constant.pages_meta.cart.meta_title'),"meta_description"=>config('constant.pages_meta.cart.meta_description')];
 
         if(!empty($cart))
         {
@@ -192,7 +202,7 @@ class CartController extends Controller
        $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
        $total = $this->CartService->getCartTotal();
        $cart = [];
-       
+
         if(empty($coupon) && !isset($coupon)){
             return ['success' => false, 'message' => 'Coupon is not valid.'];
         }
