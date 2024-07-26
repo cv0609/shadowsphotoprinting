@@ -20,6 +20,8 @@ class CreateOrderDetailsTable extends Migration
             $table->integer('quantity');
             $table->string('selected_images');
             $table->decimal('price', 10, 2);
+            $table->decimal('sale_price', 10, 2)->after('price')->nullable();
+            $table->enum("sale_on", ['0','1'])->after('sale_price')->default(0);
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

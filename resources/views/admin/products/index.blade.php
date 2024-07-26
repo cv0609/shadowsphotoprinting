@@ -7,6 +7,11 @@
           <li class="breadcrumb-item"><a href="#">Products</a></li>
         </ol>
       </nav>
+
+@if(Session::has('success'))
+  <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+@endif    
+
     <div class="">
       <div class="page-title">
         <div class="title_left">

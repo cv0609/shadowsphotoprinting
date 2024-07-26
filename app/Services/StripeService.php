@@ -5,6 +5,7 @@ namespace App\Services;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Stripe\Customer;
+use Stripe\Refund;
 use Stripe\Exception\ApiErrorException;
 
 class StripeService
@@ -49,5 +50,16 @@ class StripeService
             return false; // No customers found
         }
     }
+
+    public function refundOrder($paymentId)
+     {
+        try {
+            return Refund::create([
+                'charge' => $paymentId,
+            ]);
+        } catch (ApiErrorException $e) {
+            return $e->getMessage();
+        }
+     }
 
 }

@@ -13,7 +13,8 @@ class Product extends Model
         'product_description',
         'product_price',
         'type_of_paper_use',
-        'product_image'
+        'product_image',
+        'manage_sale'
     ];
 
     public function product_category()
@@ -24,6 +25,16 @@ class Product extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    public function productSale()
+    {
+        return $this->hasMany(product_sale::class);
+    }
+
+    public function productSalePrice()
+    {
+        return $this->hasOne(product_sale::class);
     }
     
 }

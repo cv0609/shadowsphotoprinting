@@ -8,6 +8,7 @@ use App\Models\Shipping;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\GiftCardCategory;
+use App\Models\product_sale;
 use App\Models\PhotoForSaleProduct;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -32,15 +33,24 @@ class CartService
             return 0;
         }
 
-
+        
         $subtotal = $cart->items->reduce(function ($carry, $item) {
-
             if($item->product_type == 'gift_card'){
                 $product_price = $item->product_price;
             }else if($item->product_type == 'photo_for_sale'){
                 $product_price = $item->product_price;
             }else{
-                $product_price = $item->product->product_price;
+                
+                $currentDate = now();
+
+                $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
+
+                if(isset($sale_price) && !empty($sale_price)){
+                    $product_price = $sale_price->sale_price;
+                }else {
+                    $product_price = $item->product->product_price;
+                }
+
             }
             return $carry + ($product_price * $item->quantity);
         }, 0);
@@ -51,6 +61,7 @@ class CartService
         $coupon_id = "";
         if ($couponCode) {
             $coupon = Coupon::where(['code'=>$couponCode['code']])->where('is_active', true)->first();
+          
             $coupon_code = $couponCode;
             if ($coupon) {
                 if ($coupon->type == '1') {
@@ -77,7 +88,7 @@ class CartService
          }
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
-        
+
         $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
         return $data;
 
@@ -104,6 +115,20 @@ class CartService
     }
 
 
+    public function getProductSalePrice($product_id)
+    {
+        $currentDate = now();
+        $product_price = null;
+    
+        $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$product_id)->first();
+
+        if(isset($sale_price) && !empty($sale_price)){
+            $product_price = $sale_price->sale_price;
+        }
+        return $product_price;
+    }
+
+
     public function getShippingCharge()
      {
         $shipping = Shipping::first();
@@ -120,7 +145,6 @@ class CartService
              return 0;
          }
 
-
          $subtotal = $order->orderDetails->reduce(function ($carry, $item) {
 
              if($item->product_type == 'gift_card'){
@@ -128,7 +152,16 @@ class CartService
              }else if($item->product_type == 'photo_for_sale'){
                  $product_price = $item->product_price;
              }else{
-                 $product_price = $item->product->product_price;
+
+                $currentDate = now();
+
+                $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
+
+                if(isset($sale_price) && !empty($sale_price)){
+                    $product_price = $sale_price->sale_price;
+                }else {
+                    $product_price = $item->product->product_price;
+                }
              }
              return $carry + ($product_price * $item->quantity);
          }, 0);
@@ -167,7 +200,6 @@ class CartService
          $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
          $data = ['subtotal'=>$subtotal,'total'=>$totalAfterShipping,'coupon_discount' => $discount,"coupon_code"=>$coupon_code,'coupon_id' => $coupon_id,"shippingCharge" => $shippingCharge];
          return $data;
-
 
      }
 

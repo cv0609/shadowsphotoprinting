@@ -173,21 +173,40 @@ class PaymentController extends Controller
                 'total' => $cart_total ?? 0,
                 'payment_id' => (isset($charge->id)) ? $charge->id : "",
                 'is_paid' => (isset($charge->captured)) ? $charge->captured : false,
-                'status' => $charge->status,
+                'payment_status' => $charge->status,
+                'order_status' => 0,
             ]);
 
             foreach ($cart->items as $item) {
 
                 $product_details = $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
-
+                
                 if($item->product_type == "gift_card"){
                     $product_price =  number_format($item->product_price, 2);
+                    $item_price = $item->quantity * $product_price;
+                    $sale_on = 0;
+                    $sale_price=null;
                 }
                 elseif($item->product_type == "photo_for_sale"){
-                    $product_price = number_format($item->product_price, 2) ;
+                    $product_price = number_format($item->product_price, 2);
+                    $item_price = $item->quantity * $product_price;
+                    $sale_on = 0;
+                    $sale_price=null;
                 }
                 else{
-                    $product_price =number_format($product_details->product_price, 2) ;
+                    $product_sale_price = $this->CartService->getProductSalePrice($item->product_id);
+                    $product_price =number_format($product_details->product_price, 2);
+                    
+                    if(isset($product_sale_price) && !empty($product_sale_price)){
+                        $item_price = $item->quantity * $product_sale_price;
+                        $sale_price = number_format($product_sale_price, 2);
+                        $sale_on = 1;
+                    }else{
+                        $item_price = $item->quantity * $product_price;
+                        $sale_on = 0;
+                        $sale_price=null;
+                    }
+                    
                 }
 
                 OrderDetail::create([
@@ -195,10 +214,12 @@ class PaymentController extends Controller
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'selected_images' => $item->selected_images,
-                    'price' => $item->quantity * $item->product->product_price,
+                    'price' => $item_price,
                     'product_type' => $item->product_type ?? null,
                     'product_desc' => $item->product_desc,
                     'product_price' => $product_price ?? 0,
+                    'sale_price' => $sale_price,
+                    'sale_on' => $sale_on
                 ]);
             }
 
@@ -219,7 +240,7 @@ class PaymentController extends Controller
                 Mail::to($order_address['email'])->send(new MakeOrder($orderDetail));
             }
 
-            Session::forget(['order_address', 'coupon']);
+            Session::forget(['order_address', 'coupon','billing_details']);
 
             return response()->json(['error' => false,'message'=>'success','order_id'=>$order->id]);
 

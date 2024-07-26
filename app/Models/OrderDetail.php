@@ -17,7 +17,9 @@ class OrderDetail extends Model
         'price',
         'product_type',
         'product_desc',
-        'product_price'
+        'product_price',
+        'sale_price',
+        'sale_on',
     ];
 
     public function order()

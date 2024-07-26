@@ -21,7 +21,8 @@
         <div class="subcate">
             <ul class="cstmlist">
                 @foreach ($productCategories as $productCategory)
-                 <li class="central"> <a href="{{ route('photos-for-sale',['slug'=>$productCategory->slug]) }}">{{ ucfirst($productCategory->name) }}</a> </li>
+               
+                 <li class="central"> <a href="{{ route('photos-for-sale',['slug'=>$productCategory->slug]) }}">{{ ucfirst($productCategory->product_title) }}</a> </li>
                @endforeach
             </ul>
         </div>
