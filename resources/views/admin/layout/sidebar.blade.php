@@ -41,6 +41,15 @@
                       <li><a href="{{ route('photos-for-sale-product-list') }}">Products</a></li>
                     </ul>
                   </li>
+
+
+                  {{-- <li><a href="#"><i class="fa fa-picture-o"></i>Hand Craft</a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('hand-craft-categories-list') }}">Categories</a></li>
+                      <li><a href="{{route('hand-craft-list')}}">Products</a></li>
+                    </ul>
+                  </li> --}}
+
                   <li><a href="{{route('gift-card-list')}}"><i class="fa fa-duotone fa-gift"></i>Gift Cards</a></li>
                   <li><a href="{{route('coupons-list')}}"><i class="fa fa-solid fa-tag"></i>Coupons</a>
                   <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>

@@ -16,6 +16,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\HandCraftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,29 @@ Route::prefix('admin')->group(function () {
         Route::get('/gift-card-show/{category_id}',[GiftCardController::class,'giftCardShow'])->name('gift-card-show');
         Route::post('/gift-card-update',[GiftCardController::class,'giftCardUpdate'])->name('gift-card-update');
         Route::delete('/gift-card-delete/{category_id}',[GiftCardController::class,'giftCardDistroy'])->name('gift-card-delete');
+
+        Route::get('/hand-craft',[HandCraftController::class,'products'])->name('hand-craft-list');
+        Route::get('/hand-craft-product-add',[HandCraftController::class,'productAdd'])->name('hand-craft-product-add');
+        Route::post('/hand-craft-product-save',[HandCraftController::class,'productSave'])->name('hand-craft-product-save');
+
+
+        Route::get('/hand-craft-categories',[HandCraftController::class,'productCategory'])->name('hand-craft-categories-list');
+        Route::get('/hand-craft-categories-add',[HandCraftController::class,'productCategoryAdd'])->name('hand-craft-categories-add');
+        Route::post('/hand-craft-categories-save',[HandCraftController::class,'productCategorySave'])->name('hand-craft-categories-save');
+        Route::post('/hand-craft-categories-update',[HandCraftController::class,'productCategoryUpdate'])->name('hand-craft-categories-update');
+        Route::get('/hand-craft-categories-show/{category_id}',[HandCraftController::class,'productCategoryShow'])->name('hand-craft-categories-show');
+
+
+        // Route::post('/hand-craft-categories-save',[HandCraftController::class,'productCategorySave'])->name('hand-craft-categories-save');
+
+        // Route::get('/hand-craft-categories-add',[HandCraftController::class,'productCategoryAdd'])->name(hand-craft-categories-add');
+        // Route::post('/photos-for-sale-categories-save',[PhotoForSaleController::class,'productCategorySave'])->name('photos-for-sale-categories-save');
+        // Route::get('/photos-for-sale-categories-show/{category_id}',[PhotoForSaleController::class,'productCategoryShow'])->name('photos-for-sale-categories-show');
+        // Route::post('/photos-for-sale-categories-update',[PhotoForSaleController::class,'productCategoryUpdate'])->name('photos-for-sale-categories-update');
+        // Route::delete('/photos-for-sale-categories-delete/{category_id}',[PhotoForSaleController::class,'productCategoryDistroy'])->name('photos-for-sale-categories-delete');
+
+
+
 
         Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
         Route::get('/coupon-add',[CouponController::class,'couponAdd'])->name('coupon-add');

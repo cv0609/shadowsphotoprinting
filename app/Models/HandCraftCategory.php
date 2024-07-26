@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PhotoForSaleCategory extends Model
+class HandCraftCategory extends Model
 {
     use HasFactory;
-    protected $table = 'photo_for_sale_category';
+    protected $table = 'hand_craft_category';
+    
     protected $fillable = [
         'name',
         'slug',
@@ -17,7 +18,7 @@ class PhotoForSaleCategory extends Model
 
     public function products()
     {
-        return $this->hasMany(PhotoForSaleProduct::class,'category_id');
+        return $this->hasMany(HandCraftProduct::class,'category_id');
     }
 
 
