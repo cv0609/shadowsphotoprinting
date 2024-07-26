@@ -43,12 +43,12 @@
                   </li>
 
 
-                  <li><a href="#"><i class="fa fa-picture-o"></i>Hand Craft</a>
+                  {{-- <li><a href="#"><i class="fa fa-picture-o"></i>Hand Craft</a>
                     <ul class="nav child_menu">
                       <li><a href="{{ route('hand-craft-categories-list') }}">Categories</a></li>
                       <li><a href="{{route('hand-craft-list')}}">Products</a></li>
                     </ul>
-                  </li>
+                  </li> --}}
 
                   <li><a href="{{route('gift-card-list')}}"><i class="fa fa-duotone fa-gift"></i>Gift Cards</a></li>
                   <li><a href="{{route('coupons-list')}}"><i class="fa fa-solid fa-tag"></i>Coupons</a>
