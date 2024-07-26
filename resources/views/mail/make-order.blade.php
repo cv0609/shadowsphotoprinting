@@ -148,19 +148,19 @@
                             <tr>
                                 <td
                                     style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->OrderBillingDetail->fname ?? ''}} <br>
-                                    {{$order->OrderBillingDetail->lname ?? ''}} <br> {{$order->OrderBillingDetail->street1 ?? ''}} <br>{{$order->OrderBillingDetail->street2 ?? ''}}
-                                    <br>{{$order->OrderBillingDetail->postcode ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->phone ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->suburb ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->state ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->company_name ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->country_region ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->order_comments ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->fname ?? ''}} <br>
+                                    {{$order->orderBillingShippingDetails->lname ?? ''}} <br> {{$order->orderBillingShippingDetails->street1 ?? ''}} <br>{{$order->orderBillingShippingDetails->street2 ?? ''}}
+                                    <br>{{$order->orderBillingShippingDetails->postcode ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->phone ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->suburb ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->state ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->company_name ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->country_region ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->order_comments ?? ''}}<br>
                                     <br>
-                                    <a href="mailto:{{$order->OrderBillingDetail->email ?? ''}}" 
+                                    <a href="mailto:{{$order->orderBillingShippingDetails->email ?? ''}}" 
                                         style="color: #16a085; text-decoration: underline; font-weight: normal;">
-                                         {{$order->OrderBillingDetail->email ?? ''}}
+                                         {{$order->orderBillingShippingDetails->email ?? ''}}
                                      </a>
                                      
 
@@ -170,7 +170,7 @@
                         </table>
                     </td>
 
-                    @if($order->OrderBillingDetail->isShippingAddress == true)
+                    @if($order->orderBillingShippingDetails->isShippingAddress == true)
 
                     <td valign="top">
                         <h2 style="color: #16a085;">Shipping address </h2>
@@ -178,13 +178,13 @@
                             <tr>
                                 <td
                                     style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->OrderBillingDetail->ship_fname ?? ''}} <br>
-                                    {{$order->OrderBillingDetail->ship_lname ?? ''}} <br> {{$order->OrderBillingDetail->ship_company ?? ''}} <br>{{$order->OrderBillingDetail->ship_street1 ?? ''}}
-                                    <br>{{$order->OrderBillingDetail->ship_street2 ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_suburb ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_state ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_postcode ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_country_region ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_fname ?? ''}} <br>
+                                    {{$order->orderBillingShippingDetails->ship_lname ?? ''}} <br> {{$order->orderBillingShippingDetails->ship_company ?? ''}} <br>{{$order->orderBillingShippingDetails->ship_street1 ?? ''}}
+                                    <br>{{$order->orderBillingShippingDetails->ship_street2 ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_suburb ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_state ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_postcode ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_country_region ?? ''}}<br>
                                 </td>
                             </tr>
                         </table>
@@ -221,17 +221,17 @@
                             <tr>
                                 <td  valign="top" id="billing-cell"
                                     style=" padding: 12px; font-style: italic;  color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->OrderBillingDetail->fname ?? ''}} <br>
-                                    {{$order->OrderBillingDetail->lname ?? ''}} <br> {{$order->OrderBillingDetail->street1 ?? ''}} <br>{{$order->OrderBillingDetail->street2 ?? ''}}
-                                    <br>{{$order->OrderBillingDetail->postcode ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->phone ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->suburb ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->state ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->company_name ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->country_region ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->order_comments ?? ''}}<br>
-                                    <a href="mailto:{{$order->OrderBillingDetail->email ?? ''}}"
-                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">{{$order->OrderBillingDetail->email ?? ''}}</a>
+                                    {{$order->orderBillingShippingDetails->fname ?? ''}} <br>
+                                    {{$order->orderBillingShippingDetails->lname ?? ''}} <br> {{$order->orderBillingShippingDetails->street1 ?? ''}} <br>{{$order->orderBillingShippingDetails->street2 ?? ''}}
+                                    <br>{{$order->orderBillingShippingDetails->postcode ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->phone ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->suburb ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->state ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->company_name ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->country_region ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->order_comments ?? ''}}<br>
+                                    <a href="mailto:{{$order->orderBillingShippingDetails->email ?? ''}}"
+                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">{{$order->orderBillingShippingDetails->email ?? ''}}</a>
 
                                 </td>
                             </tr>
@@ -244,13 +244,13 @@
                             <tr>
                                 <td  valign="top" id="shipping-cell"
                                     style=" padding: 12px; font-style: italic;    color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->OrderBillingDetail->ship_fname ?? ''}} <br>
-                                    {{$order->OrderBillingDetail->ship_lname ?? ''}} <br> {{$order->OrderBillingDetail->ship_company ?? ''}} <br>{{$order->OrderBillingDetail->ship_street1 ?? ''}}
-                                    <br>{{$order->OrderBillingDetail->ship_street2 ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_suburb ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_state ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_postcode ?? ''}}<br>
-                                    {{$order->OrderBillingDetail->ship_country_region ?? ''}}
+                                    {{$order->orderBillingShippingDetails->ship_fname ?? ''}} <br>
+                                    {{$order->orderBillingShippingDetails->ship_lname ?? ''}} <br> {{$order->orderBillingShippingDetails->ship_company ?? ''}} <br>{{$order->orderBillingShippingDetails->ship_street1 ?? ''}}
+                                    <br>{{$order->orderBillingShippingDetails->ship_street2 ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_suburb ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_state ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_postcode ?? ''}}<br>
+                                    {{$order->orderBillingShippingDetails->ship_country_region ?? ''}}
                                 </td>
                             </tr>
                         </table>

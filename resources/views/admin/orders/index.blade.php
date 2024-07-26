@@ -134,7 +134,7 @@
 
                                     <td data-title="created-at">{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
                                     <td data-title="zip">
-                                        <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
+                                        <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->order_number}}.zip</a>
                                     </td>
                                 </tr>
                                 @endforeach
