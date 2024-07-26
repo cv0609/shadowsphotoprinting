@@ -128,6 +128,7 @@ class ProductsController extends Controller
 
     public function productUpdate(ProductRequest $request)
     {
+        // dd($request->manage_sale);
         $data = [];
         $slug = Str::slug($request->product_title);
 
@@ -141,10 +142,10 @@ class ProductsController extends Controller
             $data["product_image"] = $product_image;
         }
 
-        if(isset($request->manage_sale) && $request->manage_sale == 1){
-            $data['manage_sale'] = 1;
+        if(isset($request->manage_sale) && $request->manage_sale == "1"){
+            $data['manage_sale'] = '1';
         }else{
-            $data['manage_sale'] = 0;
+            $data['manage_sale'] = '0';
         }
 
         Product::whereId($request->product_id)->update($data);
