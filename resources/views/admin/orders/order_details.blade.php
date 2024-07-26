@@ -11,6 +11,11 @@
           <li class="breadcrumb-item"><a href="#">Order Detail</a></li>
         </ol>
       </nav>
+
+    @if(Session::has('success'))
+      <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+    @endif
+
     <div class="row">
       <div class="col-md-12">
         <div class="x_panel">
@@ -57,9 +62,9 @@
                 <div class="order-address-details">
                     <h4 class="mb-3">Billing details</h4>
                     <div class="address">
-                      <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['fname']) }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['lname']) }}<br>{{ $orderDetail->OrderBillingDetail['street1'] }}<br>{{ $orderDetail->OrderBillingDetail['street2'] }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['suburb']) }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['state']) }} {{ $orderDetail->OrderBillingDetail['postcode'] }}</p>
-                      <p><strong>Email address:</strong> <br><a href="mailto:{{ $orderDetail->OrderBillingDetail['email'] }}">{{ $orderDetail->OrderBillingDetail['email'] }}</a></p>
-                      <p><strong>Phone:</strong><br> <a href="tel:{{ $orderDetail->OrderBillingDetail['phone'] }}">{{ $orderDetail->OrderBillingDetail['phone'] }}</a></p>
+                      <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['fname'] ?? '') }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['lname'] ?? '') }}<br>{{ $orderDetail->OrderBillingDetail['street1'] ?? ''}}<br>{{ $orderDetail->OrderBillingDetail['street2'] ?? ''}} {{ Str::ucfirst($orderDetail->OrderBillingDetail['suburb'] ?? '') }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['state'] ?? '') }} {{ $orderDetail->OrderBillingDetail['postcode'] ?? ''}}</p>
+                      <p><strong>Email address:</strong> <br><a href="mailto:{{ $orderDetail->OrderBillingDetail['email'] ?? ''}}">{{ $orderDetail->OrderBillingDetail['email'] ?? ''}}</a></p>
+                      <p><strong>Phone:</strong><br> <a href="tel:{{ $orderDetail->OrderBillingDetail['phone'] ?? ''}}">{{ $orderDetail->OrderBillingDetail['phone'] ?? ''}}</a></p>
                     </div>
                 </div>
               </div>
@@ -96,6 +101,8 @@
               <th class="center">Item</th>
               <th></th>
               <th class="right">Cost</th>
+              <th class="right">Sale</th>
+              <th class="right">Sale Cost</th>
               <th class="center">Qty</th>
               <th class="right">Total</th>
             </tr>
@@ -146,6 +153,22 @@
                     </bdi>
                 </span>
             </td>
+            <td>
+
+                @php
+                  if(isset($item->orderDetails->sale_on) && $item->orderDetails->sale_on == 1){
+                    $sale_status = 'On';
+                    $sale_price = $item->orderDetails->sale_price;
+                  }else{
+                    $sale_status = 'Off';
+                    $sale_price = '-';
+                  }
+                @endphp
+
+                {{$sale_status}}
+
+            </td>
+            <td>{{$sale_price}}</td>
 
               <td class="center order_page_td" data-title="qty">{{ $item->quantity }}</td>
               <td class="right order_page_td" data-title="total">$  @if($item->product_type == "gift_card")
@@ -227,15 +250,17 @@
 
     </div>
     <div class="bottom_refund_btn_class">
-      <div class="fefund_btn">
-        <a href="{{ route('refund-order',['order_id'=>$orderDetail->id]) }}" onclick="return confirm('Are you sure!')">refund</a>
-      </div>
+       @if($orderDetail->order_status != "3")
+        <div class="fefund_btn">
+          <a href="{{ route('refund-order',['order_id'=>$orderDetail->id]) }}" onclick="return confirm('Are you sure!')">refund</a>
+        </div>
+    
 
       <div class="refund_paragraph">
         <p>This order is no longer editable.</p>
 
       </div>
-
+      @endif
      </div>
     </div>
     </div>
