@@ -45,7 +45,7 @@
                         reference:</p>
                     <p>We will invoice your company</p>
 
-                    <h2 style="color: #16a085;">Order #{{$order->id ?? ''}} ({{$order_date ?? ''}})</h2>
+                    <h2 style="color: #16a085;">Order #{{$order->order_number ?? ''}} ({{$order_date ?? ''}})</h2>
                 </td>
             </tr>
             <table style="padding: 0 30px;" cellspacing="0" width="100%">
@@ -140,71 +140,6 @@
                     <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">${{number_format($order->total,2)}}</td>
                 </tr>
             </table>
-            {{-- <table style="padding: 0 30px;" cellspacing="0" width="100%">
-                <tr>
-                    <td valign="top">
-                        <h2 style="color: #16a085;"> Billing address </h2>
-                        <table>
-                            <tr>
-                                <td
-                                    style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->orderBillingShippingDetails->fname ?? ''}} <br>
-                                    {{$order->orderBillingShippingDetails->lname ?? ''}} <br> {{$order->orderBillingShippingDetails->street1 ?? ''}} <br>{{$order->orderBillingShippingDetails->street2 ?? ''}}
-                                    <br>{{$order->orderBillingShippingDetails->postcode ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->phone ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->suburb ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->state ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->company_name ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->country_region ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->order_comments ?? ''}}<br>
-                                    <br>
-                                    <a href="mailto:{{$order->orderBillingShippingDetails->email ?? ''}}" 
-                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">
-                                         {{$order->orderBillingShippingDetails->email ?? ''}}
-                                     </a>
-                                     
-
-                                </td>
-                            </tr>
-
-                        </table>
-                    </td>
-
-                    @if($order->orderBillingShippingDetails->isShippingAddress == true)
-
-                    <td valign="top">
-                        <h2 style="color: #16a085;">Shipping address </h2>
-                        <table>
-                            <tr>
-                                <td
-                                    style="border: 1px solid #e5e5e5; padding: 12px; font-style: italic; border-width: 1px; border-color: #e5e5e5;  border-style: solid; color: #8f8f8f; text-align: left; line-height: 26px;">
-                                    {{$order->orderBillingShippingDetails->ship_fname ?? ''}} <br>
-                                    {{$order->orderBillingShippingDetails->ship_lname ?? ''}} <br> {{$order->orderBillingShippingDetails->ship_company ?? ''}} <br>{{$order->orderBillingShippingDetails->ship_street1 ?? ''}}
-                                    <br>{{$order->orderBillingShippingDetails->ship_street2 ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->ship_suburb ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->ship_state ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->ship_postcode ?? ''}}<br>
-                                    {{$order->orderBillingShippingDetails->ship_country_region ?? ''}}<br>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-
-                    @endif
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <p style="font-size: 14px; color: #636363; margin-top: 40px; margin-bottom: 16px;">Thanks for
-                            using <a style="color: #15c;"
-                                href="https://shadowsphotoprinting.com.au/">shadowsphotoprinting.com.au!</a></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"
-                        style="color: #555; font-size: 12px; text-align: center; padding-bottom: 48px; padding-left: 48px; padding-top: 20px; padding-right: 48px;">
-                        Shadows Photo Printing </td>
-                </tr>
-            </table> --}}
 
             <table style="padding: 0 30px;" cellspacing="0" width="100%">
                 <tr>
