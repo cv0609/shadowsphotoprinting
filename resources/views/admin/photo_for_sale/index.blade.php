@@ -56,7 +56,7 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ ucfirst($product->product_title) }}</td>
-                                <td>{{ ucfirst($product->product_category['name']) }}</td>
+                                <td>{{ ucfirst($product->product_category['product_title']) }}</td>
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('photos-for-sale-product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
