@@ -90,6 +90,13 @@ class CartController extends Controller
                         ]);
                     }
 
+                    if ($itemType == 'hand_craft') {
+                        $insertData = array_merge($insertData, [
+                            'product_type' => $itemType,
+                            'product_price' => $request->card_price
+                        ]);
+                    }
+
                     $existingCartItem = CartData::where('cart_id', $cartId)
                         ->where('product_id', $product_id)
                         ->where('selected_images', $ImagePath)
@@ -105,6 +112,11 @@ class CartController extends Controller
 
                         if ($itemType == 'photo_for_sale') {
                             $existingCartItem->product_desc = json_encode($photoForSale) ?? '';
+                            $existingCartItem->product_type = $itemType ?? '';
+                            $existingCartItem->product_price = $request->card_price ?? '';
+                        }
+
+                        if ($itemType == 'hand_craft') {
                             $existingCartItem->product_type = $itemType ?? '';
                             $existingCartItem->product_price = $request->card_price ?? '';
                         }

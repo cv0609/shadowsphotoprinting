@@ -36,9 +36,9 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Product Categories List</h2>
-              {{-- <a href="{{ route('product-categories-add') }}">
+              <a href="{{ route('product-categories-add') }}">
                 <button class="btn btn-info panel_toolbox">Create Category</button>
-              </a> --}}
+              </a>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">

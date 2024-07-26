@@ -81,13 +81,18 @@ Route::prefix('admin')->group(function () {
         Route::get('/hand-craft',[HandCraftController::class,'products'])->name('hand-craft-list');
         Route::get('/hand-craft-product-add',[HandCraftController::class,'productAdd'])->name('hand-craft-product-add');
         Route::post('/hand-craft-product-save',[HandCraftController::class,'productSave'])->name('hand-craft-product-save');
+        Route::get('/hand-craft-product-show/{slug}',[HandCraftController::class,'productShow'])->name('hand-craft-product-show');
+        Route::post('/hand-craft-product-update',[HandCraftController::class,'productUpdate'])->name('hand-craft-product-update');
+        Route::delete('/hand-craft-product-delete/{product_id}',[HandCraftController::class,'productDistroy'])->name('hand-craft-product-delete');
+
 
 
         Route::get('/hand-craft-categories',[HandCraftController::class,'productCategory'])->name('hand-craft-categories-list');
         Route::get('/hand-craft-categories-add',[HandCraftController::class,'productCategoryAdd'])->name('hand-craft-categories-add');
         Route::post('/hand-craft-categories-save',[HandCraftController::class,'productCategorySave'])->name('hand-craft-categories-save');
         Route::post('/hand-craft-categories-update',[HandCraftController::class,'productCategoryUpdate'])->name('hand-craft-categories-update');
-        Route::get('/hand-craft-categories-show/{category_id}',[HandCraftController::class,'productCategoryShow'])->name('hand-craft-categories-show');
+        Route::get('/hand-craft-categories-show/{category_id}',[HandCraftController::class,'productDistroy'])->name('hand-craft-categories-show');
+        Route::delete('/hand-craft-categories-delete/{category_id}',[HandCraftController::class,'productCategoryDistroy'])->name('hand-craft-categories-delete');
 
 
         // Route::post('/hand-craft-categories-save',[HandCraftController::class,'productCategorySave'])->name('hand-craft-categories-save');
@@ -142,6 +147,10 @@ Route::prefix('admin')->group(function () {
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::post('/send-quote',[BasePagesController::class,'sendQuote'])->name('send-quote');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
+
+Route::get('/our-products/hand-craft/{slug?}',[BasePagesController::class,'handCraft'])->name('hand-craft');
+Route::get('/our-products/hand-craft-details/{slug?}',[BasePagesController::class,'handCraftDetails'])->name('hand-craft-details');
+
 Route::get('/our-products/photos-for-sale-details/{slug?}',[BasePagesController::class,'PhotosForSaleDetails'])->name('photos-for-sale-details');
 Route::get('/our-products/gift-card',[BasePagesController::class,'giftCard'])->name('gift-card');
 Route::get('/our-products/gift-card-detail/{slug}',[BasePagesController::class,'giftCard_detail'])->name('gift-card-detail');

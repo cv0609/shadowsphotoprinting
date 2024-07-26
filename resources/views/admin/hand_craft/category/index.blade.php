@@ -60,7 +60,7 @@
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('hand-craft-categories-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('photos-for-sale-categories-delete', ['category_id' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" style="display:inline;">
+                                    <form action="{{ route('hand-craft-categories-delete', ['category_id' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

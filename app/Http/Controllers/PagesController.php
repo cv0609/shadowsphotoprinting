@@ -8,6 +8,8 @@ use App\Models\Blog;
 use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
+use App\Models\HandCraftCategory;
+use App\Models\HandCraftProduct;
 use App\Models\PhotoForSaleSizePrices;
 use App\Services\PageDataService;
 use App\Http\Requests\GetAQuoteRequest;
@@ -114,6 +116,14 @@ class PagesController extends Controller
   }
 
 
+  public function handCraftDetails($slug = null){
+    $productDetails = HandCraftProduct::where('slug',$slug)->first();
+    $relatedProduct = HandCraftProduct::where('slug','!=',$slug)->paginate(10);
+    $page_content = ["meta_title"=>$productDetails['slug'],"meta_description"=>$productDetails['product_description']]; 
+    return view('front-end/hand-craft-details',compact('productDetails','relatedProduct','page_content'));
+  }
+
+
   public function PhotoForSaleByCategory($slug)
   {
 
@@ -126,6 +136,30 @@ class PagesController extends Controller
 
     return view('front-end/giftcard',compact('blogs','page_content'));
   }
+
+  public function handCraft($slug = null)
+  {
+    $page_content = [];
+    if($slug == null)
+    {
+      $products = HandCraftProduct::paginate(10);
+      $page_content = ["meta_title"=>config('constant.pages_meta.hand_craft.meta_title'),"meta_description"=>config('constant.pages_meta.hand_craft.meta_description')]; 
+    }
+    else
+    {
+      $caregory = HandCraftCategory::where('slug',$slug)->first();
+      $products = HandCraftProduct::where('category_id',$caregory->id)->paginate(10);
+      $page_content = ["meta_title"=>$caregory['slug'],"meta_description"=>$caregory['name']]; 
+
+    }
+   
+
+    $productCategories = HandCraftCategory::get();
+
+
+    return view('front-end/hand-craft',compact('products','productCategories','page_content'));
+  }
+
 
   public function giftCard_detail($slug)
   {

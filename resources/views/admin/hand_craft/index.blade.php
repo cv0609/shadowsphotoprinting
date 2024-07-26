@@ -56,11 +56,11 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ ucfirst($product->product_title) }}</td>
-                                <td>{{ ucfirst($product->product_category['product_title']) }}</td>
+                                <td>{{ ucfirst($product->product_category['name']) }}</td>
                                 <td>
                                     <div class="x_content">
-                                    <a href="{{ route('photos-for-sale-product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('photos-for-sale-product-delete', ['product_id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
+                                    <a href="{{ route('hand-craft-product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                    <form action="{{ route('hand-craft-product-delete', ['product_id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>
