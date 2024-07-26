@@ -249,9 +249,9 @@ table  .table_head {
     color: #999999;
     border-bottom: unset;
 }
-tbody tr  .order_page_td {
+/* tbody tr  .order_page_td {
     border-bottom: 1px solid #f8f8f8;
-}
+} */
 tbody tr td p.giftcard-message {
     margin-bottom: 0;
 }
@@ -339,7 +339,20 @@ td.billing_address {
 td.shipping_address {
     width: 20ch;
 }
-
+.upper_header .order_detail_heading {
+    gap: 20px;
+    display: flex;
+    align-items: center;
+}
+.upper_header .order_detail_heading span {
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #000;
+}
+.order_calculations_row{
+    display: flex !important;
+    justify-content: right;
+}
 
 
 @media screen and (max-width: 991px){
@@ -347,7 +360,7 @@ td.shipping_address {
         background-color: #fff;
     }
     #order_table tr {
-        padding: 10px;
+        padding: 15px;
         border: 1px solid #dee2e6;
         border-radius: 12px;
         margin-bottom: 15px;
@@ -382,5 +395,42 @@ td.shipping_address {
     td.billing_address {
         width:100%;
     }
+    #order_table thead tr {
+        display: none;
+    }
 
 }
+
+
+@media print {
+    .nav_menu{
+        display: none;
+    }
+    .breadcrumb{
+        display: none;
+    }
+    .bottom_refund_btn_class{
+        display: none;
+    }
+    .pull-right{
+        display: none;
+    }
+    .print_btn{
+        display: none;
+    }
+    .main_div_status{
+        display: none;
+    }
+    .order_calculations_row{
+        display: flex;
+        justify-content: right;
+    }
+    .billing_adress_row{
+     display: flex!important;
+    }
+    .download_zip_tr 
+    {
+        display: none;
+    }
+  }
+  

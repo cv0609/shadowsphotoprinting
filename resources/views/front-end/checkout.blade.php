@@ -191,7 +191,7 @@
 
                                             <td>
                                                 @if($item->product_type == 'gift_card')
-                                                    {{ $product_detail->name }}
+                                                    {{ $product_detail->product_title }}
                                                 @elseif($item->product_type == 'photo_for_sale')
                                                     {{ $product_detail->product_title }}
                                                 @else

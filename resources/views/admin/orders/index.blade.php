@@ -29,7 +29,7 @@
 
         <div class="clearfix"></div>
         <div class="row" style="display: block;">
-            <div class="col-md-12 col-sm-6  ">
+            <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Orders List</h2>
@@ -134,7 +134,7 @@
 
                                     <td data-title="created-at">{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
                                     <td data-title="zip">
-                                        <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->id}}.zip</a>
+                                        <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->order_number}}.zip</a>
                                     </td>
                                 </tr>
                                 @endforeach
