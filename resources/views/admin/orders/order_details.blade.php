@@ -24,11 +24,13 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="upper_header">
-                        <h3>Order #15780 details</h3>
+                        <h3>Order #{{$orderDetail->order_number}} details</h3>
 
                         <div class="print_btn">
                           <a href="">Print</a>
                         </div>
+
+
                       </div>
                         <div class="lower_header">
                           <p>Payment via Credit Card (Stripe) ( <a href="{{ env('STRIPE_URL').$orderDetail->payment_id }}" target="_blank">{{ $orderDetail->payment_id }}</a>). Paid on {{ date('d F Y H:s A',strtotime($orderDetail->created_at)) }}</p>
@@ -62,9 +64,9 @@
                 <div class="order-address-details">
                     <h4 class="mb-3">Billing details</h4>
                     <div class="address">
-                      <p>{{ Str::ucfirst($orderDetail->OrderBillingDetail['fname'] ?? '') }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['lname'] ?? '') }}<br>{{ $orderDetail->OrderBillingDetail['street1'] ?? ''}}<br>{{ $orderDetail->OrderBillingDetail['street2'] ?? ''}} {{ Str::ucfirst($orderDetail->OrderBillingDetail['suburb'] ?? '') }} {{ Str::ucfirst($orderDetail->OrderBillingDetail['state'] ?? '') }} {{ $orderDetail->OrderBillingDetail['postcode'] ?? ''}}</p>
-                      <p><strong>Email address:</strong> <br><a href="mailto:{{ $orderDetail->OrderBillingDetail['email'] ?? ''}}">{{ $orderDetail->OrderBillingDetail['email'] ?? ''}}</a></p>
-                      <p><strong>Phone:</strong><br> <a href="tel:{{ $orderDetail->OrderBillingDetail['phone'] ?? ''}}">{{ $orderDetail->OrderBillingDetail['phone'] ?? ''}}</a></p>
+                      <p>{{ Str::ucfirst($orderDetail->orderBillingShippingDetails['fname'] ?? '') }} {{ Str::ucfirst($orderDetail->orderBillingShippingDetails['lname'] ?? '') }}<br>{{ $orderDetail->orderBillingShippingDetails['street1'] ?? ''}}<br>{{ $orderDetail->orderBillingShippingDetails['street2'] ?? ''}} {{ Str::ucfirst($orderDetail->orderBillingShippingDetails['suburb'] ?? '') }} {{ Str::ucfirst($orderDetail->orderBillingShippingDetails['state'] ?? '') }} {{ $orderDetail->orderBillingShippingDetails['postcode'] ?? ''}}</p>
+                      <p><strong>Email address:</strong> <br><a href="mailto:{{ $orderDetail->orderBillingShippingDetails['email'] ?? ''}}">{{ $orderDetail->orderBillingShippingDetails['email'] ?? ''}}</a></p>
+                      <p><strong>Phone:</strong><br> <a href="tel:{{ $orderDetail->orderBillingShippingDetails['phone'] ?? ''}}">{{ $orderDetail->orderBillingShippingDetails['phone'] ?? ''}}</a></p>
                     </div>
                 </div>
               </div>
@@ -73,7 +75,7 @@
                     <div class="order-address-details" id="Shipping-address">
                         <h4 class="mb-3">Shipping details</h4>
                         <div class="address">
-                            <p>{{ $orderDetail->OrderBillingDetail['ship_fname'] }}  {{Str::ucfirst($orderDetail->OrderBillingDetail['ship_lname'])}} <br>{{$orderDetail->OrderBillingDetail['ship_street1']}}<br>{{$orderDetail->OrderBillingDetail['ship_street2']}} {{Str::ucfirst($orderDetail->OrderBillingDetail['ship_suburb'])}} {{Str::ucfirst($orderDetail->OrderBillingDetail['ship_state'])}} {{$orderDetail->OrderBillingDetail['ship_postcode']}}</p><p class="order_note"><strong>Customer provided note:<br></strong> {{$orderDetail->OrderBillingDetail['order_comments']}}</p></div>
+                            <p>{{ $orderDetail->orderBillingShippingDetails['ship_fname'] }}  {{Str::ucfirst($orderDetail->orderBillingShippingDetails['ship_lname'])}} <br>{{$orderDetail->orderBillingShippingDetails['ship_street1']}}<br>{{$orderDetail->orderBillingShippingDetails['ship_street2']}} {{Str::ucfirst($orderDetail->orderBillingShippingDetails['ship_suburb'])}} {{Str::ucfirst($orderDetail->orderBillingShippingDetails['ship_state'])}} {{$orderDetail->orderBillingShippingDetails['ship_postcode']}}</p><p class="order_note"><strong>Customer provided note:<br></strong> {{$orderDetail->orderBillingShippingDetails['order_comments']}}</p></div>
                     </div>
                 @else
                 <div class="diffrent-address">
@@ -254,11 +256,8 @@
         <div class="fefund_btn">
           <a href="{{ route('refund-order',['order_id'=>$orderDetail->id]) }}" onclick="return confirm('Are you sure!')">refund</a>
         </div>
-    
-
       <div class="refund_paragraph">
         <p>This order is no longer editable.</p>
-
       </div>
       @endif
      </div>
