@@ -6,28 +6,33 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Services\CartService;
+use App\Services\StripeService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\OrderDetail;
+use App\Models\OrderBillingDetails;
 use ZipArchive;
 
 class OrderController extends Controller
 {
     protected $CartService;
-    public function __construct(CartService $CartService)
+    protected $StripeService;
+
+    public function __construct(CartService $CartService,StripeService $StripeService)
     {
         $this->CartService = $CartService;
+        $this->StripeService = $StripeService;
     }
 
     public function index()
     {
-        $orders = Order::get();
+        $orders = Order::with('orderBillingShippingDetails')->get();
         return view('admin.orders.index',compact('orders'));
     }
 
     public function orderDetail($orderNumber)
     {
-      $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','OrderBillingDetail')->first();
+      $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','orderBillingShippingDetails')->first();
       $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
       return view('admin.orders.order_details',compact('orderDetail','OrderTotal'));
     }
@@ -153,7 +158,12 @@ class OrderController extends Controller
 
     public function refundOrder($order_id)
      {
-       $payment_id = Order::whereId($order_id)->pluck('payment_id');
-       dd($payment_id);
+       $payment_id = Order::whereId($order_id)->select('payment_id')->first();
+       $refundedData = $this->StripeService->refundOrder($payment_id->payment_id);
+    
+       if(isset($refundedData['id']) && !empty($refundedData['id'])){
+          Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object']]);
+        }
+        return redirect()->back()->with('success', 'Payment refunded successfully.');
      }
 }

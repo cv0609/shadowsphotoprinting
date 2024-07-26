@@ -312,8 +312,6 @@ a.download_zip_btn {
     height: 30px;
     border-radius: 4px;
     display: flex;
-    background: #c6e1c6;
-    color: #5b841b;
     justify-content: center;
     align-items: center;
     text-transform: capitalize;

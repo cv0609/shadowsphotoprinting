@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class OrderBillingDetails extends Model
 {
     use HasFactory;
+    protected $table = 'order_billing_details';
 
     protected $fillable = [
         'fname',
