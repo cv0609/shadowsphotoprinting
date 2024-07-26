@@ -48,21 +48,30 @@
                                     <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                 </td>
                                 <td class="product-thumbnail">
+
+                                    @php
+                                        $image1 = '';
+                                        $image2 = '';
+                                        if(isset($product_detail->product_image)){
+                                            $imageArray = explode(',', $product_detail->product_image);
+                                            $image1 = $imageArray[0] ?? '';
+                                            $image2 = $imageArray[1] ?? '';
+                                        }
+                                   @endphp
+
+
                                     <a href="#">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
                                                 {{ asset($product_detail->product_image) }}
                                             @elseif($item->product_type == 'photo_for_sale')
-                                                @php
-                                                    $image1 = '';
-                                                    $image2 = '';
-                                                    if(isset($product_detail->product_image)){
-                                                        $imageArray = explode(',', $product_detail->product_image);
-                                                        $image1 = $imageArray[0] ?? '';
-                                                        $image2 = $imageArray[1] ?? '';
-                                                    }
-                                                @endphp
+                                               
                                                 {{ asset($image1) }}
+
+                                            @elseif($item->product_type == 'hand_craft')
+
+                                                 {{ asset($image1) }}
+
                                             @else
                                                 {{ asset($item->selected_images) }}
                                             @endif
@@ -88,6 +97,11 @@
                                             <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
                                         @elseif($item->product_type == "photo_for_sale")
                                             {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+
+                                        @elseif($item->product_type == "hand_craft")
+
+                                          {{ $product_detail->product_title ?? '' }} 
+
                                         @else
                                             {{ $item->product->product_title ?? ''}}
                                         @endif
@@ -102,6 +116,10 @@
                                                 {{ number_format($item->product_price, 2) }}
                                             @elseif($item->product_type == "photo_for_sale")
                                                 {{ number_format($item->product_price, 2) }}
+
+                                            @elseif($item->product_type == "hand_craft")
+                                            {{ number_format($item->product_price, 2) }}
+
                                             @else
                                                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($product_detail->product_price, 2)  }}
                                             @endif
@@ -119,6 +137,10 @@
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
                                             @elseif($item->product_type == "photo_for_sale")
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
+
+                                            @elseif($item->product_type == "hand_craft")
+                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+
                                             @else
                                                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
                                             @endif

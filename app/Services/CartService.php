@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\GiftCardCategory;
 use App\Models\product_sale;
 use App\Models\PhotoForSaleProduct;
+use App\Models\HandCraftProduct;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,11 +35,10 @@ class CartService
 
 
         $subtotal = $cart->items->reduce(function ($carry, $item) {
-            if($item->product_type == 'gift_card'){
+            if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft'){
                 $product_price = $item->product_price;
-            }else if($item->product_type == 'photo_for_sale'){
-                $product_price = $item->product_price;
-            }else{
+            }
+            else{
 
                 $currentDate = now();
 
@@ -106,6 +106,9 @@ class CartService
                 case 'photo_for_sale':
                     $product = PhotoForSaleProduct::whereId($product_id)->first();
                     break;
+                case 'hand_craft':
+                    $product = HandCraftProduct::whereId($product_id)->first();
+                    break;    
                 default:
                 $product = null;
                     break;
@@ -146,9 +149,7 @@ class CartService
 
          $subtotal = $order->orderDetails->reduce(function ($carry, $item) {
 
-             if($item->product_type == 'gift_card'){
-                 $product_price = $item->product_price;
-             }else if($item->product_type == 'photo_for_sale'){
+             if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft'){
                  $product_price = $item->product_price;
              }else{
 

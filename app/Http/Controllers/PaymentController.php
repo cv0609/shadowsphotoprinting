@@ -181,14 +181,8 @@ class PaymentController extends Controller
 
                 $product_details = $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
                 
-                if($item->product_type == "gift_card"){
+                if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft"){
                     $product_price =  number_format($item->product_price, 2);
-                    $item_price = $item->quantity * $product_price;
-                    $sale_on = 0;
-                    $sale_price=null;
-                }
-                elseif($item->product_type == "photo_for_sale"){
-                    $product_price = number_format($item->product_price, 2);
                     $item_price = $item->quantity * $product_price;
                     $sale_on = 0;
                     $sale_price=null;

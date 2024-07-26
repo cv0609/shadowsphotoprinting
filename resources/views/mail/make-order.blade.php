@@ -105,14 +105,11 @@
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">{{$item->quantity}}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">
                         
-                        @if($item->product_type == "gift_card")
+                        @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                         {{ number_format($item->product_price, 2) ?? 0}}
-                        @elseif($item->product_type == "photo_for_sale")
-                            {{ number_format($item->product_price, 2) ?? 0}}
                         @else
                             {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($item->product->product_price, 2) }}
                         @endif
-                    
                     </td>
                 </tr>
                     
