@@ -9,7 +9,7 @@
             </p>
         </div>
         <div class="decoding">
-                    
+
             @if(Session::has('temImages'))
             @foreach($imageName as $temImages)
             <div class="decoding-wrapper selected-images">
@@ -18,7 +18,7 @@
                 <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}">
                     <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
                     <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
-                    <p class="title_image_p">image12</p>
+                    <p class="title_image_p">{{ $temImages }}</p>
             </div>
             @endforeach
             @endif
@@ -164,7 +164,7 @@ $(document).ready(function() {
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
-            
+
                     $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
                     $('#add_to_cart_msg').removeClass('d-none');
                     $('.kt-cart-total').text(response.count);
@@ -207,7 +207,7 @@ $(document).ready(function() {
                 $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
             }
         });
-    
+
         $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
         $("#cart-total-itmes").children('.show-details').text(totalQuantity);
     }

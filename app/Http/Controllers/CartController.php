@@ -324,12 +324,12 @@ class CartController extends Controller
             $response = $this->applyCoupon($request_data);
             if($response['success'] === false)
             {
-            Session::forget('coupon');
+              Session::forget('coupon');
             }
         }
 
         if(!Session::has('coupon')){
-            $this->CartService->autoAppliedCoupon();
+          $this->CartService->autoAppliedCoupon();
         }
 
         session()->flash('success', 'Cart updated successfully.');
