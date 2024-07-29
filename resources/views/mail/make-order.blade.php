@@ -128,10 +128,21 @@
                         Shipping:</th>
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">${{number_format($order->shipping_charge,2)}} via Flat rate</td>
                 </tr>
+
+                @if(isset($order->coupon_code) && !empty($order->coupon_code))
+
+                    <tr>
+                        <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
+                            Discount:</th>
+                        <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">-${{number_format($order->discount,2)}}</td>
+                    </tr>
+
+                @endif
+
                 <tr>
                     <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
                         Payment method:</th>
-                    <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">Invoice</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">Stripe</td>
                 </tr>
                 <tr>
                     <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
