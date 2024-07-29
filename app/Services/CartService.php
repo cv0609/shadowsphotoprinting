@@ -40,7 +40,8 @@ class CartService
             }
             else{
 
-                $currentDate = now();
+                $currentDate = Carbon::now();
+                $currentDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
 
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
 
@@ -119,7 +120,8 @@ class CartService
 
     public function getProductSalePrice($product_id)
     {
-        $currentDate = now();
+        $currentDate = Carbon::now();
+        $currentDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
         $product_price = null;
 
         $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$product_id)->first();
@@ -153,7 +155,8 @@ class CartService
                  $product_price = $item->product_price;
              }else{
 
-                $currentDate = now();
+                $currentDate = Carbon::now();
+                $currentDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
 
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
 
