@@ -126,26 +126,52 @@
           <tbody>
             @foreach ($orderDetail->orderDetails as $key => $item)
             <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
-                 $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+              $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+              
+              $photo_product_desc = '';
+              $giftcard_product_desc = '';
+
+              if($item->product_type == "photo_for_sale"){
+                  $photo_product_desc = json_decode($item->product_desc);
+              }
+              if($item->product_type == "gift_card"){
+                  $giftcard_product_desc = json_decode($item->product_desc);
+              }
             ?>
             <tr>
-              <td class="center order-img" data-title="image"><img src="{{ asset($item->selected_images) }}" alt=""></td>
-              <td class="strong order_page_td">
+              <td class="center order-img" data-title="image">
+                              
                 @php
-                    $photo_product_desc = '';
-                    $giftcard_product_desc = '';
-
-                    if($item->product_type == "photo_for_sale"){
-                        $photo_product_desc = json_decode($item->product_desc);
+                    $image1 = '';
+                    $image2 = '';
+                    if(isset($product_detail->product_image)){
+                        $imageArray = explode(',', $product_detail->product_image);
+                        $image1 = $imageArray[0] ?? '';
+                        $image2 = $imageArray[1] ?? '';
                     }
-                    if($item->product_type == "gift_card"){
-                        $giftcard_product_desc = json_decode($item->product_desc);
-                    }
-
                 @endphp
+
+                <img src="
+                    @if($item->product_type == 'gift_card')
+                        {{ asset($product_detail->product_image) }}
+                    @elseif($item->product_type == 'photo_for_sale')
+
+                        {{ asset($image1) }}
+
+                    @elseif($item->product_type == 'hand_craft')
+
+                         {{ asset($image1) }}
+
+                    @else
+                        {{ asset($item->selected_images) }}
+                    @endif
+                " alt="">
+              
+              </td>
+              <td class="strong order_page_td">
                 <a href="#">
                     @if($item->product_type == "gift_card")
-                        {{ $product_detail->name }}
+                        {{ $product_detail->product_title }}
                         <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
                     @elseif($item->product_type == "photo_for_sale")
                         {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
@@ -176,12 +202,11 @@
                 </span>
             </td>
             <td>
-
                 @php
                 $sale_status = "";
-                  if(isset($item->orderDetails->sale_on) && $item->orderDetails->sale_on == 1){
+                  if(isset($item->sale_on) && !empty($item->sale_on)){
                     $sale_status = 'On';
-                    $sale_price = $item->orderDetails->sale_price;
+                    $sale_price = $item->sale_price;
                   }else{
                     $sale_status = 'Off';
                     $sale_price = '-';

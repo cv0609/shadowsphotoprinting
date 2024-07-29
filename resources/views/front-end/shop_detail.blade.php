@@ -1,6 +1,8 @@
 @extends('front-end.layout.main')
 @section('content')
-
+@php
+   $CartService = app(App\Services\CartService::class);
+@endphp
 
 <section class="envira-gallery">
     <div class="container">
@@ -73,15 +75,24 @@
                                 </thead>
                                   <tbody id="products-main">
                                     @foreach($products as $key => $product)
+                                    @php
+                                       $product_sale_price =  $CartService->getProductSalePrice($product->id);
+                                    @endphp
                                     <tr class="gi-prod">
                                         <td>
-                                            <input type="number" name="quantity" id="quantity-{{$key}}" data-price="{{ $product->product_price }}" data-productid="{{ $product->id }}">
+                                            <input type="number" name="quantity" id="quantity-{{$key}}"
+                                           data-price="{{ isset($product_sale_price) && !empty($product_sale_price) ? $product_sale_price : $product->product_price }}"
+                                           data-productid="{{ $product->id }}">
                                         </td>
                                         <td>
                                             {{ $product->product_title }}
                                         </td>
                                         <td>
-                                            <span>${{ $product->product_price }}</span>
+                                            <span class="product-s-price">
+
+                                                ${{ isset($product_sale_price) && !empty($product_sale_price) ? $product_sale_price : $product->product_price  }}
+
+                                            </span>
                                         </td>
                                         <td>
                                             <span id="quantity-price-{{$key}}">$ <span class="show-details">0.00</span> </span>
@@ -194,6 +205,7 @@ $(document).ready(function() {
             var rowId = $(this).attr('id').split('-')[1];
 
             var price = parseFloat($(this).data('price'));
+            console.log(price,'price');
             var totalPrice = quantity * price;
             total += totalPrice;
             totalQuantity += +quantity;

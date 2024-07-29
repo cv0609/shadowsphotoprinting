@@ -3,6 +3,7 @@
 @php
    $PageDataService = app(App\Services\PageDataService::class);
    $products = $PageDataService->getProductBySlug($page_content['slug']);
+   $CartService = app(App\Services\CartService::class);
 @endphp
 <section class="canvas-bnr">
     <div class="banner-img">
@@ -23,6 +24,9 @@
         <div class="Product_box">
             <ul class="product-list">
                 @foreach ($products as $product)
+                @php
+                   $product_sale_price =  $CartService->getProductSalePrice($product['id']);
+                @endphp
                 <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
@@ -30,9 +34,23 @@
                         </div>
                         <div class="Product_info">
                             <h3>{{ $product['product_title'] }}</h3>
-                            <div class="cart_price">
+                            {{-- <div class="cart_price">
                                 <span class="price">Price: ${{ $product['product_price'] }} </span>
+                            </div> --}}
+
+                            <div class="cart_price">
+
+                                @if(isset($product_sale_price) && !empty($product_sale_price))
+                                    <span class="price">Price: ${{ $product_sale_price }}</span>
+                                    <p class="discounted_price">Price : <span>${{$product['product_price']}}</span></p>
+
+                                @else
+                                    <span class="price">Price: ${{ $product['product_price'] }}</span>
+                                @endif
+
                             </div>
+
+
                             <div class="print_paper_type">Type of Paper Use: <select>
                                     <option>{{ $product['type_of_paper_use'] }}</option>
                                 </select></div>
