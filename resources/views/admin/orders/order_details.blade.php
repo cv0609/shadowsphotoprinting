@@ -198,7 +198,6 @@
             @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                 {{ number_format($item->quantity * $item->product_price, 2) }}
             @else
-                {{-- {{ number_format($item->quantity * $item->product->product_price, 2) }} --}}
 
                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
                 
