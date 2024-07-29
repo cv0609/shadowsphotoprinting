@@ -10,6 +10,8 @@ use App\Http\Requests\PhotoForSaleCategoryRequest;
 use App\Http\Requests\PhotoForSaleProductRequest;
 use App\Http\Requests\HandCraftProductRequest;
 use App\Http\Requests\HandCraftCategoryRequest;
+use App\Http\Requests\HandCraftProductUpdateRequest;
+use App\Http\Requests\HandCraftCategoryUpdateRequest;
 use App\Models\Size;
 use App\Models\SizeType;
 use App\Models\HandCraftCategory;
@@ -60,7 +62,7 @@ class HandCraftController extends Controller
         return view('admin.hand_craft.category.edit', compact('category'));
     }
 
-    public function productCategoryUpdate(Request $request)
+    public function productCategoryUpdate(HandCraftCategoryUpdateRequest $request)
     {
         $slug = \Str::slug($request->name);
         $data = ["name"=>$request->name,'slug'=>$slug];
@@ -84,7 +86,6 @@ class HandCraftController extends Controller
        $category = HandCraftCategory::whereId($category_id)->delete();
        return redirect()->route('hand-craft-categories-list')->with('success','Category is deleted successfully');
     }
-
 
     public function products()
     {
@@ -131,9 +132,8 @@ class HandCraftController extends Controller
         return view('admin.hand_craft.edit', compact('product','productCategories'));
     }
 
-    public function productUpdate(Request $request)
+    public function productUpdate(HandCraftProductUpdateRequest $request)
     {
-        // dd($request->category_id);
         $slug = \Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"price"=>$request->price,'slug'=>$slug];
@@ -149,7 +149,7 @@ class HandCraftController extends Controller
         }
 
         HandCraftProduct::whereId($request->product_id)->update($data);
-        return back()->with('success', 'Product updated successfully.');
+        return redirect()->route('hand-craft-list')->with('success', 'Product updated successfully.');
     }
 
 

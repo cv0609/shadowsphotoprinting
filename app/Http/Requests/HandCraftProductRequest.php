@@ -25,8 +25,8 @@ class HandCraftProductRequest extends FormRequest
             'category_id' => 'required',
             'product_title' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'product_images' => 'nullable|array|max:2|min:2',
-            'product_images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_images' => 'required|array|max:2|min:2',
+            'product_images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'product_description' => 'required',
         ];
     }

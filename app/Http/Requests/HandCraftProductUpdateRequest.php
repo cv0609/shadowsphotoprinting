@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class HandCraftCategoryRequest extends FormRequest
+class HandCraftProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,12 @@ class HandCraftCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:hand_craft_category,name',
-            "image" => 'image|mimes:jpeg,png,jpg'
+            'category_id' => 'required',
+            'product_title' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'product_images' => 'array|max:2|min:2',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
+            'product_description' => 'required',
         ];
     }
 }

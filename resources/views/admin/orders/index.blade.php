@@ -64,72 +64,90 @@
 
                                     <td class="billing_address column-billing_address" data-colname="Billing" data-title="billing-add">
                                         
-                                        @if(isset($order->orderBillingShippingDetails->street1))
-                                        {{ $order->orderBillingShippingDetails->street1 }},
-                                    @endif
-                                    
-                                    @if(isset($order->orderBillingShippingDetails->street2))
-                                        {{ $order->orderBillingShippingDetails->street2 }},
-                                    @endif
-                                    
-                                    @if(isset($order->orderBillingShippingDetails->postcode))
-                                        {{ $order->orderBillingShippingDetails->postcode }},
-                                    @endif
-                                    
-                                    @if(isset($order->orderBillingShippingDetails->suburb))
-                                        {{ $order->orderBillingShippingDetails->suburb }},
-                                    @endif
-                                    
-                                    <br>
-                                    
-                                    @if(isset($order->orderBillingShippingDetails->state))
-                                        {{ $order->orderBillingShippingDetails->state }},
-                                    @endif
-                                    
-                                    @if(isset($order->orderBillingShippingDetails->country_region))
-                                        {{ $order->orderBillingShippingDetails->country_region }},
-                                    @endif
+                                        @php
+                                        $addressParts = [];
+                                
+                                        if (isset($order->orderBillingShippingDetails->street1)) {
+                                            $addressParts[] = $order->orderBillingShippingDetails->street1;
+                                        }
+                                
+                                        if (isset($order->orderBillingShippingDetails->street2)) {
+                                            $addressParts[] = $order->orderBillingShippingDetails->street2;
+                                        }
+                                
+                                        if (isset($order->orderBillingShippingDetails->postcode)) {
+                                            $addressParts[] = $order->orderBillingShippingDetails->postcode;
+                                        }
+                                
+                                        if (isset($order->orderBillingShippingDetails->suburb)) {
+                                            $addressParts[] = $order->orderBillingShippingDetails->suburb;
+                                        }
+                                
+                                        $addressLine1 = implode(', ', $addressParts);
+                                        $addressParts = [];
+                                
+                                        if (isset($order->orderBillingShippingDetails->state)) {
+                                            $addressParts[] = $order->orderBillingShippingDetails->state;
+                                        }
+                                
+                                        if (isset($order->orderBillingShippingDetails->country_region)) {
+                                            $addressParts[] = $order->orderBillingShippingDetails->country_region;
+                                        }
+                                
+                                        $addressLine2 = implode(', ', $addressParts);
+                                    @endphp
+                                
+                                    {{ $addressLine1 }}<br>
+                                    {{ $addressLine2 }}
 
                                     </td>
 
 
-                                    <td class="shipping_address column-shipping_address" data-colname="Ship to" data-title="shipp-add"><a target="_blank" href="https://maps.google.com/maps?&amp;q=1145%20Eyre%20Street%2C%20%2C%20Newington%2C%20VIC%2C%203350%2C%20AU&amp;z=16">
-
-                                        @if($order->orderBillingShippingDetails->isShippingAddress == 1)
-                                        
-                                            @if(isset($order->orderBillingShippingDetails->ship_street1))
-                                              {{ $order->orderBillingShippingDetails->ship_street1 }},
-                                            @endif
-                                            
-                                            @if(isset($order->orderBillingShippingDetails->ship_street2))
-                                                {{ $order->orderBillingShippingDetails->ship_street2 }},
-                                            @endif
-                                            
-                                            @if(isset($order->orderBillingShippingDetails->ship_suburb))
-                                                {{ $order->orderBillingShippingDetails->ship_suburb }},
-                                            @endif
-                                            
-                                            <br>
-                                            
-                                            @if(isset($order->orderBillingShippingDetails->ship_state))
-                                                {{ $order->orderBillingShippingDetails->ship_state }},
-                                            @endif
-                                            
-                                            @if(isset($order->orderBillingShippingDetails->ship_postcode))
-                                                {{ $order->orderBillingShippingDetails->ship_postcode }},
-                                            @endif
-                                            
-                                            @if(isset($order->orderBillingShippingDetails->ship_country_region))
-                                                {{ $order->orderBillingShippingDetails->ship_country_region }},
-                                            @endif
-                                        @else
-
-                                        -
-
-                                        @endif
+                                    <td class="shipping_address column-shipping_address" data-colname="Ship to" data-title="shipp-add">
+                                        <a target="_blank" href="https://maps.google.com/maps?&amp;q=1145%20Eyre%20Street%2C%20%2C%20Newington%2C%20VIC%2C%203350%2C%20AU&amp;z=16">
                                     
+                                            @if($order->orderBillingShippingDetails->isShippingAddress == 1)
+                                                @php
+                                                    $shippingAddressParts1 = [];
+                                                    $shippingAddressParts2 = [];
                                     
-                                    </a></td>
+                                                    if (isset($order->orderBillingShippingDetails->ship_street1)) {
+                                                        $shippingAddressParts1[] = $order->orderBillingShippingDetails->ship_street1;
+                                                    }
+                                    
+                                                    if (isset($order->orderBillingShippingDetails->ship_street2)) {
+                                                        $shippingAddressParts1[] = $order->orderBillingShippingDetails->ship_street2;
+                                                    }
+                                    
+                                                    if (isset($order->orderBillingShippingDetails->ship_suburb)) {
+                                                        $shippingAddressParts1[] = $order->orderBillingShippingDetails->ship_suburb;
+                                                    }
+                                    
+                                                    if (isset($order->orderBillingShippingDetails->ship_state)) {
+                                                        $shippingAddressParts2[] = $order->orderBillingShippingDetails->ship_state;
+                                                    }
+                                    
+                                                    if (isset($order->orderBillingShippingDetails->ship_postcode)) {
+                                                        $shippingAddressParts2[] = $order->orderBillingShippingDetails->ship_postcode;
+                                                    }
+                                    
+                                                    if (isset($order->orderBillingShippingDetails->ship_country_region)) {
+                                                        $shippingAddressParts2[] = $order->orderBillingShippingDetails->ship_country_region;
+                                                    }
+                                    
+                                                    $shippingAddressLine1 = implode(', ', $shippingAddressParts1);
+                                                    $shippingAddressLine2 = implode(', ', $shippingAddressParts2);
+                                                @endphp
+                                    
+                                                {{ $shippingAddressLine1 }}<br>
+                                                {{ $shippingAddressLine2 }}
+                                            @else
+                                                -
+                                            @endif
+                                    
+                                        </a>
+                                    </td>
+                                    
 
 
                                     <td data-title="created-at">{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>

@@ -174,7 +174,7 @@ class PaymentController extends Controller
                 'payment_id' => (isset($charge->id)) ? $charge->id : "",
                 'is_paid' => (isset($charge->captured)) ? $charge->captured : false,
                 'payment_status' => $charge->status,
-                'order_status' => 0,
+                'order_status' => "0",
             ]);
 
             foreach ($cart->items as $item) {

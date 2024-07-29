@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="{{ route('photos-for-sale-categories-list') }}">Product Categories</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('hand-craft-categories-list') }}">Product Categories</a></li>
           <li class="breadcrumb-item"><a href="#">Create Category</a></li>
         </ol>
     </nav>
@@ -13,7 +13,7 @@
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Add Product Category</h2>
+                <h2>Hand Craft Category</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">

@@ -95,6 +95,8 @@
                         style="color: #636363;">Message</strong>: {{$giftcard_product_desc->giftcard_msg ?? ''}}
                     </td>
 
+                    @elseif($item->product_type == 'hand_craft')
+                      <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $product_detail->product_title ?? '' }}</td>
                     @else
 
                     <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $item->product->product_title ?? '' }}</td>

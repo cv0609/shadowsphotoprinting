@@ -4,13 +4,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="{{ route('photos-for-sale-product-list') }}">Products</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('hand-craft-list') }}">Products</a></li>
           <li class="breadcrumb-item"><a href="#">Edit Product</a></li>
         </ol>
     </nav>
 @if(Session::has('success'))
     <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
 @endif
+
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">

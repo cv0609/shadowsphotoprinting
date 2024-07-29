@@ -91,7 +91,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/hand-craft-categories-add',[HandCraftController::class,'productCategoryAdd'])->name('hand-craft-categories-add');
         Route::post('/hand-craft-categories-save',[HandCraftController::class,'productCategorySave'])->name('hand-craft-categories-save');
         Route::post('/hand-craft-categories-update',[HandCraftController::class,'productCategoryUpdate'])->name('hand-craft-categories-update');
-        Route::get('/hand-craft-categories-show/{category_id}',[HandCraftController::class,'productDistroy'])->name('hand-craft-categories-show');
+        Route::get('/hand-craft-categories-show/{category_id}',[HandCraftController::class,'productCategoryShow'])->name('hand-craft-categories-show');
         Route::delete('/hand-craft-categories-delete/{category_id}',[HandCraftController::class,'productCategoryDistroy'])->name('hand-craft-categories-delete');
 
 
