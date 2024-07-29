@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="{{ route('photos-for-sale-product-list') }}">Products</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('hand-craft-list') }}">Products</a></li>
           <li class="breadcrumb-item"><a href="#">Add Product</a></li>
         </ol>
     </nav>
@@ -50,7 +50,8 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="text" id="product_title" name="product_title" required="required"
-                                        class="form-control ">
+                                        class="form-control" value="{{old('product_title')}}"
+                                        >
                                     @error('product_title')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -64,7 +65,7 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="number" id="price" name="price" required="required"
-                                        class="form-control" step=".01">
+                                        class="form-control" step=".01" value="{{old('price')}}">
                                     @error('price')
                                      <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -95,7 +96,7 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <textarea id="product_description" name="product_description"
-                                        class="form-control" id="product_description"></textarea>
+                                        class="form-control" id="product_description" value="{{old('product_description')}}"></textarea>
 
                                       @error('product_description')
                                        <span class="text-danger">{{ $message }}</span>

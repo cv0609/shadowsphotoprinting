@@ -22,6 +22,10 @@ return
       'checkout' =>[
          'meta_title' =>'Checkout - Shadows Photo Printing',
          'meta_description' => ''
+      ],
+      'hand_craft' =>[
+         'meta_title' =>'Hand Craft - Shadows Photo Printing',
+         'meta_description' => ''
       ]
    ]
 ];

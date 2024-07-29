@@ -190,9 +190,7 @@
                                         <tr>
 
                                             <td>
-                                                @if($item->product_type == 'gift_card')
-                                                    {{ $product_detail->product_title }}
-                                                @elseif($item->product_type == 'photo_for_sale')
+                                                @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
                                                     {{ $product_detail->product_title }}
                                                 @else
                                                     {{ $item->product->product_title }}
@@ -204,9 +202,7 @@
                                                 <span>
                                                     <bdi>
                                                         <span>$</span>
-                                                        @if($item->product_type == 'gift_card')
-                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
-                                                        @elseif($item->product_type == 'photo_for_sale')
+                                                        @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
                                                             {{ number_format($item->quantity * $item->product_price, 2) }}
                                                         @else
                                                             {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}

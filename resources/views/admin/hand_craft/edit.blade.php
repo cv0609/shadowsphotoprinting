@@ -4,13 +4,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="{{ route('photos-for-sale-product-list') }}">Products</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('hand-craft-list') }}">Products</a></li>
           <li class="breadcrumb-item"><a href="#">Edit Product</a></li>
         </ol>
     </nav>
 @if(Session::has('success'))
     <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
 @endif
+
 <div class="">
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -21,7 +22,7 @@
             </div>
             <div class="x_content">
                 <br>
-                <form method="POST" id="edit-form" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
+                <form method="POST" action="{{ route('hand-craft-product-update') }}" id="edit-form" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_category" >Product Category <span class="required">*</span>
@@ -33,7 +34,9 @@
                                 <option value="{{ $productCategory->id }}" <?= ($product->category_id == $productCategory->id) ?'selected' : '' ?>>{{ $productCategory->name }}</option>
                                 @endforeach
                             </select>
-                            <span class="validation-error category_id_error"></span>
+                            @error('category_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
 
                     </div>
 
@@ -43,7 +46,9 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <input type="text" id="product_title" name="product_title" required="required" class="form-control" value="{{$product->product_title}}">
-                            <span class="validation-error product_title_error"></span>
+                            @error('product_title')
+                             <span class="text-danger">{{ $message }}</span>
+                            @enderror
 
                         </div>
                     </div>
@@ -52,21 +57,11 @@
                             Price <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="min_price" name="min_price" required="required"
-                                class="form-control" step=".01" value="{{$product->min_price}}">
-                            <span class="validation-error min_price_error"></span>
-
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="max_price"> Maximum
-                            Price <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            <input type="number" id="max_price" name="max_price" required="required"
-                                class="form-control" step=".01" value="{{$product->max_price}}">
-                            <span class="validation-error max_price_error"></span>
+                            <input type="number" id="min_price" name="price" required="required"
+                                class="form-control" step=".01" value="{{$product->price}}">
+                                @error('price')
+                                  <span class="text-danger">{{ $message }}</span>
+                                @enderror
 
                         </div>
                     </div>
@@ -97,75 +92,17 @@
                         </label>
                         <div class="col-md-6 col-sm-6 ">
                             <textarea id="product_description" name="product_description" required="required" class="form-control ">{{$product->product_description}}</textarea>
-                            <span class="validation-error product_description_error"></span>
+                            @error('product_description')
+                             <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                    {{-- @foreach ($SaleSizePricesGroupBy as $SaleSizePricesGroupB) --}}
-
-                    <div class="size-and-type-wrap">
-                        {{-- <div class="size-and-type">
-                            <div class="size">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="size">Select size</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select name="size_arr[size][1][children][]" id="size_arr" multiple="multiple" class="multi_size">
-                                            <option value="">Select size</option>
-                                            @foreach($size as $val)
-                                              <option value="{{$val->id}}">{{$val->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="validation-error size_arr_error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="type">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="type">Select type</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select name="type_arr[type][1][children][]" id="type_arr" class="multi_type" multiple="multiple">
-                                            <option value="">Select type</option>
-                                            @foreach($size_type as $val)
-                                              <option value="{{$val->id}}">{{$val->name}}</option>
-                                            @endforeach
-                                          </select>
-                                          <span class="validation-error type_arr_error"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="selcet-price">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="price">select price</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="number" id="price" name="price_arr[price][1][children][]">
-                                        <span class="validation-error price_arr_error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-                    </div>
-                    {{-- @endforeach --}}
-
-                    <div class="row read-more">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-6">
-                            <button type="button" class="read_more-btn" id="add-more-attribute">Add More</button>
-                        </div>
-                    </div>
-
-
                     <div class="ln_solid"></div>
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-6 offset-md-3">
-                                <button type="button" class="btn btn-success" id="editSubmitBtn">Submit</button>
+                                <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </div>
                 </form>
@@ -178,7 +115,7 @@
 @endsection
 
 @section('custom-script')
-<script>
+{{-- <script>
 
     var sizes = @json($size);
     var sizeTypes = @json($size_type);
@@ -468,5 +405,5 @@
     }
 
 
-</script>
+</script> --}}
 @endsection

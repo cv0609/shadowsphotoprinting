@@ -48,21 +48,30 @@
                                     <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}" onclick="return confirm('Are you sure!')">×</a>
                                 </td>
                                 <td class="product-thumbnail">
-                                    <a href="#">
+
+                                    @php
+                                        $image1 = '';
+                                        $image2 = '';
+                                        if(isset($product_detail->product_image)){
+                                            $imageArray = explode(',', $product_detail->product_image);
+                                            $image1 = $imageArray[0] ?? '';
+                                            $image2 = $imageArray[1] ?? '';
+                                        }
+                                   @endphp
+
+
+                                    <a href="javascript:void(0)" class="product-img">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
                                                 {{ asset($product_detail->product_image) }}
                                             @elseif($item->product_type == 'photo_for_sale')
-                                                @php
-                                                    $image1 = '';
-                                                    $image2 = '';
-                                                    if(isset($product_detail->product_image)){
-                                                        $imageArray = explode(',', $product_detail->product_image);
-                                                        $image1 = $imageArray[0] ?? '';
-                                                        $image2 = $imageArray[1] ?? '';
-                                                    }
-                                                @endphp
+
                                                 {{ asset($image1) }}
+
+                                            @elseif($item->product_type == 'hand_craft')
+
+                                                 {{ asset($image1) }}
+
                                             @else
                                                 {{ asset($item->selected_images) }}
                                             @endif
@@ -88,6 +97,11 @@
                                             <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
                                         @elseif($item->product_type == "photo_for_sale")
                                             {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+
+                                        @elseif($item->product_type == "hand_craft")
+
+                                          {{ $product_detail->product_title ?? '' }}
+
                                         @else
                                             {{ $item->product->product_title ?? ''}}
                                         @endif
@@ -102,6 +116,10 @@
                                                 {{ number_format($item->product_price, 2) }}
                                             @elseif($item->product_type == "photo_for_sale")
                                                 {{ number_format($item->product_price, 2) }}
+
+                                            @elseif($item->product_type == "hand_craft")
+                                            {{ number_format($item->product_price, 2) }}
+
                                             @else
                                                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($product_detail->product_price, 2)  }}
                                             @endif
@@ -119,6 +137,10 @@
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
                                             @elseif($item->product_type == "photo_for_sale")
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
+
+                                            @elseif($item->product_type == "hand_craft")
+                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+
                                             @else
                                                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
                                             @endif
@@ -130,7 +152,7 @@
 
                             <tr>
                                 <td colspan="6" class="actions">
-                                    
+
                                     @if(!Session::has('coupon'))
                                         <div class="coupon-icons">
                                             <input type="text" name="coupon_code" class="input-text"
@@ -234,7 +256,7 @@
                                                     <option value="{{ $state->id }}">{{ $state->name }}</option>
 
                                                         @endforeach
-                                               
+
                                                 </select>
                                                 <p class="form-row">
                                                     <input type="text" name="city" placeholder="city" required>
@@ -280,6 +302,26 @@
         </div>
     </div>
 </section>
+
+<div id="ImgViewer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" id="modal-close">&times;</button>
+          {{-- <h4 class="modal-title">Modal Header</h4> --}}
+        </div>
+        <div class="modal-body">
+          <img src="" alt="image" id="modal-img">
+        </div>
+        {{-- <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> --}}
+      </div>
+
+    </div>
+  </div>
 @endsection
 
 @section('scripts')
@@ -366,6 +408,15 @@
         function(data, status){
             location.reload();
         });
+   })
+
+   $(".product-img").on('click',function(){
+      $("#modal-img").attr('src',$(this).children('img').attr('src'));
+      $("#ImgViewer").modal('show');
+   });
+
+   $("#modal-close").on('click',function(){
+    $("#ImgViewer").modal('hide');
    })
 </script>
 

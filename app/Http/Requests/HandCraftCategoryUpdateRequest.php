@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class HandCraftCategoryRequest extends FormRequest
+class HandCraftCategoryUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,11 +20,17 @@ class HandCraftCategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    
     public function rules(): array
     {
+        $categoryId = $this->input('category_id');
+
         return [
-            'name' => 'required|unique:hand_craft_category,name',
-            "image" => 'image|mimes:jpeg,png,jpg'
+            'name' => [
+                'required',
+                Rule::unique('hand_craft_category', 'name')->ignore($categoryId),
+            ],
+            'image' => 'image|mimes:jpeg,png,jpg'
         ];
     }
 }

@@ -100,6 +100,13 @@ class CartController extends Controller
                         ]);
                     }
 
+                    if ($itemType == 'hand_craft') {
+                        $insertData = array_merge($insertData, [
+                            'product_type' => $itemType,
+                            'product_price' => $request->card_price
+                        ]);
+                    }
+
                     $existingCartItem = CartData::where('cart_id', $cartId)
                         ->where('product_id', $product_id)
                         ->where('selected_images', $ImagePath)
@@ -115,6 +122,11 @@ class CartController extends Controller
 
                         if ($itemType == 'photo_for_sale') {
                             $existingCartItem->product_desc = json_encode($photoForSale) ?? '';
+                            $existingCartItem->product_type = $itemType ?? '';
+                            $existingCartItem->product_price = $request->card_price ?? '';
+                        }
+
+                        if ($itemType == 'hand_craft') {
                             $existingCartItem->product_type = $itemType ?? '';
                             $existingCartItem->product_price = $request->card_price ?? '';
                         }
@@ -181,6 +193,19 @@ class CartController extends Controller
             $CartData = CartData::where('cart_id', $cart->id)
                                 ->where('id', $product_id)
                                 ->delete();
+        }
+
+        if(Session::has('coupon'))
+        {
+            $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
+            $response = $this->applyCoupon($request_data);
+            if($response['success'] === false)
+            {
+              Session::forget('coupon');
+            }
+        }
+        if(!Session::has('coupon')){
+            $this->CartService->autoAppliedCoupon();
         }
         return redirect()->route('cart')->with('success','Item removed from cart');
     }
@@ -312,13 +337,12 @@ class CartController extends Controller
             $response = $this->applyCoupon($request_data);
             if($response['success'] === false)
             {
-            Session::forget('coupon');
+              Session::forget('coupon');
             }
         }
 
-        if(!Session::has('coupon')){
-            $this->CartService->autoAppliedCoupon();
-        }
+        $this->CartService->autoAppliedCoupon();
+
 
         session()->flash('success', 'Cart updated successfully.');
     }

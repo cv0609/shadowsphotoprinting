@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\GiftCardCategory;
 use App\Models\product_sale;
 use App\Models\PhotoForSaleProduct;
+use App\Models\HandCraftProduct;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,13 +35,13 @@ class CartService
 
 
         $subtotal = $cart->items->reduce(function ($carry, $item) {
-            if($item->product_type == 'gift_card'){
+            if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft'){
                 $product_price = $item->product_price;
-            }else if($item->product_type == 'photo_for_sale'){
-                $product_price = $item->product_price;
-            }else{
+            }
+            else{
 
-                $currentDate = now();
+                $currentDate = Carbon::now();
+                $currentDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
 
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
 
@@ -106,6 +107,9 @@ class CartService
                 case 'photo_for_sale':
                     $product = PhotoForSaleProduct::whereId($product_id)->first();
                     break;
+                case 'hand_craft':
+                    $product = HandCraftProduct::whereId($product_id)->first();
+                    break;
                 default:
                 $product = null;
                     break;
@@ -116,7 +120,8 @@ class CartService
 
     public function getProductSalePrice($product_id)
     {
-        $currentDate = now();
+        $currentDate = Carbon::now();
+        $currentDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
         $product_price = null;
 
         $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$product_id)->first();
@@ -146,13 +151,12 @@ class CartService
 
          $subtotal = $order->orderDetails->reduce(function ($carry, $item) {
 
-             if($item->product_type == 'gift_card'){
-                 $product_price = $item->product_price;
-             }else if($item->product_type == 'photo_for_sale'){
+             if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft'){
                  $product_price = $item->product_price;
              }else{
 
-                $currentDate = now();
+                $currentDate = Carbon::now();
+                $currentDate = date('Y-m-d',strtotime($currentDate->toDateTimeString()));
 
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
 
@@ -218,6 +222,7 @@ class CartService
                   ->where('maximum_spend', '>=', $CartTotal['subtotal']);
         })
         ->first();
+
         if(isset($coupon) && !empty($coupon)){
             $amount = 0;
             if($coupon->type == "0"){

@@ -122,7 +122,7 @@ class OrderController extends Controller
                     }
                 }
 
-                if($productType == 'gift_card' || $productType == 'photo_for_sale'){
+                if($productType == 'gift_card' || $productType == 'photo_for_sale' || $productType == 'hand_craft'){
                     $imagePath = $productDetails->product_image;
                     if (file_exists($imagePath)) {
                         $baseName = pathinfo($imagePath, PATHINFO_FILENAME);

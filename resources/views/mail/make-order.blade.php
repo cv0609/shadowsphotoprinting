@@ -95,6 +95,8 @@
                         style="color: #636363;">Message</strong>: {{$giftcard_product_desc->giftcard_msg ?? ''}}
                     </td>
 
+                    @elseif($item->product_type == 'hand_craft')
+                      <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $product_detail->product_title ?? '' }}</td>
                     @else
 
                     <td style="padding: 10px; border: 1px solid #ddd; color: #636363;">{{ $item->product->product_title ?? '' }}</td>
@@ -105,14 +107,11 @@
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">{{$item->quantity}}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">
                         
-                        @if($item->product_type == "gift_card")
+                        @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                         {{ number_format($item->product_price, 2) ?? 0}}
-                        @elseif($item->product_type == "photo_for_sale")
-                            {{ number_format($item->product_price, 2) ?? 0}}
                         @else
                             {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($item->product->product_price, 2) }}
                         @endif
-                    
                     </td>
                 </tr>
                     
@@ -129,10 +128,21 @@
                         Shipping:</th>
                     <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">${{number_format($order->shipping_charge,2)}} via Flat rate</td>
                 </tr>
+
+                @if(isset($order->coupon_code) && !empty($order->coupon_code))
+
+                    <tr>
+                        <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
+                            Discount:</th>
+                        <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">-${{number_format($order->discount,2)}}</td>
+                    </tr>
+
+                @endif
+
                 <tr>
                     <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
                         Payment method:</th>
-                    <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">Invoice</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">Stripe</td>
                 </tr>
                 <tr>
                     <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
