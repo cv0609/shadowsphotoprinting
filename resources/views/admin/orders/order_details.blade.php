@@ -25,8 +25,20 @@
                     <div class="col-12">
                       <div class="upper_header">
                         <div class="order_detail_heading">
+                          @php
+                          $status = '';
+                            if($orderDetail->order_status == "0") {
+                              $status = "Processing";
+                            }elseif($orderDetail->order_status == "1"){
+                              $status = "Completed";
+                            }elseif($orderDetail->order_status == "2"){
+                              $status = "Cancelled";
+                            }elseif($orderDetail->order_status == "3"){
+                              $status = "Refunded";
+                            }
+                          @endphp
                         <h3>Order #{{$orderDetail->order_number}} details</h3>
-                        <span class="status_paragraph completed_clr p-1">Success</span>
+                        <span class="status_paragraph completed_clr p-1">{{ $status }}</span>
                       </div>
                         <div class="print_btn">
                           <a href="javascript:void()" id="print">Print</a>
@@ -113,7 +125,9 @@
           </thead>
           <tbody>
             @foreach ($orderDetail->orderDetails as $key => $item)
-            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);?>
+            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+                 $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+            ?>
             <tr>
               <td class="center order-img" data-title="image"><img src="{{ asset($item->selected_images) }}" alt=""></td>
               <td class="strong order_page_td">
@@ -135,11 +149,14 @@
                         <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
                     @elseif($item->product_type == "photo_for_sale")
                         {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                    @elseif($item->product_type == "hand_craft")  
+                        {{ $product_detail->product_title ?? '' }}  
                     @else
                         {{ $item->product->product_title ?? ''}}
                     @endif
                 </a>
-                <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug }}</div>
+                
+                <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
                 <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
 
                 <a href="{{ asset($item->selected_images) }}" download>Download image</a>
@@ -150,9 +167,7 @@
                 <span class="">
                     <bdi>
                         <span>$</span>
-                        @if($item->product_type == "gift_card")
-                        {{ number_format($item->product_price, 2) }}
-                    @elseif($item->product_type == "photo_for_sale")
+                    @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                         {{ number_format($item->product_price, 2) }}
                     @else
                         {{ number_format($product_detail->product_price, 2) }}
@@ -163,6 +178,7 @@
             <td>
 
                 @php
+                $sale_status = "";
                   if(isset($item->orderDetails->sale_on) && $item->orderDetails->sale_on == 1){
                     $sale_status = 'On';
                     $sale_price = $item->orderDetails->sale_price;
@@ -178,12 +194,14 @@
             <td>{{$sale_price}}</td>
 
               <td class="center order_page_td" data-title="qty">{{ $item->quantity }}</td>
-              <td class="right order_page_td" data-title="total">$  @if($item->product_type == "gift_card")
-                {{ number_format($item->quantity * $item->product_price, 2) }}
-            @elseif($item->product_type == "photo_for_sale")
+              <td class="right order_page_td" data-title="total">$ 
+            @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                 {{ number_format($item->quantity * $item->product_price, 2) }}
             @else
-                {{ number_format($item->quantity * $item->product->product_price, 2) }}
+                {{-- {{ number_format($item->quantity * $item->product->product_price, 2) }} --}}
+
+                {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
+                
             @endif</td>
 
             
@@ -216,9 +234,9 @@
               @if(isset($OrderTotal['coupon_code']) && !empty($OrderTotal['coupon_code']) && $OrderTotal['coupon_code'] != null)
               <tr>
                 <td>
-                  <strong>Coupon ({{ $OrderTotal['coupon_code']['code'] }})</strong>
+                  <strong>Coupon ({{ $OrderTotal['coupon_code']}})</strong>
                 </td>
-                <td class="right">${{ number_format($OrderTotal['coupon_code']['discount_amount'],2) }}</td>
+                <td class="right">${{ number_format($OrderTotal['coupon_discount'],2)}}</td>
               </tr>
               @endif
 
