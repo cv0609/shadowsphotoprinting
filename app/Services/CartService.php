@@ -109,7 +109,7 @@ class CartService
                     break;
                 case 'hand_craft':
                     $product = HandCraftProduct::whereId($product_id)->first();
-                    break;    
+                    break;
                 default:
                 $product = null;
                     break;
@@ -222,6 +222,7 @@ class CartService
                   ->where('maximum_spend', '>=', $CartTotal['subtotal']);
         })
         ->first();
+
         if(isset($coupon) && !empty($coupon)){
             $amount = 0;
             if($coupon->type == "0"){
