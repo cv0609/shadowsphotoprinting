@@ -60,7 +60,7 @@
                                    @endphp
 
 
-                                    <a href="#">
+                                    <a href="javascript:void(0)" class="product-img">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
                                                 {{ asset($product_detail->product_image) }}
@@ -302,6 +302,26 @@
         </div>
     </div>
 </section>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          {{-- <h4 class="modal-title">Modal Header</h4> --}}
+        </div>
+        <div class="modal-body">
+          <img src="https://picsum.photos/seed/picsum/200/300" alt="image">
+        </div>
+        {{-- <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> --}}
+      </div>
+  
+    </div>
+  </div>
 @endsection
 
 @section('scripts')
@@ -389,6 +409,10 @@
             location.reload();
         });
    })
+
+   $(".product-img").on('click',function(){
+        $("#myModal").modal('show');
+   }) 
 </script>
 
 @endsection
