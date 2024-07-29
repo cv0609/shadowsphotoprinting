@@ -50,7 +50,7 @@
                             <p>{{ $page_content['select_images_for_upload_title'] }}</p>
                             <div id="selectedFiles"></div>
                             <a id="selectfiles" href="javascript:;" class="button" style="position: relative; z-index: 1;">Select images</a>
-                            <input type="file" id="fileInput" name="image[]" multiple style="display: none;">
+                            <input type="file" id="fileInput" name="image[]" multiple style="display: none;" accept="image/*">
                             <button type="submit" id="uploadfiles" class="button button-primary" style="display: none;">Upload images</button>
                         </div>
                     </div>
