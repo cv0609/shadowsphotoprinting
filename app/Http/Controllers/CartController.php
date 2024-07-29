@@ -194,6 +194,19 @@ class CartController extends Controller
                                 ->where('id', $product_id)
                                 ->delete();
         }
+
+        if(Session::has('coupon'))
+        {
+            $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
+            $response = $this->applyCoupon($request_data);
+            if($response['success'] === false)
+            {
+              Session::forget('coupon');
+            }
+        }
+        if(!Session::has('coupon')){
+            $this->CartService->autoAppliedCoupon();
+        }
         return redirect()->route('cart')->with('success','Item removed from cart');
     }
 
@@ -324,13 +337,12 @@ class CartController extends Controller
             $response = $this->applyCoupon($request_data);
             if($response['success'] === false)
             {
-            Session::forget('coupon');
+              Session::forget('coupon');
             }
         }
 
-        if(!Session::has('coupon')){
-            $this->CartService->autoAppliedCoupon();
-        }
+        $this->CartService->autoAppliedCoupon();
+
 
         session()->flash('success', 'Cart updated successfully.');
     }

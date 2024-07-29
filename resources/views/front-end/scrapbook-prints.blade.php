@@ -28,11 +28,13 @@
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="{{ asset($product['product_image']) }}" alt="Image">
+                            <p class="sale_product">sale</p>
                         </div>
                         <div class="Product_info">
                             <h3>{{ $product['product_title'] }}</h3>
                             <div class="cart_price">
                                 <span class="price">Price: ${{ $product['product_price'] }}</span>
+                                <p class="discounted_price">Price : <span>$50</span></p>
                             </div>
                             <div class="print_paper_type">Type of Paper Use:
                                 <select>

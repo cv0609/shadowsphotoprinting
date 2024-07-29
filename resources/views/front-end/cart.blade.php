@@ -60,12 +60,12 @@
                                    @endphp
 
 
-                                    <a href="#">
+                                    <a href="javascript:void(0)" class="product-img">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
                                                 {{ asset($product_detail->product_image) }}
                                             @elseif($item->product_type == 'photo_for_sale')
-                                               
+
                                                 {{ asset($image1) }}
 
                                             @elseif($item->product_type == 'hand_craft')
@@ -100,7 +100,7 @@
 
                                         @elseif($item->product_type == "hand_craft")
 
-                                          {{ $product_detail->product_title ?? '' }} 
+                                          {{ $product_detail->product_title ?? '' }}
 
                                         @else
                                             {{ $item->product->product_title ?? ''}}
@@ -140,7 +140,7 @@
 
                             <tr>
                                 <td colspan="6" class="actions">
-                                    
+
                                     @if(!Session::has('coupon'))
                                         <div class="coupon-icons">
                                             <input type="text" name="coupon_code" class="input-text"
@@ -244,7 +244,7 @@
                                                     <option value="{{ $state->id }}">{{ $state->name }}</option>
 
                                                         @endforeach
-                                               
+
                                                 </select>
                                                 <p class="form-row">
                                                     <input type="text" name="city" placeholder="city" required>
@@ -290,6 +290,26 @@
         </div>
     </div>
 </section>
+
+<div id="ImgViewer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" id="modal-close">&times;</button>
+          {{-- <h4 class="modal-title">Modal Header</h4> --}}
+        </div>
+        <div class="modal-body">
+          <img src="" alt="image" id="modal-img">
+        </div>
+        {{-- <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> --}}
+      </div>
+
+    </div>
+  </div>
 @endsection
 
 @section('scripts')
@@ -376,6 +396,15 @@
         function(data, status){
             location.reload();
         });
+   })
+
+   $(".product-img").on('click',function(){
+      $("#modal-img").attr('src',$(this).children('img').attr('src'));
+      $("#ImgViewer").modal('show');
+   });
+
+   $("#modal-close").on('click',function(){
+    $("#ImgViewer").modal('hide');
    })
 </script>
 
