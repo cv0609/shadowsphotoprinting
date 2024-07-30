@@ -112,14 +112,8 @@
                                     <span class="">
                                         <bdi>
                                             <span>$</span>
-                                            @if($item->product_type == "gift_card")
+                                            @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                                                 {{ number_format($item->product_price, 2) }}
-                                            @elseif($item->product_type == "photo_for_sale")
-                                                {{ number_format($item->product_price, 2) }}
-
-                                            @elseif($item->product_type == "hand_craft")
-                                            {{ number_format($item->product_price, 2) }}
-
                                             @else
                                                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($product_detail->product_price, 2)  }}
                                             @endif
@@ -133,14 +127,8 @@
                                     <span>
                                         <bdi>
                                             <span>$</span>
-                                            @if($item->product_type == "gift_card")
+                                            @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
-                                            @elseif($item->product_type == "photo_for_sale")
-                                                {{ number_format($item->quantity * $item->product_price, 2) }}
-
-                                            @elseif($item->product_type == "hand_craft")
-                                            {{ number_format($item->quantity * $item->product_price, 2) }}
-
                                             @else
                                                 {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
                                             @endif

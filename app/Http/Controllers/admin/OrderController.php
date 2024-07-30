@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
+use Illuminate\Support\Facades\Session;
 use ZipArchive;
 
 class OrderController extends Controller
@@ -26,7 +27,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with('orderBillingShippingDetails')->get();
+        $orders = Order::with('orderBillingShippingDetails')->orderBy('id','desc')->paginate(10);
         return view('admin.orders.index',compact('orders'));
     }
 
@@ -53,10 +54,10 @@ class OrderController extends Controller
             $endDate = Carbon::parse($endDate)->endOfDay();
             $orders_result->whereBetween('created_at', [$startDate, $endDate]);
         }
-        $orders = $orders_result->get();
+        $orders = $orders_result->with('orderBillingShippingDetails')->get();
         if(empty($orders))
         {
-            $orders = Order::get();
+            $orders = Order::with('orderBillingShippingDetails')->orderBy('id','desc')->paginate(10);
         }
         echo view('admin.orders.order_search',compact('orders'));
     }
@@ -154,6 +155,17 @@ class OrderController extends Controller
     public function updateOrder(Request $request)
      {
         Order::whereId($request->order_id)->update(["order_status"=>$request->order_status]);
+        $status = '';
+        if($request->order_status == "0") {
+          $status = "Processing";
+        }elseif($request->order_status == "1"){
+          $status = "Completed";
+        }elseif($request->order_status == "2"){
+          $status = "Cancelled";
+        }elseif($request->order_status == "3"){
+          $status = "Refunded";
+        }
+        Session::flash('success', 'Order '.$status .' successfully');
      }
 
     public function refundOrder($order_id)
