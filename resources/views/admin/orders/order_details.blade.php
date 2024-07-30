@@ -125,7 +125,8 @@
           </thead>
           <tbody>
             @foreach ($orderDetail->orderDetails as $key => $item)
-            <?php $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+            <?php 
+              $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
               $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
               
               $photo_product_desc = '';
@@ -139,97 +140,96 @@
               }
             ?>
             <tr>
-              <td class="center order-img" data-title="image">
-                              
-                @php
-                    $image1 = '';
-                    $image2 = '';
-                    if(isset($product_detail->product_image)){
-                        $imageArray = explode(',', $product_detail->product_image);
-                        $image1 = $imageArray[0] ?? '';
-                        $image2 = $imageArray[1] ?? '';
-                    }
-                @endphp
+                <td class="center order-img" data-title="image">
+                                
+                  @php
+                      $image1 = '';
+                      $image2 = '';
+                      if(isset($product_detail->product_image)){
+                          $imageArray = explode(',', $product_detail->product_image);
+                          $image1 = $imageArray[0] ?? '';
+                          $image2 = $imageArray[1] ?? '';
+                      }
+                  @endphp
 
-                <img src="
-                    @if($item->product_type == 'gift_card')
-                        {{ asset($product_detail->product_image) }}
-                    @elseif($item->product_type == 'photo_for_sale')
+                  <img src="
+                      @if($item->product_type == 'gift_card')
+                          {{ asset($product_detail->product_image) }}
+                      @elseif($item->product_type == 'photo_for_sale')
 
-                        {{ asset($image1) }}
+                          {{ asset($image1) }}
 
-                    @elseif($item->product_type == 'hand_craft')
+                      @elseif($item->product_type == 'hand_craft')
 
-                         {{ asset($image1) }}
+                          {{ asset($image1) }}
 
-                    @else
-                        {{ asset($item->selected_images) }}
-                    @endif
-                " alt="">
-              
-              </td>
-              <td class="strong order_page_td">
-                <a href="#">
-                    @if($item->product_type == "gift_card")
-                        {{ $product_detail->product_title }}
-                        <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
-                    @elseif($item->product_type == "photo_for_sale")
-                        {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
-                    @elseif($item->product_type == "hand_craft")  
-                        {{ $product_detail->product_title ?? '' }}  
-                    @else
-                        {{ $item->product->product_title ?? ''}}
-                    @endif
-                </a>
+                      @else
+                          {{ asset($item->selected_images) }}
+                      @endif
+                  " alt="">
                 
-                <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
-                <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
+                </td>
+                <td class="strong order_page_td">
+                  <a href="#">
+                      @if($item->product_type == "gift_card")
+                          {{ $product_detail->product_title }}
+                          <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
+                      @elseif($item->product_type == "photo_for_sale")
+                          {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                      @elseif($item->product_type == "hand_craft")  
+                          {{ $product_detail->product_title ?? '' }}  
+                      @else
+                          {{ $item->product->product_title ?? ''}}
+                      @endif
+                  </a>
+                  
+                  <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
+                  <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
 
-                <a href="{{ asset($item->selected_images) }}" download>Download image</a>
-            </td>
+                  <a href="{{ asset($item->selected_images) }}" download>Download image</a>
+              </td>
 
 
-            <td class="right order_page_td" data-title="price">
-                <span class="">
-                    <bdi>
-                        <span>$</span>
-                    @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
-                        {{ number_format($item->product_price, 2) }}
-                    @else
-                        {{ number_format($product_detail->product_price, 2) }}
-                    @endif
-                    </bdi>
-                </span>
-            </td>
-            <td>
-                @php
-                $sale_status = "";
-                  if(isset($item->sale_on) && !empty($item->sale_on)){
-                    $sale_status = 'On';
-                    $sale_price = $item->sale_price;
-                  }else{
-                    $sale_status = 'Off';
-                    $sale_price = '-';
-                  }
-                @endphp
+              <td class="right order_page_td" data-title="price">
+                  <span class="">
+                      <bdi>
+                          <span>$</span>
+                      @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                          {{ number_format($item->product_price, 2) }}
+                      @else
+                          {{ number_format($product_detail->product_price, 2) }}
+                      @endif
+                      </bdi>
+                  </span>
+              </td>
+              <td>
+                  @php
+                  $sale_status = "";
+                  $sale_price = "";
+                    if(isset($item->sale_on) && !empty($item->sale_on)){
+                      $sale_status = 'On';
+                      $sale_price = $item->sale_price;
+                    }else{
+                      $sale_status = 'Off';
+                      $sale_price = '-';
+                    }
+                  @endphp
 
-                {{$sale_status}}
+                  {{$sale_status}}
 
-            </td>
-            <td>{{$sale_price}}</td>
+              </td>
+              <td>{{$sale_price}}</td>
 
               <td class="center order_page_td" data-title="qty">{{ $item->quantity }}</td>
               <td class="right order_page_td" data-title="total">$ 
-            @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
-                {{ number_format($item->quantity * $item->product_price, 2) }}
-            @else
+                  @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                      {{ number_format($item->quantity * $item->product_price, 2) }}
+                  @else
 
-                {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
-                
-            @endif</td>
-
-            
-          
+                      {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
+                      
+                  @endif
+              </td>
             </tr>
 
             @endforeach
@@ -314,6 +314,7 @@
         },
         function(data){
            console.log(data);
+           location.reload();
         });
      })
 

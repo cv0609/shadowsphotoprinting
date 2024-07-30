@@ -32,6 +32,9 @@
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="{{ asset($product['product_image']) }}" alt="Image">
+                            @if(isset($product_sale_price) && !empty($product_sale_price))
+                             <p class="sale_product">sale</p>
+                            @endif
                         </div>
                         <div class="Product_info">
                             <h3>{{ $product['product_title'] }}
