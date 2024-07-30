@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="serach-bar-range">
-                    <input type="text" name="search" id="order-search" placeholder="search by order number">
+                    <input type="text" name="search" id="order-search" placeholder="search by order number"><span><i class="fa fa-search"></i></span>
                 </div>
             </div>
         </div>
@@ -41,22 +41,25 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Order Number</th>
-                                    <th>Total</th>
+                                    <th>Username</th>
+                                    <th>Date</th>
                                     <th>Status</th>
                                     <th>Billing</th>
                                     <th>Ship to</th>
-                                    <th>Created At</th>
+                                    <th>Total</th>
                                     <th>Download zip</th>
                                 </tr>
                             </thead>
                             <tbody id="main-tbody">
                                 @foreach ($orders as $key => $order)
-                                <tr>
+
+                                  <tr>
                                     <td data-title="s_no">{{ $key + 1 }}</td>
                                     <td data-title="order-number"> <a
                                             href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
                                     </td>
-                                    <td data-title="total">{{ $order->total }}</td>
+                                    <td>{{ $order->orderBillingShippingDetails->username ?? ''}}</td>
+                                    <td data-title="created-at">{{ date('M d, Y',strtotime($order->created_at)) }}</td>
 
                                     <td class="status_td" data-title="status"> 
                                         <p class="@if($order->order_status == 0) alert alert-primary @elseif($order->order_status == 1) alert alert-info @elseif($order->order_status == 2) alert alert-danger @elseif($order->order_status == 3) alert alert-warning @endif"> @if($order->order_status == 0) Prcessing @elseif($order->order_status == 1) Completed @elseif($order->order_status == 2) Cancelled @elseif($order->order_status == 3) Refunded @endif</p>
@@ -149,16 +152,18 @@
                                     </td>
                                     
 
-
-                                    <td data-title="created-at">{{ date('d-m-Y h:i:d',strtotime($order->created_at)) }}</td>
+                                    <td data-title="total">{{ $order->total }}</td>
+                                    
                                     <td data-title="zip">
                                         <a href="{{ route('download-order-zip', ['order_id' => $order->id]) }}" data-id="{{$order->id}}" class="order-zip">order_{{$order->order_number}}.zip</a>
                                     </td>
                                 </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
+
+                        {{ $orders->links('pagination::bootstrap-4') }}
+
                     </div>
                 </div>
             </div>
@@ -169,6 +174,12 @@
 @section('custom-script')
 <script>
     $(function () {
+
+        $('.fa-search').on('click', function() {
+            $('#order-search').focus();
+        });
+
+
         $('input[name="datetimes"]').daterangepicker({
             timePicker: false,
             startDate: moment().startOf('hour'),
@@ -180,7 +191,9 @@
     });
 
     $('#order-search').on('keyup', function () {
+        
         let query = $('#order-search').val();
+        
         $.ajax({
             url: '{{ route("orders.search") }}',
             type: 'GET',
@@ -188,9 +201,13 @@
                 query: query,
             },
             success: function (data) {
-                console.log(data);
                 if (data) {
+                    $('.pagination').addClass('d-none');
                     $("#main-tbody").html(data);
+                    if(!query){
+                        console.log('yes');
+                        $('.pagination').removeClass('d-none');
+                    }
                 } else {
                     $("#main-tbody").html("<tr><td colspan='5'><p class='text-center'>No any data found!</p></td></tr>");
                 }
@@ -214,10 +231,10 @@
             success: function (data) {
                 console.log(data);
                 if (data) {
+                    $('.pagination').addClass('d-none');
                     $("#main-tbody").html(data);
                 } else {
                     $("#main-tbody").html("<tr><td colspan='5'><p class='text-center'>No any data found!</p></td></tr>");
-
                 }
             }
         });
