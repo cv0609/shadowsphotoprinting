@@ -16,6 +16,7 @@ use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
+use App\Mail\AdminNotifyOrder;
 use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
@@ -232,6 +233,7 @@ class PaymentController extends Controller
                 $orderDetail = $order->whereId($order->id)->with('orderDetails.product','orderBillingShippingDetails')->first();
 
                 Mail::to($order_address['email'])->send(new MakeOrder($orderDetail));
+                Mail::to(env('APP_MAIL'))->send(new AdminNotifyOrder($orderDetail));
             }
 
             Session::forget(['order_address', 'coupon','billing_details']);
