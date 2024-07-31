@@ -46,7 +46,10 @@ class OrderController extends Controller
         $orders_result = Order::query();
 
         if ($searchTerm) {
-            $orders_result->where('order_number', 'LIKE', "%{$searchTerm}%");
+            $orders_result->where('order_number', 'LIKE', "%{$searchTerm}%")
+                        ->orWhereHas('orderBillingShippingDetails', function($query) use ($searchTerm) {
+                        $query->where('username', 'LIKE', "%{$searchTerm}%");
+            });
         }
 
         if (!empty($startDate) && !empty($endDate)) {

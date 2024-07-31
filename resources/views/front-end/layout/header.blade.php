@@ -20,7 +20,7 @@
                         <div class="magnifying">
                             <ul class="desk-trt">
                                 @if(Auth::check())
-                                <li class="dropdown"><a href="our-products.html" class="signup">MY ACCOUNT </a>
+                                <li class="dropdown"><a href="{{ route('dashboard') }}" class="signup">MY ACCOUNT </a>
                                     <ul class="sub-menu">
                                         <li>
                                             <div class="kt-woo-account-nav">
@@ -34,24 +34,24 @@
                                                 </div>
                                                 <div class="MyAccount-navigation">
                                                     <ul class="ashboard">
-                                                        <li class=""> <a href="my-account.html"
+                                                        <li class=""> <a href="{{ route('dashboard') }}"
                                                                 class="active">Dashboard <i
                                                                     class="fa-solid fa-gauge"></i></a> </li>
-                                                        <li class=""> <a href="orders.html">Orders<i
+                                                        <li class=""> <a href="{{ route('orders') }}">Orders<i
                                                                     class="fa-solid fa-bag-shopping"></i></a>
                                                         </li>
-                                                        <li class=""> <a href="downloads.html">Downloads <i
+                                                        <li class=""> <a href="{{ route('downloads') }}">Downloads <i
                                                                     class="fa-solid fa-download"></i></a> </li>
-                                                        <li class=""> <a href="edit-address.html">Addresses <i
+                                                        <li class=""> <a href="{{ route('address') }}">Addresses <i
                                                                     class="fa-solid fa-house"></i></a></li>
-                                                        <li class=""> <a href="payment-methods.html">Payment
+                                                        <li class=""> <a href="{{ route('payment-method') }}">Payment
                                                                 methods <i
                                                                     class="fa-solid fa-credit-card"></i></a>
                                                         </li>
-                                                        <li class=""> <a href="edit-account.html">Account
+                                                        <li class=""> <a href="{{ route('account-details') }}">Account
                                                                 details <i class="fa-solid fa-user"></i></a>
                                                         </li>
-                                                        <li class=""> <a href="wt-smart-coupon.html">My Coupons
+                                                        <li class=""> <a href="{{ route('my-coupons') }}">My Coupons
                                                                 <i class="fa-solid fa-credit-card"></i></a>
                                                         </li>
                                                         <li class=""><a href="{{ route('user-logout') }}">Log out <i

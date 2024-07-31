@@ -52,9 +52,11 @@
                         <div class="col-md-6 col-sm-6 ">
                             <input type="number" id="amount" value="{{ old('amount') }}" name="amount" required="required" class="form-control" step=".01">
                             @error('amount')
-                            <span class="text-danger">{{ $message }}</span>
-                           @enderror
-
+                             <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            @if(Session::has('percent_error'))
+                             <span class="text-danger">{{ Session::get('percent_error') }}</span>
+                            @endif
                         </div>
                     </div>
 

@@ -54,7 +54,11 @@
                             <input type="number" id="amount" name="amount" required="required" class="form-control" step=".01" value="{{ $coupon_detail->amount }}">
                             @error('amount')
                             <span class="text-danger">{{ $message }}</span>
-                           @enderror
+                            @enderror
+
+                            @if(Session::has('percent_error'))
+                             <span class="text-danger">{{ Session::get('percent_error') }}</span>
+                            @endif
 
                         </div>
                     </div>
