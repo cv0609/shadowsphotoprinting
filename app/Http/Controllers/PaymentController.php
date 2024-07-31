@@ -142,6 +142,7 @@ class PaymentController extends Controller
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
         $cart = '';
+       
         if(isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')){
             $orderNumber = Order::generateOrderNumber();
 
