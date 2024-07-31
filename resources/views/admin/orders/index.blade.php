@@ -182,12 +182,15 @@
 
         $('input[name="datetimes"]').daterangepicker({
             timePicker: false,
+            "showDropdowns": true,
+            "alwaysShowCalendars": false,
             startDate: moment().startOf('hour'),
             endDate: moment().startOf('hour').add(32, 'hour'),
             locale: {
                 format: 'M/DD hh:mm A'
             }
         });
+
     });
 
     $('#order-search').on('keyup', function () {
@@ -217,6 +220,7 @@
 
 
     $('#date-range-picker').on('apply.daterangepicker', function (ev, picker) {
+        $('.drp-calendar .right').css('display','none');
         let dateRange = $('#date-range-picker').data('daterangepicker');
         let startDate = dateRange.startDate.format('YYYY-MM-DD');
         let endDate = dateRange.endDate.format('YYYY-MM-DD');

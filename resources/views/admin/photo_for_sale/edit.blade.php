@@ -102,57 +102,10 @@
                     </div>
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                    {{-- @foreach ($SaleSizePricesGroupBy as $SaleSizePricesGroupB) --}}
 
                     <div class="size-and-type-wrap">
-                        {{-- <div class="size-and-type">
-                            <div class="size">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="size">Select size</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select name="size_arr[size][1][children][]" id="size_arr" multiple="multiple" class="multi_size">
-                                            <option value="">Select size</option>
-                                            @foreach($size as $val)
-                                              <option value="{{$val->id}}">{{$val->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="validation-error size_arr_error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="type">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="type">Select type</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select name="type_arr[type][1][children][]" id="type_arr" class="multi_type" multiple="multiple">
-                                            <option value="">Select type</option>
-                                            @foreach($size_type as $val)
-                                              <option value="{{$val->id}}">{{$val->name}}</option>
-                                            @endforeach
-                                          </select>
-                                          <span class="validation-error type_arr_error"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="selcet-price">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="price">select price</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="number" id="price" name="price_arr[price][1][children][]">
-                                        <span class="validation-error price_arr_error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
+                       
                     </div>
-                    {{-- @endforeach --}}
 
                     <div class="row read-more">
                         <div class="col-md-3"></div>
@@ -384,13 +337,11 @@
             const { productId, typeId, price, sizes_arr, sizeIds, types } = group;
         
             let sizeOptions = '<option value="">Select size</option>';
+            console.log(sizes,'sizes');
 
             sizes.forEach(size => {
-                console.log(size);
-                if (sizes_arr.includes(size.id)) {
-                    const selected = sizeIds.has(size.id) ? 'selected' : '';
-                    sizeOptions += `<option value="${size.id}" ${selected}>${size.name}</option>`;
-                }
+                const selected = sizeIds.has(size.id) ? 'selected' : '';
+                sizeOptions += `<option value="${size.id}" ${selected}>${size.name}</option>`;
             });
 
             // Generate type options

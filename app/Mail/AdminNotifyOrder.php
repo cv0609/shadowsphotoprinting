@@ -5,20 +5,20 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class QuoteMail extends Mailable
+class AdminNotifyOrder extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $quote;
+    public $order;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($quote)
+    public function __construct($order)
     {
-        $this->quote = $quote;
+        $this->order = $order;
     }
 
     /**
@@ -29,9 +29,10 @@ class QuoteMail extends Mailable
     public function build()
     {
         return $this->from(env('APP_MAIL'))
-            ->subject('Quote request')
-            ->view('mail.send-quote')
-            ->with('quote', $this->quote);
+            ->subject('Your ShadowsPhotoPrinting Order Confirmation')
+            ->view('mail.admin-notify-order')
+            ->with('order', $this->order);
+
     }
 }
 
