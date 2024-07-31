@@ -13,16 +13,30 @@
         <div class="decoding">
 
             @if(Session::has('temImages'))
-            @foreach($imageName as $temImages)
-            <div class="decoding-wrapper selected-images">
-                <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
 
-                <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}">
-                    <div id="unchecked-img" class="common_check"> <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid"></div>
-                    <div id="checked-img" class="d-none common_check"><img src="assets/images/active_image_tick.png" alt="" class="img-fluid"></div>
-                    <p class="title_image_p">{{ $temImages }}</p>
-            </div>
-            @endforeach
+                @php
+                    $counter = 1;
+                @endphp
+                @foreach($imageName as $temImages)
+                    <div class="decoding-wrapper selected-images">
+                        <a href="javascript:void(0)" class="product-img">
+                            <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
+                        </a>
+
+                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}" id="image-checkbox-{{ $counter }}">
+                        <div id="unchecked-img-{{ $counter }}" class="common_check unchecked-img" onclick="check_img({{ $counter }})">
+                            <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid">
+                        </div>
+                        <div id="checked-img-{{ $counter }}" class="d-none common_check checked-img" onclick="uncheck_img({{ $counter }})">
+                            <img src="assets/images/active_image_tick.png" alt="" class="img-fluid">
+                        </div>
+                        <p class="title_image_p">{{ $temImages }}</p>
+                    </div>
+                    @php
+                        $counter++;
+                    @endphp
+                @endforeach
+ 
             @endif
 
                 </div>
@@ -34,6 +48,20 @@
                 </div>
             </div>
         </section>
+
+
+        <div id="ImgViewer" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <img src="" alt="image" id="modal-img">
+                </div>
+              </div>
+            </div>
+        </div>
 
 
         <section class="fw-area">
@@ -119,16 +147,47 @@
 @endsection
 @section('scripts')
 <script>
+
+
+function check_img(counter) {
+    var $input = $("#image-checkbox-" + counter);
+    var $checkedImg = $("#checked-img-" + counter);
+    var $uncheckedImg = $("#unchecked-img-" + counter);
+
+    $input.val("1");
+    $checkedImg.removeClass('d-none');
+    $uncheckedImg.addClass('d-none');
+}
+
+function uncheck_img(counter) {
+    var $input = $("#image-checkbox-" + counter);
+    var $checkedImg = $("#checked-img-" + counter);
+    var $uncheckedImg = $("#unchecked-img-" + counter);
+
+    $input.val("0");
+    $checkedImg.addClass('d-none');
+    $uncheckedImg.removeClass('d-none');
+}
+
+
 $(document).ready(function() {
     // Event delegation for dynamically added elements
     $(document).on('keyup change', "input[name=quantity]", function() {
         updateCartTotals();
     });
 
+    $(".product-img").on('click',function(){
+        $("#modal-img").attr('src',$(this).children('img').attr('src'));
+        $("#ImgViewer").modal('show');
+    });
+
+    $("#modal-close").on('click',function(){
+        $("#ImgViewer").modal('hide');
+    })
+
     // Event listener for "Add to Cart" button
     $("#add-to-cart").on('click', function(event) {
         event.preventDefault(); // Prevent default action
-
 
         let cartItems = [];
         let total = 0;
@@ -240,21 +299,6 @@ $(document).ready(function() {
     });
  })
 
- $(".selected-images").on('click',function(){
-    if($(this).children("input[name='selected-image[]']").val() == "0")
-    {
-        $(this).children("input[name='selected-image[]']").val("1");
-        $(this).children("#checked-img").removeClass('d-none');
-        $(this).children("#unchecked-img").addClass('d-none');
-    }
-    else if($(this).children("input[name='selected-image[]']").val() == "1")
-    {
-        $(this).children("input[name='selected-image[]']").val("0");
-        $(this).children("#checked-img").addClass('d-none');
-        $(this).children("#unchecked-img").removeClass('d-none');
-    }
- })
-
 </script>
 <script>
     $(document).ready(function() {
@@ -262,8 +306,8 @@ $(document).ready(function() {
             $('input[name="selected-image[]"]').each(function() {
                 $(this).prop('checked', true);
                 $(this).val("1");
-                $(this).siblings('#unchecked-img').addClass('d-none');
-                $(this).siblings('#checked-img').removeClass('d-none');
+                $(this).siblings('.unchecked-img').addClass('d-none');
+                $(this).siblings('.checked-img').removeClass('d-none');
             });;
         });
 
@@ -271,21 +315,9 @@ $(document).ready(function() {
             $('.selected-images input[type="checkbox"]').each(function() {
                 $(this).prop('checked', false);
                 $(this).val("0");
-                $(this).nextAll('#checked-img').addClass('d-none');
-                $(this).nextAll('#unchecked-img').removeClass('d-none');
+                $(this).nextAll('.checked-img').addClass('d-none');
+                $(this).nextAll('.unchecked-img').removeClass('d-none');
             });
-        });
-
-        $('.selected-images').click(function() {
-            let checkbox = $(this).find('input[type="checkbox"]');
-            checkbox.prop('checked', !checkbox.prop('checked'));
-            if (checkbox.prop('checked')) {
-                $(this).find('#unchecked-img').addClass('d-none');
-                $(this).find('#checked-img').removeClass('d-none');
-            } else {
-                $(this).find('#checked-img').addClass('d-none');
-                $(this).find('#unchecked-img').removeClass('d-none');
-            }
         });
     });
 </script>

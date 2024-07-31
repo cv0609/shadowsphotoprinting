@@ -9,7 +9,7 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ url('shop') }}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
-                <span>images</span>
+                <span><a href="{{ url('our-products/hand-craft') }}">images</a></span>
             </div>
         </div>
     </div>

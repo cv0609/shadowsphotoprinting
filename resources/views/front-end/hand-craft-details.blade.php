@@ -5,11 +5,11 @@
     <div class="adbreadcrumbs never">
         <div class="container">
             <div class="breadcrumbs-wrapper">
-                <span><a href="index.html">Home</a></span>
+                <span><a href="{{ url('/') }}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="order-prints.html">Order prints</a></span>
+                <span><a href="{{ url('shop') }}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="order-prints.html">images</a></span>
+                <span><a href="{{ url('our-products/hand-craft') }}">images</a></span>
                 <span class="bc-delimiter">»</span>
                 <span>A PLATYPUS DOWN UNDER</span>
             </div>
