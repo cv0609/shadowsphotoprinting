@@ -242,10 +242,7 @@
           </tbody>
         </table>
       </div>
-      <div class=" order_calculations_row">
-        {{-- <div class="col-lg-4 col-sm-5">
-        </div>
-        <div class="col-lg-4 col-sm-5"></div> --}} 
+      {{-- <div class=" order_calculations_row">
         <div class="col-lg-4 col-sm-5 ml-auto">
           <table class="table table-clear">
             <tbody>
@@ -282,7 +279,58 @@
           </table>
         </div>
 
-      </div>
+      </div> --}}
+
+      <div class="zaya">
+        <table style=" border-collapse: collapse;  padding: 20px; width: 100%; max-width: 387px;">
+           <table class="wc-order-totals">
+            <tr>
+                <td style="padding: 5px;">Items Subtotal:</td>
+                <td style="text-align: right; padding: 5px;"><strong>$37.00</strong></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;">Shipping:</td>
+                <td style="text-align: right; padding: 5px;"><strong>$20.00</strong></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;">Order Total:</td>
+                <td style="text-align: right; padding: 5px;"><strong>$57.00</strong></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-bottom: 1px solid #ccc; padding: 5px;"></td>
+            </tr>
+           </table>
+           <div class="clear"></div>
+            <table class="wc-order-totals">
+                <tr>
+                    <td style="padding: 5px;"><strong>Paid:</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>$57.00</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="" style="padding: 5px;">July 23, 2024 via Credit Card (Stripe)</td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="clear"></div>
+            <table class="wc-order-totals">
+                <tr>
+                    <td style="padding: 5px;"> <i class="fa fa-question-circle" aria-hidden="true"></i>
+                        Stripe Fee:</td>
+                    <td style="text-align: right; padding: 5px;"><strong>-$1.27</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px;"><i class="fa fa-question-circle" aria-hidden="true"></i> Stripe Payout:
+                    </td>
+                    <td style="text-align: right; padding: 5px;"><strong>$55.73</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px;">Total cart count:</td>
+                    <td style="text-align: right; padding: 5px;"><strong>20</strong></td>
+                </tr>
+            </table>
+            <div class="clear"></div>
+        </table>
+    </div>
 
       </div>
 

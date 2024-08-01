@@ -442,3 +442,72 @@ td.shipping_address {
     font-size: 14px;
     cursor: pointer;
 }
+
+.zaya {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 1.5em 2em;
+    line-height: 2em;
+    text-align: right;
+}
+
+.zaya table tr td {
+    width: 50%;
+}
+.clear{
+    clear: both;
+}
+
+.zaya table.wc-order-totals {
+    float: right;
+    width: 50%;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    line-height: 21px;
+}
+/* Show the tooltip text when hovering over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Optional: Style for the FontAwesome icons */
+.tooltip i {
+    font-size: 1.2em; /* Adjust size as needed */
+    color: #000; /* Change color as needed */
+}
+span.tooltip i:hover {
+    cursor: help;
+}
+table.wc-order-totals tr td {
+    color: #3c434a;
+}
+table.wc-order-totals tr td strong{
+    font-weight: bold;
+}
+
+
+
