@@ -8,23 +8,7 @@
     <div class="container">
         <div class="account-wrapper">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="kad-account">
-                        <div class="kad-max">
-                            <img src="images/max.png" alt>
-                            <a href="#" class="kt-link-to-gravatar">
-                                <i
-                                    class="fa-solid fa-cloud-arrow-up"></i>
-                                <span
-                                    class="kt-profile-photo-text">Update
-                                    Profile Photo </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="MyAccount-navigation">
-                        @include('front-end.component.account-sidebar')
-                    </div>
-                </div>
+                @include('front-end.profile.component.account-sidebar')
                 <div class="col-md-9">
                     <div class="pangas-can">
                         <div class="endpointtitle">
@@ -130,31 +114,65 @@
                                     <tfoot>
                                         <tr>
                                             <th>Subtotal:</th>
-                                            <td> <span>$0.00</span>
+                                            <td> <span>${{ $orders->sub_total ?? 0 }}</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>Total:</th>
-                                            <td>$0.00</td>
+                                            <td>${{ $orders->total ?? 0 }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
-
                             </div>
 
-                            <div class="customer-details">
-                                <h2>Billing address</h2>
-                                <address>
-                                    <span> developer dev</span>
-                                    <span> test</span>
-                                    <span> 7 Edward Bennett
-                                        Drive</span>
-                                    <span> gg</span>
-                                    <span> Pendle Hill New South
-                                        Wales 2145
-                                    </span>
-                                    <p>devavology12@gmail.com</p>
-                                </address>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="customer-details">
+                                        <h2>Billing address</h2>
+
+                                        <address>
+                                            <span>  {{$orders->orderBillingShippingDetails->fname ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->lname ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->postcode ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->street1 ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->street2 ?? ''}}</span>
+
+                                            <span> {{$orders->orderBillingShippingDetails->phone ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->suburb ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->state ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->company_name ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->country_region ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->order_comments ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->order_comments ?? ''}}</span>
+
+
+                                            <p>{{$orders->orderBillingShippingDetails->email ?? ''}}</p>
+                                        </address>
+                                    </div>
+                                </div>
+
+                                @if($orders->orderBillingShippingDetails->isShippingAddress == 1)
+
+                                <div class="col-lg-6">
+                                    <div class="customer-details">
+                                        <h2>Shipping address
+                                        </h2>
+                                        <address>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_fname ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_lname ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_company ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_street1 ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_street2 ?? ''}}</span>
+                                            
+                                            <span> {{$orders->orderBillingShippingDetails->ship_suburb ?? ''}}</span>
+                                            <span>  {{$orders->orderBillingShippingDetails->ship_state ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_postcode ?? ''}}</span>
+                                            <span> {{$orders->orderBillingShippingDetails->ship_country_region ?? ''}}</span>
+                                        </address>
+                                    </div>
+                                </div>
+
+                                @endif
                             </div>
 
                         </div>

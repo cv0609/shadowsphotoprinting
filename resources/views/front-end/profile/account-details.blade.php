@@ -9,26 +9,13 @@
     <div class="container">
         <div class="account-wrapper">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="kad-account">
-                        <div class="kad-max">
-                            <img src="images/max.png" alt="">
-                            <a href="#" class="kt-link-to-gravatar">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                <span class="kt-profile-photo-text">Update Profile Photo </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="MyAccount-navigation">
-                        @include('front-end.component.account-sidebar')
-                    </div>
-                </div>
+                @include('front-end.profile.component.account-sidebar')
                 <div class="col-md-9">
                     <div class="pangas-can">
                         <div class="endpointtitle">
                             <h2>Account details </h2>
                             <div class="notices-wrapper">
-                                <form action="" class="account-details">
+                                <form action="" class="account-details input-color">
                                     <div class="fields__field-wrapper">
                                         <div class="fields-inner">
                                             <div class="row">
