@@ -21,20 +21,22 @@
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>First name * </label>
-                                            <input type="text" name="name" id="fname" placeholder="John">
+
+                                            <input type="text" name="name" value="{{ isset($user_address) && !empty($user_address->fname) ? $user_address->fname : '' }}" id="fname" placeholder="John">
+
                                         </p>
                                     </div>
                                     <div class="col-lg-6">
                                         <p class="form-row">
                                             <label>Last name *
                                             </label>
-                                            <input type="text" name="lname" id="lname" placeholder="Smith">
+                                            <input type="text" name="lname" id="lname" value="{{ isset($user_address) && !empty($user_address->lname) ? $user_address->lname : '' }}" placeholder="Smith">
                                         </p>
                                     </div>
                                 </div>
                                 <p class="form-row">
                                     <label>Company name (optional) </label>
-                                    <input type="text" name="company_name" id="company_name" placeholder="Example">
+                                    <input type="text" name="company_name" id="company_name" value="{{ isset($user_address) && !empty($user_address->company_name) ? $user_address->company_name : '' }}" placeholder="Example">
                                 </p>
                                 <p class="form-row">
                                     <label>Country / Region *
@@ -45,47 +47,62 @@
                                     <label> Street address *
                                     </label>
                                     <input type="text" name="street1" id="street1"
-                                        placeholder="House number and street name ">
+                                        placeholder="House number and street name" value="{{ isset($user_address) && !empty($user_address->street1) ? $user_address->street1 : '' }}">
                                     <input type="text" name="street2" id="street2"
-                                        placeholder="Apartment, suite, unit, etc. (optional) ">
+                                        placeholder="Apartment, suite, unit, etc. (optional)" value="{{ isset($user_address) && !empty($user_address->street2) ? $user_address->street2 : '' }}">
                                 </p>
                                 <p class="form-row">
                                     <label> Suburb * </label>
-                                    <input type="text" name="suburb" id="suburb" placeholder="">
+                                    <input type="text" name="suburb" id="suburb" placeholder="" value="{{ isset($user_address) && !empty($user_address->suburb) ? $user_address->suburb : '' }}">
                                 </p>
+
                                 <p class="form-row">
-                                    <select class="form-control" id="state" name="state" >
+                                    @php
+                                        $address_state = '';
+                                        $ship_address_state = '';
+                                        if (isset($user_address) && !empty($user_address->state)) {
+                                            $address_state = $user_address->state;
+                                        }
+
+                                        if (isset($user_address) && !empty($user_address->ship_state)) {
+                                            $ship_address_state = $user_address->ship_state;
+                                        }
+
+
+                                    @endphp
+                                
+                                    <select class="form-control" id="state" name="state">
                                         <option value="">State</option>
                                         @foreach ($countries->states as $state)
-                                          <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                            <option value="{{ $state->id }}" {{ $address_state == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                                         @endforeach
-
                                     </select>
                                 </p>
+                                
                                 <p class="form-row">
                                     <label> Postcode *
                                     </label>
-                                    <input type="number" name="postcode" id="postcode">
+                                    <input type="number" name="postcode" id="postcode" value="{{ isset($user_address) && !empty($user_address->postcode) ? $user_address->postcode : '' }}">
                                 </p>
                                 <p class="form-row">
                                     <label> Phone (optional)
                                     </label>
-                                    <input type="number" name="phone" id="phone">
+                                    <input type="number" name="phone" id="phone" value="{{ isset($user_address) && !empty($user_address->phone) ? $user_address->phone : '' }}">
                                 </p>
                                 <p class="form-row">
                                     <label> Email address *
                                     </label>
-                                    <input type="email" name="email" id="email">
+                                    <input type="email" name="email" id="email" value="{{ isset($user_address) && !empty($user_address->email) ? $user_address->email : '' }}">
                                 </p>
                                 @if(!Auth::check())
                                     <p class="form-row">
                                         <label> Account username * </label>
-                                        <input type="text" name="username" id="username" placeholder="Username">
+                                        <input type="text" name="username" id="username" placeholder="Username" value="{{ isset($user_address) && !empty($user_address->username) ? $user_address->username : '' }}">
                                     </p>
                                     <p class="form-row">
                                         <label> Create account password *
                                         </label>
-                                        <input type="password" name="password" id="password" placeholder="Password">
+                                        <input type="password" name="password" id="password" placeholder="Password" value="{{ isset($user_address) && !empty($user_address->password) ? $user_address->password : '' }}">
                                     </p>
                                 @endif
 
@@ -104,20 +121,20 @@
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>First name * </label>
-                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="john">
+                                                        <input type="text" name="ship_fname" id="ship_fname" placeholder="john" value="{{ isset($user_address) && !empty($user_address->ship_fname) ? $user_address->ship_fname : '' }}">
                                                     </p>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <p class="form-row">
                                                         <label>Last name *
                                                         </label>
-                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="Smith">
+                                                        <input type="text" name="ship_lname" id="ship_lname" placeholder="Smith" value="{{ isset($user_address) && !empty($user_address->ship_lname) ? $user_address->ship_lname : '' }}">
                                                     </p>
                                                 </div>
                                             </div>
                                             <p class="form-row">
                                                 <label>Company name (optional) </label>
-                                                <input type="text" name="ship_company" id="ship_company" placeholder="Example">
+                                                <input type="text" name="ship_company" id="ship_company" placeholder="Example" value="{{ isset($user_address) && !empty($user_address->ship_company) ? $user_address->ship_company : '' }}">
                                             </p>
                                             <p class="form-row">
                                                 <label>Country / Region *
@@ -128,19 +145,21 @@
                                                 <label> Street address *
                                                 </label>
                                                 <input type="text" name="ship_street1"
-                                                    placeholder="House number and street name " id="ship_street1">
+                                                    placeholder="House number and street name " id="ship_street1" value="{{ isset($user_address) && !empty($user_address->ship_street1) ? $user_address->ship_street1 : '' }}">
                                                 <input type="text" name="ship_street2"
-                                                    placeholder="Apartment, suite, unit, etc. (optional) " id="ship_street2">
+                                                    placeholder="Apartment, suite, unit, etc. (optional) " id="ship_street2" value="{{ isset($user_address) && !empty($user_address->ship_street2) ? $user_address->ship_street2 : '' }}">
                                             </p>
                                             <p class="form-row">
                                                 <label> Suburb * </label>
-                                                <input type="text" name="ship_suburb" placeholder="" id="ship_suburb">
+                                                <input type="text" name="ship_suburb" placeholder="" id="ship_suburb" value="{{ isset($user_address) && !empty($user_address->ship_suburb) ? $user_address->ship_suburb : '' }}">
                                             </p>
+
+
                                             <p class="form-row">
                                                 <select class="form-control" id="ship_state" name="ship_state" >
                                                     <option value="">State</option>
                                                     @foreach ($countries->states as $state)
-                                                      <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                                      <option value="{{ $state->id }}" {{ $ship_address_state == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                                                     @endforeach
 
                                                 </select>
@@ -149,7 +168,7 @@
                                             <p class="form-row">
                                                 <label> Postcode *
                                                 </label>
-                                                <input type="number" name="ship_postcode" id="ship_postcode">
+                                                <input type="number" name="ship_postcode" id="ship_postcode" value="{{ isset($user_address) && !empty($user_address->ship_postcode) ? $user_address->ship_postcode : '' }}">
                                             </p>
 
 

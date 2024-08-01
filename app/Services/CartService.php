@@ -11,6 +11,7 @@ use App\Models\GiftCardCategory;
 use App\Models\product_sale;
 use App\Models\PhotoForSaleProduct;
 use App\Models\HandCraftProduct;
+use App\Models\UserDetails;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
@@ -240,5 +241,14 @@ class CartService
                 'discount_amount' => $amount,
             ]);
         }
-     }
+    }
+
+    public function checkAuthUserAddress(){
+        $user_details = UserDetails::where('user_id',Auth::user()->id)->first();
+        if(isset($user_details) && !empty($user_details)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

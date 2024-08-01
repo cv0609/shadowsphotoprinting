@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="serach-bar-range">
-                    <input type="text" name="search" id="order-search" placeholder="search by order number"><span><i class="fa fa-search"></i></span>
+                    <input type="text" name="search" id="order-search" placeholder="Search by Order number/username"><span><i class="fa fa-search"></i></span>
                 </div>
             </div>
         </div>

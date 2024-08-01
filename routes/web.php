@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\VariationsController;
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\admin\ShippingController;
@@ -94,18 +95,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/hand-craft-categories-show/{category_id}',[HandCraftController::class,'productCategoryShow'])->name('hand-craft-categories-show');
         Route::delete('/hand-craft-categories-delete/{category_id}',[HandCraftController::class,'productCategoryDistroy'])->name('hand-craft-categories-delete');
 
-
-        // Route::post('/hand-craft-categories-save',[HandCraftController::class,'productCategorySave'])->name('hand-craft-categories-save');
-
-        // Route::get('/hand-craft-categories-add',[HandCraftController::class,'productCategoryAdd'])->name(hand-craft-categories-add');
-        // Route::post('/photos-for-sale-categories-save',[PhotoForSaleController::class,'productCategorySave'])->name('photos-for-sale-categories-save');
-        // Route::get('/photos-for-sale-categories-show/{category_id}',[PhotoForSaleController::class,'productCategoryShow'])->name('photos-for-sale-categories-show');
-        // Route::post('/photos-for-sale-categories-update',[PhotoForSaleController::class,'productCategoryUpdate'])->name('photos-for-sale-categories-update');
-        // Route::delete('/photos-for-sale-categories-delete/{category_id}',[PhotoForSaleController::class,'productCategoryDistroy'])->name('photos-for-sale-categories-delete');
-
-
-
-
         Route::get('/coupons',[CouponController::class,'coupons'])->name('coupons-list');
         Route::get('/coupon-add',[CouponController::class,'couponAdd'])->name('coupon-add');
         Route::post('/coupon-save',[CouponController::class,'couponSave'])->name('coupon-save');
@@ -174,6 +163,20 @@ Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
 Route::get('/thank-you/{order_id}', [PaymentController::class,'thankyou'])->name('thankyou');
 
+Route::middleware(['myAccount'])->group(function () {
+    Route::get('/my-account', [MyAccountController::class, 'dashboard'])->name('dashboard');
+    Route::get('/my-account/orders', [MyAccountController::class, 'orders'])->name('orders');
+    Route::get('/my-account/downloads', [MyAccountController::class, 'downloads'])->name('downloads');
+    Route::get('/my-account/address', [MyAccountController::class, 'address'])->name('address');
+    Route::get('/my-account/payment-method', [MyAccountController::class, 'payment_method'])->name('payment-method');
+    Route::get('/my-account/account-details', [MyAccountController::class, 'account_details'])->name('account-details');
+    Route::get('/my-account/my-coupons', [MyAccountController::class, 'my_coupons'])->name('my-coupons');
+    Route::get('/my-account/view-order/{order_id}', [MyAccountController::class, 'view_order'])->name('view-order');
+    Route::get('/my-account/add-address', [MyAccountController::class, 'addAddress'])->name('add-address');
+    Route::post('/my-account/save-address', [MyAccountController::class, 'saveAddress'])->name('save-address');
+    Route::get('/my-account/edit-address/{slug}', [MyAccountController::class, 'editAddress'])->name('edit-address');
+    Route::post('/my-account/edit-save-address', [MyAccountController::class, 'editSaveAddress'])->name('edit-save-address');
+});
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

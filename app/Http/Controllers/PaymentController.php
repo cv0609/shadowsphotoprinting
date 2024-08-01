@@ -17,6 +17,7 @@ use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
 use App\Mail\AdminNotifyOrder;
+use App\Models\UserDetails;
 use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
@@ -33,10 +34,11 @@ class PaymentController extends Controller
 
     public function checkout()
      {
-
+        $user_address = '';
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            $user_address = UserDetails::where('user_id',$auth_id)->first();
         }else{
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
@@ -48,7 +50,7 @@ class PaymentController extends Controller
 
         $page_content = ["meta_title"=>config('constant.pages_meta.checkout.meta_title'),"meta_description"=>config('constant.pages_meta.checkout.meta_description')]; 
 
-        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content'));
+        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content','user_address'));
      }
 
     public function createCustomer(Request $request)
@@ -220,7 +222,19 @@ class PaymentController extends Controller
             }
 
             if(Session::has('order_address')){
+
                 $order_address = Session::get('order_address');
+
+                if (Auth::check() && !empty(Auth::user())) {
+                    $auth_id = Auth::user()->id;
+                    $user_details = UserDetails::where('user_id',$auth_id)->first();
+                    if (!$user_details) {
+                        $order_address['user_id'] = $auth_id;
+                        UserDetails::create($order_address);
+                        unset($order_address['user_id']);
+                    }
+                }
+
                 $order_address['order_id'] = $order->id;
                 OrderBillingDetails::create($order_address);
             }
