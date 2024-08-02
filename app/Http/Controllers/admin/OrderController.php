@@ -54,6 +54,7 @@ class OrderController extends Controller
     public function search(Request $request)
     {
         $searchTerm  = $request->input('query');
+       
         $startDate = ($request->input('start_date')) ? $request->input('start_date') : "";
         $endDate = ($request->input('end_date')) ? $request->input('end_date') : "";
         $orders_result = Order::query();
@@ -61,7 +62,7 @@ class OrderController extends Controller
         if ($searchTerm) {
             $orders_result->where('order_number', 'LIKE', "%{$searchTerm}%")
                         ->orWhereHas('orderBillingShippingDetails', function($query) use ($searchTerm) {
-                        $query->where('username', 'LIKE', "%{$searchTerm}%");
+                        $query->where('fname', 'LIKE', "%{$searchTerm}%");
             });
         }
 
@@ -71,6 +72,7 @@ class OrderController extends Controller
             $orders_result->whereBetween('created_at', [$startDate, $endDate]);
         }
         $orders = $orders_result->with('orderBillingShippingDetails')->get();
+    
         if(empty($orders))
         {
             $orders = Order::with('orderBillingShippingDetails')->orderBy('id','desc')->paginate(10);
