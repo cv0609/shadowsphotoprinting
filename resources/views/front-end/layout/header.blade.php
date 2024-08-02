@@ -26,10 +26,10 @@
                                             <div class="kt-woo-account-nav">
                                                 <div class="kad-account-avatar">
                                                     <div class="kad-customer-image">
-                                                        <img src="images/user.png" alt="user">
+                                                        <img src="{{asset('assets/images/profile-img.png')}}" alt="user">
                                                     </div>
                                                     <div class="kad-customer-name">
-                                                        <h5> Terri Pangas </h5>
+                                                        <h5> {{ Auth::user()->username ?? ''}} </h5>
                                                     </div>
                                                 </div>
                                                 <div class="MyAccount-navigation">

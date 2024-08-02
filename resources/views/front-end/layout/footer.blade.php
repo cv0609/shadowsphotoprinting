@@ -29,16 +29,16 @@
                                 <div class="woocommerce-form">
                                     <h2>Login</h2>
                                     <span class="text-danger" id="login-error"></span>
-                                    <form action="#" method="post">
+                                    <form action="#" method="post" class="input-color">
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Username or email address *</label>
-                                            <input type="text" name="name" id="login-name">
+                                            <input type="text" name="name" id="login-name" placeholder="Enter username">
                                             <span class="text-danger d-none error" id="login-name-error"></span>
 
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Password*</label>
-                                            <input type="text" name="password" id="login-password">
+                                            <input type="text" name="password" id="login-password" placeholder="Enter password">
                                             <span class="text-danger d-none error" id="login-email-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
@@ -60,21 +60,21 @@
                                 <div class="woocommerce-form">
                                     <h2>Register</h2>
                                     <span class="text-success" id="register-success"></span>
-                                    <form action="" method="post">
+                                    <form action="" method="post" class="input-color">
                                         @csrf
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Username *</label>
-                                            <input type="text" name="name" id="register-name">
+                                            <input type="text" name="name" id="register-name" placeholder="Enter usename">
                                             <span class="text-danger d-none error" id="register-name-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Email address *</label>
-                                            <input type="text" name="email" id="register-email">
+                                            <input type="text" name="email" id="register-email" placeholder="Enter email address">
                                             <span class="text-danger d-none error" id="register-email-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Password *</label>
-                                            <input type="password" name="password" id="register-password">
+                                            <input type="password" name="password" id="register-password" placeholder="Enter password">
                                             <span class="text-danger d-none error" id="register-password-error"></span>
                                         </div>
 

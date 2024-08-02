@@ -176,6 +176,7 @@ Route::middleware(['myAccount'])->group(function () {
     Route::post('/my-account/save-address', [MyAccountController::class, 'saveAddress'])->name('save-address');
     Route::get('/my-account/edit-address/{slug}', [MyAccountController::class, 'editAddress'])->name('edit-address');
     Route::post('/my-account/edit-save-address', [MyAccountController::class, 'editSaveAddress'])->name('edit-save-address');
+    Route::post('/my-account/account-details-save', [MyAccountController::class, 'saveAccountDetails'])->name('account-details-save');
 });
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
