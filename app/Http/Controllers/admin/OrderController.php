@@ -33,9 +33,22 @@ class OrderController extends Controller
 
     public function orderDetail($orderNumber)
     {
-      $orderDetail = Order::where(['order_number'=>$orderNumber])->with('orderDetails','orderBillingShippingDetails')->first();
-      $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
-      return view('admin.orders.order_details',compact('orderDetail','OrderTotal'));
+        $orderDetail = Order::where('order_number', $orderNumber)
+        ->with(['orderDetails', 'orderBillingShippingDetails'])
+        ->withCount('orderDetails')
+        ->first();
+       
+        $stripe = $this->StripeService->retrivePaymentDetails($orderDetail->payment_id);
+
+        $stripe_fee = 0;
+
+        if(isset($stripe) && !empty($stripe)){
+            $stripe_fee = floatval($stripe->fee) / 100;
+        }
+
+        $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
+        
+        return view('admin.orders.order_details',compact('orderDetail','OrderTotal','stripe_fee'));
     }
 
     public function search(Request $request)

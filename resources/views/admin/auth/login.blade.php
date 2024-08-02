@@ -35,7 +35,7 @@
                 </a>
             </div>
           <section class="login_content">
-            <form action="{{ route('admin.login.post') }}" method="POST">
+            <form action="{{ route('admin.login.post') }}" method="POST" class="input-color">
               @csrf
               <h1>Login Form</h1>
               @if(Session::has('error'))

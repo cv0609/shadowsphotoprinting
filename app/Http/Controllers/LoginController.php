@@ -23,7 +23,7 @@ class LoginController extends Controller
             ], 422);
         }
         $hashedPassword = Hash::make($request->password);
-        User::insert(['name'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
+        User::insert(['username'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
         return response()->json([
             'status' => 'success',
             'message' => 'User registered successfully!'

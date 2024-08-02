@@ -7,7 +7,7 @@ use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\Refund;
 use Stripe\Exception\ApiErrorException;
-
+use Stripe\BalanceTransaction;
 class StripeService
 {
     public function __construct()
@@ -52,14 +52,30 @@ class StripeService
     }
 
     public function refundOrder($paymentId)
-     {
+    {
         try {
             return Refund::create([
                 'charge' => $paymentId,
             ]);
+
         } catch (ApiErrorException $e) {
             return $e->getMessage();
         }
-     }
+    }
+
+    public function retrivePaymentDetails($paymentId)
+    {
+       try {
+        $charge = Charge::retrieve($paymentId);
+        if(isset($charge->balance_transaction) && !empty($charge->balance_transaction)){
+            $balanceTransaction = BalanceTransaction::retrieve($charge->balance_transaction);
+            return $balanceTransaction;
+        }else{
+            return null;
+        }
+       } catch (ApiErrorException $e) {
+           return $e->getMessage();
+       }
+    }
 
 }

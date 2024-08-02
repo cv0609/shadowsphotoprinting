@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
 use App\Mail\AdminNotifyOrder;
 use App\Models\UserDetails;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class MyAccountController extends Controller
@@ -57,7 +59,8 @@ class MyAccountController extends Controller
     }
 
     public function account_details(){
-        return view('front-end.profile.account-details');
+        $user = User::whereId(Auth::user()->id)->first();
+        return view('front-end.profile.account-details',compact('user'));
     }
 
     public function my_coupons(){
@@ -187,4 +190,36 @@ class MyAccountController extends Controller
         }
         return redirect()->route('address')->with('success','Address updated successfully.');
     }
+
+    public function saveAccountDetails(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|max:50',
+            'email' => 'required|max:100|email',
+            'password' => 'nullable|min:6|confirmed',
+            'current_password' => 'required_with:password',
+        ]);
+    
+        $oldPassword = $request->input('current_password');
+        $data = [
+            'username' => $request->username,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+        ];
+    
+        if ($oldPassword) {
+            if (!Hash::check($oldPassword, Auth::user()->password)) {
+                return back()->withErrors(['current_password' => 'The provided password does not match our records.']);
+            }
+        }
+    
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+    
+        User::whereId(Auth::id())->update($data);
+    
+        return redirect()->back()->with('success', 'Account details updated successfully.');
+    }    
 }

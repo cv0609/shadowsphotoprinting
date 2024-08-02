@@ -10,7 +10,7 @@
           <li class="breadcrumb-item"><a href="{{ route('orders-list') }}">Orders</a></li>
           <li class="breadcrumb-item"><a href="#">Order Detail</a></li>
         </ol>
-      </nav>
+      </nav> 
 
     @if(Session::has('success'))
       <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
@@ -314,10 +314,11 @@
             <table class="wc-order-totals">
                 <tr>
                     <td style="padding: 5px;"><strong>Paid:</strong></td>
-                    <td style="text-align: right; padding: 5px;"><strong>$57.00</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['total'],2) }}</strong></td>
                 </tr>
                 <tr>
-                    <td colspan="" style="padding: 5px;">July 23, 2024 via Credit Card (Stripe)</td>
+                    <td colspan="" style="padding: 5px;">{{ date('F j, Y', strtotime($orderDetail->created_at ?? '')) }}
+                      via Credit Card (Stripe)</td>
                     <td></td>
                 </tr>
             </table>
@@ -326,16 +327,16 @@
                 <tr>
                     <td style="padding: 5px;"> <i class="fa fa-question-circle" aria-hidden="true"></i>
                         Stripe Fee:</td>
-                    <td style="text-align: right; padding: 5px;"><strong>-$1.27</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>-${{$stripe_fee}}</strong></td>
                 </tr>
                 <tr>
                     <td style="padding: 5px;"><i class="fa fa-question-circle" aria-hidden="true"></i> Stripe Payout:
                     </td>
-                    <td style="text-align: right; padding: 5px;"><strong>$55.73</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>${{$OrderTotal['total']-$stripe_fee}}</strong></td>
                 </tr>
                 <tr>
                     <td style="padding: 5px;">Total cart count:</td>
-                    <td style="text-align: right; padding: 5px;"><strong>20</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>{{$orderDetail->order_details_count ?? 0}}</strong></td>
                 </tr>
             </table>
             <div class="clear"></div>
