@@ -32,7 +32,8 @@
                                                 @if(isset($details_check) && !empty($details_check))    
                                                  <a href="{{ route('edit-address',['slug' => 'billing']) }}" class="edit">Edit</a>
                                                 @else    
-                                                 <a href="{{ route('add-address') }}" class="edit">Add</a>
+                                                 <a href="{{ route('add-address',['slug' => 'billing']) }}" class="edit">Add</a>
+                                                 <p><em>You have not set up this type of address yet.</em></p>
                                                 @endif 
                                             </div>
                                             <address
@@ -64,7 +65,8 @@
                                                     @if(isset($details_check) && !empty($details_check))    
                                                         <a href="{{ route('edit-address',['slug' => 'shipping']) }}" class="edit">Edit</a>
                                                     @else    
-                                                        <a href="{{ route('add-address') }}" class="edit">Add</a>
+                                                        <a href="{{ route('add-address',['slug' => 'shipping']) }}" class="edit">Add</a>
+                                                        <p><em>You have not set up this type of address yet.</em></p>
                                                     @endif
                                             </div>
                                             <address

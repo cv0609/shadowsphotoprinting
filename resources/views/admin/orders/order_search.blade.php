@@ -5,11 +5,11 @@
   <td data-title="order-number"> <a
           href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
   </td>
-  <td>{{ $order->orderBillingShippingDetails->username ?? ''}}</td>
+  <td>{{ $order->orderBillingShippingDetails->fname ?? ''}}</td>
   <td data-title="created-at">{{ date('M d, Y',strtotime($order->created_at)) }}</td>
 
   <td class="status_td" data-title="status"> 
-      <p class="@if($order->order_status == 0) alert alert-primary @elseif($order->order_status == 1) alert alert-info @elseif($order->order_status == 2) alert alert-danger @elseif($order->order_status == 3) alert alert-warning @endif"> @if($order->order_status == 0) Prcessing @elseif($order->order_status == 1) Completed @elseif($order->order_status == 2) Cancelled @elseif($order->order_status == 3) Refunded @endif</p>
+      <p class="@if($order->order_status == 0) alert alert-primary @elseif($order->order_status == 1) alert alert-info @elseif($order->order_status == 2) alert alert-danger @elseif($order->order_status == 3) alert alert-warning @endif"> @if($order->order_status == 0) Processing @elseif($order->order_status == 1) Completed @elseif($order->order_status == 2) Cancelled @elseif($order->order_status == 3) Refunded @endif</p>
   </td>
 
   <td class="billing_address column-billing_address" data-colname="Billing" data-title="billing-add">

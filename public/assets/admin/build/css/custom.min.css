@@ -141,6 +141,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 16px;
 
 }
 .date-range-wrapper,
@@ -508,6 +509,25 @@ table.wc-order-totals tr td {
 table.wc-order-totals tr td strong{
     font-weight: bold;
 }
+/*  */
 
+@media (max-width:575px){
+.serach-bar-range input {
+width: 100%;
+max-width:100%;
+}
+.date-range-wrapper input {
+max-width:100%;
+}
+.date-range-wrapper, .serach-bar-range {
+width: 100%;
+}
+.date-range-picker {
+display: flex;
 
+flex-direction: column;
+gap: 16px;
+align-items: center;
+}
 
+}
