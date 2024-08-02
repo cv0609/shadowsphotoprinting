@@ -2327,10 +2327,10 @@ span.latests {
 }
 
 .kad-account-avatar {
-    display: flex;
     align-items: center;
     padding: 10px;
-
+    display: grid;
+    grid-template-columns: auto 1fr;
 }
 
 .kad-customer-image img {
@@ -2373,6 +2373,7 @@ ul.desk-trt ul.sub-menu {
     padding-left: 10px;
     line-height: 1;
     font-size: 15px;
+    word-break: break-all;
 }
 
 .kad-account {

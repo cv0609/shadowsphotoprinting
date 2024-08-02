@@ -72,9 +72,9 @@ class MyAccountController extends Controller
         return view('front-end.profile.view-order',compact('orders'));
     }
 
-    public function addAddress(){
+    public function addAddress($slug){
         $countries = Country::find(14);
-        return view('front-end.profile.add-address',compact('countries'));
+        return view('front-end.profile.add-address',compact('countries','slug'));
     }
 
     public function editAddress($slug){
@@ -97,7 +97,19 @@ class MyAccountController extends Controller
         $username = $request->input('username');
         $company_name = $request->input('company_name');
 
+
+        $ship_fname = $request->input('ship_fname'); 
+        $ship_lname = $request->input('ship_lname'); 
+        $ship_street1 = $request->input('ship_street1'); 
+        $ship_street2 = $request->input('ship_street2'); 
+        $ship_state = $request->input('ship_state'); 
+        $ship_company = $request->input('ship_company'); 
+       
+        $ship_postcode = $request->input('ship_postcode');
+        $ship_suburb = $request->input('ship_suburb'); 
+
         $state_name = State::whereId($state)->select('name')->first();
+        $ship_state_name = State::whereId($ship_state)->select('name')->first();
 
         $address = [
             'user_id' => $auth_id,
@@ -107,13 +119,24 @@ class MyAccountController extends Controller
             'street2' => $street2 ,
             'state' => $state_name->name ?? null,
             'company_name' => $company_name ?? null,
-            'country_region' => config('constant.default_country'),
+            'country_region' => $request->slug == 'billing' ? config('constant.default_country') : '',
             'state' => $state_name->name ?? null,
             'postcode' => $postcode ?? null,
             'phone' => $phone ?? null,
             'suburb' => $suburb ?? null,
             'email' => $email ?? null,
             'username' => $username ?? null,
+
+            'ship_fname' => $ship_fname ?? null,
+            'ship_lname' => $ship_lname ?? null,
+            'ship_street1' => $ship_street1 ?? null,
+            'ship_street2' => $ship_street2 ,
+            'ship_state' => $ship_state_name->name ?? null,
+            'ship_company' => $ship_company ?? null,
+            'ship_country_region' => $request->slug == 'shipping' ? config('constant.default_country') : '',
+            'ship_postcode' => $ship_postcode ?? null,
+            'isShippingAddress' => '1' ?? null,
+            'ship_suburb' => $ship_suburb ?? null,
         ];
 
         if(isset($address) && !empty($address)){
