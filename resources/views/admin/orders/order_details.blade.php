@@ -170,18 +170,25 @@
                 
                 </td>
                 <td class="strong order_page_td">
-                  <a href="#">
+                  
                       @if($item->product_type == "gift_card")
+                      <a href="{{ route('gift-card-show', ['category_id' => $product_detail->id]) }}">
                           {{ $product_detail->product_title }}
                           <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
+                      </a>    
                       @elseif($item->product_type == "photo_for_sale")
+                      <a href="{{ route('photos-for-sale-product-show', ['slug' => $product_detail->slug]) }}">
                           {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                      </a>    
                       @elseif($item->product_type == "hand_craft")  
-                          {{ $product_detail->product_title ?? '' }}  
+                      <a href="{{ route('hand-craft-product-show', ['slug' => $product_detail->slug]) }}">
+                        {{ $product_detail->product_title ?? '' }}  
+                      </a>
                       @else
-                          {{ $item->product->product_title ?? ''}}
+                      <a href="{{ route('product-show', ['slug' => $item->product->slug]) }}">
+                        {{ $item->product->product_title ?? ''}}
+                      </a>
                       @endif
-                  </a>
                   
                   <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
                   <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
@@ -242,44 +249,6 @@
           </tbody>
         </table>
       </div>
-      {{-- <div class=" order_calculations_row">
-        <div class="col-lg-4 col-sm-5 ml-auto">
-          <table class="table table-clear">
-            <tbody>
-              <tr>
-                <td>
-                  <strong>Subtotal</strong>
-                </td>
-                <td class="right">${{ number_format($OrderTotal['subtotal'],2) }}</td>
-              </tr>
-              @if(isset($OrderTotal['coupon_code']) && !empty($OrderTotal['coupon_code']) && $OrderTotal['coupon_code'] != null)
-              <tr>
-                <td>
-                  <strong>Coupon ({{ $OrderTotal['coupon_code']}})</strong>
-                </td>
-                <td class="right">${{ number_format($OrderTotal['coupon_discount'],2)}}</td>
-              </tr>
-              @endif
-
-              <tr>
-                <td>
-                  <strong>Shipping Charges</strong>
-                </td>
-                <td class="right">${{ number_format($OrderTotal['shippingCharge'],2) }}</td>
-              </tr>
-              <tr>
-                <td>
-                  <strong>Total</strong>
-                </td>
-                <td class="right">
-                  <strong>${{ number_format($OrderTotal['total'],2) }}</strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div> --}}
 
       <div class="zaya">
         <table style=" border-collapse: collapse;  padding: 20px; width: 100%; max-width: 387px;">

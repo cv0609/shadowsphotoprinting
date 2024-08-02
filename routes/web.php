@@ -172,7 +172,7 @@ Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account/account-details', [MyAccountController::class, 'account_details'])->name('account-details');
     Route::get('/my-account/my-coupons', [MyAccountController::class, 'my_coupons'])->name('my-coupons');
     Route::get('/my-account/view-order/{order_id}', [MyAccountController::class, 'view_order'])->name('view-order');
-    Route::get('/my-account/add-address', [MyAccountController::class, 'addAddress'])->name('add-address');
+    Route::get('/my-account/add-address/{slug}', [MyAccountController::class, 'addAddress'])->name('add-address');
     Route::post('/my-account/save-address', [MyAccountController::class, 'saveAddress'])->name('save-address');
     Route::get('/my-account/edit-address/{slug}', [MyAccountController::class, 'editAddress'])->name('edit-address');
     Route::post('/my-account/edit-save-address', [MyAccountController::class, 'editSaveAddress'])->name('edit-save-address');

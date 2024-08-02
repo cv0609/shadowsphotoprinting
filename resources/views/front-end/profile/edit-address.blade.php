@@ -101,7 +101,7 @@
                                                         @enderror
                                                         @error('ship_street2')
                                                         <p class="text-danger">{{ $message }}</p>
-                                                    @enderror
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
