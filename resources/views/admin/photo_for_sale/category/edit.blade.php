@@ -24,7 +24,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Category Name <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="name" name="name" required="required" class="form-control" value="{{ $category->name }}">
+                            <input type="text" id="name" name="name" required="required" class="form-control" value="{{ $category->product_title }}">
                             @error('name')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
@@ -42,7 +42,7 @@
                             @endif
                             <div class="choose-file-single">
                                 <figure>
-                                    <img src="{{ asset($category->image) }}" alt="img-single">
+                                    <img src="{{ asset($category->product_image) }}" alt="img-single">
                                     {{-- <span class="closed_btn">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                                     </span> --}}
