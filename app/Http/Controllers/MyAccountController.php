@@ -115,7 +115,7 @@ class MyAccountController extends Controller
 
         if(isset($address) && !empty($address)){
             UserDetails::create($address);
-            return back()->with('success','Address added successfully.');
+            return redirect()->route('address')->with('success','Address added successfully.');
         }
     }
 

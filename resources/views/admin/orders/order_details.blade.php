@@ -286,15 +286,25 @@
            <table class="wc-order-totals">
             <tr>
                 <td style="padding: 5px;">Items Subtotal:</td>
-                <td style="text-align: right; padding: 5px;"><strong>$37.00</strong></td>
+                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['subtotal'],2) }}</strong></td>
             </tr>
+
+            @if(isset($OrderTotal['coupon_code']) && !empty($OrderTotal['coupon_code']) && $OrderTotal['coupon_code'] != null)
+
+              <tr>
+                <td style="padding: 5px;">Coupon ({{ $OrderTotal['coupon_code']}}):</td>
+                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['coupon_discount'],2)}}</strong></td>
+              </tr>
+
+            @endif 
+
             <tr>
                 <td style="padding: 5px;">Shipping:</td>
-                <td style="text-align: right; padding: 5px;"><strong>$20.00</strong></td>
+                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['shippingCharge'],2) }}</strong></td>
             </tr>
             <tr>
                 <td style="padding: 5px;">Order Total:</td>
-                <td style="text-align: right; padding: 5px;"><strong>$57.00</strong></td>
+                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['total'],2) }}</strong></td>
             </tr>
             <tr>
                 <td colspan="2" style="border-bottom: 1px solid #ccc; padding: 5px;"></td>
