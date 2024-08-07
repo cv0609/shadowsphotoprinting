@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Http\Requests\PhotoForSaleCategoryRequest;
+use App\Http\Requests\PhotoForSaleProductRequest;
 use App\Models\Size;
 use App\Models\SizeType;
 use App\Models\PhotoForSaleSizePrices;
@@ -35,7 +36,6 @@ class PhotoForSaleController extends Controller
 
     public function productCategorySave(PhotoForSaleCategoryRequest $request)
     {
-        dd($request->all());
         $slug = \Str::slug($request->name);
         $image = "";
         if($request->has('image'))
