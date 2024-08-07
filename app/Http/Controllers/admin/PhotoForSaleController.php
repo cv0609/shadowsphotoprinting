@@ -34,7 +34,7 @@ class PhotoForSaleController extends Controller
         return view('admin.photo_for_sale.category.add');
     }
 
-    public function productCategorySave(PhotoForSaleCategoryRequest $request)
+    public function productCategorySave(Request $request)
     {
         dd($request->all());
         $slug = \Str::slug($request->name);
