@@ -10,7 +10,7 @@ class PhotoForSaleCategory extends Model
     use HasFactory;
     protected $table = 'photo_for_sale_category';
     protected $fillable = [
-        'name',
+        'product_title',
         'slug',
         'image'
     ];
