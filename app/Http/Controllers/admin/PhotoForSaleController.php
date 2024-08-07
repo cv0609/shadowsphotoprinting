@@ -46,7 +46,7 @@ class PhotoForSaleController extends Controller
              $file->move($destinationPath, $fileName);
              $image =  $destinationPath.'/'.$fileName;
          }
-         PhotoForSaleCategory::insert(["product_title"=>$request->name,'slug'=>$slug,'product_image'=>$image]);
+        PhotoForSaleCategory::insert(["product_title"=>$request->name,'slug'=>$slug,'product_image'=>$image]);
         return redirect()->route('photos-for-sale-categories-list')->with('success','Category inserted successfully');
     }
 

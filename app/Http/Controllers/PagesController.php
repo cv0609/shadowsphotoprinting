@@ -40,12 +40,17 @@ class PagesController extends Controller
         }
 
       $page_info = Page::where('slug',$slug)->with('pageSections')->first();
+      
       if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
       {
         $page_content = json_decode($page_info->pageSections['content'],true);
         $page_content['slug'] = $page_info['slug'];
 
-        return view('front-end/'.$slug,compact('page_content','page_info'));
+        if($page_info['is_product_page'] == '1'){
+             return view('front-end/common-product',compact('page_content','page_info'));
+        }else{
+          return view('front-end/'.$slug,compact('page_content','page_info'));
+        }
       }
       else
       {
