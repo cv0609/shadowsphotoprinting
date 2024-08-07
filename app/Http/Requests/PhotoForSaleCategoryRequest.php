@@ -22,7 +22,7 @@ class PhotoForSaleCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:photo_for_sale_category,name',
+            'name' => 'required|unique:photo_for_sale_category,product_title',
             "image" => 'image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
