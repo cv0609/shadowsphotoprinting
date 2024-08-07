@@ -33,7 +33,7 @@
                                     <select class="form-control" name="category_id" id="category_id">
                                         <option value="">Select</option>
                                         @foreach ($productCategories as $productCategory)
-                                        <option value="{{ $productCategory->id }}">{{ $productCategory->name }}</option>
+                                        <option value="{{ $productCategory->id }}">{{ $productCategory->product_title }}</option>
                                         @endforeach
                                     </select>
                                     <span class="validation-error category_id_error"></span>
