@@ -125,7 +125,7 @@
 
                                 <ul class="sub-menu">
                                    @foreach ($productCategories as $productCategory)
-                                    <li><a href="{{ url('our-products/'.str_replace(' ', '-', $productCategory->name))}}">{{ ucwords($productCategory->name) }}</a></li>
+                                    <li><a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($productCategory->name)))}}">{{ ucwords($productCategory->name) }}</a></li>
                                    @endforeach
                                 </ul>
                             </li>
