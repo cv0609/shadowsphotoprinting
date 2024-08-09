@@ -22,17 +22,17 @@
             ]
         },
         {
-            "title": "scrapbook_banner",
+            "title": "poster_prints_banner",
             "layout_type": "row",
             "fields": [
                 {
-                    "title": "scrapbook_banner",
+                    "title": "poster_prints_banner",
                     "type": "images",
                     "required": true,
                     "name": "header_banner"
                 },
                 {
-                    "title": "scrapbook_banner_title",
+                    "title": "poster_prints_banner_title",
                     "type": "text",
                     "required": true,
                     "name": "header_title"
