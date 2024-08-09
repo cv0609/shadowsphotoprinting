@@ -61,7 +61,7 @@ class PagesController extends Controller
       {
         $detail = Page::where('slug',$page)->with('pageSections')->first();
         $page_fields = read_json($detail->slug.'.json');
-        dd($page_fields);
+        dd($page);
         if(isset($detail->pageSections->content)){
             $content = json_decode($detail->pageSections->content,true);
         }
