@@ -50,8 +50,8 @@ class PagesController extends Controller
         if (empty($slug)) {
             $slug = 'home';
         }
-      dd($slug);
       $page_info = Page::where('slug',$slug)->with('pageSections')->first();
+      dd($page_info);
 
       if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
       {
