@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
 use App\Mail\MakeOrder;
 use Illuminate\Support\Facades\Mail;
-
 use Session;
+
 class ShopController extends Controller
 {
 
