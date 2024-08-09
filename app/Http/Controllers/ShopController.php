@@ -47,15 +47,16 @@ class ShopController extends Controller
   {
 
     $imageName = Session::get('temImages'); 
+    
     if(isset($category_slug) && $category_slug != null)
     {
-      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
     else
     {
-      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
-    $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->get();
+    
     $products = Product::select(['id','product_title','product_price'])->get();
     $currentDate = date('F-j-Y-1');
     $page_content = [
