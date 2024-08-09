@@ -51,7 +51,7 @@ class PagesController extends Controller
         }
 
       $page_info = Page::where('slug',$slug)->with('pageSections')->first();
-      dd($page_info);
+
       if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
       {
         $page_content = json_decode($page_info->pageSections['content'],true);
@@ -133,7 +133,7 @@ class PagesController extends Controller
 
 
   public function handCraftDetails($slug = null){
-    dd($slug);
+
     $productDetails = HandCraftProduct::where('slug',$slug)->first();
     $relatedProduct = HandCraftProduct::where('slug','!=',$slug)->paginate(10);
     $page_content = ["meta_title"=>$productDetails['slug'],"meta_description"=>$productDetails['product_description']];
