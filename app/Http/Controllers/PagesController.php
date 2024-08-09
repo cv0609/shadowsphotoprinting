@@ -133,6 +133,7 @@ class PagesController extends Controller
 
 
   public function handCraftDetails($slug = null){
+    dd($slug);
     $productDetails = HandCraftProduct::where('slug',$slug)->first();
     $relatedProduct = HandCraftProduct::where('slug','!=',$slug)->paginate(10);
     $page_content = ["meta_title"=>$productDetails['slug'],"meta_description"=>$productDetails['product_description']];
