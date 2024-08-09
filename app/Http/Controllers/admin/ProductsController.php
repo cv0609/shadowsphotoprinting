@@ -45,7 +45,7 @@ class ProductsController extends Controller
     {
 
         $slug = Str::slug($request->name);
-        $data = ["name"=>$request->name,'slug'=>$slug];
+        $data = ["name"=>$request->name];
         if($request->has('image'))
         {
             $file = $request->file('image');

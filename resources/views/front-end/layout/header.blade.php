@@ -78,8 +78,8 @@
                                         @else
                                          <span class="kt-cart-total">{{ $CartCount  }}</span>
                                         @endif
-                                        
-                                        
+
+
                                     </a>
                                 </li>
                                 <li class="social-media"><a href="https://www.facebook.com/Shadows-Photo-Printing-635792569950635"><i class="fa-brands fa-facebook-f"></i> </a></li>
@@ -125,7 +125,7 @@
 
                                 <ul class="sub-menu">
                                    @foreach ($productCategories as $productCategory)
-                                    <li><a href="{{ url('our-products/'.$productCategory->slug)}}">{{ ucwords($productCategory->name) }}</a></li>
+                                    <li><a href="{{ url('our-products/'.str_replace(' ', '-', $productCategory->name))}}">{{ ucwords($productCategory->name) }}</a></li>
                                    @endforeach
                                 </ul>
                             </li>
