@@ -44,7 +44,7 @@ class PagesController extends Controller
             $slug = end($segments);
 
          }
-        dd($slug);
+        dd($segments,$slug);
         // Default to 'home' if the slug is empty
         if (empty($slug)) {
             $slug = 'home';
