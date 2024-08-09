@@ -29,13 +29,13 @@
                     "title": "canvas_prints_banner",
                     "type": "images",
                     "required": true,
-                    "name": "canvas_prints_banner"
+                    "name": "header_banner"
                 },
                 {
                     "title": "canvas_prints_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "canvas_prints_banner_title"
+                    "name": "header_title"
                 }
             ]
         }

@@ -38,10 +38,17 @@ class PagesController extends Controller
     public function store(AdminPageRequest $request)
      {
         $slug = Str::slug($request->page_title);
+
+        $is_product_page = '0';
+
+        if(isset($is_product_page) && !empty($is_product_page)){
+            $is_product_page = '1';
+        }
+       
         $pointer = base_path('resources/pages_json/'.$slug.'.json');
 
         if(file_exists($pointer)){
-            Page::insert(['page_title'=>preg_replace('/[^\w\s]/',' ', $request->page_title),'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id()]);
+            Page::insert(['page_title'=>preg_replace('/[^\w\s]/',' ', $request->page_title),'slug'=>$slug,"added_by_admin"=>Auth::guard('admin')->id(),'is_product_page' => $is_product_page]);
             return redirect()->route('pages.index')->with('success','Page is created successfully');
         }
         else
@@ -57,11 +64,9 @@ class PagesController extends Controller
 
         if(isset($detail->pageSections->content)){
             $content = json_decode($detail->pageSections->content,true);
-
         }
         else{
-        $content = [];
-
+          $content = [];
         }
 
         return view('admin.pages.edit',compact('detail','page_fields','content'));

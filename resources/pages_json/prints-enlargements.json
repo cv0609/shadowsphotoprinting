@@ -29,13 +29,13 @@
                     "title": "prints_enlargements_banner",
                     "type": "images",
                     "required": true,
-                    "name": "prints_enlargements_banner"
+                    "name": "header_banner"
                 },
                 {
                     "title": "prints_enlargements_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "prints_enlargements_banner_title"
+                    "name": "header_title"
                 }
             ]
         }

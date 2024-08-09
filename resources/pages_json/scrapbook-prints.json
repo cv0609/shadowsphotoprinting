@@ -29,13 +29,13 @@
                     "title": "scrapbook_banner",
                     "type": "images",
                     "required": true,
-                    "name": "scrapbook_banner"
+                    "name": "header_banner"
                 },
                 {
                     "title": "scrapbook_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "scrapbook_banner_title"
+                    "name": "header_title"
                 }
             ]
         }

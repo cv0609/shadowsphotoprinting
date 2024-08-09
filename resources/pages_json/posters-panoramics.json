@@ -29,13 +29,13 @@
                     "title": "posters_panoramic_banner",
                     "type": "images",
                     "required": true,
-                    "name": "posters_panoramic_banner"
+                    "name": "header_banner"
                 },
                 {
                     "title": "posters_panoramic_banner_title",
                     "type": "text",
                     "required": true,
-                    "name": "posters_panoramic_banner_title"
+                    "name": "header_title"
                 }
             ]
         }
