@@ -36,7 +36,7 @@ class PagesController extends Controller
         if(in_array('our-products',$segments) && end($segments) != 'our-products')
           {
             $slug = ProductCategory::where('name',str_replace('-',' ',end($segments)))->select('slug')->first();
-
+            dd($slug);
             $slug = $slug['slug'];
           }
         else
