@@ -205,7 +205,7 @@ class PhotoForSaleController extends Controller
         if(isset($size_arr) && isset($type_arr) && isset($price_arr) && isset($type_size_count)){
 
             PhotoForSaleSizePrices::where('product_id',$request->product_id)->delete();
-    
+
             $uniqueCombinations = [];
             foreach ($size_arr as $size_index => $size_data) {
                 if (isset($type_arr[$size_index]) && isset($price_arr[$size_index]) && isset($type_size_count[$size_index])) {
@@ -224,10 +224,10 @@ class PhotoForSaleController extends Controller
                   }
                 }
             }
-    
+
             foreach ($uniqueCombinations as $combination) {
                 list($size_id, $type_id, $price_id,$count_id) = explode('-', $combination);
-    
+
                 PhotoForSaleSizePrices::create([
                     'product_id' => $request->product_id,
                     'size_id' => $size_id,
