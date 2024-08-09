@@ -51,7 +51,7 @@ class PagesController extends Controller
             $slug = 'home';
         }
       $page_info = Page::where('slug',$slug)->with('pageSections')->first();
-      dd($page_info);
+
       if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
       {
         $page_content = json_decode($page_info->pageSections['content'],true);
