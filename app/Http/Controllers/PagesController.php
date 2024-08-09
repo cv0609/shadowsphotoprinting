@@ -38,6 +38,7 @@ class PagesController extends Controller
             $slug = ProductCategory::where('name',str_replace('-',' ',end($segments)))->select('slug')->first();
 
             $slug = $slug['slug'];
+            dd($slug);
           }
         else
          {
