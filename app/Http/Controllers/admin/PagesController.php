@@ -44,7 +44,7 @@ class PagesController extends Controller
         if(isset($is_product_page) && !empty($is_product_page)){
             $is_product_page = '1';
         }
-       
+
         $pointer = base_path('resources/pages_json/'.$slug.'.json');
 
         if(file_exists($pointer)){
@@ -61,7 +61,7 @@ class PagesController extends Controller
       {
         $detail = Page::where('slug',$page)->with('pageSections')->first();
         $page_fields = read_json($detail->slug.'.json');
-
+        dd($page_fields);
         if(isset($detail->pageSections->content)){
             $content = json_decode($detail->pageSections->content,true);
         }
