@@ -1310,7 +1310,7 @@ section.canvas-bnr {
     object-fit: cover;
 }
 section.poster-bnr {
-    /* background: url(../images/POSTERS-PANORAMICS.jpg)no-repeat; */
+    background: url(../images/POSTERS-PANORAMICS.jpg)no-repeat;
     background-position: center;
     background-size: cover;
     height: 400px;
