@@ -355,6 +355,13 @@ td.shipping_address {
     justify-content: right;
 }
 
+.download_zip_tr .add-notes{
+    background: #2271b1;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
 
 @media screen and (max-width: 991px){
     #order_table{

@@ -116,6 +116,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/download-order-zip/{order_id}', [OrderController::class, 'downloadOrderzip'])->name('download-order-zip');
         Route::post('/update-order',[OrderController::class,'updateOrder'])->name('update-order');
         Route::get('/refund-order/{order_id}',[OrderController::class,'refundOrder'])->name('refund-order');
+        Route::post('/add-note',[OrderController::class,'addNote'])->name('add-note');
 
         Route::get('sizes',[VariationsController::class,'sizes'])->name('sizes-list');
         Route::get('size-add',[VariationsController::class,'addSize'])->name('size-add');
