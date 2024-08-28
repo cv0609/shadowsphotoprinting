@@ -336,7 +336,7 @@
 
   </div>
 
-<div id="addNotes" class="modal fade" role="dialog">
+  <div id="addNotes" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -356,7 +356,7 @@
             </form>
         </div>
     </div>
-</div>
+  </div>
 
 
 @endsection

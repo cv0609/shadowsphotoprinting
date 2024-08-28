@@ -355,7 +355,8 @@ td.shipping_address {
     justify-content: right;
 }
 
-.download_zip_tr .add-notes{
+.download_zip_tr .add-notes,
+#submit-note{
     background: #2271b1;
     color: #fff;
     padding: 2px 8px;
