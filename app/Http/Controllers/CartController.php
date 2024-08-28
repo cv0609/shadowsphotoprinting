@@ -267,9 +267,9 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
         }
 
-        if(isset($coupon->categories) && !empty($coupon->categories) && $coupon->categories != null)
+        if(isset($coupon->product_category) && !empty($coupon->product_category) && $coupon->product_category != null)
         {
-            $couponCategories = explode(',', $coupon->categories);
+            $couponCategories = explode(',', $coupon->product_category);
 
             foreach ($cart->items as $item) {
                 $productCategories = $item->product->product_category->pluck('id')->toArray();
