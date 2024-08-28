@@ -436,8 +436,10 @@ td.shipping_address {
     .billing_adress_row{
      display: flex!important;
     }
-    .download_zip_tr 
-    {
+    .download_zip_tr .download-zip-cls{
+        display: none;
+    }
+    .download_zip_tr .add-notes{
         display: none;
     }
   }

@@ -248,7 +248,7 @@
                   @endif
                     <a href="#addNotes" data-toggle="modal" class="btn btn-primary add-notes">Add note</a>
               </td>
-              <td colspan="10">
+              <td colspan="10" class="download-zip-cls">
                <a href="{{ route('download-order-zip', ['order_id' => $orderDetail->id]) }}" class="download_zip_btn">download zip</a>
               </td>
             </tr>
@@ -351,7 +351,7 @@
                     <p id="notes-error"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="submit-note">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="submit-note">Save</button>
                 </div>
             </form>
         </div>
