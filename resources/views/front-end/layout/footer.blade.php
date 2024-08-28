@@ -79,7 +79,7 @@
                                         </div>
 
                                         <div class="woocommerce-wrapper">
-                                            <p>Your personal data will be used to support your experience
+                                            <p class="wrapper-personal-data-p">Your personal data will be used to support your experience
                                                 throughout
                                                 this website, to manage access to your account, and for other
                                                 purposes described in our <span class="privacy-text">privacy

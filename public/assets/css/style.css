@@ -580,6 +580,10 @@ footer.footer {
     padding: 0 20px 20px;
 }
 
+.woocommerce-wrapper .wrapper-personal-data-p{
+    color: #ffc205;
+}
+
 .woocommerce-form h2 {
     font-family: "Source Sans Pro";
     line-height: 40px;
