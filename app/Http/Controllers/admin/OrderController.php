@@ -315,4 +315,11 @@ class OrderController extends Controller
         }
         return redirect()->back()->with('success', 'Payment refunded successfully.');
      }
+
+     public function addNote(Request $request){
+        $order_id = $request->order_id;
+        $order_notes = $request->order_notes;
+        OrderBillingDetails::where('order_id',$order_id)->update(['order_notes' => $order_notes]);
+        return back()->with('success','Order notes added successfully.');
+     }
 }

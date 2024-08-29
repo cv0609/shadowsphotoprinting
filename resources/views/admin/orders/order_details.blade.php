@@ -241,8 +241,14 @@
 
             @endforeach
             <tr class="download_zip_tr">
-              <td>&nbsp;</td>
-              <td colspan="10">
+              <td>
+                  @if(isset($orderDetail->orderBillingShippingDetails['order_notes']) && !empty($orderDetail->orderBillingShippingDetails['order_notes']))
+                    <h2>Order Note</h2>
+                    <p>{{$orderDetail->orderBillingShippingDetails['order_notes'] ?? ''}}</p>
+                  @endif
+                    <a href="#addNotes" data-toggle="modal" class="btn btn-primary add-notes">Add note</a>
+              </td>
+              <td colspan="10" class="download-zip-cls">
                <a href="{{ route('download-order-zip', ['order_id' => $orderDetail->id]) }}" class="download_zip_btn">download zip</a>
               </td>
             </tr>
@@ -329,6 +335,30 @@
     </div>
 
   </div>
+
+  <div id="addNotes" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add a note</h4>
+                <button type="button" class="close" id="modal-close" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="addNotesForm" action="{{ route('add-note') }}" method="POST">
+                @csrf
+                <input type="hidden" name="order_id" value="{{$orderDetail->id}}">
+                <div class="modal-body">
+                    <textarea id="order-notes" name="order_notes" class="form-control" rows="4" placeholder="Enter your notes here...">{{ $orderDetail->orderBillingShippingDetails['order_notes'] }}</textarea>
+                    <p id="notes-error"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submit-note">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+
 @endsection
 
 @section('custom-script')
@@ -349,7 +379,19 @@
      $("#print").on('click',function(){
         window.print();
      })
+
+     $('#submit-note').on('click',function(){
+       var order_notes = $('#order-notes').val();     
+       if(order_notes==''){
+          $('#notes-error').text('Please fill requird field.').css('color','red');
+          return false;
+       }else{
+          $('#addNotesForm').submit();
+       }   
+     })
   </script>
+
+
 @endsection
 
 
