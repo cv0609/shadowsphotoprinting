@@ -91,7 +91,7 @@ class ProductsController extends Controller
         $data = [];
         $slug = Str::slug($request->product_title);
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s\(\)\.]/', ' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
 
 
         if ($request->hasFile('product_image')) {
@@ -132,7 +132,8 @@ class ProductsController extends Controller
         $data = [];
         $slug = Str::slug($request->product_title);
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s\(\)\.]/', ' ', $request->product_title)
+        ,"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
 
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');
