@@ -4,6 +4,7 @@
    $PageDataService = app(App\Services\PageDataService::class);
    $products = $PageDataService->getProductBySlug($page_content['slug']);
    $CartService = app(App\Services\CartService::class);
+//    dd($page_content);
 @endphp
 
 

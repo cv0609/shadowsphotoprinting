@@ -88,17 +88,17 @@ class PagesController extends Controller
   public function PhotosForSale($slug = null)
   {
     $page_content = [];
+
+    $page_content = ["meta_title"=>config('constant.pages_meta.photos_for_sale.meta_title'),"meta_description"=>config('constant.pages_meta.photos_for_sale.meta_description')];
+
     if($slug == null)
     {
       $products = PhotoForSaleProduct::paginate(10);
-      $page_content = ["meta_title"=>config('constant.pages_meta.photos_for_sale.meta_title'),"meta_description"=>config('constant.pages_meta.photos_for_sale.meta_description')];
     }
     else
     {
       $caregory = PhotoForSaleCategory::where('slug',$slug)->first();
       $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
-      $page_content = ["meta_title"=>$caregory['slug'],"meta_description"=>$caregory['name']];
-
     }
 
 
@@ -126,7 +126,7 @@ class PagesController extends Controller
 
     $relatedProduct = PhotoForSaleProduct::where('slug','!=',$slug)->paginate(10);
 
-    $page_content = ["meta_title"=>$productDetails['slug'],"meta_description"=>$productDetails['product_description']];
+    $page_content = ["meta_title"=>$productDetails['slug'] .' | Shadows Photo Printing',"meta_description"=>$productDetails['product_description']];
 
     return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct','uniqueSizeRecords','uniqueTyepeRecords','photoForSaleSizePricesData','page_content'));
   }
@@ -136,7 +136,7 @@ class PagesController extends Controller
 
     $productDetails = HandCraftProduct::where('slug',$slug)->first();
     $relatedProduct = HandCraftProduct::where('slug','!=',$slug)->paginate(10);
-    $page_content = ["meta_title"=>$productDetails['slug'],"meta_description"=>$productDetails['product_description']];
+    $page_content = ["meta_title"=>$productDetails['slug'].' | Shadows Photo Printing',"meta_description"=>$productDetails['product_description']];
     return view('front-end/hand-craft-details',compact('productDetails','relatedProduct','page_content'));
   }
 
@@ -157,16 +157,18 @@ class PagesController extends Controller
   public function handCraft($slug = null)
   {
     $page_content = [];
+
+    $page_content = ["meta_title"=>config('constant.pages_meta.hand_craft.meta_title'),"meta_description"=>config('constant.pages_meta.hand_craft.meta_description')];
+
     if($slug == null)
     {
       $products = HandCraftProduct::paginate(10);
-      $page_content = ["meta_title"=>config('constant.pages_meta.hand_craft.meta_title'),"meta_description"=>config('constant.pages_meta.hand_craft.meta_description')];
     }
     else
     {
       $caregory = HandCraftCategory::where('slug',$slug)->first();
       $products = HandCraftProduct::where('category_id',$caregory->id)->paginate(10);
-      $page_content = ["meta_title"=>$caregory['slug'],"meta_description"=>$caregory['name']];
+      // $page_content = ["meta_title"=>$caregory['slug'],"meta_description"=>$caregory['name']];
 
     }
 
@@ -182,7 +184,7 @@ class PagesController extends Controller
   {
     $blog_detail = GiftCardCategory::where(["slug"=>$slug])->first();
     $related_products =  GiftCardCategory::where("slug","!=",$slug)->get();
-    $page_content = ["meta_title"=>$blog_detail['slug'],"meta_description"=>$blog_detail['product_description']];
+    $page_content = ["meta_title" => $blog_detail['slug'].' | Shadows Photo Printing',"meta_description"=>$blog_detail['product_description']];
 
     return view('front-end/giftcard_detail',compact('blog_detail','related_products','page_content'));
   }

@@ -58,7 +58,7 @@
 
                 <div class="col-lg-6">
                     <div class="canvas-summary">
-                        <p>IMAGE</p>
+                        {{-- <p>IMAGE</p> --}}
                         <h2>{{$productDetails->product_title ?? ''}}</h2>
                         <p class="incl"> ${{$productDetails->price}}</p>
                         <div class="print_paper">
@@ -99,14 +99,7 @@
             </ul>
             <div class="woocommerce-tabs">
                 <h2>Description</h2>
-                <p>At Shadows Photo Printing we offer professional photo printing by professional Photographers
-                    who take the time to check the quality of your image before we print, as we understand how
-                    important your beautiful memories are.</p>
-                <p>Once we have checked the quality of your wonderful image and there are no issues we will go
-                    ahead and carefully print your beautiful memories and dispatch them as quickly as possible.
-                </p>
-                <p>12”x30” Canvas (30.5cm x 76cm) Canvas Print.</p>
-                <p>Dimensions: Width: 30.5cm, Height: 76cm</p>
+               <p>{{ $productDetails->product_description ?? '' }}</p>
             </div>
         </div>
     </div>

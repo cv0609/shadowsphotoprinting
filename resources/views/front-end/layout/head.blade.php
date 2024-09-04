@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {{-- <title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title> --}}
-<title>{{ html_entity_decode($page_content['meta_title'] ?? 'Default Title') }}</title>
+<title>{{ html_entity_decode(ucfirst($page_content['meta_title']) ?? 'Default Title') }}</title>
 <meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
 <link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
 <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
