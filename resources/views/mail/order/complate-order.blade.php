@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Confirmation</title>
+    <title>Order Completed</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -27,7 +27,7 @@
             <tr style="background-color: #16a085; color: #ffffff;">
                 <td
                     style="padding:36px 48px;display:block;text-align:center;padding-top:15px;padding-bottom:15px;padding-left:48px;padding-right:48px">
-                    <h1 style="margin: 0;">New Order Confirmation</h1>
+                    <h1 style="margin: 0;">Your order complated successfully.</h1>
                 </td>
             </tr>
             <tr>
@@ -40,10 +40,9 @@
                 @endphp
 
                 <td style="padding: 0 30px;">
-                    {{-- <p>Your order has been received and is now being processed. Your order details are shown below for
-                        your
-                        reference:</p>
-                    <p>We will invoice your company</p> --}}
+                    <p>Your order has been successfully completed. Please see the details below for your reference:</p>
+                    <p>We will invoice your company</p>
+
                     <h2 style="color: #16a085;">Order #{{$order->order_number ?? ''}} ({{$order_date ?? ''}})</h2>
                 </td>
             </tr>

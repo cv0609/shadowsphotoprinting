@@ -43,7 +43,13 @@ class AuthController extends Controller
         ->groupBy('day')
         ->orderBy('day', 'asc')
         ->get();
-        return view('admin.dashboard',compact('products','cards','blogs','orders','revenueData'));
+
+        $dashboard_index = '0';
+        $admin = Admin::all();
+        if(isset($admin) && !empty($admin)){
+            $dashboard_index = $admin[0]->set_index;
+        }
+        return view('admin.dashboard',compact('products','cards','blogs','orders','revenueData','dashboard_index'));
     }
 
     public function logout()
@@ -51,4 +57,10 @@ class AuthController extends Controller
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login.post')->with('status','Admin has been logged out!');
 	}
+
+    public function setIndex(Request $request){
+       $set_index = $request->set_index;
+       Admin::where('id',1)->update(['set_index' => $set_index]);
+       return response()->json(['error' => false,'message' => "Index updated successfully."]);
+    }
 }

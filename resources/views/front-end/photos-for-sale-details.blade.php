@@ -126,8 +126,8 @@
                 <li><a> Description</a></li>
             </ul>
             <div class="woocommerce-tabs">
-                <h2>Description</h2>
-                <p>{{$productDetails->product_description ?? ''}}</p>
+                {{-- <h2>Description</h2> --}}
+                <p class="woocommerce-tabs-desc">{{$productDetails->product_description ?? ''}}</p>
             </div>
         </div>
     </div>

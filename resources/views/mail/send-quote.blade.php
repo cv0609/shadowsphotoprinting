@@ -20,7 +20,7 @@
         <table width="100%" cellspacing="0">
             <tr style="background-color: #000; padding: 20px; text-align: center; color: #ffffff;">
                 <td style="padding: 10px;">
-                    <a href="https://shadowsphotoprinting.com.au/" target="_blank">
+                    <a href="{{env('SITE_DOMAIN')}}" target="_blank">
                         <img src="{{ env('SITE_DOMAIN') }}{{asset('assets/images/logo.png')}}" alt="Shadows Photo Printing" style="max-width: 300px; width:100%;">
                     </a>
                 </td>

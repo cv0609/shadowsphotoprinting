@@ -41,6 +41,7 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::get('/dashboard',[AuthController::class,'dashboard'])->name('admin.dashboard');
         Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin-logout');
+        Route::get('set-index',[AuthController::class,'setIndex'])->name('admin.index');
         Route::resource('/pages',PagesController::class);
         Route::resource('/blogs',BlogsController::class);
 

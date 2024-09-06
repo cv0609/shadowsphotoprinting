@@ -1,11 +1,11 @@
 <?php
-namespace App\Mail;
+namespace App\Mail\Order;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MakeOrder extends Mailable
+class CancelOrder extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,8 +29,8 @@ class MakeOrder extends Mailable
     public function build()
     {
         return $this->from(env('APP_MAIL'))
-            ->subject('Your ShadowsPhotoPrinting Order Confirmation')
-            ->view('mail.make-order')
+            ->subject('Your ShadowsPhotoPrinting Order Cancelled.')
+            ->view('mail.order.cancel-order')
             ->with('order', $this->order);
 
     }

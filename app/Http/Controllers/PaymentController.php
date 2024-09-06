@@ -15,7 +15,7 @@ use App\Models\State;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
-use App\Mail\MakeOrder;
+use App\Mail\Order\MakeOrder;
 use App\Mail\AdminNotifyOrder;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Mail;
@@ -261,7 +261,9 @@ class PaymentController extends Controller
     }
 
     public function thankyou($orderId){
+        $page_content = ["meta_title"=>config('constant.order.thankyou.meta_title'),"meta_description"=>config('constant.order.thankyou.meta_description')];
+
         $order_number = Order::whereId($orderId)->select('order_number')->first();
-        return view('front-end.order_thank_you',compact('order_number'));
+        return view('front-end.order_thank_you',compact('order_number','page_content'));
     }
 }

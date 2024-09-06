@@ -18,6 +18,7 @@ use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
+use App\Mail\ForgotPasswordMail;
 use App\Mail\AdminNotifyOrder;
 use App\Models\UserDetails;
 use App\Models\User;
@@ -36,12 +37,18 @@ class MyAccountController extends Controller
     }
 
     public function dashboard(){
-        return view('front-end.profile.dashboard');
+
+        $page_content = ["meta_title"=>config('constant.account.dashboard.meta_title'),"meta_description"=>config('constant.account.dashboard.meta_description')];
+                
+        return view('front-end.profile.dashboard',compact('page_content'));
     }
 
     public function orders(){
+
+        $page_content = ["meta_title"=>config('constant.account.orders.meta_title'),"meta_description"=>config('constant.account.orders.meta_description')];
+
         $orders = Order::withCount('orderDetails')->where('user_id',Auth::user()->id)->orderBy('id','desc')->paginate(10);
-        return view('front-end.profile.orders',compact('orders'));
+        return view('front-end.profile.orders',compact('orders','page_content'));
     }
 
     public function downloads(){
@@ -49,38 +56,58 @@ class MyAccountController extends Controller
     }
 
     public function address(){
+        $page_content = ["meta_title"=>config('constant.account.address.meta_title'),"meta_description"=>config('constant.account.address.meta_description')];
+
         $details_check = $this->CartService->checkAuthUserAddress();
         $user_details = UserDetails::where('user_id',Auth::user()->id)->first();
-        return view('front-end.profile.address',compact('details_check','user_details'));
+        return view('front-end.profile.address',compact('details_check','user_details','page_content'));
     }
 
     public function payment_method(){
-        return view('front-end.profile.payment-method');
+
+        $page_content = ["meta_title"=>config('constant.account.payment_method.meta_title'),"meta_description"=>config('constant.account.payment_method.meta_description')];
+
+        return view('front-end.profile.payment-method',compact('page_content'));
     }
 
     public function account_details(){
         $user = User::whereId(Auth::user()->id)->first();
-        return view('front-end.profile.account-details',compact('user'));
+
+        $page_content = ["meta_title"=>config('constant.account.account_details.meta_title'),"meta_description"=>config('constant.account.account_details.meta_description')];
+
+        return view('front-end.profile.account-details',compact('user','page_content'));
     }
 
     public function my_coupons(){
-        return view('front-end.profile.my-coupons');
+
+        $page_content = ["meta_title"=>config('constant.account.my_coupons.meta_title'),"meta_description"=>config('constant.account.my_coupons.meta_description')];
+
+
+        return view('front-end.profile.my-coupons',compact('page_content'));
     }
 
     public function view_order($order_id){
+        $page_content = ["meta_title"=>config('constant.account.view_order.meta_title'),"meta_description"=>config('constant.account.view_order.meta_description')];
+
         $orders = Order::withCount('orderDetails','orderBillingShippingDetails')->whereId($order_id)->first();
-        return view('front-end.profile.view-order',compact('orders'));
+        return view('front-end.profile.view-order',compact('orders','page_content'));
     }
 
     public function addAddress($slug){
+
+        $page_content = ["meta_title"=>config('constant.account.addAddress.meta_title'),"meta_description"=>config('constant.account.addAddress.meta_description')];
+
         $countries = Country::find(14);
-        return view('front-end.profile.add-address',compact('countries','slug'));
+        return view('front-end.profile.add-address',compact('countries','slug','page_content'));
     }
 
     public function editAddress($slug){
+
+        $page_content = ["meta_title"=>config('constant.account.editAddress.meta_title'),"meta_description"=>config('constant.account.editAddress.meta_description')];
+
         $user_details = UserDetails::where('user_id',Auth::user()->id)->first();
         $countries = Country::find(14);
-        return view('front-end.profile.edit-address',compact('user_details','countries','slug'));
+        return view('front-end.profile.edit-address',compact('user_details','countries','slug','page_content'));
     }
 
     public function saveAddress(AddUserAddressRequest $request){
@@ -239,6 +266,14 @@ class MyAccountController extends Controller
     
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
+            $user_data = [
+                'username' => $request->username,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'new_password' => $request->password,
+            ];
+            Mail::to($request->email)->send(new ForgotPasswordMail($user_data));
         }
     
         User::whereId(Auth::id())->update($data);

@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Order\CancelOrder;
+use App\Mail\Order\RefundOrder;
+use App\Mail\Order\CompleteOrder;
+
 use ZipArchive;
 
 class OrderController extends Controller
@@ -291,16 +296,23 @@ class OrderController extends Controller
 
     public function updateOrder(Request $request)
      {
+        $orderDetail = Order::whereId($request->order_id)->with('orderDetails.product','orderBillingShippingDetails')->first();
+       
         Order::whereId($request->order_id)->update(["order_status"=>$request->order_status]);
         $status = '';
         if($request->order_status == "0") {
           $status = "Processing";
         }elseif($request->order_status == "1"){
           $status = "Completed";
+          Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new CompleteOrder($orderDetail));
+
         }elseif($request->order_status == "2"){
           $status = "Cancelled";
+          Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new CancelOrder($orderDetail));
+
         }elseif($request->order_status == "3"){
           $status = "Refunded";
+          Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new RefundOrder($orderDetail));
         }
         Session::flash('success', 'Order '.$status .' successfully');
      }

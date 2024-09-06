@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterMail;
 
 class LoginController extends Controller
 {
@@ -23,7 +25,11 @@ class LoginController extends Controller
             ], 422);
         }
         $hashedPassword = Hash::make($request->password);
-        User::insert(['username'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
+        $user = User::insert(['username'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
+        if(isset($user) && !empty($user)){
+            $register = User::where(['email' =>$request->email])->first();
+            Mail::to('ashishyadav.avology@gmail.com')->send(new RegisterMail($register));
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'User registered successfully!'

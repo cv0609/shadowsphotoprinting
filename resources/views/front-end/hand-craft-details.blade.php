@@ -98,8 +98,8 @@
                 <li><a> Description</a></li>
             </ul>
             <div class="woocommerce-tabs">
-                <h2>Description</h2>
-               <p>{{ $productDetails->product_description ?? '' }}</p>
+                {{-- <h2>Description</h2> --}}
+               <p class="woocommerce-tabs-desc">{{ $productDetails->product_description ?? '' }}</p>
             </div>
         </div>
     </div>
@@ -153,6 +153,13 @@
 <script>
 
 $(document).ready(function() {
+
+    $('#product_qty').on('input', function() {
+        if ($(this).val().length > 4) {
+            $(this).val($(this).val().slice(0, 4));
+        }
+    });
+    
     var productId = "{{$productDetails->id}}";
 
     $('#addToCartBtn').click(function() {

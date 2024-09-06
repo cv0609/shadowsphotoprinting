@@ -1,5 +1,10 @@
+@php
+   $PageDataService = app(App\Services\PageDataService::class);
+   $index = $PageDataService->dashboard_index();
+@endphp
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name='robots' content='{{$index=='1' ? config('constant.dashboard_index.on') : config('constant.dashboard_index.off')}}' />
 {{-- <title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title> --}}
 <title>{{ html_entity_decode(ucfirst($page_content['meta_title']) ?? 'Default Title') }}</title>
 <meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
