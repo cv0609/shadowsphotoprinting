@@ -665,6 +665,7 @@ p.woocommerce-LostPassword.lost_password a {
 .login-popup .modal-header {
     border-bottom: 0;
     padding: 10px;
+    background-color: #16a085;
 }
 
 span.privacy-text {
