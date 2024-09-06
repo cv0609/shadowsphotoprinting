@@ -178,14 +178,16 @@ class PhotoForSaleController extends Controller
     {
         $slug = \Str::slug($request->product_title);
 
-        $size_arr = $request->size_arr['size'];
-        $type_arr = $request->type_arr['type'];
-        $price_arr = $request->price_arr['price'];
-        $type_size_count = $request->type_size_count['click_count'];
+        $size_arr = $request->size_arr['size'] ?? null;
+        $type_arr = $request->type_arr['type'] ?? null;
+        $price_arr = $request->price_arr['price'] ?? null;
+        $type_size_count = $request->type_size_count['click_count'] ?? null;
 
-        $validator = $this->PageDataService->photoForSaleDuplicateSizeTypeValidation($size_arr,$type_arr);
-        if(isset($validator)){
-            return response()->json(['error' => true,'message' => 'Duplicate entry']);
+        if(isset($size_arr,$type_arr,$price_arr,$type_size_count)){
+            $validator = $this->PageDataService->photoForSaleDuplicateSizeTypeValidation($size_arr,$type_arr);
+            if(isset($validator)){
+                return response()->json(['error' => true,'message' => 'Duplicate entry']);
+            }
         }
 
         $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
@@ -202,9 +204,9 @@ class PhotoForSaleController extends Controller
 
         PhotoForSaleProduct::whereId($request->product_id)->update($data);
 
+        PhotoForSaleSizePrices::where('product_id',$request->product_id)->delete();
         if(isset($size_arr) && isset($type_arr) && isset($price_arr) && isset($type_size_count)){
 
-            PhotoForSaleSizePrices::where('product_id',$request->product_id)->delete();
 
             $uniqueCombinations = [];
             foreach ($size_arr as $size_index => $size_data) {

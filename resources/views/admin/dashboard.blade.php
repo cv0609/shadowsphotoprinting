@@ -6,7 +6,7 @@
           <div class="right_col" role="main">
             <!-- top tiles -->
             <div class="row" style="display: inline-block;" >
-            <div class="tile_count">
+            <div class="tile_count new">
 
               <div class="col-md-4 col-sm-4 tile_stats_count">
                 <span class="count_top"> Total Blogs</span>
@@ -28,19 +28,35 @@
                 <div class="count ">{{ $orders }}</div>
                 {{-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> --}}
               </div>
+
+              {{-- <div class="col-md-4 col-sm-4 tile_stats_count">
+                <span class="count_top">Set Index</span>
+                <div class="count ">
+                  <input type="checkbox" id="set-index" @if($dashboard_index == '1') checked @endif>
+                </div>
+              </div> --}}
             </div>
-
-
           </div>
+
           <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+              <div class="set_indexing">
+                <h3>Set Indexing</h3>
+                <input type="checkbox" id="set-index" @if($dashboard_index == '1') checked @endif>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+
             <div class="col-md-12 col-sm-12 ">
               <div class="dashboard_graph">
                 <h1>Monthly Revenue</h1>
                 <canvas id="revenueChart"></canvas>
               </div>
             </div>
-
           </div>
+
           </div>
 
 
@@ -76,4 +92,25 @@
             });
         });
 </script>
+
+<script>
+  $(document).ready(function() {
+    $('#set-index').on('change', function() {
+        let isChecked = $(this).is(':checked') ? '1' : '0';
+        
+        $.ajax({
+            url: "{{route('admin.index')}}",  // The URL where your request is sent
+            method: 'GET',
+            data: { set_index: isChecked },
+            success: function(response) {
+                console.log(response.message); // Handle success response
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error); // Handle error response
+            }
+        });
+    });
+});
+</script>
+
 @endsection

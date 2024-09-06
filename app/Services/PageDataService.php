@@ -4,6 +4,7 @@ use App\Models\Blog;
 use App\Models\GiftCardCategory;
 use App\Models\ProductCategory;
 use App\Models\PhotoForSaleProduct;
+use App\Models\Admin;
 
 class PageDataService
 {
@@ -70,5 +71,13 @@ class PageDataService
             }
         }
         // dd($uniqueCombinations);
+    }
+
+    public function dashboard_index(){
+        $admin = Admin::all();
+        if(isset($admin) && !empty($admin)){
+            return $admin[0]->set_index;
+        }
+        return '0';
     }
 }

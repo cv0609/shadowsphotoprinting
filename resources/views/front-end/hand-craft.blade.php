@@ -58,7 +58,7 @@
                         <div class="clearfix kold">
 
                             <a href="{{ route('hand-craft-details',['slug'=>$product->slug]) }}">
-                                <div class="noflipper" id="image-div">`
+                                <div class="noflipper" id="image-div">
                                   <div class="product-animation">
                                      @foreach (explode(',',$product->product_image) as $key => $product_image)
                                        <img src="{{ asset($product_image) }}" alt="">

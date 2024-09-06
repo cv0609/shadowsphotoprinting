@@ -2094,6 +2094,10 @@ ul.tab-title::after {
     color: #fff;
 }
 
+.woocommerce-tabs .woocommerce-tabs-desc{
+    padding-top: 16px;
+}
+
 .onsale {
     position: absolute;
     bottom: 0;
