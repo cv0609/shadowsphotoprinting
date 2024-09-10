@@ -68,6 +68,18 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
     form.appendChild(fileInput);
 });
 
-$(".toggle_menu").click(function(){
-    $(".sidenavs").toggleClass("intro");
-  });
+
+
+// $(".toggle_menu").click(function(){
+//     $(".sidenavs").toggleClass("intro");
+//   });
+  
+
+$(document).ready(function () {
+    $(".toggle_menu").click(function () {
+        $(".sidenavs").addClass("intro");
+    });
+    $(".closebtn").click(function () {
+        $(".sidenavs").removeClass("intro");
+    });
+});
