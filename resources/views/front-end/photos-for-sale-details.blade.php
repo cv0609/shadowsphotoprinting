@@ -67,7 +67,7 @@
                                 <input type="hidden" id="product_price">
                                 <input type="hidden" id="product_min_max_price" value="{{$productDetails->min_price.','.$productDetails->max_price}}">
                                 <input type="hidden" id="product_image" value="{{$image1 ?? ''}}">
-                                <input type="hidden" id="product_id" value="{{$productDetails->id}}">
+                                <input type="hidden" id="product_id" value="{{$productDetails->id ?? ''}}">
 
                                 <div class="under">
                                         <div class="size-wrapper">
@@ -76,7 +76,7 @@
                                                 data-attribute_name="attribute_size" data-show_option_none="yes">
                                                 <option value="">Choose an option</option>
                                                 @foreach($uniqueSizeRecords as $item)
-                                                  <option value="{{$item->size_id}}" class="attached enabled">{{$item->getSizeById->name}}</option>
+                                                  <option value="{{$item->size_id ?? ''}}" class="attached enabled">{{$item->getSizeById->name}}</option>
                                                 @endforeach
                                             </select>
                                             <br>
@@ -108,7 +108,7 @@
                             <div class="product_meta">
                                 <span>SKU: N/A</span>
                                 <span class="posted_in">
-                                    Category: <a href="{{ route('photos-for-sale') }}">IMAGE, POMES AND QUOTES PHOTOS</a>
+                                    Category: <a href="{{ route('photos-for-sale') }}">IMAGE, POEMS AND QUOTES PHOTOS</a>
                                 </span>
                             </div>
                         </div>
@@ -125,10 +125,25 @@
             <ul class="tab-title">
                 <li><a> Description</a></li>
             </ul>
+
             <div class="woocommerce-tabs">
-                {{-- <h2>Description</h2> --}}
-                <p class="woocommerce-tabs-desc">{{$productDetails->product_description ?? ''}}</p>
+                <h2>Additional information</h2>
+                <p class="woocommerce-tabs-desc">
+                    <span class="woo-product-size">Size</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @foreach($uniqueSizeRecords as $key => $item)
+                        <i>{{ $item->getSizeById->name }}{{ $key != count($uniqueSizeRecords) - 1 ? ', ' : '' }}</i>
+                    @endforeach
+                </p>
+
+                <p class="woocommerce-tabs-desc">
+                    <span class="woo-product-size">Type</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @foreach($uniqueTyepeRecords as $key => $item)
+                        <i>{{ $item->getTypeById->name }}{{ $key != count($uniqueTyepeRecords) - 1 ? ', ' : '' }}</i>
+                    @endforeach
+                </p>
+
             </div>
+            
         </div>
     </div>
 </section>

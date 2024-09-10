@@ -135,6 +135,8 @@ Route::prefix('admin')->group(function () {
     });
 });
 
+Route::get('/forgot-password',[LoginController::class,'forgotPassword'])->name('forgot-password');
+Route::post('/forgot-save',[LoginController::class,'forgotSave'])->name('forgot-save');
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::post('/send-quote',[BasePagesController::class,'sendQuote'])->name('send-quote');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');

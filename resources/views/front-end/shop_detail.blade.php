@@ -170,7 +170,7 @@ function uncheck_img(counter) {
 
 
 $(document).ready(function() {
-    // Event delegation for dynamically added elements
+
     $(document).on('keyup change', "input[name=quantity]", function() {
         updateCartTotals();
     });
@@ -243,6 +243,13 @@ $(document).ready(function() {
                     });
                     $(".show-details").text("0.00");
                     $("#cart-total-itmes").children(".show-details").text("0");
+
+                    if ($('#add_to_cart_msg').length) {
+                        setTimeout(function() {
+                            // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
+                            $('#add_to_cart_msg').addClass('d-none');
+                        }, 2000);
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

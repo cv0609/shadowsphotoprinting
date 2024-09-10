@@ -37,7 +37,7 @@
                 <tr>
                     <td>
                         <p>
-                            Hi User
+                            Hi {{$data['username']}}
                         </p>
                     </td>
                 </tr>

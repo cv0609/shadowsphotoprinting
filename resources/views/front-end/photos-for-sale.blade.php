@@ -9,7 +9,13 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ url('shop') }}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
-                <span>images</span>
+                <span><a href="{{route('photos-for-sale')}}">images</a></span>
+                <span class="bc-delimiter">»</span>
+                <span>
+                    @foreach ($productCategories as $productCategory)
+                      {{ Request::url() == route('photos-for-sale', ['slug' => $productCategory->slug]) ? $productCategory->slug : '' }}
+                    @endforeach
+                </span>
             </div>
         </div>
     </div>
@@ -21,9 +27,8 @@
         <div class="subcate">
             <ul class="cstmlist">
                 @foreach ($productCategories as $productCategory)
-               
-                 <li class="central"> <a href="{{ route('photos-for-sale',['slug'=>$productCategory->slug]) }}">{{ ucfirst($productCategory->product_title) }}</a> </li>
-               @endforeach
+                 <li class="central"> <a href="{{ route('photos-for-sale',['slug'=>$productCategory->slug]) }}" target="_blank" class="{{ Request::url() == route('photos-for-sale', ['slug' => $productCategory->slug]) ? 'product-cat-active' : '' }}">{{ ucfirst($productCategory->product_title) }}</a> </li>
+                @endforeach
             </ul>
         </div>
     </div>
@@ -132,22 +137,22 @@
         });
 
         $(document).ready(function(){
-            $('.list-view').on('click',function(){
+            $('.list-view').on('click', function(){
                 $('.list-view-section').removeClass('d-none');
                 $('.grid-view-section').addClass('d-none');
                 $(this).addClass('active');
                 $('.grid-view').removeClass('active');
-                $('.paginations').addClass('d-none');
-            })
+                $('.paginations').removeClass('d-none'); // Ensure pagination is visible
+            });
 
-            $('.grid-view').on('click',function(){
+            $('.grid-view').on('click', function(){
                 $('.grid-view-section').removeClass('d-none');
                 $('.list-view-section').addClass('d-none');
                 $(this).addClass('active');
                 $('.list-view').removeClass('active');
-                $('.paginations').removeClass('d-none');
-            })
-        })
+                $('.paginations').removeClass('d-none'); // Ensure pagination is visible
+            });
+        });
 
 
 

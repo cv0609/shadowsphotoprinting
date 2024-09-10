@@ -42,6 +42,8 @@ ul {
 .main-page {
     background-color: rgba(0, 0, 0, 1);
     min-height: 100vh;
+    padding-bottom: 156px;
+    position: relative;
 }
 
 /* HEADER CSS */
@@ -169,6 +171,7 @@ ul.sub-menu {
 
 ul.sub-menu li a {
     color: #000;
+    text-transform: capitalize;
 }
 
 li.dropdown:hover ul.sub-menu {
@@ -555,8 +558,10 @@ section.restoration {
 footer.footer {
     background-color: #16a085;
     padding: 11px 0;
-    margin-top: 110px;
-
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .footercredits p {
@@ -569,6 +574,7 @@ footer.footer {
 .footercredits p a {
     color: #fff;
 }
+
 
 /*  popup*/
 .login-popup .modal-dialog.modal-dialog-centered {
@@ -665,6 +671,16 @@ p.woocommerce-LostPassword.lost_password a {
 .login-popup .modal-header {
     border-bottom: 0;
     padding: 10px;
+    /* background-color: #16a085; */
+}
+
+.login-register-modal-icon{
+   color: #ffc205;
+}
+
+.mag-pop-modal .mfp-close {
+    top: -44px;
+    color: #eee;
 }
 
 span.privacy-text {
@@ -1481,6 +1497,10 @@ section.subcategories ul.cstmlist li.central a:hover {
     background: #ffc719;
 }
 
+section.subcategories ul.cstmlist li.central .product-cat-active {
+    background: #ffc719;
+}
+
 .image_flip_back {
     display: block;
     -webkit-transform: translate(100%, 0);
@@ -2096,6 +2116,12 @@ ul.tab-title::after {
 
 .woocommerce-tabs .woocommerce-tabs-desc{
     padding-top: 16px;
+    padding-left: 10px;
+}
+
+.woocommerce-tabs .woocommerce-tabs-desc .woo-product-size{
+  color: #ffc205;
+  font-weight: 700;
 }
 
 .onsale {
@@ -4372,4 +4398,77 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
 
 .input-color input {
     background-color: white;
+}
+
+/* forgot password */
+
+.your-password {
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.receive_content p {
+    font-family: "Source Sans Pro";
+    line-height: 24px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    font-style: normal;
+    color: #ffc205;
+    font-size: 18px;
+}
+
+.receive_content label {
+    display: block;
+    font-family: "Source Sans Pro";
+    line-height: 24px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    font-style: normal;
+    color: #ffc205;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.receive_content input {
+    padding: 10px;
+    background: #e8f0fe;
+    outline: none;
+    border: none;
+    width: 100%;
+    max-width: 540px;
+    margin-bottom: 24px;
+}
+
+.receive_content button.reset_password {
+    -webkit-box-shadow: inset 0 0 0 0 transparent;
+    box-shadow: inset 0 0 0 0 transparent;
+    background-color: #16a085;
+    border: 0;
+    border-radius: 0;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 16px;
+    line-height: 24px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .1);
+    width: auto;
+    -webkit-transition: box-shadow .2s ease-in-out;
+    -o-transition: box-shadow .2s ease-in-out;
+    transition: box-shadow .2s ease-in-out;
+}
+
+.receive_content button.reset_password:hover {
+    box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
+}
+
+.login-popup button.btn-close {
+    filter: invert(1);
+    opacity: 1;
+}
+
+
+.billboard img {
+    cursor: pointer;
 }

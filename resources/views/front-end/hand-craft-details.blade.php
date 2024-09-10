@@ -80,7 +80,7 @@
                             <div class="product_meta">
                                 <span>SKU: N/A</span>
                                 <span class="posted_in">
-                                    Category: <a href="{{ route('hand-craft') }}">IMAGE, POMES AND QUOTES PHOTOS</a>
+                                    Category: <a href="{{ route('hand-craft') }}">IMAGE, POEMS AND QUOTES PHOTOS</a>
                                 </span>
                             </div>
                         </div>

@@ -43,7 +43,6 @@ class PagesController extends Controller
         else
          {
             $slug = end($segments);
-
          }
 
         // Default to 'home' if the slug is empty
@@ -85,7 +84,7 @@ class PagesController extends Controller
     return view('front-end/blog_detail',compact('blog_details','previousBlog','nextBlog','page_content'));
   }
 
-  public function PhotosForSale($slug = null)
+  public function PhotosForSale(Request $request,$slug = null)
   {
     $page_content = [];
 
@@ -101,8 +100,18 @@ class PagesController extends Controller
       $products = PhotoForSaleProduct::where('category_id',$caregory->id)->paginate(10);
     }
 
-
     $productCategories = PhotoForSaleCategory::get();
+
+    if (!empty($productCategories)) {
+      foreach ($productCategories as $productCategory) {
+          if ($request->url() == route('photos-for-sale', ['slug' => $productCategory->slug])) {
+              $page_content = [
+                  "meta_title" => $productCategory->slug . ' | Shadows Photo Printing',
+                  "meta_description" => config('constant.pages_meta.photos_for_sale.meta_description')
+              ];
+          }
+      }
+    }
 
 
     return view('front-end/photos-for-sale',compact('products','productCategories','page_content'));

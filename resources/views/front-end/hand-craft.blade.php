@@ -21,7 +21,7 @@
         <div class="subcate">
             <ul class="cstmlist">
                 @foreach ($productCategories as $productCategory)
-                   <li class="central"> <a href="{{ route('hand-craft',['slug'=>$productCategory->slug]) }}">{{ ucfirst($productCategory->name) }}</a> </li>
+                   <li class="central"> <a href="{{ route('hand-craft',['slug'=>$productCategory->slug]) }}" class="{{ Request::url() == route('hand-craft', ['slug' => $productCategory->slug]) ? 'product-cat-active' : '' }}">{{ ucfirst($productCategory->name) }}</a> </li>
                @endforeach
             </ul>
         </div>
