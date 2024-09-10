@@ -166,9 +166,9 @@
                         <div class="sets">
                             <a href="{{ route('photos-for-sale-details',['slug'=>$item->slug]) }}">
                             <div class="products-img">
-                                {{-- @foreach($imageArray as $arrImg) --}}
-                                    <img src="{{ asset($imageArray[0]) ?? ''}}" alt="">
-                                {{-- @endforeach --}}
+                                @foreach($imageArray as $arrImg)
+                                    <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                @endforeach
                                 <div class="onsale">
                                     <span>Sale!</span>
                                 </div>
