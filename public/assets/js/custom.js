@@ -67,3 +67,7 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
     fileInput.files = dataTransfer.files;
     form.appendChild(fileInput);
 });
+
+$(".toggle_menu").click(function(){
+    $(".sidenavs").toggleClass("intro");
+  });

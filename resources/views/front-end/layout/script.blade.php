@@ -84,6 +84,10 @@ $("#login").on('click',function(){
 
 })
 
+$(".toggle_menu").click(function(){
+  $(".sidenavs").toggleClass("intro");
+});
+
 
 function validateEmail(email) {
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
