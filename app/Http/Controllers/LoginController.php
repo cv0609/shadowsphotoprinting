@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use App\Mail\RegisterMail;
+use App\Mail\ForgotPasswordMail;
 
 class LoginController extends Controller
 {
@@ -57,5 +59,39 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect('/');
+    }
+
+    public function forgotPassword(){
+        $page_content = ["meta_title"=>config('constant.pages_meta.forgot_password.meta_title'),"meta_description"=>config('constant.pages_meta.forgot_password.meta_description')];
+        return view('front-end.forgot-password',compact('page_content'));
+    }
+
+    public function forgotSave(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+    
+        if (isset($user) && !empty($user)) {
+            $randomPassword = Str::random(6);
+    
+            $hashedPassword = Hash::make($randomPassword);
+    
+            $user->update(['password' => $hashedPassword]);
+
+            $data = [
+               'username' => $user->username,
+               'email' => $request->email,
+               'password' => $randomPassword
+            ];
+    
+            Mail::to($user->email)->send(new ForgotPasswordMail($data));
+    
+            return back()->with('success', 'A new password has been sent successfully. Please check your mail.');
+        } else {
+            return back()->with('error', 'Email not found.');
+        }
     }
 }

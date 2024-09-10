@@ -19,7 +19,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close mfp-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="woocommerce-notices-wrapper">
@@ -49,7 +49,7 @@
                                             <span>Remember me</span>
                                         </div>
                                         <p class="woocommerce-LostPassword lost_password">
-                                            <a href="#">Lost your password?</a>
+                                            <a href="{{route('forgot-password')}}">Lost your password?</a>
                                         </p>
                                     </form>
                                 </div>
@@ -82,8 +82,10 @@
                                             <p class="wrapper-personal-data-p">Your personal data will be used to support your experience
                                                 throughout
                                                 this website, to manage access to your account, and for other
-                                                purposes described in our <span class="privacy-text">privacy
-                                                    policy</span>.</p>
+                                                purposes described in our privacy
+                                                policy.</p>
+                                                {{-- <span class="privacy-text">privacy
+                                                    policy</span>. --}}
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <button type="button" id="user-register" class="login-btn">Register</button>

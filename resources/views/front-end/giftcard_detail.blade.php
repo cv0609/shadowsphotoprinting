@@ -132,6 +132,13 @@
 <script>
 
 $(document).ready(function() {
+
+    $('#quantity').on('input', function() {
+        if ($(this).val().length > 4) {
+            $(this).val($(this).val().slice(0, 4));
+        }
+    });
+
     $('#addToCartBtn').click(function() {
       
         var isValid = true;

@@ -4,19 +4,31 @@
    $PageDataService = app(App\Services\PageDataService::class);
    $products = $PageDataService->getProductBySlug($page_content['slug']);
    $CartService = app(App\Services\CartService::class);
-//    dd($page_content);
+//   dd($page_content['header_banner'][0]);
+// dd($page_content);
 @endphp
 
 
-<section class="poster-bnr">
+{{-- <section class="poster-bnr">
     <div class="banner-img">
-        @foreach ($page_content['header_banner'] as $poster_image)
-          <img src="{{ asset($poster_image) }}" alt="{{ pathinfo($poster_image, PATHINFO_FILENAME) }}">
-        @endforeach
+
+          <img src="{{ asset($page_content['header_banner'][0]) }}" alt="{{ pathinfo($page_content['header_banner'][0], PATHINFO_FILENAME) }}">
     </div>
     <div class="container">
         <div class="contact-bnr-text">
             <h2>{{ $page_content['header_title'] }}</h2>
+        </div>
+    </div>
+</section> --}}
+
+
+<section class="poster-bnr" style="background: url('{{ asset($page_content['header_banner'][0]) }}') no-repeat; background-position: center; background-size: cover;">
+    <div class="banner-img">
+        <img src="{{ asset($page_content['header_banner'][0]) }}" alt="{{ pathinfo($page_content['header_banner'][0], PATHINFO_FILENAME) }}">
+    </div>
+    <div class="container">
+        <div class="contact-bnr-text">
+            <h2>{{  $page_content['header_title'] }}</h2>
         </div>
     </div>
 </section>

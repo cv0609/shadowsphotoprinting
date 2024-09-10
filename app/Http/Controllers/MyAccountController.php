@@ -266,14 +266,6 @@ class MyAccountController extends Controller
     
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
-            $user_data = [
-                'username' => $request->username,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'new_password' => $request->password,
-            ];
-            Mail::to($request->email)->send(new ForgotPasswordMail($user_data));
         }
     
         User::whereId(Auth::id())->update($data);

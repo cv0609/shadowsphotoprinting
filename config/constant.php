@@ -70,6 +70,10 @@ return
          'editAddress' =>[
             'meta_title' =>'Edit address | Shadows Photo Printing',
             'meta_description' => ''
+         ],
+         'forgot_password' =>[
+            'meta_title' =>'Edit address | Shadows Photo Printing',
+            'meta_description' => ''
          ]
       ],
       'order' => [
