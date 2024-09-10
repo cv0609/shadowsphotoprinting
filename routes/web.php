@@ -181,6 +181,8 @@ Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account/edit-address/{slug}', [MyAccountController::class, 'editAddress'])->name('edit-address');
     Route::post('/my-account/edit-save-address', [MyAccountController::class, 'editSaveAddress'])->name('edit-save-address');
     Route::post('/my-account/account-details-save', [MyAccountController::class, 'saveAccountDetails'])->name('account-details-save');
+
+    Route::post('/my-account/update-pic', [MyAccountController::class, 'updateProfilePic'])->name('profile.update-pic');
 });
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);

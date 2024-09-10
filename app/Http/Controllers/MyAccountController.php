@@ -272,4 +272,24 @@ class MyAccountController extends Controller
     
         return redirect()->back()->with('success', 'Account details updated successfully.');
     }    
+
+    public function updateProfilePic(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = 'assets/images/profile/'.$filename;
+            $file->move(public_path('assets/images/profile'), $filename);
+            $user->image = $path;
+            $user->save();
+        }
+
+        return back()->with('success', 'Profile picture updated successfully.');
+    }
 }
