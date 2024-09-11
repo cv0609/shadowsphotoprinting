@@ -77,8 +77,8 @@ $ProductCategories = $PageDataService->getProductCategories();
                     <div class="row">
                        @foreach ($ProductCategories as $ProductCategory)
                         <div class="col-lg-3 col-md-6">
-                            <div class="product-categories">
-                                <a href="{{ url('our-products/'.$ProductCategory->slug) }}">
+                            <div class="product-categories dfdf">
+                                <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">
                                     <img src="{{ (isset($ProductCategory->image) && !empty($ProductCategory->image)) ? asset($ProductCategory->image) : asset('assets/admin/images/dummy-image.jpg')}}" alt="">
                                     <span>{{ ucfirst($ProductCategory->name) }}</span>
                                 </a>

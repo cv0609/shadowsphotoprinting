@@ -7,10 +7,6 @@
 <section class="coupon-main">
     <div class="container">
         <div class="coupon-inner">
-            {{-- <div class="coupon-wrapper">
-                <p> Returning customer? <a href="#">Click here to login</a> </p>
-                <p> Have a coupon? <a href="#">Click here to enter your code</a> </p>
-            </div> --}}
             <div class="billing-row">
                 <div class="row">
                     <div class="col-lg-6">
@@ -319,7 +315,7 @@
                                     <div class="experience-throughout">
                                         <p>Your personal data will be used to process your order, support your
                                             experience throughout this website, and for other purposes described
-                                            in our <a href="#" target="_blank">privacy policy</a>.</p>
+                                            in our privacy policy.</p>
                                         <div class="place-order" id="place-order-btn">
                                             <button id="submit"> Place order </button>
                                         </div>
@@ -337,7 +333,7 @@
             </div>
         </div>
     </div>
- </div>
+ {{-- </div> --}}
 </section>
 @endsection
 @section('scripts')

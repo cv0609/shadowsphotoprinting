@@ -51,7 +51,8 @@
                               @endif
 
                             </p>
-                              <p>Lost your password? Please enter your username or email address. You will
+                              <p>Lost your password? </p>
+                              <p>Please enter your username or email address. You will
                                   receive a link to create a new password via email.</p>
                           </div>
                           <div class="receive_content">

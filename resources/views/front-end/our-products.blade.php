@@ -24,9 +24,9 @@
                     @foreach ($ProductCategories as $productCategory)
                         <div class="col-lg-3 col-md-6 ">
                             <div class="product-categories">
-                                <a  href="{{ url('our-products/'.$productCategory->slug)}}">
+                                <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($productCategory->name)))}}">
                                     <img src="{{(isset($productCategory['image']) && !empty($productCategory['image'])) ? asset($productCategory['image'])  : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image">
-                                    <span>{{ $productCategory['name'] }}</span>
+                                    <span>{{ ucfirst($productCategory['name']) }}</span>
                                 </a>
                             </div>
                         </div>
