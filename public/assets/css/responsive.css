@@ -324,6 +324,13 @@ ul.sub-menu {
 }
 
 @media only screen and (max-width: 767px) {
+    button#update_cart {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .tinymce ol {
+        padding: 0 15px;
+    }
     .contact-bnr-text h2 {
         font-size: 55px;
     }
