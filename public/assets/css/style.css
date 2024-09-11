@@ -4624,3 +4624,6 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .details_product-crlf {
         width: 73%;
     }
+    select#category {
+        color: #000;
+    }
