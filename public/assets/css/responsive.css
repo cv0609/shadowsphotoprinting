@@ -50,19 +50,17 @@
 
         display: none;
     }
-
     .sidenavs {
-        position: relative;
         width: 0;
+        position: fixed;
         top: 0;
         right: 0;
         display: inline-block;
-        background-color: #16a085;
+        background-color: #444;
         height: 100vh;
         transition: all 0.3s;
         z-index: 9999999;
-        padding-top: 45px;
-        transform: translateX(-110%);
+        padding-top: 0;
     }
    
     .intro.sidenavs {
@@ -168,7 +166,7 @@
         margin-bottom: 5%;
     }
     .sidenavs[style="width: 290px;"] span.closebtn {
-        right: 10px;
+        left: -40px;
     }
 
     .Product-box {
@@ -298,9 +296,7 @@
         height: 370px;
     }
 
-    .sidenavs ul {
-        display: none;
-    }
+  
     .outside-second {
     height: 0;
     }
@@ -312,21 +308,31 @@
 display:block
 }
 
-.intro.sidenavs ul {
-    display: block;
-    background-color: #16a085;
+
+.search-box {
+    width: calc(100% - 20px);
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
-
-
+span.cart-extras-title {
+    display: none;
+}
+ul.sub-menu {
+    display: none ;
+}
 }
 
 @media only screen and (max-width: 767px) {
     .contact-bnr-text h2 {
         font-size: 55px;
     }
-
+    .product-categories a span {
+        padding: 10px 20px;
+    }
     .margin-small li.type-product {
         width: 100%;
+
     }
 
     li.type-product {
