@@ -262,7 +262,7 @@
     .orders-wrapper table {
         width: 100%;
         margin-bottom: 10px;
-        min-width: 600px;
+        min-width: 900px;
     }
 
     .next-btn {
@@ -353,9 +353,9 @@ ul.sub-menu {
     .restoration-content p a {
         font-size: 24px;
     }
-    .main-page {
+    /* .main-page {
         padding-bottom: 110px;
-    }
+    } */
     .blog-heading h2 {
         font-size: 35px;
   }
@@ -385,10 +385,19 @@ ul.sub-menu {
     .product-animation {
         height: 320px;
     }
-
+    .description-wrapper .row {
+        display: block;
+    }
+    .description-wrapper .row .col-lg-6 {
+        width: 100% !important;
+    }
 }
 
 @media only screen and (max-width: 575px) {
+    span.kt-cart-total {
+        width: 17px;
+        height: 17px;
+    }
     .breadcrumbs-wrapper span {
         padding-bottom: 10px;
         display: inline-block;
@@ -396,7 +405,9 @@ ul.sub-menu {
     .contact-bnr-text h2 {
         font-size: 45px;
     }
-
+    .toggle-bar {
+           font-size: 24px;
+    }
     .slider.slider-nav .slick-list.draggable .slick-slide {
         float: left;
     }
@@ -500,9 +511,9 @@ ul.sub-menu {
     .footercredits p {
         font-size: 14px;
     }
-    .main-page {
+    /* .main-page {
         padding-bottom: 100px;
-    }
+    } */
     .restoration-img {
         overflow: hidden;
         height: 220px;
