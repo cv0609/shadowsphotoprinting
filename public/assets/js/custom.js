@@ -64,22 +64,7 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
     all_images.forEach(function(file) {
         dataTransfer.items.add(file);
     });
+ 
     fileInput.files = dataTransfer.files;
     form.appendChild(fileInput);
-});
-
-
-
-// $(".toggle_menu").click(function(){
-//     $(".sidenavs").toggleClass("intro");
-//   });
-  
-
-$(document).ready(function () {
-    $(".toggle_menu").click(function () {
-        $(".sidenavs").addClass("intro");
-    });
-    $(".closebtn").click(function () {
-        $(".sidenavs").removeClass("intro");
-    });
 });
