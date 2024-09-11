@@ -142,6 +142,18 @@
                     </div>
                 </div>
             </div>
+
+            <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="add_to_cart_toast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Item added to cart successfully!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>          
+
         </section>
 @endsection
 @section('scripts')
@@ -234,8 +246,11 @@ $(document).ready(function() {
                 },
                 success: function(response) {
 
-                    $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
-                    $('#add_to_cart_msg').removeClass('d-none');
+                    var toastElement = new bootstrap.Toast(document.getElementById('add_to_cart_toast')); 
+                    toastElement.show();
+
+                    // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
+                    // $('#add_to_cart_msg').removeClass('d-none');
                     $('.kt-cart-total').text(response.count);
 
                     $("input[name=quantity]").each(function() {
@@ -244,12 +259,12 @@ $(document).ready(function() {
                     $(".show-details").text("0.00");
                     $("#cart-total-itmes").children(".show-details").text("0");
 
-                    if ($('#add_to_cart_msg').length) {
-                        setTimeout(function() {
-                            // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
-                            $('#add_to_cart_msg').addClass('d-none');
-                        }, 2000);
-                    }
+                    // if ($('#add_to_cart_msg').length) {
+                    //     setTimeout(function() {
+                    //         // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
+                    //         $('#add_to_cart_msg').addClass('d-none');
+                    //     }, 2000);
+                    // }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);

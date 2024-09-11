@@ -54,7 +54,7 @@
                                                 @endphp
                                         
                                                 <tr>
-                                                    <td><a href="view-order-13873.html" class="orders">#{{$value->order_number ?? ''}}</a></td>
+                                                    <td><a href="{{ route('view-order',['order_id' => $value->id]) }}" class="orders">#{{$value->order_number ?? ''}}</a></td>
                                                     <td>{{ date('F j, Y', strtotime($value->created_at ?? '')) }}</td>
                                                     <td>{{ $status }}</td>
                                                     <td><span>${{ $value->total ?? '' }} for {{ $value->order_details_count ?? '' }} item</span></td>
