@@ -42,7 +42,6 @@ ul {
 .main-page {
     background-color: rgba(0, 0, 0, 1);
     min-height: 100vh;
-    padding-bottom: 100px;
     position: relative;
 }
 
@@ -486,6 +485,7 @@ section.custom-size {
     color: #0d6c5a;
     text-align: center;
     font-weight: 600;
+    text-transform: capitalize;
 }
 
 .product-categories a img {
@@ -563,7 +563,6 @@ section.restoration {
 footer.footer {
     background-color: #16a085;
     padding: 11px 0;
-    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
@@ -4392,7 +4391,7 @@ input:checked+.slider:before {
 }
 
 section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img {
-    max-width: 141px;
+    width: 141px;
     height: 141px;
     object-fit: cover;
 }
@@ -4575,7 +4574,6 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
 
     .billboard {padding: 0px 30px;}
 
-    .chirs {}
 
     .chirs .slick-slide {
     width: auto!important;
@@ -4591,4 +4589,38 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     padding:0
     }
 
-
+    .kad-account .kad-max {
+        max-width: 120px;
+        height: 120px;
+        width: 100%;
+    }
+    
+    .kad-account .kad-max img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .main-page {
+        padding-bottom: 100px;
+    }
+    
+    footer.footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+    .quanti a i {
+        margin-left: 8px;
+    }
+    span.show-details {
+        padding: 4px;
+    }
+    .instock-udik {
+        width: 25%;
+    }
+    
+    .details_product-crlf {
+        width: 73%;
+    }

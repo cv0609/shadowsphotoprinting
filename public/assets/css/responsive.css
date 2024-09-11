@@ -50,19 +50,17 @@
 
         display: none;
     }
-
     .sidenavs {
-        position: relative;
         width: 0;
+        position: fixed;
         top: 0;
         right: 0;
         display: inline-block;
-        background-color: #16a085;
+        background-color: #444;
         height: 100vh;
         transition: all 0.3s;
         z-index: 9999999;
-        padding-top: 45px;
-        transform: translateX(-110%);
+        padding-top: 0;
     }
    
     .intro.sidenavs {
@@ -168,7 +166,7 @@
         margin-bottom: 5%;
     }
     .sidenavs[style="width: 290px;"] span.closebtn {
-        right: 10px;
+        left: -40px;
     }
 
     .Product-box {
@@ -264,7 +262,7 @@
     .orders-wrapper table {
         width: 100%;
         margin-bottom: 10px;
-        min-width: 600px;
+        min-width: 900px;
     }
 
     .next-btn {
@@ -298,9 +296,7 @@
         height: 370px;
     }
 
-    .sidenavs ul {
-        display: none;
-    }
+  
     .outside-second {
     height: 0;
     }
@@ -312,21 +308,31 @@
 display:block
 }
 
-.intro.sidenavs ul {
-    display: block;
-    background-color: #16a085;
+
+.search-box {
+    width: calc(100% - 20px);
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
-
-
+span.cart-extras-title {
+    display: none;
+}
+ul.sub-menu {
+    display: none ;
+}
 }
 
 @media only screen and (max-width: 767px) {
     .contact-bnr-text h2 {
         font-size: 55px;
     }
-
+    .product-categories a span {
+        padding: 10px 20px;
+    }
     .margin-small li.type-product {
         width: 100%;
+
     }
 
     li.type-product {
@@ -347,9 +353,9 @@ display:block
     .restoration-content p a {
         font-size: 24px;
     }
-    .main-page {
+    /* .main-page {
         padding-bottom: 110px;
-    }
+    } */
     .blog-heading h2 {
         font-size: 35px;
   }
@@ -379,10 +385,19 @@ display:block
     .product-animation {
         height: 320px;
     }
-
+    .description-wrapper .row {
+        display: block;
+    }
+    .description-wrapper .row .col-lg-6 {
+        width: 100% !important;
+    }
 }
 
 @media only screen and (max-width: 575px) {
+    span.kt-cart-total {
+        width: 17px;
+        height: 17px;
+    }
     .breadcrumbs-wrapper span {
         padding-bottom: 10px;
         display: inline-block;
@@ -390,7 +405,9 @@ display:block
     .contact-bnr-text h2 {
         font-size: 45px;
     }
-
+    .toggle-bar {
+           font-size: 24px;
+    }
     .slider.slider-nav .slick-list.draggable .slick-slide {
         float: left;
     }
@@ -494,9 +511,9 @@ display:block
     .footercredits p {
         font-size: 14px;
     }
-    .main-page {
+    /* .main-page {
         padding-bottom: 100px;
-    }
+    } */
     .restoration-img {
         overflow: hidden;
         height: 220px;
