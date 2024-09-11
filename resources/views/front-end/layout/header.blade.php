@@ -26,7 +26,8 @@
                                             <div class="kt-woo-account-nav">
                                                 <div class="kad-account-avatar">
                                                     <div class="kad-customer-image">
-                                                        <img src="{{asset('assets/images/profile-img.png')}}" alt="user">
+                                                        {{-- <img src="{{asset('assets/images/profile-img.png')}}" alt="user"> --}}
+                                                        <img src="{{(!empty(Auth::user()->image)) ? asset(Auth::user()->image) : asset('assets/images/profile-img.png') }}" alt="user_img">
                                                     </div>
                                                     <div class="kad-customer-name">
                                                         <h5> {{ Auth::user()->username ?? ''}} </h5>

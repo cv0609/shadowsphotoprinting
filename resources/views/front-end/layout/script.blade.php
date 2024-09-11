@@ -84,9 +84,23 @@ $("#login").on('click',function(){
 
 })
 
+$(".toggle_menu").click(function(){
+  $(".sidenavs").toggleClass("intro");
+});
+
 
 function validateEmail(email) {
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+$(document).ready(function () {
+    $(".toggle_menu").click(function () {
+        $(".sidenavs").addClass("intro");
+    });
+    $(".closebtn").click(function () {
+        $(".sidenavs").removeClass("intro");
+    });
+});
+
 </script>
