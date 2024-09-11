@@ -18,9 +18,9 @@
         style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
         <table width="100%" cellspacing="0">
-            <tr style="padding: 20px; text-align: center; color: #ffffff;">
+            <tr style="padding: 20px; text-align: center; color: #ffffff;background:black;">
                 <td style="padding: 10px;">
-                    <a href="{{env('SITE_DOMAIN')}}" target="_blank"> <img src="{{ env('SITE_DOMAIN') }}{{asset('assets/images/logo.png')}}" alt="logo"
+                    <a href="{{env('SITE_DOMAIN')}}" target="_blank"> <img src="{{ env('SITE_DOMAIN') }}assets/images/logo.png" alt="logo"
                             style="max-width: 150px; width:100%;">
                     </a>
                 </td>

@@ -36,7 +36,7 @@
                 <div class="results-count">
                     <p> Showing all {{count($products)}} results</p>
                 </div>
-                <div class="kad-woo-ordering">
+                {{-- <div class="kad-woo-ordering">
                     <form method="get">
                         <select name="orderby" class="orderby" aria-label="Shop order">
                             <option value="menu_order" selected="selected">Default sorting</option>
@@ -46,7 +46,7 @@
                             <option value="price-desc">Sort by price: high to low</option>
                         </select>
                     </form>
-                </div>
+                </div> --}}
                 <div class="product-toggleouter">
                     <span class="grid-view active"><i class="fa fa-th" aria-hidden="true"></i> </span>
                     <span class="list-view"><i class="fa fa-bars" aria-hidden="true"></i> </span>

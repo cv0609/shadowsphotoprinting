@@ -484,7 +484,7 @@ section.custom-size {
     width: 100%;
     color: #0d6c5a;
     text-align: center;
-    font-weight: 600;
+    /* font-weight: 600; */
     text-transform: capitalize;
 }
 
@@ -4305,13 +4305,19 @@ section.product_item-clearfix.photo-for-sale .details_product-crlf a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1050; /* Ensure it's above other elements */
+    z-index: 1050;
 }
 
-/* Optionally increase padding and styling */
+/* Customize the toast background color and text color */
 .toast {
+    background-color: #16a085 !important; /* Custom background color */
+    color: white !important; /* Custom text color */
     min-width: 300px; /* Set a minimum width if needed */
     text-align: center; /* Center text inside the toast */
+}
+
+.btn-close-white {
+    filter: invert(1); /* Change the close button to white */
 }
 
 /* .slider {
