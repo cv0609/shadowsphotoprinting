@@ -1,11 +1,25 @@
 <div class="col-md-3">
     <div class="kad-account">
         <div class="kad-max">
-            <img src="{{asset('assets/images/profile-img.png')}}" alt="">
-            <a href="#" class="kt-link-to-gravatar">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span class="kt-profile-photo-text">Update Profile Photo </span>
-            </a>
+            
+            {{-- <img src="{{asset('assets/images/profile-img.png')}}" alt=""> --}}
+
+            <img src="{{(!empty(Auth::user()->image)) ? asset(Auth::user()->image) : asset('assets/images/profile-img.png') }}" alt="user_img">
+
+            <form id="profile-pic-form" action="{{ route('profile.update-pic') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" id="profile-pic-input" name="profile_picture" style="display: none;" accept="image/*" onchange="document.getElementById('profile-pic-form').submit()">
+                
+                <!-- Clicking the icon will trigger the file input click event -->
+                <a href="javascript:void(0);" class="kt-link-to-gravatar" onclick="document.getElementById('profile-pic-input').click();">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="kt-profile-photo-text">Update Profile Photo</span>
+                </a>
+            </form>
+            
+            
+
+
         </div>
     </div>
     <div class="MyAccount-navigation">

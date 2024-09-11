@@ -52,20 +52,25 @@
     }
 
     .sidenavs {
+        position: relative;
         width: 0;
         top: 0;
         right: 0;
         display: inline-block;
-        background-color: #444;
+        background-color: #16a085;
         height: 100vh;
         transition: all 0.3s;
         z-index: 9999999;
         padding-top: 45px;
+        transform: translateX(-110%);
     }
-
-    .sidenavs[style="width: 290px;"] {
+   
+    .intro.sidenavs {
         box-shadow: 0 0 0 100vmax #000000a3;
 
+    }
+    .intro.sidenavs{
+        transform: translateX(0);
     }
 
     .second-clearfix ul li a {
@@ -97,7 +102,7 @@
         top: 0px;
         font-size: 32px;
     }
-
+   
     .navigation div#mySidenavs ul {
         display: block;
     }
@@ -145,7 +150,9 @@
         opacity: 1;
         visibility: visible;
         display: none;
+     background-color: #16a085;;
     }
+  
 
     li.dropdown:hover ul.sub-menu {
         display: block;
@@ -161,7 +168,7 @@
         margin-bottom: 5%;
     }
     .sidenavs[style="width: 290px;"] span.closebtn {
-        left: -40px;
+        right: 10px;
     }
 
     .Product-box {
@@ -306,11 +313,9 @@ display:block
 }
 
 .intro.sidenavs ul {
-display: block;
+    display: block;
+    background-color: #16a085;
 }
-
-
-
 
 
 }

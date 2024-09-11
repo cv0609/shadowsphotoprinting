@@ -90,7 +90,17 @@ $(".toggle_menu").click(function(){
 
 
 function validateEmail(email) {
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+$(document).ready(function () {
+    $(".toggle_menu").click(function () {
+        $(".sidenavs").addClass("intro");
+    });
+    $(".closebtn").click(function () {
+        $(".sidenavs").removeClass("intro");
+    });
+});
+
 </script>
