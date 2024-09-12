@@ -34,7 +34,7 @@
 
                                     @foreach($imageArray as $arrImg)
                                         <div>
-                                            <div class="billboard">
+                                            <div class="billboard product-img">
                                                 <img src="{{ asset($arrImg) ?? ''}}" alt="">
                                             </div>
                                         </div>
@@ -196,8 +196,19 @@
 <script>
 
 var photoForSaleSizePricesData = @json($photoForSaleSizePricesData);
+
 $(document).ready(function() {
-    console.log(photoForSaleSizePricesData);
+
+    $(".product-img").on('click',function(){
+        $("#modal-img").attr('src',$(this).children('img').attr('src'));
+        $("#ImgViewer").modal('show');
+    });
+
+    $("#modal-close").on('click',function(){
+        $("#ImgViewer").modal('hide');
+    })
+
+    
     var productId = "{{$productDetails->id}}";
 
 //    $('#product_type').on('change',function(){
@@ -366,16 +377,16 @@ $(document).ready(function() {
  <script>
     $('.responsive').slick({
         dots: true,
-        infinite: false,
+        infinite: true,
         speed: 300,
         slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToScroll: 1,
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
                     infinite: true,
                     dots: true
                 }

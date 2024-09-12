@@ -34,7 +34,7 @@
 
                                     @foreach($imageArray as $arrImg)
                                         <div>
-                                            <div class="billboard">
+                                            <div class="billboard product-img">
                                                 <img src="{{ asset($arrImg) ?? ''}}" alt="">
                                             </div>
                                         </div>
@@ -154,6 +154,15 @@
 
 $(document).ready(function() {
 
+    $(".product-img").on('click',function(){
+        $("#modal-img").attr('src',$(this).children('img').attr('src'));
+        $("#ImgViewer").modal('show');
+    });
+
+    $("#modal-close").on('click',function(){
+        $("#ImgViewer").modal('hide');
+    })
+
     $('#product_qty').on('input', function() {
         if ($(this).val().length > 4) {
             $(this).val($(this).val().slice(0, 4));
@@ -252,16 +261,16 @@ $(document).ready(function() {
  <script>
     $('.responsive').slick({
         dots: true,
-        infinite: false,
+        infinite: true,
         speed: 300,
         slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToScroll: 1,
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
                     infinite: true,
                     dots: true
                 }

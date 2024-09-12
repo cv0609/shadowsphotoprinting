@@ -11,6 +11,19 @@
     </div>
 </footer>
 
+<div id="ImgViewer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" id="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <img src="" alt="image" id="modal-img">
+        </div>
+      </div>
+    </div>
+</div>
+
 <div class="login-popup">
     <div class="modal" id="login-form">
         <div class="modal-dialog modal-dialog-centered">

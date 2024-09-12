@@ -129,7 +129,7 @@ $ProductCategories = $PageDataService->getProductCategories();
                             </div>
                             <div class="col-lg-6">
                                 <div class="restoration-content">
-                                    <h2>{{ $page_content['accept_bulk_order_description'] }}</h2>
+                                    <h2>{{ ucwords($page_content['accept_bulk_order_description']) }}</h2>
                                     {{-- <h2>We accept bulk orders for</h2> --}}
                                     <p>
                                         @foreach ($ProductCategories as $ProductCategory)
