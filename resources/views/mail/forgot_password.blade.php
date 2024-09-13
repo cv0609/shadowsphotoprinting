@@ -44,7 +44,10 @@
                 <tr>
                     <td>
                         <p style="margin: 5px 0;">
-                            Your password: <a href="#" target="_blank" style="color: #1b9c83;">{{$data['password']}}</a>
+                            You requested to reset your password. Click the link below to reset it:
+                        </p>
+                        <p>
+                            <a style = "color: white;background: #1b9c83;padding: 8px;text-decoration: none;" href="{{$data['resetUrl']}}" target="_blank" style="color: #1b9c83;">Reset Password</a>
                         </p>
                     </td>
                   
@@ -53,7 +56,7 @@
                 <tr>
                     <td>
                         <p>
-                            If you didn’t request this, please ignore this email.
+                            This link will expire in 24 hours.
                         </p>
                     </td>
                 </tr>

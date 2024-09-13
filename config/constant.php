@@ -71,15 +71,27 @@ return
             'meta_title' =>'Edit address | Shadows Photo Printing',
             'meta_description' => ''
          ],
-         'forgot_password' =>[
-            'meta_title' =>'Edit address | Shadows Photo Printing',
-            'meta_description' => ''
-         ]
       ],
       'order' => [
             'thankyou' =>[
                'meta_title' =>'Thank you | Shadows Photo Printing',
                'meta_description' => ''
             ]
+      ],
+      'forgot' => [
+          'forgot_password' =>[
+            'meta_title' =>'Forgot password | Shadows Photo Printing',
+            'meta_description' => ''
+         ],
+         'reset_password' =>[
+            'meta_title' =>'Reset password | Shadows Photo Printing',
+            'meta_description' => ''
+         ]
+      ],
+      'email_verify' => [
+            'verify' =>[
+              'meta_title' =>'Email verification | Shadows Photo Printing',
+              'meta_description' => ''
+           ]
       ]
 ];
