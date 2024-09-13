@@ -136,6 +136,10 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/forgot-password',[LoginController::class,'forgotPassword'])->name('forgot-password');
+Route::get('/email-verify',[LoginController::class,'emailVerify'])->name('email.verify');
+Route::post('/email-verification',[LoginController::class,'emailVerification'])->name('email-verification');
+Route::post('/reset-password-save',[LoginController::class,'resetPasswordSave'])->name('reset-password-save');
+Route::get('/password-reset', [LoginController::class, 'resetPasswordForm'])->name('password.reset');
 Route::post('/forgot-save',[LoginController::class,'forgotSave'])->name('forgot-save');
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
 Route::post('/send-quote',[BasePagesController::class,'sendQuote'])->name('send-quote');

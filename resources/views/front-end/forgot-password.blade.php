@@ -52,12 +52,12 @@
 
                             </p>
                               <p>Lost your password? </p>
-                              <p>Please enter your username or email address. You will
+                              <p>Please enter your email address. You will
                                   receive a link to create a new password via email.</p>
                           </div>
                           <div class="receive_content">
-                              <label>Username or email</label>
-                              <input type="text" name="email" id="email" autocomplete="off">
+                              <label>Email</label>
+                              <input type="text" name="email" id="email" autocomplete="off" placeholder="Enter your email">
 
                               @if($errors->has('email'))
                                 <p class="error-message" style="color: red;">{{ $errors->first('email') }}</p>

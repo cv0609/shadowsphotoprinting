@@ -37,14 +37,22 @@
                 <tr>
                     <td>
                         <p>
-                            Hi {{$register->username ?? ''}}
+                            Hi {{$register['username'] ?? ''}}
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <p style="margin: 5px 0;">
-                            Your new account has been created. Log in here to get started: <a href="shadowsphotoprinting.com.au!" target="_blank" style="color: #1b9c83;">shadowsphotoprinting.com.au!</a>
+                            Your account has been created. Please click the link below to verify your email:
+                        </p>
+                        <p>
+                        <a 
+                            style="color: white; background: #1b9c83; padding: 8px; text-decoration: none; border-radius: 4px;" 
+                            href="{{ $register['email_verify_url'] }}" 
+                            target="_blank">
+                            Click here to verify email
+                        </a>
                         </p>
                     </td>
                   

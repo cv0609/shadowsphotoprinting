@@ -36,8 +36,8 @@ $("#user-register").on('click',function(){
         })
         .done(function(res) {
             if(res.status === 'success') {
-                $('#register-success').html('User registered successfully');
-                location.reload();
+                $('#register-success').html('Registration successful. A verification email has been sent.');
+                // location.reload();
             }
         })
         .fail(function(xhr) {
@@ -71,13 +71,17 @@ $("#login").on('click',function(){
         .done(function(res) {
             if(res.status === 'success') {
                 $('#register-success').html('User login successfully');
-                location.reload();
+                window.location.href = "{{ url('home') }}";
             }
         })
         .fail(function(xhr) {
 
             if(xhr.status == 422) {
                 $("#login-error").removeClass('d-none').html('Invalid email or password');
+            }
+
+            if(xhr.status == 403) {
+                $("#login-error").removeClass('d-none').html('Please verify your email address before logging in');
             }
         });
       }

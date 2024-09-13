@@ -29,7 +29,7 @@ class ForgotPasswordMail extends Mailable
     public function build()
     {
         return $this->from(env('APP_MAIL'))
-            ->subject('Forgot password.')
+            ->subject('Password Reset Link')
             ->view('mail.forgot_password')
             ->with('data', $this->data);
     }
