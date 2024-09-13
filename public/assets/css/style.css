@@ -505,6 +505,24 @@ section.restoration {
     margin-top: 48px;
 }
 
+.nosidebar .token-expired-msg{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    /* background-color: #f8d7da;  */
+    padding: 20px;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px; /* Adjust the font size as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+}
+
+.already-verified{
+    color: #16a085 !important;
+}
+
 .restoration-content h2 {
     font-family: "Source Sans Pro";
     line-height: 40px;

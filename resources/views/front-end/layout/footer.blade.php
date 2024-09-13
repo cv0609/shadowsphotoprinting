@@ -47,11 +47,10 @@
                                             <label for="username-pop">Username or email address *</label>
                                             <input type="text" name="name" id="login-name" placeholder="Enter username">
                                             <span class="text-danger d-none error" id="login-name-error"></span>
-
                                         </div>
                                         <div class="woocommerce-wrapper">
                                             <label for="username-pop">Password*</label>
-                                            <input type="text" name="password" id="login-password" placeholder="Enter password">
+                                            <input type="password" name="password" id="login-password" placeholder="Enter password">
                                             <span class="text-danger d-none error" id="login-email-error"></span>
                                         </div>
                                         <div class="woocommerce-wrapper">
