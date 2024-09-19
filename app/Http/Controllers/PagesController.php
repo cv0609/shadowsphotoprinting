@@ -68,6 +68,49 @@ class PagesController extends Controller
       }
   }
 
+  public function pages2(Request $request)
+  {
+    // Get the full path
+        $path = $request->path();
+
+        // Extract the last segment
+        $segments = explode('/', $path);
+        if(in_array('our-products',$segments) && end($segments) != 'our-products')
+          {
+            $slug = ProductCategory::where('name',str_replace('-',' ',end($segments)))->select('slug')->first();
+
+            $slug = $slug['slug'];
+
+          }
+        else
+         {
+            $slug = end($segments);
+         }
+
+        // Default to 'home' if the slug is empty
+        if (empty($slug)) {
+            $slug = 'home';
+        }
+        
+      $page_info = Page::where('slug','home')->with('pageSections')->first();
+
+      if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
+      {
+        $page_content = json_decode($page_info->pageSections['content'],true);
+        $page_content['slug'] = $page_info['slug'];
+
+        if($page_info['is_product_page'] == '1'){
+             return view('front-end/common-product',compact('page_content','page_info'));
+        }else{
+          return view('front-end/'.$slug,compact('page_content','page_info'));
+        }
+      }
+      else
+      {
+        abort(404);
+      }
+  }
+
   public function blogDetail($slug)
   {
     $blog_details = Blog::where('slug',$slug)->first();

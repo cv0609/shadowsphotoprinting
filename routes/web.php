@@ -189,6 +189,8 @@ Route::middleware(['myAccount'])->group(function () {
     Route::post('/my-account/update-pic', [MyAccountController::class, 'updateProfilePic'])->name('profile.update-pic');
 });
 
+Route::get('/home2',[BasePagesController::class,'pages2']);
+
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
 
