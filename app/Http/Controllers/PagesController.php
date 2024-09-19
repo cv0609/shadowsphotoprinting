@@ -135,7 +135,10 @@ class PagesController extends Controller
 
     $relatedProduct = PhotoForSaleProduct::where('slug','!=',$slug)->paginate(10);
 
-    $page_content = ["meta_title"=>$productDetails['slug'] .' | Shadows Photo Printing',"meta_description"=>$productDetails['product_description']];
+    $page_content = [
+        "meta_title" => $productDetails->meta_title . ' | Shadows Photo Printing',
+        "meta_description" => $productDetails->meta_description
+    ];
 
     return view('front-end/photos-for-sale-details',compact('productDetails','relatedProduct','uniqueSizeRecords','uniqueTyepeRecords','photoForSaleSizePricesData','page_content'));
   }

@@ -114,7 +114,7 @@ class PhotoForSaleController extends Controller
             return response()->json(['error' => true,'message' => 'Duplicate entry']);
         }
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug,'meta_title' => $request->meta_title,'meta_description' => $request->meta_description];
 
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $key => $image) {
@@ -190,7 +190,7 @@ class PhotoForSaleController extends Controller
             }
         }
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s]/',' ', $request->product_title),"product_description"=>$request->product_description,"min_price"=>$request->min_price,"max_price"=>$request->max_price,'slug'=>$slug,'meta_title' => $request->meta_title,'meta_description' => $request->meta_description];
 
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $key => $image) {
