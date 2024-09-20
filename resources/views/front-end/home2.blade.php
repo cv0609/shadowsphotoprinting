@@ -58,11 +58,9 @@ $ProductCategories = $PageDataService->getProductCategories();
 
                         <p>We offer a variety of printing options to suit your needs, including different print sizes, photo enlargements. poster print, photo canvas and scrapbook page print. Whether you are looking to create a stunning photo canvas to hang on the wall, a cherished scrapbook book page print to go into your scrapbook album, or to purchase a unique gift for a loved one form our hand craft, or a gift card Shadows Photo Printing has you covered.</p>
 
-                        <p>In addition to our printing services, we provide helpful resources fun fact about printing and setting files for printing. Have a look at our blog features article on What is Bulk Printing and How Does it Benefit Photographers? </p>
-                        <p>
+                        <p>In addition to our printing services, we provide helpful resources fun fact about printing and setting files for printing. Have a look at our blog features article on What is Bulk Printing and How Does it Benefit Photographers?
                             Join our community of enthusiastic photographers and scrapbookers by following us on social media. Share your creative projects, get inspired by others, and stay updated on our latest offerings and promotions.
-                        </p>
-                        <p>
+                        
                             At Shadows Photo Printing, your memories are our priority. Let us help you bring them to life with the quality and care they deserve.</p>
                     </div>
                 </div>
