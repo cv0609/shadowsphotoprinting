@@ -23,6 +23,32 @@
                 <br>
                 <form method="POST" id="edit-form" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
+
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="meta_title">Meta
+                            Title <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                            <input type="text" id="meta_title" name="meta_title" value="{{$product->meta_title}}" required="required"
+                                class="form-control ">
+                            <span class="validation-error meta_title_error"></span>
+
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="meta_description">Meta
+                            Description <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                            <input type="text" id="meta_description" value="{{$product->meta_description}}" name="meta_description" required="required"
+                                class="form-control ">
+                            <span class="validation-error meta_description_error"></span>
+
+                        </div>
+                    </div>
+
+
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_category" >Product Category <span class="required">*</span>
                         </label>
@@ -35,9 +61,7 @@
                             </select>
 
                             <span class="validation-error category_id_error"></span>
-
-                    </div>
-
+                        </div>
                     </div>
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_title">Product Title <span class="required">*</span>
@@ -243,6 +267,18 @@
             if ($('#product_title').val() == '') {
                 $('.product_title_error').text('Product title field is required.');
                 $('.product_title_error').addClass('text-danger');
+                error = true;
+            }
+
+            if ($('#meta_title').val() == '') {
+                $('.meta_title_error').text('Meta title field is required.');
+                $('.meta_title_error').addClass('text-danger');
+                error = true;
+            }
+
+            if ($('#meta_description').val() == '') {
+                $('.meta_description_error').text('Meta description field is required.');
+                $('.meta_description_error').addClass('text-danger');
                 error = true;
             }
 
