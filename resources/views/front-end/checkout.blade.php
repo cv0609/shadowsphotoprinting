@@ -342,8 +342,7 @@
     var authcheck = "{{Auth::check()}}";
     
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
-    $('#stripe-error').text('');
-
+    
     var elements = stripe.elements();
     var style =  {
         base: {
@@ -406,6 +405,7 @@
             isShippingAddress = true;
         }
 
+        $('#stripe-error').text('');
 
         var isValid = true;
 
@@ -457,8 +457,9 @@
         stripe.createToken(cardNumber).then(function(result) {
             
             if (result.error) {
+
                 $('#stripe-error').text(result.error.message).css('color','red');
-                // console.log(); return false;
+               
                 $('#place-order-btn').removeClass('d-none');
                 $('#loader-order-btn').addClass('d-none');
             } else {
