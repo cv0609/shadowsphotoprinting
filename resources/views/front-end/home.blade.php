@@ -46,6 +46,9 @@ $ProductCategories = $PageDataService->getProductCategories();
                             </div>
                         </div>
                     </div> <!-- End of row -->
+                    <div class="row textwidget" style="padding-top: 31px;"> <!-- Add row here -->
+                        {!! $page_content['about_description'] !!}
+                    </div>
                 </div>
             </div>
         </section>

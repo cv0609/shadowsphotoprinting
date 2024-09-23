@@ -61,7 +61,14 @@
 					"type": "text",
 					"required": true,
 					"name": "shop_now"
+				},
+				{
+					"title": "about description",
+					"type": "textarea",
+					"required": true,
+					"name": "about_description"
 				}
+
             ]
         },
 		{
