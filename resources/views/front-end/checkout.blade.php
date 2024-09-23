@@ -282,7 +282,8 @@
                                         <ul>
                                             <li>
                                                 <label for=""> Credit Card (Stripe) </label>
-                                                <p>Pay with your credit card via Stripe.</p>
+                                                <p>Pay with your credit card via Stripe.</p><br>
+                                                <span id="stripe-error"></span>
                                                 <div class="payment_form-wrap">
                                                     <div class="form-group">
                                                         <label>Card Number</label>
@@ -341,6 +342,8 @@
     var authcheck = "{{Auth::check()}}";
     
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
+    $('#stripe-error').text('');
+
     var elements = stripe.elements();
     var style =  {
         base: {
@@ -432,12 +435,30 @@
             });
         }
 
+        if (cardNumber._empty) {
+            isValid = false;
+            $('#card-number-element').after('<span class="error-message" style="color: red;">Card number is required.</span>');
+        }
+
+        if (cardExpiry._empty) {
+            isValid = false;
+            $('#card-expiry-element').after('<span class="error-message" style="color: red;">Expiry date is required.</span>');
+        }
+
+        if (cardCvc._empty) {
+            isValid = false;
+            $('#card-cvc-element').after('<span class="error-message" style="color: red;">CVC is required.</span>');
+        }
+
         if (!isValid) {
             return;
         }
 
         stripe.createToken(cardNumber).then(function(result) {
+            
             if (result.error) {
+                $('#stripe-error').text(result.error.message).css('color','red');
+                // console.log(); return false;
                 $('#place-order-btn').removeClass('d-none');
                 $('#loader-order-btn').addClass('d-none');
             } else {

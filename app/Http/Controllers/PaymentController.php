@@ -143,6 +143,7 @@ class PaymentController extends Controller
         $amount = $request->input('amount');
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
+        dd($charge);
         $cart = '';
        
         if(isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')){
