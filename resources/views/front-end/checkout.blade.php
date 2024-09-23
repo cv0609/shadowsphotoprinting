@@ -399,7 +399,7 @@
             var ship_street2 = $('#ship_street2').val();
             var ship_suburb = $('#ship_suburb').val();
             var ship_state = $('#ship_state').val();
-            var ship_state = $('#ship_state').val();
+            // var ship_state = $('#ship_state').val();
             var ship_postcode = $('#ship_postcode').val();
             var order_comments = $('#order_comments').val();
             isShippingAddress = true;
