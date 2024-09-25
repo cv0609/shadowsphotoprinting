@@ -191,6 +191,11 @@ Route::middleware(['myAccount'])->group(function () {
 
 Route::get('/home2',[BasePagesController::class,'pages2']);
 
+Route::post('/afterpay/checkout', [PaymentController::class, 'afterPayCheckout'])->name('afterPay.checkout');
+Route::get('/afterpay/success', [PaymentController::class, 'afterpaySuccess'])->name('checkout.success');
+Route::get('/afterpay/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
+Route::get('/afterpay/order/success', [PaymentController::class, 'orderSuccess'])->name('order.success');
+
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
 

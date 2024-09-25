@@ -4665,3 +4665,29 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     select#category {
         color: #000;
     }
+
+    .payment-option {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .payment-option:hover {
+        background-color: #f0f0f0;
+    }
+    .payment-option input[type="radio"] {
+        margin-right: 10px;
+    }
+    .payment-option i {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+    .active-payment{
+        background-color: #f0f0f0;
+        /* background-color: #e0f7fa;
+        border-color: #007bff; */
+    }

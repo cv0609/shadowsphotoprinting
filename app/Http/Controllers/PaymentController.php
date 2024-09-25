@@ -9,9 +9,11 @@ use App\Models\CartData;
 use App\Models\Country;
 use App\Models\Customer as Customer_user;
 use App\Services\CartService;
+use App\Services\AfterPayService;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\State;
+use App\Models\AfterPayLogs;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
@@ -24,11 +26,13 @@ class PaymentController extends Controller
 {
     protected $stripe;
     protected $CartService;
+    protected $AfterPayService;
 
-    public function __construct(StripeService $stripe,CartService $CartService)
+    public function __construct(StripeService $stripe,CartService $CartService,AfterPayService $AfterPayService)
     {
         $this->stripe = $stripe;
         $this->CartService = $CartService;
+        $this->AfterPayService = $AfterPayService;
 
     }
 
@@ -143,7 +147,6 @@ class PaymentController extends Controller
         $amount = $request->input('amount');
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
-        dd($charge);
         $cart = '';
        
         if(isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')){
@@ -266,5 +269,128 @@ class PaymentController extends Controller
 
         $order_number = Order::whereId($orderId)->select('order_number')->first();
         return view('front-end.order_thank_you',compact('order_number','page_content'));
+    }
+
+    public function showPaymentMethods()
+    {
+        return view('afterpay');
+    }
+
+    public function afterPayCheckout(Request $request)
+    {
+        $orderDetails = [
+            "amount" => [
+                "amount" => "0.10",
+                "currency" => "AUD"
+            ],
+            "consumer" => [
+                "phoneNumber" => "0412345678",
+                "givenNames" => "Test",
+                "surname" => "Consumer",
+                "email" => "test@example.com"
+            ],
+            "billing" => [
+                "name" => "Test Consumer",
+                "line1" => "123 Fake Street",
+                "line2" => "Unit 4",
+                "suburb" => "Realville",
+                "state" => "NSW",
+                "postcode" => "2000",
+                "countryCode" => "AU",
+                "phoneNumber" => "0412345678"
+            ],
+            "shipping" => [
+                "name" => "Test Shipping Consumer",
+                "line1" => "123 Fake Street",
+                "line2" => "",
+                "suburb" => "Realville",
+                "state" => "NSW",
+                "postcode" => "2000",
+                "countryCode" => "AU",
+                "phoneNumber" => "0412345678"
+            ],
+            "courier" => [
+                "shippedAt" => "2024-08-30",
+                "name" => "DHL",
+                "tracking" => "ABC123XYZ",
+                "priority" => "STANDARD"  // Changed to a valid value
+            ],
+            "description" => "Order for consumer",
+            "items" => [
+                [
+                    "name" => "Sample Item",
+                    "sku" => "ITEM001",
+                    "quantity" => 1,
+                    "price" => [
+                        "amount" => "0.01",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ],
+            "discounts" => [
+                [
+                    "displayName" => "Summer Discount",
+                    "amount" => [
+                        "amount" => "0.01",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ],
+            "merchant" => [
+                "redirectConfirmUrl" => route('checkout.success'),
+                "redirectCancelUrl" => route('checkout.cancel'),
+            ],
+            "merchantReference" => "order_reference_001",
+            "taxAmount" => [
+                "amount" => "0.00",
+                "currency" => "AUD"
+            ],
+            "shippingAmount" => [
+                "amount" => "0.01",
+                "currency" => "AUD"
+            ]
+        ];
+        
+        $response = $this->AfterPayService->charge($orderDetails);
+        
+        if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
+            $token = $response['token'];
+            Session::put('afterpay_token', $token);
+            return response()->json(['error'=>false,'data' => $response['redirectCheckoutUrl']]);
+        }
+        return response()->json(['error'=>true,'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
+    }
+
+    public function afterpaySuccess()
+    {
+        $token = Session::get('afterpay_token');
+
+        if (!$token) {
+            return redirect()->route('checkout')->with('error', 'Session expired or invalid.');
+        }
+
+        $response = $this->AfterPayService->validateAfterpayOrder($token);
+
+        if (isset($response['status']) && $response['status'] === 'APPROVED') {
+
+            $log = new AfterPayLogs;
+            $log->logs = json_encode($response) ?? '';
+            $log->save();
+
+            Session::forget(['order_address', 'coupon','billing_details','afterpay_token']);
+            return redirect()->route('order.success');
+        } else {
+            return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
+        }        
+    }
+
+    public function afterpayCancel()
+    {
+        return redirect()->route('checkout')->with('error', 'Payment was canceled. Please try again.');
+    }
+
+    public function orderSuccess(){
+        $page_content = ["meta_title"=>config('constant.order.thankyou.meta_title'),"meta_description"=>config('constant.order.thankyou.meta_description')];
+        return view('afterpay_order_thankyou',compact('page_content'));
     }
 }
