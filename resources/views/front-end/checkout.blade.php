@@ -287,7 +287,8 @@
                                         <div class="col-md-6">
                                             <label class="payment-option active-payment" for="stripeId">
                                                 <input type="radio" name="payment" id="stripeId" value="stripe" checked>
-                                                <i class="fab fa-cc-stripe"></i>
+                                                <!-- <i class="fab fa-cc-stripe"></i> -->
+                                                <i class="fas fa-credit-card"></i>
                                                 <span>Stripe</span>
                                             </label>
                                         </div>
@@ -295,7 +296,8 @@
                                         <div class="col-md-6">
                                             <label class="payment-option active-payment" for="afterpayId">
                                                 <input type="radio" name="payment" id="afterpayId" value="afterpay">
-                                                <i class="fas fa-credit-card"></i>
+                                                <!-- <i class="fas fa-credit-card"></i> -->
+                                                 <img src="{{asset('assets/images/favicon.ico')}}" alt="" class="afterPayIcon">
                                                 <span>Afterpay</span>
                                             </label>
                                         </div>
