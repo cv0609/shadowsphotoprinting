@@ -12,6 +12,7 @@ use App\Services\CartService;
 use App\Services\AfterPayService;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use App\Models\ProductStock;
 use App\Models\State;
 use App\Models\AfterPayLogs;
 use App\Models\OrderDetail;
@@ -187,9 +188,25 @@ class PaymentController extends Controller
 
             foreach ($cart->items as $item) {
 
-                $product_details = $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
-
+                if ($item->product_type == 'hand_craft') {
+                    $slug = 'hand-craft';
                 
+                    $hand_craft_cat = $this->CartService->getProductStock($slug, $item->product_id);
+                
+                    if ($hand_craft_cat && $hand_craft_cat->getProductStock) {
+                        $productStock = $hand_craft_cat->getProductStock;
+                
+                        $stock_qty = $productStock->qty;
+                        $product_category_type_id = $productStock->product_category_type_id;
+                        $hand_craft_category_id = $productStock->category_id;
+                
+                        ProductStock::where([
+                            'product_category_type_id' => $product_category_type_id,
+                            'category_id' => $hand_craft_category_id,
+                            'product_id' => $item->product_id
+                        ])->decrement('qty', $item->quantity);
+                    }
+                }
                 
                 if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft"){
                     $product_price =  number_format($item->product_price, 2);
