@@ -97,6 +97,22 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_qty">
+                            Product Qty(stock) <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                                <input type="number" id="product_qty" name="product_qty" required="required"
+                                class="form-control" value="{{$product_stock->qty ?? ''}}">
+                                <input type="hidden" name="product_category_type_id" value="{{$hand_craft_main_cat->id}}">
+                                @error('product_qty')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
+                        </div>
+                    </div>
+
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                     <div class="ln_solid"></div>

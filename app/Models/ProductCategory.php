@@ -18,4 +18,9 @@ class ProductCategory extends Model
     {
         return $this->hasMany(Product::class,'category_id');
     }
+
+    public function getProductStock()
+    {
+        return $this->hasOne(ProductStock::class,'product_category_type_id');
+    }
 }

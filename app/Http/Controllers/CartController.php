@@ -11,6 +11,7 @@ use App\Models\Shipping;
 use App\Models\State;
 use App\Models\Product;
 use App\Models\GiftCardCategory;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
@@ -34,7 +35,20 @@ class CartController extends Controller
             $response = $this->applyCoupon($request_data);
             if($response['success'] === false)
             {
-            Session::forget('coupon');
+              Session::forget('coupon');
+            }
+        }
+
+        if($request->item_type == 'hand_craft'){
+            $slug = 'hand-craft';
+            $hand_craft_cat = $this->CartService->getProductStock($slug,$request->cart_items[0]['product_id']);
+
+            if ($hand_craft_cat) {
+                $quantity = $request->cart_items[0]['quantity'];
+                $stock_qty = $hand_craft_cat->getProductStock->qty;
+                if($stock_qty <  $quantity){
+                    return response()->json(['error' => true, 'message' => 'Stock quantity is smaller than your requested quantity.']);
+                 }
             }
         }
 

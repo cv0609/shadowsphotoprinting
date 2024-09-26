@@ -188,6 +188,10 @@ class PaymentController extends Controller
             foreach ($cart->items as $item) {
 
                 $product_details = $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
+
+                if($ ->){
+
+                }
                 
                 if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft"){
                     $product_price =  number_format($item->product_price, 2);

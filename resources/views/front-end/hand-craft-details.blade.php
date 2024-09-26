@@ -226,7 +226,11 @@ $(document).ready(function() {
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    location.href = "{{ route('cart') }}";
+                    if(response.error == true){
+                       $('#product_qty_error').text(response.message);
+                    }else {
+                        location.href = "{{ route('cart') }}";
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);
