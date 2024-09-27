@@ -47,7 +47,7 @@ class CartController extends Controller
                 $quantity = $request->cart_items[0]['quantity'];
                 $stock_qty = $hand_craft_cat->getProductStock->qty;
                 if($stock_qty <  $quantity){
-                    return response()->json(['error' => true, 'message' => 'Stock quantity is smaller than your requested quantity.']);
+                    return response()->json(['error' => true, 'message' => 'Product out of stock.']);
                  }
             }
         }
@@ -342,6 +342,20 @@ class CartController extends Controller
     {
         foreach($request->data as $data)
         {
+
+             if($data['product_type'] == 'hand_craft'){
+                $slug = 'hand-craft';
+                $hand_craft_cat = $this->CartService->getProductStock($slug,$data['product_id']);
+
+                if ($hand_craft_cat) {
+                    $quantity = $data['quantity'];
+                    $stock_qty = $hand_craft_cat->getProductStock->qty;
+                    if($stock_qty <  $quantity){
+                        return response()->json(['error' => true, 'message' => 'Product out of stock.']);
+                    }
+                }
+            }
+
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
         }
 

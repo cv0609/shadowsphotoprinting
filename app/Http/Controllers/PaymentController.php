@@ -216,6 +216,7 @@ class PaymentController extends Controller
                 }
                 else{
                     $product_sale_price = $this->CartService->getProductSalePrice($item->product_id);
+                    $product_details =  $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
                     $product_price = number_format($product_details->product_price, 2);
                     
                     if(isset($product_sale_price) && !empty($product_sale_price)){
