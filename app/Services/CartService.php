@@ -12,6 +12,7 @@ use App\Models\product_sale;
 use App\Models\PhotoForSaleProduct;
 use App\Models\HandCraftProduct;
 use App\Models\UserDetails;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
@@ -249,6 +250,21 @@ class CartService
             return true;
         }else{
             return false;
+        }
+    }
+
+    public function getProductStock($slug,$product_id){
+        $category_data = ProductCategory::where('slug', $slug)->first();
+
+        if ($category_data) {
+            $category_data->load(['getProductStock' => function ($query) use ($product_id) {
+                $query->where('product_id', $product_id);
+            }]);
+        }
+        if($category_data){
+            return $category_data;
+        }else{
+            return [];
         }
     }
 }

@@ -1,5 +1,6 @@
 @extends('admin.layout.main')
 @section('page-content')
+
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">

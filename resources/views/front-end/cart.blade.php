@@ -7,6 +7,7 @@
 <section class="coupon-main">
 <div class="container">
 <div class="coupon-inner">
+
     @if(Session::has('success'))
         <div class="coupon-wrapper">
             <p class="text-center">{{Session::get('success')}}</p>
@@ -121,7 +122,7 @@
                                     </span>
                                 </td>
                                 <td class="product-quantity">
-                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}">
+                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}">
                                 </td>
                                 <td class="product-subtotal">
                                     <span>
@@ -375,7 +376,7 @@
         $("input[name='product_quantity[]']").each(function(i,v) {
             if($(v).val() > 0)
              {
-                data.push({'quantity':$(v).val(),'rowId':$(v).data('row')})
+                data.push({'quantity':$(v).val(),'rowId':$(v).data('row'),'product_type':$(v).data('product_type'),'product_id':$(v).data('product_id')})
 
              }
              else
@@ -393,7 +394,14 @@
             "_token": "{{ csrf_token() }}"
         },
         function(data, status){
-            location.reload();
+            if(data.error == true){
+                console.log(data.message);
+                $('#qty-validation').removeClass('d-none');
+                $('#qty-validation p').text(data.message);
+                return false;
+            }else{
+                location.reload();
+            }
         });
    })
 

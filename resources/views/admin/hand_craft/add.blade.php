@@ -104,6 +104,21 @@
 
                                 </div>
                             </div>
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_qty">
+                                    Product Qty(stock) <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                     <input type="number" id="product_qty" name="product_qty" required="required"
+                                      class="form-control">
+                                      <input type="hidden" name="product_category_type_id" value="{{$hand_craft_main_cat->id}}">
+                                      @error('product_qty')
+                                       <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+
+                                </div>
+                            </div>
                         
                             <div class="ln_solid"></div>
                             <div class="item form-group">
@@ -275,6 +290,13 @@
                 $('.product_description_error').addClass('text-danger');
                 error = true;
             }
+
+            if ($('#product_qty').val() == '') {
+                $('.product_qty_error').text('Product qty field is required.');
+                $('.product_qty_error').addClass('text-danger');
+                error = true;
+            }
+
 
             if (error) {
                 return false;

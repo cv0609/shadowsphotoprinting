@@ -14,9 +14,11 @@ use App\Http\Requests\HandCraftProductUpdateRequest;
 use App\Http\Requests\HandCraftCategoryUpdateRequest;
 use App\Models\Size;
 use App\Models\SizeType;
+use App\Models\ProductStock;
 use App\Models\HandCraftCategory;
 use App\Models\HandCraftProduct;
 use App\Models\PhotoForSaleSizePrices;
+use App\Models\ProductCategory;
 use App\Services\PageDataService;
 use Illuminate\Support\Facades\Session;
 
@@ -98,13 +100,13 @@ class HandCraftController extends Controller
     public function productAdd()
     {
         $productCategories = HandCraftCategory::get();
+        $hand_craft_main_cat = ProductCategory::where('slug','hand-craft')->first();
 
-        return view('admin.hand_craft.add',compact('productCategories'));
+        return view('admin.hand_craft.add',compact('productCategories','hand_craft_main_cat'));
     }
 
     public function productSave(HandCraftProductRequest $request)
     {
-       
         $slug = \Str::slug($request->product_title);
 
 
@@ -120,7 +122,12 @@ class HandCraftController extends Controller
             $data["product_image"] = implode(',',$product_image_array);
          }
 
-        HandCraftProduct::insertGetId($data);
+        $product_id = HandCraftProduct::insertGetId($data);
+
+        ProductStock::create(['product_category_type_id' => $request->product_category_type_id,'category_id' => $request->category_id , 'product_id' => $product_id , 'qty' => $request->product_qty]);
+ 
+
+
         return redirect()->route('hand-craft-list')->with('success','Product inserted successfully');
     }
 
@@ -128,8 +135,11 @@ class HandCraftController extends Controller
     {
         $product = HandCraftProduct::where('slug', $slug)->first();
         $productCategories = HandCraftCategory::get();
+        $hand_craft_main_cat = ProductCategory::where('slug','hand-craft')->first();
 
-        return view('admin.hand_craft.edit', compact('product','productCategories'));
+        $product_stock = ProductStock::where(['product_category_type_id' => $hand_craft_main_cat->id , 'category_id' => $product->category_id, 'product_id' => $product->id])->first();
+
+        return view('admin.hand_craft.edit', compact('product','productCategories','product_stock','hand_craft_main_cat'));
     }
 
     public function productUpdate(HandCraftProductUpdateRequest $request)
@@ -149,6 +159,18 @@ class HandCraftController extends Controller
         }
 
         HandCraftProduct::whereId($request->product_id)->update($data);
+
+        ProductStock::updateOrCreate(
+            [
+                'product_category_type_id' => $request->product_category_type_id,
+                'category_id' => $request->category_id,
+                'product_id' => $request->product_id
+            ],
+            [
+                'qty' => $request->product_qty,
+            ]
+        );
+
         return redirect()->route('hand-craft-list')->with('success', 'Product updated successfully.');
     }
 
