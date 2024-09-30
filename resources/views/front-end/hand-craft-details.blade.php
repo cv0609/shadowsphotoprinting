@@ -172,7 +172,19 @@ $(document).ready(function() {
     var productId = "{{$productDetails->id}}";
 
     $('#addToCartBtn').click(function() {
-      
+        addToCartFn();
+       
+    });
+
+    $('#product_qty').keypress(function(e) {
+        if (e.which === 13) { // 13 is the Enter key code
+            addToCartFn(); // Call the form submission function
+            return false; // Prevent default behavior of the Enter key
+        }
+    });
+});
+
+function addToCartFn(){
         var isValid = true;
         $('.error-message').css('color','red');
         $('.error-message').closest('input select').addClass('validator');
@@ -240,8 +252,7 @@ $(document).ready(function() {
             alert('No items to add to cart!');
         }
         }
-    });
-});
+}
 
 
 

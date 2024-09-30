@@ -18,6 +18,7 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class CartController extends Controller
 {
@@ -46,9 +47,10 @@ class CartController extends Controller
             if ($hand_craft_cat) {
                 $quantity = $request->cart_items[0]['quantity'];
                 $stock_qty = $hand_craft_cat->getProductStock->qty;
+
                 if($stock_qty <  $quantity){
-                    return response()->json(['error' => true, 'message' => 'Product out of stock.']);
-                 }
+                    return response()->json(['error' => true, 'message' => 'Maximum quantity limited to 1.']);
+                }
             }
         }
 
@@ -62,8 +64,28 @@ class CartController extends Controller
         ]);
 
         if ($cart) {
+
             $cartId = $cart->id;
             $itemType = $request->item_type ?? '';
+
+            if($itemType == 'hand_craft'){
+
+                if ($hand_craft_cat) {
+
+                    $cartData = CartData::firstWhere([
+                        ['product_type', 'hand_craft'],
+                        ['product_id', $request->cart_items[0]['product_id']],
+                        ['cart_id', $cartId]
+                    ]);
+
+                    if($cartData){
+
+                        if($stock_qty <  $cartData->quantity+$request->cart_items[0]['quantity']){
+                            return response()->json(['error' => true, 'message' => 'Maximum quantity limited to 1']);
+                        }
+                    }
+                }
+            }
 
             $giftcard = $itemType == 'gift_card' ? [
                 'from' => $request->from,
@@ -160,6 +182,27 @@ class CartController extends Controller
 
         $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
         isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
+
+        // Auto Applied sail
+
+        $currentDate = Carbon::now()->format('Y-m-d'); 
+
+        $coupon = Coupon::where('is_active', '1')
+            ->where('auto_applied', '1')
+            ->where('start_date', '<=', $currentDate) // Check if coupon has started
+            ->where('end_date', '>=', $currentDate)   // Check if coupon hasn't expired
+            ->first();
+
+        if(isset($coupon) && !empty($coupon)){
+            $request_data = request()->merge(['coupon_code' => $coupon->code]);
+            $response = $this->applyCoupon($request_data);
+
+            if($response['success'] === false)
+            {
+              Session::forget('coupon');
+            }
+        }
+
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
@@ -227,7 +270,9 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
      {
        $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
+
        $total = $this->CartService->getCartTotal();
+
        $cart = [];
 
         if(empty($coupon) && !isset($coupon)){
@@ -271,11 +316,14 @@ class CartController extends Controller
         if ($total['subtotal'] < $coupon->minimum_cart_total) {
             return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
         }
-
-        if($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend)
-        {
-            return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.' amount' ];
+        
+        if($coupon->auto_applied != '1'){
+            if($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend)
+            {
+                return ['success' => false, 'message' => 'you can use this coupon between '.$coupon->minimum_spend.' To '.$coupon->maximum_spend.' amount' ];
+            }
         }
+
 
         if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
             return ['success' => false, 'message' => 'This coupon has reached its usage limit.' ];
@@ -283,11 +331,26 @@ class CartController extends Controller
 
         if(isset($coupon->product_category) && !empty($coupon->product_category) && $coupon->product_category != null)
         {
+            // $couponCategories = explode(',', $coupon->product_category);
+            // foreach ($cart->items as $item) {
+            //     $productCategory = $item->product->category_id;
+            //     // $productCategories = $item->product->category_id->pluck('id')->toArray();
+            //     if (!in_array($productCategory, $couponCategories)) {
+            //         return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+            //     }
+            //     if (!in_array($productCategories, $couponCategories)) {
+            //         return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+            //     }
+            // }
+
             $couponCategories = explode(',', $coupon->product_category);
 
+            $couponCategories = array_map('strval', $couponCategories);
+            
             foreach ($cart->items as $item) {
-                $productCategories = $item->product->product_category->pluck('id')->toArray();
-                if (!array_intersect($productCategories, $couponCategories)) {
+                $productCategory = (string)$item->product->category_id;
+                
+                if (!in_array((string)$productCategory, $couponCategories)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
                 }
             }
@@ -304,6 +367,7 @@ class CartController extends Controller
         }
 
         $amount = 0;
+
         if($coupon->type == "0")
           {
            $amount = $coupon->amount;
@@ -312,7 +376,6 @@ class CartController extends Controller
           elseif($coupon->type == "1")
            {
               $amount = ($coupon->amount / 100) * $total['subtotal'];
-
            }
         $coupon->used++;
         $coupon->save();
@@ -321,7 +384,8 @@ class CartController extends Controller
             'code' => $coupon->code,
             'discount_amount' => $amount,
         ]);
-        return ['success' => true, 'total' => $total['subtotal'] - $coupon->discount_amount];
+
+        return ['success' => true, 'total' => $total['subtotal'] - $amount];
     }
 
     public function resetCoupon(){
