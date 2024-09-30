@@ -49,13 +49,17 @@ class CouponController extends Controller
       $coupon_detail = Coupon::whereId($id)->first();
       $ProductCategory = ProductCategory::get();
 
+      // dd($coupon_detail);
+
       return view('admin.coupons.edit', compact('coupon_detail','products','ProductCategory'));
    }
 
    public function couponUpdate(Request $request)
    {
+      // dd($request->all());
       $productsId =(isset($request->products) && !empty($request->products)) ? implode(',',$request->products) : null;
       $product_category =(isset($request->product_category) && !empty($request->product_category)) ? implode(',',$request->product_category) : null;
+
       if ($request->coupon_type == '0' && $request->minimum_spend <= $request->amount) {
         return redirect()->back()->with(['minimum_amount' => 'Minimum amount must be greater than the discount amount.']);
       }
