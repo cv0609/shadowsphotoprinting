@@ -406,7 +406,7 @@ class PaymentController extends Controller
 
     public function afterpayCancel()
     {
-        return redirect()->route('checkout')->with('error', 'Payment was canceled. Please try again.');
+        return redirect()->route('checkout')->with('error', 'Payment was cancelled. Please try again.');
     }
 
     public function orderSuccess(){
