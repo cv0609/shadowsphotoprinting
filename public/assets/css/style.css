@@ -4700,3 +4700,24 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .sail-modal-body{
         padding: 0 !important;
     }
+
+    div#sailImagePopup {
+        display: flex!important;
+        justify-content: center;
+        align-items: center;
+        }
+        
+        div#sailImagePopup .modal-header {
+        position: absolute;
+        top: -25px;
+        right: -27px;
+        z-index: 9;
+        }
+        
+        div#sailImagePopup .modal-header button {
+        background: #d7d7d7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        }
