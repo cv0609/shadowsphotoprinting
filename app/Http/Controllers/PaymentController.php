@@ -22,6 +22,7 @@ use App\Mail\Order\MakeOrder;
 use App\Mail\AdminNotifyOrder;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -228,7 +229,6 @@ class PaymentController extends Controller
                         $sale_on = 0;
                         $sale_price=null;
                     }
-                    
                 }
 
                 OrderDetail::create([
@@ -298,9 +298,142 @@ class PaymentController extends Controller
 
     public function afterPayCheckout(Request $request)
     {
+        $formData = $request->input('data');
+
+        $fname = $formData['fname'] ?? '';
+        $lname = $formData['lname'] ?? '';
+        $street1 = $formData['street1'] ?? '';
+        $street2 = $formData['street2'] ?? '';
+        $state = $formData['state'] ?? '';
+        $postcode = $formData['postcode'] ?? '';
+        $phone = $formData['phone'] ?? '';
+        $suburb = $formData['suburb'] ?? '';
+        $email = $formData['email'] ?? '';
+        $username = $formData['username'] ?? '';
+        $password = $formData['password'] ?? '';
+        $company_name = $formData['company_name'] ?? '';
+        $ship_fname = $formData['ship_fname'] ?? '';
+        $ship_lname = $formData['ship_lname'] ?? '';
+        $ship_company = $formData['ship_company'] ?? '';
+        $ship_street1 = $formData['ship_street1'] ?? '';
+        $ship_street2 = $formData['ship_street2'] ?? '';
+        $ship_suburb = $formData['ship_suburb'] ?? '';
+        $ship_state = $formData['ship_state'] ?? '';
+        $ship_postcode = $formData['ship_postcode'] ?? '';
+        $order_comments = $formData['order_comments'] ?? '';
+        $isShippingAddress = $formData['isShippingAddress'] ?? '';
+
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
+
+        $cartTotal = $this->CartService->getCartTotal();
+       
+        $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
+        $cart_total = $cartTotal['total'] ?? 0;
+        $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
+        $coupon_code = $cartTotal['coupon_code'] ?? '';
+
+        $itemsArray = [];
+
+        foreach ($cart->items as $items) {
+            $qty = $items->quantity;
+            $product_type = $items->product_type;
+
+            $product_details =  $this->CartService->getProductDetailsByType($items->product_id,$items->product_type);
+
+            $product_name = $product_details->product_title;
+
+            $product_price = ($product_type != 'shop') ? $items->product_price : $items->product->product_price;
+            $sku = 'SKU-' . Str::upper(Str::random(8));
+
+            $productPriceInCents = number_format($product_price * 100, 2, '.', '');
+
+            $itemsArray[] = [
+                "name" => $product_name,
+                "sku" => $sku,
+                "quantity" => $qty,
+                "price" => [
+                    "amount" => $productPriceInCents,
+                    "currency" => "AUD"
+                ]
+            ];
+        }
+        
+        $totalAmountInCents = number_format($cart_total * 100, 2, '.', '');
+        $shippingAmountInCents = number_format($shipping_amount * 100, 2, '.', '');
+        $couponDiscountInCents = number_format($coupon_discount * 100, 2, '.', '');
+
+        $orderDetails2 = [
+            "amount" => [
+                "amount" => $totalAmountInCents,
+                "currency" => "AUD"
+            ],
+            "consumer" => [
+                "phoneNumber" => $phone,
+                "givenNames" => $fname,
+                "surname" => $lname,
+                "email" => $email
+            ],
+            "billing" => [
+                "name" =>  $fname . ' ' . $lname,
+                "line1" => $street1,
+                "line2" => $street2,
+                "suburb" => $suburb,
+                "state" => 'NSW',
+                "postcode" => $postcode,
+                "countryCode" => "AU",
+                "phoneNumber" => $phone,
+            ],
+            "shipping" => [
+                "name" => $ship_fname ? ($ship_fname . ' ' . $ship_lname) : ($fname . ' ' . $lname),
+                "line1" => $ship_street1 ? $ship_street1 : $street1,
+                "line2" => $ship_street2 ? $ship_street2 : $street2,
+                "suburb" => $ship_suburb ? $ship_suburb : $suburb,
+                "state" => 'NSW',
+                "postcode" => $ship_postcode ? $ship_postcode : $postcode,
+                "countryCode" => "AU",
+                "phoneNumber" => $phone
+            ],
+            "courier" => [
+                "shippedAt" => "2024-08-30",
+                "name" => "DHL",
+                "tracking" => "ABC123XYZ",
+                "priority" => "STANDARD"  // Changed to a valid value
+            ],
+            "description" => "Order for consumer",
+            "items" => $itemsArray,
+            "discounts" => [
+                [
+                    "displayName" => !empty($coupon_code) ? $coupon_code : 'Summer Discount',
+                    "amount" => [
+                        "amount" => $couponDiscountInCents ?? "0.00",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ],
+            "merchant" => [
+                "redirectConfirmUrl" => route('checkout.success'),
+                "redirectCancelUrl" => route('checkout.cancel'),
+            ],
+            "merchantReference" => "order_reference_001",
+            "taxAmount" => [
+                "amount" => "0.00",
+                "currency" => "AUD"
+            ],
+            "shippingAmount" => [
+                "amount" => $shippingAmountInCents ?? "0.00",
+                "currency" => "AUD"
+            ]
+        ];
+
         $orderDetails = [
             "amount" => [
-                "amount" => "0.10",
+                "amount" => "0.04",
                 "currency" => "AUD"
             ],
             "consumer" => [
@@ -342,7 +475,7 @@ class PaymentController extends Controller
                     "sku" => "ITEM001",
                     "quantity" => 1,
                     "price" => [
-                        "amount" => "0.01",
+                        "amount" => "0.00",
                         "currency" => "AUD"
                     ]
                 ]
@@ -351,7 +484,7 @@ class PaymentController extends Controller
                 [
                     "displayName" => "Summer Discount",
                     "amount" => [
-                        "amount" => "0.01",
+                        "amount" => "0.00",
                         "currency" => "AUD"
                     ]
                 ]
@@ -366,7 +499,7 @@ class PaymentController extends Controller
                 "currency" => "AUD"
             ],
             "shippingAmount" => [
-                "amount" => "0.01",
+                "amount" => "0.00",
                 "currency" => "AUD"
             ]
         ];
@@ -411,6 +544,6 @@ class PaymentController extends Controller
 
     public function orderSuccess(){
         $page_content = ["meta_title"=>config('constant.order.thankyou.meta_title'),"meta_description"=>config('constant.order.thankyou.meta_description')];
-        return view('afterpay_order_thankyou',compact('page_content'));
+        return view('front-end.afterpay_order_thankyou',compact('page_content'));
     }
 }
