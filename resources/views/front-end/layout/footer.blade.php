@@ -121,11 +121,11 @@
     <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header sail-modal-header">
           <button type="button" class="close" id="close-sail-modal">&times;</button>
           {{-- <h4 class="modal-title">Modal Header</h4> --}}
         </div>
-        <div class="modal-body">
+        <div class="modal-body sail-modal-body">
           <img src="{{asset('assets/images/sail-image-popup.png')}}" alt="image">
         </div>
         {{-- <div class="modal-footer">
