@@ -142,7 +142,6 @@ $(document).ready(function () {
 
     // When the close button is clicked, hide the modal and set the cookie
     $('#close-sail-modal').on('click', function() {
-        console.log('dsfdsf');
       $('#sailImagePopup').modal('hide');
       setCookie("sailpopupcokies", "closed", 1); // Cookie valid for 1 day (24 hours)
     });
