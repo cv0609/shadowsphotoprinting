@@ -367,16 +367,11 @@
             $('.stripe-details').hide();
         }
         $('input[name="payment"]').on('change', function() {
-            // $('.payment-option').removeClass('active-payment');
-            
-            // $(this).closest('.payment-option').addClass('active-payment');
-
             if ($('#stripeId').is(':checked')) {
                 $('.stripe-details').show();
             } else if ($('#afterpayId').is(':checked')) {
                 $('.stripe-details').hide();
             }
-
         });
     });
 
@@ -478,6 +473,34 @@
             });
         }
 
+        var formData = {
+            fname: fname,
+            lname: lname,
+            street1: street1,
+            street2: street2,
+            state: state,
+            postcode: postcode,
+            phone: phone,
+            suburb: suburb,
+            email: email,
+            username: username,
+            password: password,
+            company_name:company_name,
+        };
+
+        if ($('#shipcheckbox').is(':checked')) {
+            formData.ship_fname = ship_fname;
+            formData.ship_lname = ship_lname;
+            formData.ship_company = ship_company;
+            formData.ship_street1 = ship_street1;
+            formData.ship_street2 = ship_street2;
+            formData.ship_suburb = ship_suburb;
+            formData.ship_state = ship_state;
+            formData.ship_postcode = ship_postcode;
+            formData.order_comments = order_comments;
+            formData.isShippingAddress = isShippingAddress;
+        }
+
         if ($('#stripeId').is(':checked')) {
 
             if (cardNumber._empty) {
@@ -510,37 +533,9 @@
                 } else {
                     $('#place-order-btn').addClass('d-none');
                     $('#loader-order-btn').removeClass('d-none');
-                    // Send the token to your server
-                    var formData = {
-                        fname: fname,
-                        lname: lname,
-                        street1: street1,
-                        street2: street2,
-                        state: state,
-                        postcode: postcode,
-                        phone: phone,
-                        suburb: suburb,
-                        email: email,
-                        username: username,
-                        password: password,
-                        company_name:company_name,
-                        stripeToken: result.token.id
-                    };
-    
-                    if ($('#shipcheckbox').is(':checked')) {
-                        formData.ship_fname = ship_fname;
-                        formData.ship_lname = ship_lname;
-                        formData.ship_company = ship_company;
-                        formData.ship_street1 = ship_street1;
-                        formData.ship_street2 = ship_street2;
-                        formData.ship_suburb = ship_suburb;
-                        formData.ship_state = ship_state;
-                        formData.ship_postcode = ship_postcode;
-                        formData.order_comments = order_comments;
-                        formData.isShippingAddress = isShippingAddress;
-                    }
-    
-    
+                    // Send the token to your server    
+                    formData.stripeToken = result.token.id;
+
                     fetch('/create-customer', {
                         method: 'POST',
                         headers: {
@@ -586,17 +581,12 @@
             $('#place-order-btn').addClass('d-none');
             $('#loader-order-btn').removeClass('d-none');
 
-            var postData = {
-                name: "John Doe",
-                email: "johndoe@example.com"
-            };
-
             $.ajax({
                 type: "POST",
                 url: "{{route('afterPay.checkout')}}", // Replace with your Laravel route
                 data: {
                     _token: "{{ csrf_token() }}", // Include CSRF token
-                    data: postData // Include your data here
+                    data: formData // Include your data here
                 },
                 success: function(data) {
                     if (data.error == false) {
@@ -610,7 +600,6 @@
                 }
             });
         }
-
     });
 </script>
 
