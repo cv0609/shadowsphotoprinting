@@ -4693,3 +4693,10 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .afterPayIcon{
         height: 22px; width: 22px;
     }
+    .sail-modal-header{
+        padding-top: 22px;
+    }
+
+    .sail-modal-body{
+        padding: 0 !important;
+    }
