@@ -105,6 +105,47 @@ $(document).ready(function () {
     $(".closebtn").click(function () {
         $(".sidenavs").removeClass("intro");
     });
+
+    // setTimeout(function() {
+    //   $('#sailImagePopup').modal('show');
+    // }, 1000);
+
+    function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Adds 1 day in milliseconds
+        expires = "; expires=" + date.toUTCString(); // Set expiration date
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/"; // Cookie applies to entire site
+    }
+
+    // Function to get a cookie by name
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    // Check if the cookie exists
+    if (!getCookie("sailpopupcokies")) {
+      // If the cookie does not exist, show the modal after 3 minutes
+      setTimeout(function() {
+        $('#sailImagePopup').modal('show');
+      }, 2000); // 2 second delay
+    }
+
+    // When the close button is clicked, hide the modal and set the cookie
+    $('#close-sail-modal').on('click', function() {
+        console.log('dsfdsf');
+      $('#sailImagePopup').modal('hide');
+      setCookie("sailpopupcokies", "closed", 1); // Cookie valid for 1 day (24 hours)
+    });
 });
 
 </script>
