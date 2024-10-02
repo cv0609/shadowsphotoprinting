@@ -10,7 +10,7 @@
     <td>
         <input type="number" name="quantity" id="quantity-{{$key}}"
         data-price="{{ isset($product_sale_price) && !empty($product_sale_price) ? $product_sale_price : $product->product_price }}"
-        data-productid="{{ $product->id }}">
+        data-productid="{{ $product->id }}" value="{{ isset($product->test_print[0]->qty) ?$product->test_print[0]->qty : 0}}" @if(isset($product->test_print[0]->qty)) readonly @endif>
     </td>
     <td>
         {{ $product->product_title }}

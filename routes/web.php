@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\HandCraftController;
+use App\Http\Controllers\admin\TestPrintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/product-show/{slug}',[ProductsController::class,'productShow'])->name('product-show');
         Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
         Route::delete('/product-delete/{product_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
+
+
+        Route::prefix('test-print')->group(function () {
+            Route::get('/products', [TestPrintController::class, 'products'])->name('test-print-product-list');
+            Route::get('/product-add', [TestPrintController::class, 'productAdd'])->name('test-print-product-add');
+            Route::post('/product-save', [TestPrintController::class, 'productSave'])->name('test-print-product-save');
+            Route::get('/product-show/{slug}', [TestPrintController::class, 'productShow'])->name('test-print-product-show');
+            Route::post('/product-update', [TestPrintController::class, 'productUpdate'])->name('test-print-product-update');
+            Route::delete('/product-delete/{product_id}', [TestPrintController::class, 'productDistroy'])->name('test-print-product-delete');
+            Route::get('/get-products', [TestPrintController::class, 'getProudcts'])->name('get-products');
+        });
 
         Route::get('/photos-for-sale-categories',[PhotoForSaleController::class,'productCategory'])->name('photos-for-sale-categories-list');
         Route::get('/photos-for-sale-categories-add',[PhotoForSaleController::class,'productCategoryAdd'])->name('photos-for-sale-categories-add');
