@@ -18,6 +18,7 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
 use Illuminate\Support\Facades\Mail;
+use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 
 class CartController extends Controller
@@ -106,16 +107,41 @@ class CartController extends Controller
 
                 $testPrint = '0';
 
-                if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
-                    $testPrint = $cart_item['testPrint'];
-                }
                 
                 foreach ($request->selectedImages  as $selectedImage) {
+
                     $tempFileName = basename($selectedImage);
                     $tempImagePath = 'public/temp/' . $tempFileName;
                     $permanentImagePath = 'public/assets/images/order_images/'.$tempFileName;
                     Storage::move($tempImagePath, $permanentImagePath);
                     $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
+
+                    $wtimagePath = public_path('storage/assets/images/order_images/' . $tempFileName);
+
+                    if (!file_exists($wtimagePath)) {
+                        return response()->json(['error' => 'Image not found: ' . $tempFileName], 404);
+                    }
+
+                    if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
+
+                        $testPrint = $cart_item['testPrint'];
+
+                        $watermarkPath = public_path('assets/images/order_images/watermark.jpg');
+                        $img = Image::make($wtimagePath);
+                
+                        $img->insert($watermarkPath, 'bottom-right', 10, 10);
+                
+                        $outputDir = public_path('assets/images/watermark');
+                        if (!file_exists($outputDir)) {
+                            mkdir($outputDir, 0755, true);
+                        }
+                        $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($tempFileName, PATHINFO_FILENAME) . '.jpg';
+                        $outputImagePath = $outputDir . '/' . $outputImageName;
+                
+                        $img->save($outputImagePath);
+                        $wtrelativeImagePath = 'assets/images/watermark/' . $outputImageName;
+                    }
+
                     $insertData = [
                         "cart_id" => $cartId,
                         "product_id" => $product_id,
@@ -123,7 +149,8 @@ class CartController extends Controller
                         "selected_images" => $ImagePath,
                         "product_type" => $itemType,
                         "product_price" => $request->card_price ?? 0,
-                        "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0' 
+                        "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0',
+                        "watermark_image" => isset($wtrelativeImagePath) && !empty($wtrelativeImagePath) ? $wtrelativeImagePath : null,
                     ];
 
                     if ($itemType == 'gift_card') {

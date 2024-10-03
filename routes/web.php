@@ -66,7 +66,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/products', [TestPrintController::class, 'products'])->name('test-print-product-list');
             Route::get('/product-add', [TestPrintController::class, 'productAdd'])->name('test-print-product-add');
             Route::post('/product-save', [TestPrintController::class, 'productSave'])->name('test-print-product-save');
-            Route::get('/product-show/{slug}', [TestPrintController::class, 'productShow'])->name('test-print-product-show');
+            Route::get('/product-show/{cat_id}', [TestPrintController::class, 'productShow'])->name('test-print-product-show');
             Route::post('/product-update', [TestPrintController::class, 'productUpdate'])->name('test-print-product-update');
             Route::delete('/product-delete/{product_id}', [TestPrintController::class, 'productDistroy'])->name('test-print-product-delete');
             Route::get('/get-products', [TestPrintController::class, 'getProudcts'])->name('get-products');
@@ -210,10 +210,6 @@ Route::prefix('afterpay')->group(function () {
     Route::get('/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
     Route::get('/order/success', [PaymentController::class, 'orderSuccess'])->name('order.success');
 });
-
-Route::get('/watermark', [UserController::class, 'showWatermarkedImage']);
-// Route::get('/watermark/{image}', [UserController::class,'addWaterMark'])->name('watermark');
-
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

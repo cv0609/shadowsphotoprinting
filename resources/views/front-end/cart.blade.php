@@ -79,7 +79,7 @@
 
                                                  @if($item->is_test_print == '1')
                                                    {{-- {{ addWaterMark($item->selected_images) }} --}}
-                                                    {{ getWatermarkedImageUrl($item->selected_images) }}
+                                                    {{ asset($item->watermark_image) }}
                                                    {{-- {{ asset($item->selected_images) }} --}}
                                                  @else
                                                    {{ asset($item->selected_images) }}

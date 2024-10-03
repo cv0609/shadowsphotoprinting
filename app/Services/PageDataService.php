@@ -23,7 +23,7 @@ class PageDataService
 
     public function getProductCategories()
     {
-        $ProductCategories = ProductCategory::get();
+        $ProductCategories = ProductCategory::where('slug' ,'!=','test-print')->get();
         if(isset($ProductCategories) && !empty($ProductCategories))
         {
             return $ProductCategories;

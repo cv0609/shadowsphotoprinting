@@ -47,8 +47,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Products Name</th>
-                            <th>Products Category</th>
+                            <th>Category Name</th>
+                            <th>Products Ids</th>
+                            <th>Price</th>
+                            <th>Qty</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -56,12 +58,14 @@
                         @foreach ($products as $key => $product)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($product->product_title) }}</td>
-                                <td>{{ ucfirst($product->product_category['name']) }}</td>
+                                <td>{{ ucfirst($product->product_category->name) }}</td>
+                                <td>{{ ucfirst($product->product_id) }}</td>
+                                <td>{{ ucfirst($product->product_price) }}</td>
+                                <td>{{ ucfirst($product->qty) }}</td>
                                 <td>
                                     <div class="x_content">
-                                    <a href="{{ route('product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('product-delete', ['product_id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
+                                    <a href="{{ route('test-print-product-show', ['cat_id' => $product->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                    <form action="{{ route('test-print-product-delete', ['product_id' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this page?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

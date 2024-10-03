@@ -16,9 +16,10 @@ class TestPrintController extends Controller
 {
    public function products()
     {
-        $products = Product::with(['product_category' => function($query) {
-            $query->select('id', 'name');
-        }])->paginate(10);
+        // $products = Product::with(['product_category' => function($query) {
+        //     $query->select('id', 'name');
+        // }])->paginate(10);
+        $products = TestPrint::with('product_category')->paginate(10);
         return view('admin.test_print.index', compact('products'));
     }
 
@@ -52,55 +53,37 @@ class TestPrintController extends Controller
         return redirect()->route('test-print-product-list')->with('success','Product inserted successfully');
     }
 
-    public function productShow($slug)
+    public function productShow($cat_id)
     {
-        $product = Product::with('productSale')->where('slug', $slug)->first();
+        $testPrint = TestPrint::where('id', $cat_id)->first();
+        $cat_id = $testPrint->category_id;
+        $product_arr = explode(',',$testPrint->product_id);
+
         $productCategories = ProductCategory::get();
-        return view('admin.test_print.edit', compact('product','productCategories'));
+
+        $products = Product::where('category_id', $cat_id)->get();
+        $test_print_product = Product::whereIn('id', $product_arr)->get();
+        $products_ids = $test_print_product->pluck('id')->toArray();
+
+        return view('admin.test_print.edit', compact('testPrint','productCategories','cat_id','products_ids','test_print_product','products'));
     }
 
-    public function productUpdate(ProductRequest $request)
+    public function productUpdate(Request $request)
     {
-        // dd($request->manage_sale);
         $data = [];
-        $slug = Str::slug($request->product_title);
+        $productsId =(isset($request->products) && !empty($request->products)) ? implode(',',$request->products) : null;
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s\(\)\.]/', ' ', $request->product_title)
-        ,"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_id" => $productsId,"product_price"=>$request->product_price,"qty"=>$request->product_qty];
 
-        if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('assets/admin/images'), $imageName);
-            $product_image = 'assets/admin/images/'.$imageName;
-            $data["product_image"] = $product_image;
-        }
+        TestPrint::where('id',$request->test_print_id)->update($data);
 
-        if(isset($request->manage_sale) && $request->manage_sale == "1"){
-            $data['manage_sale'] = '1';
-        }else{
-            $data['manage_sale'] = '0';
-        }
-
-        Product::whereId($request->product_id)->update($data);
-
-        product_sale::where('product_id',$request->product_id)->delete();
-
-        if($request->product_id && isset($request->manage_sale) && $request->manage_sale == "1")
-        {
-           foreach($request->sale_price as $key =>$value)
-            {
-              product_sale::insert(["product_id"=>$request->product_id,"sale_price"=>$value,"sale_start_date"=>$request->sale_start_date[$key],
-              "sale_end_date"=>$request->sale_end_date[$key]]);
-            }
-        }
         return redirect()->route('test-print-product-list')->with('success','Product updated successfully');
     }
 
 
    public function productDistroy($category_id)
     {
-       $category = Product::whereId($category_id)->delete();
+       $category = TestPrint::whereId($category_id)->delete();
        return redirect()->route('test-print-product-list')->with('success','Product is deleted successfully');
     }
 }
