@@ -73,7 +73,17 @@
                                                  {{ asset($image1) }}
 
                                             @else
-                                                {{ asset($item->selected_images) }}
+                                            {{-- @php
+                                                dd(addWaterMark(asset($item->selected_images)));
+                                            @endphp --}}
+
+                                                 @if($item->is_test_print == '1')
+                                                   {{-- {{ addWaterMark($item->selected_images) }} --}}
+                                                    {{ getWatermarkedImageUrl($item->selected_images) }}
+                                                   {{-- {{ asset($item->selected_images) }} --}}
+                                                 @else
+                                                   {{ asset($item->selected_images) }}
+                                                 @endif
                                             @endif
                                         " alt="">
                                     </a>

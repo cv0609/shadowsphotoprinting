@@ -208,13 +208,15 @@ $(document).ready(function() {
 
             if (quantity !== '' && quantity > 0) {
                 let price = parseFloat($(this).data('price'));
-                let productId = $(this).data('productid'); // Assuming the ID is in the format "quantity-{productId}"
+                let productId = $(this).data('productid'); 
+                let testPrint = $(this).data('testprint');
                 let totalPrice = quantity * price;
                 total += totalPrice;
                 cartItems.push({
                     product_id: productId,
                     quantity: parseFloat(quantity),
-                    price: price
+                    price: price,
+                    testPrint,testPrint
                 });
             }
         });
@@ -233,7 +235,7 @@ $(document).ready(function() {
             }
 
         if (cartItems.length > 0) {
-            // Send cart items to the server
+            
             $.ajax({
                 url: "{{ route('add-to-cart') }}", // Replace with your route
                 method: 'POST',
@@ -255,6 +257,7 @@ $(document).ready(function() {
 
                     $("input[name=quantity]").each(function() {
                        $(this).val('');
+                       $(this).removeAttr('readonly');
                     });
                     $(".show-details").text("0.00");
                     $("#cart-total-itmes").children(".show-details").text("0");

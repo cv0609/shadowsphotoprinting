@@ -104,20 +104,26 @@ class CartController extends Controller
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
 
+                $testPrint = '0';
+
+                if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
+                    $testPrint = $cart_item['testPrint'];
+                }
+                
                 foreach ($request->selectedImages  as $selectedImage) {
                     $tempFileName = basename($selectedImage);
                     $tempImagePath = 'public/temp/' . $tempFileName;
                     $permanentImagePath = 'public/assets/images/order_images/'.$tempFileName;
                     Storage::move($tempImagePath, $permanentImagePath);
                     $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
-
                     $insertData = [
                         "cart_id" => $cartId,
                         "product_id" => $product_id,
                         "quantity" => $quantity,
                         "selected_images" => $ImagePath,
                         "product_type" => $itemType,
-                        "product_price" => $request->card_price ?? 0
+                        "product_price" => $request->card_price ?? 0,
+                        "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0' 
                     ];
 
                     if ($itemType == 'gift_card') {

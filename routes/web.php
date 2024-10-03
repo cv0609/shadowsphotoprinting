@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\HandCraftController;
 use App\Http\Controllers\admin\TestPrintController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -209,6 +210,10 @@ Route::prefix('afterpay')->group(function () {
     Route::get('/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
     Route::get('/order/success', [PaymentController::class, 'orderSuccess'])->name('order.success');
 });
+
+Route::get('/watermark', [UserController::class, 'showWatermarkedImage']);
+// Route::get('/watermark/{image}', [UserController::class,'addWaterMark'])->name('watermark');
+
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
