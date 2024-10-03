@@ -95,6 +95,28 @@ $ProductCategories = $PageDataService->getProductCategories();
 
         <!-- Shop By Categories -->
 
+
+        <div id="sailImagePopup" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header sail-modal-header">
+                  <button type="button" class="close" id="close-sail-modal">&times;</button>
+                  {{-- <h4 class="modal-title">Modal Header</h4> --}}
+                </div>
+                <div class="modal-body sail-modal-body">
+                  <img src="{{asset('assets/images/sail-image-popup.png')}}" alt="image">
+                </div>
+                {{-- <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div> --}}
+              </div>
+        
+            </div>
+        </div>
+        
+
+
         <!-- Photo Restoration Service -->
 
         <section class="restoration">
@@ -168,5 +190,48 @@ $ProductCategories = $PageDataService->getProductCategories();
             fade: true,
             cssEase: 'linear'
         });
+        $(document).ready(function(){
+
+
+
+            function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Adds 1 day in milliseconds
+        expires = "; expires=" + date.toUTCString(); // Set expiration date
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/"; // Cookie applies to entire site
+    }
+
+    // Function to get a cookie by name
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    // Check if the cookie exists
+    if (!getCookie("sailpopupcokies")) {
+      // If the cookie does not exist, show the modal after 3 minutes
+      setTimeout(function() {
+        $('#sailImagePopup').modal('show');
+      }, 2000); // 2 second delay
+    }
+
+    // When the close button is clicked, hide the modal and set the cookie
+    $('#close-sail-modal').on('click', function() {
+      $('#sailImagePopup').modal('hide');
+      setCookie("sailpopupcokies", "closed", 1); // Cookie valid for 1 day (24 hours)
+    });
+        
+        })
     </script>
+
+
 @endsection
