@@ -82,7 +82,7 @@ class ProductsController extends Controller
 
     public function productAdd()
     {
-        $productCategories = ProductCategory::get();
+        $productCategories = ProductCategory::where('slug','!=','test-print')->get();
         return view('admin.products.add',compact('productCategories'));
     }
 
@@ -122,7 +122,7 @@ class ProductsController extends Controller
     public function productShow($slug)
     {
         $product = Product::with('productSale')->where('slug', $slug)->first();
-        $productCategories = ProductCategory::get();
+        $productCategories = ProductCategory::where('slug','!=','test-print')->get();
         return view('admin.products.edit', compact('product','productCategories'));
     }
 
