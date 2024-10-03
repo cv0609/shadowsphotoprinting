@@ -293,14 +293,13 @@
                                             </label>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <label class="payment-option active-payment" for="afterpayId">
                                                 <input type="radio" name="payment" id="afterpayId" value="afterpay">
-                                                <!-- <i class="fas fa-credit-card"></i> -->
                                                  <img src="{{asset('assets/images/favicon.ico')}}" alt="" class="afterPayIcon">
                                                 <span>Afterpay</span>
                                             </label>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
