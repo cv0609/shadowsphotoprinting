@@ -201,11 +201,12 @@
                   <span class="">
                       <bdi>
                           <span>$</span>
-                      @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                      {{-- @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                           {{ number_format($item->product_price, 2) }}
                       @else
                           {{ number_format($product_detail->product_price, 2) }}
-                      @endif
+                      @endif --}}
+                        {{ number_format($item->product_price, 2) }}
                       </bdi>
                   </span>
               </td>
@@ -233,7 +234,7 @@
                       {{ number_format($item->quantity * $item->product_price, 2) }}
                   @else
 
-                      {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
+                      {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $item->product_price, 2) }}
                       
                   @endif
               </td>
@@ -261,7 +262,7 @@
            <table class="wc-order-totals">
             <tr>
                 <td style="padding: 5px;">Items Subtotal:</td>
-                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['subtotal'],2) }}</strong></td>
+                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->sub_total,2) }}</strong></td>
             </tr>
 
             @if(isset($OrderTotal['coupon_code']) && !empty($OrderTotal['coupon_code']) && $OrderTotal['coupon_code'] != null)
@@ -279,7 +280,7 @@
             </tr>
             <tr>
                 <td style="padding: 5px;">Order Total:</td>
-                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['total'],2) }}</strong></td>
+                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->total,2) }}</strong></td>
             </tr>
             <tr>
                 <td colspan="2" style="border-bottom: 1px solid #ccc; padding: 5px;"></td>
@@ -289,7 +290,7 @@
             <table class="wc-order-totals">
                 <tr>
                     <td style="padding: 5px;"><strong>Paid:</strong></td>
-                    <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['total'],2) }}</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->total,2) }}</strong></td>
                 </tr>
                 <tr>
                     <td colspan="" style="padding: 5px;">{{ date('F j, Y', strtotime($orderDetail->created_at ?? '')) }}
@@ -307,7 +308,7 @@
                 <tr>
                     <td style="padding: 5px;"><i class="fa fa-question-circle" aria-hidden="true"></i> Stripe Payout:
                     </td>
-                    <td style="text-align: right; padding: 5px;"><strong>${{$OrderTotal['total']-$stripe_fee}}</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>${{(float)$orderDetail->total-$stripe_fee}}</strong></td>
                 </tr>
                 <tr>
                     <td style="padding: 5px;">Total cart count:</td>
