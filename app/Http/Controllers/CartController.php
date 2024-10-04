@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
+use App\Models\TestPrint;
 use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
@@ -123,23 +124,10 @@ class CartController extends Controller
                     }
 
                     if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
-
                         $testPrint = $cart_item['testPrint'];
-
-                        $watermarkPath = public_path('assets/images/order_images/watermark.jpg');
-                        $img = Image::make($wtimagePath);
-                
-                        $img->insert($watermarkPath, 'bottom-right', 10, 10);
-                
-                        $outputDir = public_path('assets/images/watermark');
-                        if (!file_exists($outputDir)) {
-                            mkdir($outputDir, 0755, true);
-                        }
-                        $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($tempFileName, PATHINFO_FILENAME) . '.jpg';
-                        $outputImagePath = $outputDir . '/' . $outputImageName;
-                
-                        $img->save($outputImagePath);
-                        $wtrelativeImagePath = 'assets/images/watermark/' . $outputImageName;
+                        $testPrintPrice = $cart_item['testPrintPrice'];
+                        $testPrintQty = $cart_item['testPrintQty'];
+                        $wtrelativeImagePath = $this->CartService->addWaterMark($wtimagePath,$tempFileName);
                     }
 
                     $insertData = [
@@ -150,6 +138,8 @@ class CartController extends Controller
                         "product_type" => $itemType,
                         "product_price" => $request->card_price ?? 0,
                         "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0',
+                        "test_print_price" => isset($testPrintPrice) && !empty($testPrintPrice) ? $testPrintPrice  : 0.00,
+                        "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
                         "watermark_image" => isset($wtrelativeImagePath) && !empty($wtrelativeImagePath) ? $wtrelativeImagePath : null,
                     ];
 

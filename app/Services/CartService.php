@@ -16,6 +16,7 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
+use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 class CartService
 {
@@ -37,6 +38,7 @@ class CartService
 
 
         $subtotal = $cart->items->reduce(function ($carry, $item) {
+
             if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft'){
                 $product_price = $item->product_price;
             }
@@ -48,11 +50,17 @@ class CartService
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
 
                 if(isset($sale_price) && !empty($sale_price)){
+                    
                     $product_price = $sale_price->sale_price;
-                }else {
-                    $product_price = $item->product->product_price;
-                }
 
+                }else {
+
+                    if (!empty($item->is_test_print) && $item->is_test_print == '1') {
+                        $product_price =  $item->test_print_price;
+                    }else{
+                        $product_price = $item->product->product_price;
+                    }
+                }
             }
             return $carry + ($product_price * $item->quantity);
         }, 0);
@@ -266,5 +274,24 @@ class CartService
         }else{
             return [];
         }
+    }
+
+    public function addWaterMark($wtimagePath,$tempFileName){
+
+        $watermarkPath = public_path('assets/images/order_images/watermark.png');
+        $img = Image::make($wtimagePath);
+
+        $img->insert($watermarkPath, 'bottom-right', 10, 10);
+
+        $outputDir = public_path('assets/images/watermark');
+        if (!file_exists($outputDir)) {
+            mkdir($outputDir, 0755, true);
+        }
+        $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($tempFileName, PATHINFO_FILENAME) . '.jpg';
+        $outputImagePath = $outputDir . '/' . $outputImageName;
+
+        $img->save($outputImagePath);
+        $wtrelativeImagePath = 'assets/images/watermark/' . $outputImageName;
+        return $wtrelativeImagePath;
     }
 }
