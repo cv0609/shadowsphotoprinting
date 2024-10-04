@@ -124,9 +124,18 @@ class CartController extends Controller
                     }
 
                     if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
+                        
                         $testPrint = $cart_item['testPrint'];
                         $testPrintPrice = $cart_item['testPrintPrice'];
                         $testPrintQty = $cart_item['testPrintQty'];
+                        $testPrintCatId = $cart_item['testPrintCategory_id'];
+
+                        $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
+                        
+                        if($cart_item['quantity'] != (int)$testPrintData->qty){
+                             return response()->json(['error' => true,'message' => 'This product is limited to  ' . $testPrintData->qty . ' quantity.' ]);
+                        }
+                       
                         $wtrelativeImagePath = $this->CartService->addWaterMark($wtimagePath,$tempFileName);
                     }
 
