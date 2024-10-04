@@ -54,7 +54,7 @@ class ShopController extends Controller
     }
     else
     {
-      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->where('slug','!=','test-print')->get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
     // dd($productCategories);
     $products = Product::select(['id','product_title','product_price'])->get();
