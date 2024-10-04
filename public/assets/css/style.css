@@ -4729,6 +4729,45 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
             height: auto;
             }
 
+#ImgViewer .modal-dialog {
+transform: translateY(-50%);
+top: 50%;
+width: 100%;
+max-width: 700px;
+padding-left: 20px;
+padding-right: 20px;
+}
+
+#ImgViewer .modal-header {
+position: absolute;
+top: -25px;
+right: -27px;
+z-index: 9;
+}
+
+#ImgViewer .modal-header button {
+background: #d7d7d7;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 50%;
+}
+#ImgViewer .modal-dialog img {
+width: 100%;
+height: auto;
+}
+
+
+/* responsive */
+@media (max-width: 575px) { 
+
+#ImgViewer .modal-dialog {
+margin: 0;
+}
+}
+
+            
+
    /* responsive */
 @media (max-width: 575px) { 
 

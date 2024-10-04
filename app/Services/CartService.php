@@ -276,22 +276,32 @@ class CartService
         }
     }
 
-    public function addWaterMark($wtimagePath,$tempFileName){
-
+    public function addWaterMark($wtimagePath, $tempFileName)
+    {
         $watermarkPath = public_path('assets/images/order_images/watermark.png');
+
         $img = Image::make($wtimagePath);
 
-        $img->insert($watermarkPath, 'bottom-right', 10, 10);
+        $width = $img->width();
+        $height = $img->height();
+
+        $watermark = Image::make($watermarkPath)->resize($width, $height);
+
+        $img->insert($watermark, 'top-left');
 
         $outputDir = public_path('assets/images/watermark');
+
         if (!file_exists($outputDir)) {
             mkdir($outputDir, 0755, true);
         }
+
         $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($tempFileName, PATHINFO_FILENAME) . '.jpg';
         $outputImagePath = $outputDir . '/' . $outputImageName;
 
         $img->save($outputImagePath);
+
         $wtrelativeImagePath = 'assets/images/watermark/' . $outputImageName;
+
         return $wtrelativeImagePath;
     }
 }
