@@ -128,7 +128,7 @@
                                                 {{ 
                                                     isset($product_sale_price) && !empty($product_sale_price) 
                                                         ? number_format($product_sale_price, 2) 
-                                                        : (isset($item->is_test_print) 
+                                                        : (isset($item->is_test_print) && ($item->is_test_print == '1')
                                                             ? number_format($item->test_print_price, 2) 
                                                             : number_format($product_detail->product_price, 2)) 
                                                 }}
@@ -137,7 +137,7 @@
                                     </span>
                                 </td>
                                 <td class="product-quantity">
-                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ isset($item->is_test_print) ? $item->test_print_qty : $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}" {{ isset($item->is_test_print) ? 'readonly' : '' }}>
+                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_qty : $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}" {{ isset($item->is_test_print) && ($item->is_test_print == '1') ? 'readonly' : '' }}>
                                 </td>
                                 <td class="product-subtotal">
                                     <span>
@@ -150,7 +150,7 @@
                                                     isset($product_sale_price) && !empty($product_sale_price) 
                                                         ? number_format($item->quantity * $product_sale_price, 2) 
                                                         : (
-                                                            isset($item->is_test_print) 
+                                                            isset($item->is_test_print) && ($item->is_test_print == '1')
                                                                 ? number_format($item->test_print_qty * $item->test_print_price, 2) 
                                                                 : number_format($item->quantity * $product_detail->product_price, 2)
                                                         ) 

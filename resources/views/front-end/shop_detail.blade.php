@@ -265,6 +265,10 @@ $(document).ready(function() {
                     });
                     $(".show-details").text("0.00");
                     $("#cart-total-itmes").children(".show-details").text("0");
+                   
+                    setTimeout(function() {
+                      location.reload();
+                    }, 2000); // 2000 milliseconds = 2 seconds
 
                     // if ($('#add_to_cart_msg').length) {
                     //     setTimeout(function() {
@@ -283,37 +287,40 @@ $(document).ready(function() {
     });
 
     // Function to update the cart totals
-    function updateCartTotals() {
-        let total = 0;
-        let totalQuantity = 0;
-
-        $("input[name=quantity]").each(function() {
-            var quantity = $(this).val();
-            var rowId = $(this).attr('id').split('-')[1];
-
-            var price = parseFloat($(this).data('price'));
-            console.log(price,'price');
-            var totalPrice = quantity * price;
-            total += totalPrice;
-            totalQuantity += +quantity;
-
-            if(quantity == ''){
-                totalPrice=0;
-                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
-            }
-
-            if (quantity !== '' && quantity > 0) {
-                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
-            }
-        });
-
-        $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
-        $("#cart-total-itmes").children('.show-details').text(totalQuantity);
-    }
-
+    
     // Initial update of cart totals on page load
     updateCartTotals();
 });
+
+
+function updateCartTotals() {
+    let total = 0;
+    let totalQuantity = 0;
+
+    $("input[name=quantity]").each(function() {
+        var quantity = $(this).val();
+        var rowId = $(this).attr('id').split('-')[1];
+
+        var price = parseFloat($(this).data('price'));
+        console.log(price,'price');
+        var totalPrice = quantity * price;
+        total += totalPrice;
+        totalQuantity += +quantity;
+
+        if(quantity == ''){
+            totalPrice=0;
+            $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+        }
+
+        if (quantity !== '' && quantity > 0) {
+            $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+        }
+    });
+
+    $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
+    $("#cart-total-itmes").children('.show-details').text(totalQuantity);
+}
+
 
  $("#category").on('change',function(){
 
@@ -323,7 +330,9 @@ $(document).ready(function() {
         '_token': "{{ csrf_token() }}"
     },
     function(res){
-         $("#products-main").html(res);
+        // updateCartTotals();
+        $("#products-main").html(res);
+        updateCartTotals();
     });
  })
 

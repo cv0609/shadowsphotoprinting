@@ -225,21 +225,29 @@ class PaymentController extends Controller
                         $sale_price = number_format($product_sale_price, 2);
                         $sale_on = 1;
                     }else{
-                        $item_price = $item->quantity * $product_price;
+
                         $sale_on = 0;
                         $sale_price=null;
+
+                        if(isset($item->is_test_print) && ($item->is_test_print == '1')){
+                            $item_price = $item->quantity * $item->test_print_price;
+                        }else{
+                            $item_price = $item->quantity * $product_price;
+                        }
                     }
                 }
 
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
+                    'quantity' => (!empty($item->is_test_print) && $item->is_test_print == '1') 
+                                    ? $item->test_print_qty 
+                                    : $item->quantity,
                     'selected_images' => $item->selected_images,
                     'price' => $item_price,
                     'product_type' => $item->product_type ?? null,
                     'product_desc' => $item->product_desc,
-                    'product_price' => $product_price ?? 0,
+                    'product_price' => (!empty($item->is_test_print) && $item->is_test_print == '1') ? $item->test_print_price : $product_price ?? 0,
                     'sale_price' => $sale_price,
                     'sale_on' => $sale_on
                 ]);
