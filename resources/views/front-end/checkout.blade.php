@@ -542,6 +542,7 @@
                     $('#loader-order-btn').removeClass('d-none');
                     // Send the token to your server    
                     formData.stripeToken = result.token.id;
+                    formData.payment_method = 'stripe';
 
                     fetch('/create-customer', {
                         method: 'POST',
@@ -587,6 +588,8 @@
             }
             $('#place-order-btn').addClass('d-none');
             $('#loader-order-btn').removeClass('d-none');
+
+            formData.payment_method = 'afterPay';
 
             $.ajax({
                 type: "POST",
