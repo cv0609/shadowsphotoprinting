@@ -210,13 +210,17 @@ $(document).ready(function() {
                 let price = parseFloat($(this).data('price'));
                 let productId = $(this).data('productid'); 
                 let testPrint = $(this).data('testprint');
+                let testPrintPrice = $(this).data('test_print_price');
+                let testPrintQty = $(this).data('test_print_qty');
                 let totalPrice = quantity * price;
                 total += totalPrice;
                 cartItems.push({
                     product_id: productId,
                     quantity: parseFloat(quantity),
                     price: price,
-                    testPrint,testPrint
+                    testPrint: testPrint,
+                    testPrintPrice: testPrintPrice,
+                    testPrintQty: testPrintQty
                 });
             }
         });
