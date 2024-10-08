@@ -149,6 +149,13 @@ class CartService
         return $shipping;
      }
 
+     public function getTestPrintShippingCharge()
+     {
+        $shipping = Shipping::where('is_test_print','1')->first();
+        return $shipping;
+     }
+
+
      public function getOrderTotal($OrderNumber)
      {
 

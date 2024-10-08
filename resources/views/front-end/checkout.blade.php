@@ -269,7 +269,7 @@
                                                     <li>
                                                         <input type="hidden" data-index="0">
                                                         <label>Flat rate:
-                                                            <span><bdi><span>$</span>{{ number_format($shipping->amount,2) }}</bdi></span>
+                                                            <span><bdi><span>$</span>{{ number_format($shipping->amount+$test_print_shipping,2) }}</bdi></span>
                                                         </label>
                                                     </li>
                                                 </ul>

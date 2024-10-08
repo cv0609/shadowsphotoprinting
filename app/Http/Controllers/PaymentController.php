@@ -50,13 +50,22 @@ class PaymentController extends Controller
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         }
 
+        $test_print_shipping = 0;
+
+        foreach ($cart->items as $items) {
+            if ($items->is_test_print == '1') {
+                $testPrintShipping = $this->CartService->getTestPrintShippingCharge();
+                $test_print_shipping += $testPrintShipping->amount; // Use += to accumulate
+            }
+        }
+
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
         $shipping = $this->CartService->getShippingCharge();
 
         $page_content = ["meta_title"=>config('constant.pages_meta.checkout.meta_title'),"meta_description"=>config('constant.pages_meta.checkout.meta_description')]; 
 
-        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content','user_address'));
+        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content','user_address','test_print_shipping'));
      }
 
     public function createCustomer(Request $request)
@@ -153,7 +162,7 @@ class PaymentController extends Controller
         }
     }
 
-    private function createOrder($charge){
+    private function createOrder($charge=null,$afterPay=null){
 
         $cart = '';
 
@@ -194,13 +203,13 @@ class PaymentController extends Controller
             'total' => $cart_total ?? 0,
             'payment_id' => ($payment_method === 'stripe') 
                 ? ($charge->id ?? "")
-                : 'afterPayPaymentId',
+                : ($afterPay->id ?? ""),
             'is_paid' => ($payment_method === 'stripe') 
                 ? ($charge->captured ?? '') 
-                : 'afterPayCapture',
+                : ($afterPay->status ?? ''),
             'payment_status' => ($payment_method === 'stripe') 
                     ? ($charge->status ?? '')  
-                    : 'afterPayStatus',
+                    : ($afterPay->paymentState ?? ''),
             'payment_method' => $payment_method,
             'order_status' => "0",
         ]);
@@ -261,7 +270,7 @@ class PaymentController extends Controller
                 'quantity' => (!empty($item->is_test_print) && $item->is_test_print == '1') 
                                 ? $item->test_print_qty 
                                 : $item->quantity,
-                'selected_images' => $item->selected_images,
+                'selected_images' => isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->watermark_image : $item->selected_images,
                 'price' => $item_price,
                 'product_type' => $item->product_type ?? null,
                 'product_desc' => $item->product_desc,
@@ -584,16 +593,21 @@ class PaymentController extends Controller
             return redirect()->route('checkout')->with('error', 'Session expired or invalid.');
         }
 
-        $response = $this->AfterPayService->validateAfterpayOrder($token);
+        $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
 
-        if (isset($response['status']) && $response['status'] === 'APPROVED') {
-
+        if(isset($afterPay) && !empty($afterPay)){
             $log = new AfterPayLogs;
-            $log->logs = json_encode($response) ?? '';
+            $log->logs = json_encode($afterPay) ?? '';
             $log->save();
+        }
+
+        if (isset($response['status'])) {
+
+            $this->createOrder($charge=null,$afterPay=null);
 
             Session::forget(['order_address', 'coupon','billing_details','afterpay_token']);
             return redirect()->route('order.success');
+
         } else {
             return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
         }        
