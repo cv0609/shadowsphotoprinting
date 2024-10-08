@@ -83,8 +83,8 @@ class ShopController extends Controller
         $productIds = [];
 
         foreach ($testPrintCollection as $testPrint) {
-            $ids = explode(',', $testPrint->product_id);
-            $productIds = array_merge($productIds, $ids);
+          $ids = explode(',', $testPrint->product_id);
+          $productIds = array_merge($productIds, $ids);
         }
 
         $productIds = array_unique($productIds);

@@ -26,7 +26,7 @@
             <div class="x_title">
               <h2>Shipping List</h2>
               <a href="{{ route('shipping-add') }}">
-                {{-- <button class="btn btn-info panel_toolbox">Add Shipping</button> --}}
+                <button class="btn btn-info panel_toolbox">Add Shipping</button>
               </a>
               <div class="clearfix"></div>
             </div>

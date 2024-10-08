@@ -13,6 +13,7 @@ class Shipping extends Model
         'country',
         'shipping_method',
         'amount',
-        'status'
+        'status',
+        'is_test_print'
     ];
 }

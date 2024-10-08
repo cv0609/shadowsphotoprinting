@@ -23,6 +23,7 @@
                 <br>
                 <form action="{{ route('shipping-update') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
+                    <input type="hidden" name="status" value="1">
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="country" >Country <span class="required">*</span>
                         </label>.
@@ -59,6 +60,23 @@
                            @enderror
                         </div>
                     </div>
+
+
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="is_test_print" >Test Print <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6">
+                            <select class="form-control" name="is_test_print">
+                               {{-- <option value="">Select</option> --}}
+                                <option value="1" @if($shipping->is_test_print == '1') selected @endif>Yes</option>
+                                <option value="0" @if($shipping->is_test_print == '0') selected @endif>No</option>
+                            </select>
+                            @error('is_test_print')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <input type="hidden" name="shipping_id" value="{{ $shipping->id }}">
                     <div class="ln_solid"></div>
                     <div class="item form-group">
