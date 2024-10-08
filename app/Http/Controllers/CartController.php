@@ -253,13 +253,44 @@ class CartController extends Controller
         $countries = Country::with('states')->find(14);
 
         $CartTotal = $this->CartService->getCartTotal();
+        // $shipping = $this->CartService->getShippingCharge();
+
+
+        $shipping_with_test_print = 0;
+        $hasTestPrint = false;
+        $hasRegularPrint = false;
+        
         $shipping = $this->CartService->getShippingCharge();
+        $testPrintShipping = $this->CartService->getTestPrintShippingCharge()->amount;
+        
+        foreach ($cart->items as $items) {
+            if ($items->is_test_print == '1') {
+                $hasTestPrint = true;  // Flag that the cart has test print shipping
+            } 
+            
+            if ($items->is_test_print == '0') {
+                $hasRegularPrint = true;  
+            }
+        
+            if ($hasTestPrint && $hasRegularPrint) {
+                break;
+            }
+        }
+        
+        if ($hasTestPrint && $hasRegularPrint) {
+            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
+        } elseif ($hasTestPrint) {
+            $shipping_with_test_print += $testPrintShipping;
+        } elseif ($hasRegularPrint) {
+            $shipping_with_test_print += $shipping->amount;
+        }
+
 
         $page_content = ["meta_title"=>config('constant.pages_meta.cart.meta_title'),"meta_description"=>config('constant.pages_meta.cart.meta_description')];
 
         if(!empty($cart))
         {
-            return view('front-end.cart',compact('cart','CartTotal','shipping','countries','page_content'));
+            return view('front-end.cart',compact('cart','CartTotal','shipping','countries','page_content','shipping_with_test_print'));
           }
           else
            {

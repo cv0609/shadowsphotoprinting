@@ -25,7 +25,8 @@ class ShippingRequest extends FormRequest
             'country' => 'required',
             'amount' => 'required|numeric|min:0',
             'shipping_method' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
+            // 'is_test_print' => 'required',
 
         ];
     }

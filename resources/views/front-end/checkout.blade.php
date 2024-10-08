@@ -269,8 +269,9 @@
                                                     <li>
                                                         <input type="hidden" data-index="0">
                                                         <label>Flat rate:
-                                                            <span><bdi><span>$</span>{{ number_format($shipping->amount,2) }}</bdi></span>
+                                                            <span><bdi><span>$</span>{{ number_format($shipping_with_test_print,2) }}</bdi></span>
                                                         </label>
+                                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($shipping_with_test_print,2) }}">
                                                     </li>
                                                 </ul>
                                             </td>
@@ -278,7 +279,7 @@
                                         @endif
                                         <tr class="order-total">
                                             <th>Total</th>
-                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
+                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                                     <span><span>$</span>1.12</span>
                                                     GST)</small> --}}
@@ -432,6 +433,8 @@
         var suburb = $('#suburb').val();
         var email = $('#email').val();
         var username = $('#username').val();
+        var shipping_charge = $('#shipping_charge').val();
+        
         
         var password = $('#password').val();
         var company_name = $('#company_name').val();
@@ -493,6 +496,7 @@
             username: username,
             password: password,
             company_name:company_name,
+            shipping_charge:shipping_charge,
         };
 
         if ($('#shipcheckbox').is(':checked')) {
@@ -542,6 +546,7 @@
                     $('#loader-order-btn').removeClass('d-none');
                     // Send the token to your server    
                     formData.stripeToken = result.token.id;
+                    formData.payment_method = 'stripe';
 
                     fetch('/create-customer', {
                         method: 'POST',
@@ -587,6 +592,8 @@
             }
             $('#place-order-btn').addClass('d-none');
             $('#loader-order-btn').removeClass('d-none');
+
+            formData.payment_method = 'afterPay';
 
             $.ajax({
                 type: "POST",
