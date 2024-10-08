@@ -87,15 +87,17 @@ class CartService
 
         // Calculate the total after applying the discount
         $totalAfterDiscount = $subtotal - $discount;
+
         $shipping = $this->getShippingCharge();
 
-        if($shipping->status == "1" && Session::has('billing_details')){
-            $shippingCharge = $shipping->amount; // Example shipping charge
-        }
-        else
-         {
-            $shippingCharge = 0;
-         }
+        // if($shipping->status == "1" && Session::has('billing_details')){
+        //     $shippingCharge = $shipping->amount; // Example shipping charge
+        // }
+        // else
+        // {
+            // $shippingCharge = 0;
+        // }
+        $shippingCharge = 0;
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
 

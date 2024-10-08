@@ -50,22 +50,41 @@ class PaymentController extends Controller
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         }
 
-        $test_print_shipping = 0;
-
+        $shipping_with_test_print = 0;
+        $hasTestPrint = false;
+        $hasRegularPrint = false;
+        
+        $shipping = $this->CartService->getShippingCharge();
+        $testPrintShipping = $this->CartService->getTestPrintShippingCharge()->amount;
+        
         foreach ($cart->items as $items) {
             if ($items->is_test_print == '1') {
-                $testPrintShipping = $this->CartService->getTestPrintShippingCharge();
-                $test_print_shipping += $testPrintShipping->amount; // Use += to accumulate
+                $hasTestPrint = true;  // Flag that the cart has test print shipping
+            } 
+            
+            if ($items->is_test_print == '0') {
+                $hasRegularPrint = true;  
+            }
+        
+            if ($hasTestPrint && $hasRegularPrint) {
+                break;
             }
         }
-
+        
+        if ($hasTestPrint && $hasRegularPrint) {
+            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
+        } elseif ($hasTestPrint) {
+            $shipping_with_test_print += $testPrintShipping;
+        } elseif ($hasRegularPrint) {
+            $shipping_with_test_print += $shipping->amount;
+        }
+        
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
-        $shipping = $this->CartService->getShippingCharge();
 
         $page_content = ["meta_title"=>config('constant.pages_meta.checkout.meta_title'),"meta_description"=>config('constant.pages_meta.checkout.meta_description')]; 
 
-        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content','user_address','test_print_shipping'));
+        return view('front-end.checkout',compact('cart','CartTotal','shipping','countries','page_content','user_address','shipping_with_test_print'));
      }
 
     public function createCustomer(Request $request)
@@ -124,6 +143,7 @@ class PaymentController extends Controller
             'username' => $request->username,
             'password' => $request->password,
             'payment_method' => $request->payment_method,
+            'shipping_charge' => $request->shipping_charge,
         ];
 
         // Check if shipping details are provided
@@ -189,6 +209,7 @@ class PaymentController extends Controller
         if(Session::has('order_address')){
             $order_address = Session::get('order_address');
             $payment_method = $order_address['payment_method'];
+            $shippingCharge = $order_address['shipping_charge'];
         }
 
         $order = Order::create([
@@ -199,8 +220,8 @@ class PaymentController extends Controller
             'coupon_code' => $coupon_code['code'] ?? '',
             'discount' => $coupon_discount ?? 0,
             'sub_total' => $subtotal ?? 0,
-            'shipping_charge' => $shipping_amount ?? 0,
-            'total' => $cart_total ?? 0,
+            'shipping_charge' => $shipping_amount != 0 ? $shipping_amount : $shippingCharge,
+            'total' => $shipping_amount != 0 ? $cart_total : $cart_total+$shippingCharge,
             'payment_id' => ($payment_method === 'stripe') 
                 ? ($charge->id ?? "")
                 : ($afterPay->id ?? ""),
@@ -284,6 +305,7 @@ class PaymentController extends Controller
 
             $order_address = Session::get('order_address');
             unset($order_address['payment_method']);
+            unset($order_address['shipping_charge']);
 
             if (Auth::check() && !empty(Auth::user())) {
                 $auth_id = Auth::user()->id;

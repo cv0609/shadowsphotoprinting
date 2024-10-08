@@ -214,7 +214,7 @@
                                 <td>
 
                                     @if(Session::has('billing_details'))
-                                        <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
+                                        <span class="flat-rate"> Flat rate: ${{ number_format($shipping_with_test_print,2) }}</span>
                                         <p>
                                         <p class="">
                                             Shipping to <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>. </p>
@@ -294,7 +294,7 @@
                                 <tr class="order-total">
                                     <th>Total</th>
                                     <td data-title="Total">
-                                        <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
+                                        <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
                                         {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small> --}}
