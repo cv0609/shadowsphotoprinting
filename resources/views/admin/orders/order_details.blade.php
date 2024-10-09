@@ -329,7 +329,7 @@
             onclick="return confirm('Are you sure!')"
             @endif
             
-            >refund</a>
+            >@if($orderDetail->order_status == "3") refunded @else refund @endif</a>
         </div>
         <div class="refund_paragraph">
           <p>This order is no longer editable.</p>
