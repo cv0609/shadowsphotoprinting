@@ -76,7 +76,7 @@ class ProductsController extends Controller
     {
         $products = Product::with(['product_category' => function($query) {
             $query->select('id', 'name');
-        }])->paginate(10);
+        }])->get();
         return view('admin.products.index', compact('products'));
     }
 
@@ -170,5 +170,16 @@ class ProductsController extends Controller
        $category = Product::whereId($category_id)->delete();
        return redirect()->route('product-list')->with('success','Product is deleted successfully');
     }
+
+    public function updateProductOrder(Request $request)
+    {
+        $order = $request->order;
+
+        foreach ($order as $item) {
+            Product::where('id', $item['id'])->update(['position' => $item['position']]);
+        }
+        return response()->json(['success' => true]);
+    }
+
 
 }
