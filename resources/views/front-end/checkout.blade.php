@@ -224,7 +224,15 @@
                                                         @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
                                                             {{ number_format($item->quantity * $item->product_price, 2) }}
                                                         @else
-                                                            {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}
+                                                            {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : 
+                                                            
+                                                            (
+                                                            isset($item->is_test_print) && ($item->is_test_print == '1')
+                                                                ? number_format($item->test_print_qty * $item->test_print_price, 2) 
+                                                                : number_format($item->quantity * $item->product->product_price, 2)
+                                                             ) 
+                                                            
+                                                            }}
                                                         @endif
                                                     </bdi>
                                                 </span>
@@ -261,8 +269,9 @@
                                                     <li>
                                                         <input type="hidden" data-index="0">
                                                         <label>Flat rate:
-                                                            <span><bdi><span>$</span>{{ number_format($shipping->amount,2) }}</bdi></span>
+                                                            <span><bdi><span>$</span>{{ number_format($shipping_with_test_print,2) }}</bdi></span>
                                                         </label>
+                                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($shipping_with_test_print,2) }}">
                                                     </li>
                                                 </ul>
                                             </td>
@@ -270,7 +279,7 @@
                                         @endif
                                         <tr class="order-total">
                                             <th>Total</th>
-                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
+                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                                     <span><span>$</span>1.12</span>
                                                     GST)</small> --}}
@@ -284,6 +293,7 @@
                                 <div class="mt-5">
                                    <h3 class="mb-4">Select Payment Method</h3>
                                     <div class="row">
+                                        @if(env('STRIPE') == true)
                                         <div class="col-md-6">
                                             <label class="payment-option active-payment" for="stripeId">
                                                 <input type="radio" name="payment" id="stripeId" value="stripe" checked>
@@ -292,21 +302,25 @@
                                                 <span>Stripe</span>
                                             </label>
                                         </div>
+                                        @endif
 
-                                        {{-- <div class="col-md-6">
+                                         @if(env('AFFTERPAY') == true)
+                                        <div class="col-md-6">
                                             <label class="payment-option active-payment" for="afterpayId">
                                                 <input type="radio" name="payment" id="afterpayId" value="afterpay">
                                                  <img src="{{asset('assets/images/favicon.ico')}}" alt="" class="afterPayIcon">
                                                 <span>Afterpay</span>
                                             </label>
-                                        </div> --}}
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 
                                 <div id="payment">
                                     <form id="payment-form">
-                                    <div class="payment_methods stripe-details">
-                                        <ul>
+                                        <div class="payment_methods stripe-details">
+                                            <ul>
+                                            {{-- @if(env('STRIPE') == true)      --}}
                                             <li>
                                                 <label for=""> Credit Card (Stripe) </label>
                                                 <p>Pay with your credit card via Stripe.</p><br>
@@ -329,6 +343,7 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            {{-- @endif --}}
                                         </ul>
                                     </div>
                                     <div class="experience-throughout">
@@ -424,6 +439,8 @@
         var suburb = $('#suburb').val();
         var email = $('#email').val();
         var username = $('#username').val();
+        var shipping_charge = $('#shipping_charge').val();
+        
         
         var password = $('#password').val();
         var company_name = $('#company_name').val();
@@ -446,7 +463,7 @@
 
         var isValid = true;
 
-        var requiredFields = ['#fname', '#lname', '#street1', '#street2', '#postcode', '#email', '#suburb'];
+        var requiredFields = ['#fname', '#lname', '#street1', '#postcode', '#email', '#suburb'];
 
         if (!authcheck) {
             requiredFields = requiredFields.concat(['#username', '#password']);
@@ -462,7 +479,7 @@
 
         // Shipping address validation if checkbox is checked
         if ($('#shipcheckbox').is(':checked')) {
-            var shipRequiredFields = ['#ship_fname', '#ship_lname', '#ship_street1','#ship_street2', '#ship_postcode','#ship_suburb'];
+            var shipRequiredFields = ['#ship_fname', '#ship_lname', '#ship_street1', '#ship_postcode','#ship_suburb'];
             shipRequiredFields.forEach(function(field) {
                 var $field = $(field);
                 if ($field.val().trim() === '') {
@@ -485,6 +502,7 @@
             username: username,
             password: password,
             company_name:company_name,
+            shipping_charge:shipping_charge,
         };
 
         if ($('#shipcheckbox').is(':checked')) {
@@ -534,6 +552,7 @@
                     $('#loader-order-btn').removeClass('d-none');
                     // Send the token to your server    
                     formData.stripeToken = result.token.id;
+                    formData.payment_method = 'stripe';
 
                     fetch('/create-customer', {
                         method: 'POST',
@@ -579,6 +598,8 @@
             }
             $('#place-order-btn').addClass('d-none');
             $('#loader-order-btn').removeClass('d-none');
+
+            formData.payment_method = 'afterPay';
 
             $.ajax({
                 type: "POST",

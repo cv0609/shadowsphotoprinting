@@ -125,13 +125,19 @@
                                             @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                                                 {{ number_format($item->product_price, 2) }}
                                             @else
-                                                {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($product_sale_price, 2) : number_format($product_detail->product_price, 2)  }}
+                                                {{ 
+                                                    isset($product_sale_price) && !empty($product_sale_price) 
+                                                        ? number_format($product_sale_price, 2) 
+                                                        : (isset($item->is_test_print) && ($item->is_test_print == '1')
+                                                            ? number_format($item->test_print_price, 2) 
+                                                            : number_format($product_detail->product_price, 2)) 
+                                                }}
                                             @endif
                                         </bdi>
                                     </span>
                                 </td>
                                 <td class="product-quantity">
-                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}">
+                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_qty : $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}" {{ isset($item->is_test_print) && ($item->is_test_print == '1') ? 'readonly' : '' }}>
                                 </td>
                                 <td class="product-subtotal">
                                     <span>
@@ -140,7 +146,15 @@
                                             @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
                                             @else
-                                                {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $product_detail->product_price, 2) }}
+                                                {{ 
+                                                    isset($product_sale_price) && !empty($product_sale_price) 
+                                                        ? number_format($item->quantity * $product_sale_price, 2) 
+                                                        : (
+                                                            isset($item->is_test_print) && ($item->is_test_print == '1')
+                                                                ? number_format($item->test_print_qty * $item->test_print_price, 2) 
+                                                                : number_format($item->quantity * $product_detail->product_price, 2)
+                                                        ) 
+                                                }}
                                             @endif
                                         </bdi>
                                     </span>
@@ -200,7 +214,7 @@
                                 <td>
 
                                     @if(Session::has('billing_details'))
-                                        <span class="flat-rate"> Flat rate: ${{ number_format($shipping->amount,2) }}</span>
+                                        <span class="flat-rate"> Flat rate: ${{ number_format($shipping_with_test_print,2) }}</span>
                                         <p>
                                         <p class="">
                                             Shipping to <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>. </p>
@@ -280,7 +294,7 @@
                                 <tr class="order-total">
                                     <th>Total</th>
                                     <td data-title="Total">
-                                        <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
+                                        <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
                                         {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small> --}}
@@ -323,6 +337,8 @@
 
     </div>
 </div>
+
+
 @endsection
 
 @section('scripts')

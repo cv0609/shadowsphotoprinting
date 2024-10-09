@@ -85,4 +85,30 @@ class AfterPayService
         }
     }
 
+    public function refundPayment($payment_id)
+    {
+        $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
+
+        try {
+            $response = $this->client->get("/v2/payments/token/{$payment_id}", [
+                'headers' => [
+                    'Authorization' => "Basic $auth",
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => 'Afterpay Online API',
+                    'Accept' => 'application/json',
+                ],
+            ]);
+
+            return json_decode($response->getBody()->getContents(), true);
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $responseBody = json_decode($response->getBody()->getContents(), true);
+                return $responseBody;
+            }
+            return ['error' => 'Unable to validate Afterpay order.'];
+        }
+    }
+
 }

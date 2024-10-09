@@ -24,6 +24,7 @@ class Order extends Model
         'is_paid',
         'order_status',
         'payment_status',
+        'payment_method'
     ];
 
     public function user()

@@ -142,7 +142,7 @@
                 <tr>
                     <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
                         Payment method:</th>
-                    <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">Credit Card (Stripe)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">{{ucfirst($order->payment_method) ?? ''}}</td>
                 </tr>
                 <tr>
                     <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">

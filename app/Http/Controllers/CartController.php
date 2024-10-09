@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
+use App\Models\TestPrint;
 use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
@@ -123,23 +124,22 @@ class CartController extends Controller
                     }
 
                     if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
-
+                        
                         $testPrint = $cart_item['testPrint'];
+                        $testPrintPrice = $cart_item['testPrintPrice'];
+                        $testPrintQty = $cart_item['testPrintQty'];
+                        $testPrintCatId = $cart_item['testPrintCategory_id'];
 
-                        $watermarkPath = public_path('assets/images/order_images/watermark.jpg');
-                        $img = Image::make($wtimagePath);
-                
-                        $img->insert($watermarkPath, 'bottom-right', 10, 10);
-                
-                        $outputDir = public_path('assets/images/watermark');
-                        if (!file_exists($outputDir)) {
-                            mkdir($outputDir, 0755, true);
+                        $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
+                        
+                        if($cart_item['quantity'] < 1 || $cart_item['quantity'] > (int)$testPrintData->qty) {
+                            return response()->json([
+                                'error' => true,
+                                'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
+                            ]);
                         }
-                        $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($tempFileName, PATHINFO_FILENAME) . '.jpg';
-                        $outputImagePath = $outputDir . '/' . $outputImageName;
-                
-                        $img->save($outputImagePath);
-                        $wtrelativeImagePath = 'assets/images/watermark/' . $outputImageName;
+                       
+                        $wtrelativeImagePath = $this->CartService->addWaterMark($wtimagePath,$tempFileName);
                     }
 
                     $insertData = [
@@ -150,6 +150,8 @@ class CartController extends Controller
                         "product_type" => $itemType,
                         "product_price" => $request->card_price ?? 0,
                         "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0',
+                        "test_print_price" => isset($testPrintPrice) && !empty($testPrintPrice) ? $testPrintPrice  : 0.00,
+                        "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
                         "watermark_image" => isset($wtrelativeImagePath) && !empty($wtrelativeImagePath) ? $wtrelativeImagePath : null,
                     ];
 
@@ -254,13 +256,44 @@ class CartController extends Controller
         $countries = Country::with('states')->find(14);
 
         $CartTotal = $this->CartService->getCartTotal();
+        // $shipping = $this->CartService->getShippingCharge();
+
+
+        $shipping_with_test_print = 0;
+        $hasTestPrint = false;
+        $hasRegularPrint = false;
+        
         $shipping = $this->CartService->getShippingCharge();
+        $testPrintShipping = $this->CartService->getTestPrintShippingCharge()->amount;
+        
+        foreach ($cart->items as $items) {
+            if ($items->is_test_print == '1') {
+                $hasTestPrint = true;  // Flag that the cart has test print shipping
+            } 
+            
+            if ($items->is_test_print == '0') {
+                $hasRegularPrint = true;  
+            }
+        
+            if ($hasTestPrint && $hasRegularPrint) {
+                break;
+            }
+        }
+        
+        if ($hasTestPrint && $hasRegularPrint) {
+            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
+        } elseif ($hasTestPrint) {
+            $shipping_with_test_print += $testPrintShipping;
+        } elseif ($hasRegularPrint) {
+            $shipping_with_test_print += $shipping->amount;
+        }
+
 
         $page_content = ["meta_title"=>config('constant.pages_meta.cart.meta_title'),"meta_description"=>config('constant.pages_meta.cart.meta_description')];
 
         if(!empty($cart))
         {
-            return view('front-end.cart',compact('cart','CartTotal','shipping','countries','page_content'));
+            return view('front-end.cart',compact('cart','CartTotal','shipping','countries','page_content','shipping_with_test_print'));
           }
           else
            {

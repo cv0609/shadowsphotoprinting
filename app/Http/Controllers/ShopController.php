@@ -54,7 +54,7 @@ class ShopController extends Controller
     }
     else
     {
-      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->where('slug','!=','test-print')->get();
+      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
     // dd($productCategories);
     $products = Product::select(['id','product_title','product_price'])->get();
@@ -83,8 +83,8 @@ class ShopController extends Controller
         $productIds = [];
 
         foreach ($testPrintCollection as $testPrint) {
-            $ids = explode(',', $testPrint->product_id);
-            $productIds = array_merge($productIds, $ids);
+          $ids = explode(',', $testPrint->product_id);
+          $productIds = array_merge($productIds, $ids);
         }
 
         $productIds = array_unique($productIds);

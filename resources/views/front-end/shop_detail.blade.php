@@ -210,13 +210,19 @@ $(document).ready(function() {
                 let price = parseFloat($(this).data('price'));
                 let productId = $(this).data('productid'); 
                 let testPrint = $(this).data('testprint');
+                let testPrintPrice = $(this).data('test_print_price');
+                let testPrintQty = $(this).data('test_print_qty');
+                let testPrintCategory_id = $(this).data('category_id');
                 let totalPrice = quantity * price;
                 total += totalPrice;
                 cartItems.push({
                     product_id: productId,
                     quantity: parseFloat(quantity),
                     price: price,
-                    testPrint,testPrint
+                    testPrint: testPrint,
+                    testPrintPrice: testPrintPrice,
+                    testPrintQty: testPrintQty,
+                    testPrintCategory_id: testPrintCategory_id
                 });
             }
         });
@@ -247,27 +253,25 @@ $(document).ready(function() {
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
+                    if(response.error == true){
+                       alert(response.message);
+                    }else{
+                        var toastElement = new bootstrap.Toast(document.getElementById('add_to_cart_toast')); 
+                        toastElement.show();
 
-                    var toastElement = new bootstrap.Toast(document.getElementById('add_to_cart_toast')); 
-                    toastElement.show();
+                        $('.kt-cart-total').text(response.count);
 
-                    // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
-                    // $('#add_to_cart_msg').removeClass('d-none');
-                    $('.kt-cart-total').text(response.count);
-
-                    $("input[name=quantity]").each(function() {
-                       $(this).val('');
-                       $(this).removeAttr('readonly');
-                    });
-                    $(".show-details").text("0.00");
-                    $("#cart-total-itmes").children(".show-details").text("0");
-
-                    // if ($('#add_to_cart_msg').length) {
-                    //     setTimeout(function() {
-                    //         // $('#add_to_cart_msg').css({'margin-top':'10px','font-weight':'bold'});
-                    //         $('#add_to_cart_msg').addClass('d-none');
-                    //     }, 2000);
-                    // }
+                        $("input[name=quantity]").each(function() {
+                        $(this).val('');
+                        $(this).removeAttr('readonly');
+                        });
+                        $(".show-details").text("0.00");
+                        $("#cart-total-itmes").children(".show-details").text("0");
+                    
+                        setTimeout(function() {
+                        location.reload();
+                        }, 2000);
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding items to cart:', error);
@@ -279,37 +283,40 @@ $(document).ready(function() {
     });
 
     // Function to update the cart totals
-    function updateCartTotals() {
-        let total = 0;
-        let totalQuantity = 0;
-
-        $("input[name=quantity]").each(function() {
-            var quantity = $(this).val();
-            var rowId = $(this).attr('id').split('-')[1];
-
-            var price = parseFloat($(this).data('price'));
-            console.log(price,'price');
-            var totalPrice = quantity * price;
-            total += totalPrice;
-            totalQuantity += +quantity;
-
-            if(quantity == ''){
-                totalPrice=0;
-                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
-            }
-
-            if (quantity !== '' && quantity > 0) {
-                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
-            }
-        });
-
-        $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
-        $("#cart-total-itmes").children('.show-details').text(totalQuantity);
-    }
-
+    
     // Initial update of cart totals on page load
     updateCartTotals();
 });
+
+
+function updateCartTotals() {
+    let total = 0;
+    let totalQuantity = 0;
+
+    $("input[name=quantity]").each(function() {
+        var quantity = $(this).val();
+        var rowId = $(this).attr('id').split('-')[1];
+
+        var price = parseFloat($(this).data('price'));
+        console.log(price,'price');
+        var totalPrice = quantity * price;
+        total += totalPrice;
+        totalQuantity += +quantity;
+
+        if(quantity == ''){
+            totalPrice=0;
+            $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+        }
+
+        if (quantity !== '' && quantity > 0) {
+            $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+        }
+    });
+
+    $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
+    $("#cart-total-itmes").children('.show-details').text(totalQuantity);
+}
+
 
  $("#category").on('change',function(){
 
@@ -319,7 +326,9 @@ $(document).ready(function() {
         '_token': "{{ csrf_token() }}"
     },
     function(res){
-         $("#products-main").html(res);
+        // updateCartTotals();
+        $("#products-main").html(res);
+        // updateCartTotals();
     });
  })
 

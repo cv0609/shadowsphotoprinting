@@ -42,7 +42,7 @@ class LoginController extends Controller
                 'email_verify_url' => $urls,
                 'username' => $user->username,
             ];
-            Mail::to('ashishyadav.avology@gmail.com')->send(new RegisterMail($data));
+            Mail::to($request->email)->send(new RegisterMail($data));
         }
         return response()->json([
             'status' => 'success',
