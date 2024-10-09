@@ -90,15 +90,16 @@
                                             <span class="text-danger d-none error" id="register-password-error"></span>
                                         </div>
 
-                                        <div class="woocommerce-wrapper">
+                                        {{-- <div class="woocommerce-wrapper">
                                             <p class="wrapper-personal-data-p">Your personal data will be used to support your experience
                                                 throughout
                                                 this website, to manage access to your account, and for other
                                                 purposes described in our privacy
                                                 policy.</p>
-                                                {{-- <span class="privacy-text">privacy
-                                                    policy</span>. --}}
+                                                
                                         </div>
+                                        <span class="privacy-text">privacy
+                                                    policy</span> --}}
                                         <div class="woocommerce-wrapper">
                                             <button type="button" id="user-register" class="login-btn">Register</button>
                                         </div>
