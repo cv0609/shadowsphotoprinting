@@ -599,3 +599,7 @@ align-items: center;
   transform: rotate(45deg) translate(-50%, -50%);
   z-index: 2;
 }
+
+.not-allowed{
+    cursor: not-allowed;
+}

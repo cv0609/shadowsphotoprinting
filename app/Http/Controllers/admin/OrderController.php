@@ -323,7 +323,7 @@ class OrderController extends Controller
        $refundedData = $this->StripeService->refundOrder($payment_id->payment_id);
     
        if(isset($refundedData['id']) && !empty($refundedData['id'])){
-          Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object']]);
+          Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object'],'order_status' => '3']);
         }
         return redirect()->back()->with('success', 'Payment refunded successfully.');
      }
