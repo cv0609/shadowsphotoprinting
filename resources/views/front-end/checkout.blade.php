@@ -293,6 +293,7 @@
                                 <div class="mt-5">
                                    <h3 class="mb-4">Select Payment Method</h3>
                                     <div class="row">
+                                        @if(env('STRIPE') == true)
                                         <div class="col-md-6">
                                             <label class="payment-option active-payment" for="stripeId">
                                                 <input type="radio" name="payment" id="stripeId" value="stripe" checked>
@@ -301,7 +302,9 @@
                                                 <span>Stripe</span>
                                             </label>
                                         </div>
+                                        @endif
 
+                                         @if(env('AFFTERPAY') == true)
                                         <div class="col-md-6">
                                             <label class="payment-option active-payment" for="afterpayId">
                                                 <input type="radio" name="payment" id="afterpayId" value="afterpay">
@@ -309,14 +312,15 @@
                                                 <span>Afterpay</span>
                                             </label>
                                         </div>
-                                        
+                                        @endif
                                     </div>
                                 </div>
 
                                 <div id="payment">
                                     <form id="payment-form">
-                                    <div class="payment_methods stripe-details">
-                                        <ul>
+                                        <div class="payment_methods stripe-details">
+                                            <ul>
+                                            {{-- @if(env('STRIPE') == true)      --}}
                                             <li>
                                                 <label for=""> Credit Card (Stripe) </label>
                                                 <p>Pay with your credit card via Stripe.</p><br>
@@ -339,6 +343,7 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            {{-- @endif --}}
                                         </ul>
                                     </div>
                                     <div class="experience-throughout">
