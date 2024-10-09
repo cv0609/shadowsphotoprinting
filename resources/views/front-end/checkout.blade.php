@@ -302,13 +302,14 @@
                                             </label>
                                         </div>
 
-                                        {{-- <div class="col-md-6">
+                                        <div class="col-md-6">
                                             <label class="payment-option active-payment" for="afterpayId">
                                                 <input type="radio" name="payment" id="afterpayId" value="afterpay">
                                                  <img src="{{asset('assets/images/favicon.ico')}}" alt="" class="afterPayIcon">
                                                 <span>Afterpay</span>
                                             </label>
-                                        </div> --}}
+                                        </div>
+                                        
                                     </div>
                                 </div>
 
@@ -457,7 +458,7 @@
 
         var isValid = true;
 
-        var requiredFields = ['#fname', '#lname', '#street1', '#street2', '#postcode', '#email', '#suburb'];
+        var requiredFields = ['#fname', '#lname', '#street1', '#postcode', '#email', '#suburb'];
 
         if (!authcheck) {
             requiredFields = requiredFields.concat(['#username', '#password']);
@@ -473,7 +474,7 @@
 
         // Shipping address validation if checkbox is checked
         if ($('#shipcheckbox').is(':checked')) {
-            var shipRequiredFields = ['#ship_fname', '#ship_lname', '#ship_street1','#ship_street2', '#ship_postcode','#ship_suburb'];
+            var shipRequiredFields = ['#ship_fname', '#ship_lname', '#ship_street1', '#ship_postcode','#ship_suburb'];
             shipRequiredFields.forEach(function(field) {
                 var $field = $(field);
                 if ($field.val().trim() === '') {

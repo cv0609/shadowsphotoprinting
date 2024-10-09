@@ -59,7 +59,7 @@ class PaymentController extends Controller
         
         foreach ($cart->items as $items) {
             if ($items->is_test_print == '1') {
-                $hasTestPrint = true;  // Flag that the cart has test print shipping
+                $hasTestPrint = true;
             } 
             
             if ($items->is_test_print == '0') {

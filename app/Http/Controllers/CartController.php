@@ -132,8 +132,11 @@ class CartController extends Controller
 
                         $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
                         
-                        if($cart_item['quantity'] != (int)$testPrintData->qty){
-                             return response()->json(['error' => true,'message' => 'This product is limited to  ' . $testPrintData->qty . ' quantity.' ]);
+                        if($cart_item['quantity'] < 1 || $cart_item['quantity'] > (int)$testPrintData->qty) {
+                            return response()->json([
+                                'error' => true,
+                                'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
+                            ]);
                         }
                        
                         $wtrelativeImagePath = $this->CartService->addWaterMark($wtimagePath,$tempFileName);
