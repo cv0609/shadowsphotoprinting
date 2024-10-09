@@ -348,9 +348,9 @@
                                     </div>
                                     <div class="experience-throughout">
                                         <p id="afterPayError"></p>
-                                        <p>Your personal data will be used to process your order, support your
+                                        {{-- <p>Your personal data will be used to process your order, support your
                                             experience throughout this website, and for other purposes described
-                                            in our privacy policy.</p>
+                                            in our privacy policy.</p> --}}
                                         <div class="place-order" id="place-order-btn">
                                             <button id="submit"> Place order </button>
                                         </div>
