@@ -60,6 +60,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/product-show/{slug}',[ProductsController::class,'productShow'])->name('product-show');
         Route::post('/product-update',[ProductsController::class,'productUpdate'])->name('product-update');
         Route::delete('/product-delete/{product_id}',[ProductsController::class,'productDistroy'])->name('product-delete');
+        Route::post('/product-order-update', [ProductsController::class, 'updateProductOrder'])->name('product-order-update');
+
 
 
         Route::prefix('test-print')->group(function () {
