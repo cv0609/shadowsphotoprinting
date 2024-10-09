@@ -555,7 +555,7 @@
                     // Send the token to your server    
                     formData.stripeToken = result.token.id;
                     formData.payment_method = 'stripe';
-
+                    var cent_total_amount = total_amount * 100;
                     fetch('/create-customer', {
                         method: 'POST',
                         headers: {
@@ -575,7 +575,7 @@
                             },
                             body: JSON.stringify({
                                 customer_id: response.id,
-                                amount:  total_amount// amount in cents
+                                amount:  cent_total_amount // amount in cents
                             })
                         })
                         .then(response => response.json())
