@@ -33,7 +33,7 @@ class StripeService
             return Charge::create([
                 'customer' => $customerId,
                 'amount' => $amount,
-                'currency' => 'usd',
+                'currency' => 'AUD',
             ]);
         } catch (ApiErrorException $e) {
             return $e->getMessage();

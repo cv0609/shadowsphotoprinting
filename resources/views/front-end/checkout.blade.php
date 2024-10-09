@@ -284,6 +284,7 @@
                                                     <span><span>$</span>1.12</span>
                                                     GST)</small> --}}
                                             </td>
+                                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}">
                                         </tr>
 
 
@@ -440,6 +441,7 @@
         var email = $('#email').val();
         var username = $('#username').val();
         var shipping_charge = $('#shipping_charge').val();
+        var total_amount = $('#total_amount').val();
         
         
         var password = $('#password').val();
@@ -573,7 +575,7 @@
                             },
                             body: JSON.stringify({
                                 customer_id: response.id,
-                                amount: 1000 // amount in cents
+                                amount:  total_amount// amount in cents
                             })
                         })
                         .then(response => response.json())
