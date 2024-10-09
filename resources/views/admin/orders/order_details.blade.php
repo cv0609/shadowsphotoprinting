@@ -324,7 +324,12 @@
     </div>
     <div class="bottom_refund_btn_class">
        <div class="fefund_btn">
-          <a href="{{ ($orderDetail->order_status != "3") ? route('refund-order',['order_id'=>$orderDetail->id]) : '#' }}" class="{{ (($orderDetail->order_status == "3")) ? 'not-allowed' : '' }}" onclick="{{ (($orderDetail->order_status == "3")) ? '' : return confirm('Are you sure!') }}">refund</a>
+          <a href="{{ ($orderDetail->order_status != "3") ? route('refund-order',['order_id'=>$orderDetail->id]) : '#' }}" class="{{ (($orderDetail->order_status == "3")) ? 'not-allowed' : '' }}"  
+            @if($orderDetail->order_status != "3") 
+            onclick="return confirm('Are you sure!')"
+            @endif
+            
+            >refund</a>
         </div>
         <div class="refund_paragraph">
           <p>This order is no longer editable.</p>
