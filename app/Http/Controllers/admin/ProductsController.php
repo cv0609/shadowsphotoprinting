@@ -76,7 +76,7 @@ class ProductsController extends Controller
     {
         $products = Product::with(['product_category' => function($query) {
             $query->select('id', 'name');
-        }])->get();
+        }])->orderBy('position','asc')->get();
         return view('admin.products.index', compact('products'));
     }
 
