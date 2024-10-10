@@ -109,7 +109,7 @@ class CartController extends Controller
                 $testPrint = '0';
 
                 
-                foreach ($request->selectedImages  as $selectedImage) {
+                foreach ($request->selectedImages as $selectedImage) {
 
                     $tempFileName = basename($selectedImage);
                     $tempImagePath = 'public/temp/' . $tempFileName;
@@ -152,7 +152,7 @@ class CartController extends Controller
                         "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0',
                         "test_print_price" => isset($testPrintPrice) && !empty($testPrintPrice) ? $testPrintPrice  : 0.00,
                         "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
-                        "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
+                        "watermark_image" =>isset($testPrintQty) && !empty($testPrintQty) ? $wtrelativeImagePath  : '',
                         "test_print_cat" => isset($testPrintQty) && !empty($testPrintQty) ? $testPrintCatId : '',
                     ];
 

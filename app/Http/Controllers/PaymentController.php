@@ -256,7 +256,10 @@ class PaymentController extends Controller
                     ])->decrement('qty', $item->quantity);
                 }
             }
-            
+
+            $sale_price = null;
+            $sale_on = 0;
+
             if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft"){
                 $product_price =  number_format($item->product_price, 2);
                 $item_price = $item->quantity * $product_price;
@@ -287,11 +290,7 @@ class PaymentController extends Controller
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
-
-                'selected_images' => (isset($item->is_test_print) && $item->is_test_print == '1')
-                ? $item->watermark_image 
-                : (isset($item->selected_images) && !empty($item->selected_images) && $item->selected_images == null ? $item->selected_images : ''),
-
+                'selected_images' => isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->watermark_image : $item->selected_images,
                 'price' => $item_price,
                 'product_type' => $item->product_type ?? null,
                 'product_desc' => $item->product_desc,
