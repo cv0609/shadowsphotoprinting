@@ -57,7 +57,7 @@ class ShopController extends Controller
       $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
     // dd($productCategories);
-    $products = Product::select(['id','product_title','product_price'])->get();
+    $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     $currentDate = date('F-j-Y-1');
     $page_content = [
         "meta_title" => "{$currentDate} - " . config('constant.pages_meta.shop_detail.meta_title'),
@@ -73,7 +73,7 @@ class ShopController extends Controller
     $products = [];
     if($categorySlug == "all")
     {
-      $products = Product::select(['id','product_title','product_price'])->get();
+      $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     }
     else
     {
