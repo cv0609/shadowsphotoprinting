@@ -93,9 +93,9 @@
                     },
                     success: function (response) {
                         if(response.success){
-                            alert('Order updated successfully');
+                            // alert('Order updated successfully');
                         } else {
-                            alert('Something went wrong');
+                            // alert('Something went wrong');
                         }
                     }
                 });
