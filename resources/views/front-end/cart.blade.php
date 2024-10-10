@@ -8,7 +8,7 @@
 <div class="coupon-inner">
 
     @if(Session::has('success'))
-        <div class="coupon-wrapper">
+        <div class="coupon-wrapper" id="session-error">
             <p class="text-center">{{Session::get('success')}}</p>
         </div>
     @endif
@@ -394,6 +394,7 @@
 </script>
 <script>
     $(document).ready(function() {
+
         $('#country').select2({
             placeholder: 'Select products',
             allowClear: true
@@ -423,7 +424,6 @@
                  $('#qty-validation p').text('Please enter quantity equal to or more then 1.');
                  return false;
               }
-
         });
         $.post("{{ route('update-cart') }}",
         {
@@ -432,7 +432,8 @@
         },
         function(data, status){
             if(data.error == true){
-                console.log(data.message);
+                $('#session-error').addClass('d-none');
+                $('#session-error').text('');
                 $('#qty-validation').removeClass('d-none');
                 $('#qty-validation p').text(data.message);
                 return false;

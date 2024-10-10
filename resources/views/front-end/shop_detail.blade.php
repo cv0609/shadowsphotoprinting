@@ -183,6 +183,8 @@ function uncheck_img(counter) {
 
 $(document).ready(function() {
 
+    updateCartTotals();
+
     $(document).on('keyup change', "input[name=quantity]", function() {
         updateCartTotals();
     });
@@ -204,6 +206,7 @@ $(document).ready(function() {
         let total = 0;
         let selectedImages = [];
         $("input[name=quantity]").each(function() {
+            
             let quantity = $(this).val();
 
             if (quantity !== '' && quantity > 0) {
@@ -243,7 +246,7 @@ $(document).ready(function() {
         if (cartItems.length > 0) {
             
             $.ajax({
-                url: "{{ route('add-to-cart') }}", // Replace with your route
+                url: "{{ route('add-to-cart') }}",
                 method: 'POST',
                 data: {
                     cart_items: cartItems,
@@ -293,8 +296,8 @@ function updateCartTotals() {
     let total = 0;
     let totalQuantity = 0;
 
-    let testPrintTotal = 0;
-    let testPrintTotalQuantity = 0;
+    var testPrintTotal = 0;
+    var testPrintTotalQuantity = 0;
     var is_test_print = 0;
 
     $("input[name=quantity]").each(function() {
@@ -316,6 +319,7 @@ function updateCartTotals() {
         testPrintTotal += testPrintTotalPrice;
         testPrintTotalQuantity += +test_print_qty;
 
+        
         if(quantity == ''){
             totalPrice=0;
             testPrintTotalPrice=0;
@@ -328,23 +332,30 @@ function updateCartTotals() {
 
         if (quantity !== '' && quantity > 0) {
             if(testprint){
+                console.log('hellotes');
                 $("#quantity-price-" + rowId).children('.show-details').text(testPrintTotalPrice.toFixed(2));
             }else{
                 $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+                // $("#cart-total-price").children('.show-details').text(total.toFixed(2)); 
+                // $("#cart-total-itmes").children('.show-details').text(totalQuantity);
             }
         }
     });
 
-    if(is_test_print != 0){
-        console.log(is_test_print,'test1');
-        $("#cart-total-price").children('.show-details').text( testPrintTotal.toFixed(2)); 
+    testPrintTotal = 0;
+    testPrintTotalQuantity = 0;
+
+    if(is_test_print != 0 && !isNaN(is_test_print)){
+         
+        $("#cart-total-price").children('.show-details').text(testPrintTotal.toFixed(2)); 
         $("#cart-total-itmes").children('.show-details').text(testPrintTotalQuantity);
+
     }else{
+        console.log(is_test_print,'ttt');
         is_test_print = 0;
-        $("#cart-total-price").children('.show-details').text( total.toFixed(2)); 
+        $("#cart-total-price").children('.show-details').text(total.toFixed(2)); 
         $("#cart-total-itmes").children('.show-details').text(totalQuantity);
     }
-
 }
 
 

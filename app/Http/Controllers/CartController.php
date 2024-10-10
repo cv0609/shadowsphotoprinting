@@ -103,6 +103,7 @@ class CartController extends Controller
 
 
             foreach ($request->cart_items as $cart_item) {
+
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
 
@@ -131,6 +132,24 @@ class CartController extends Controller
                         $testPrintCatId = $cart_item['testPrintCategory_id'];
 
                         $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
+
+                        $existingCartItem = CartData::where('cart_id', $cartId)
+                        ->where('product_id', $product_id)
+                        ->where('selected_images', $ImagePath)
+                        ->first();
+
+                        if(isset($existingCartItem) && !empty($existingCartItem)){
+
+                            $newExistingQty = $existingCartItem->quantity+$quantity;
+    
+                            if((int)$newExistingQty > (int)$testPrintData->qty) {
+                                return response()->json([
+                                    'error' => true,
+                                    'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '. Please check your cart for this item.'
+                                ]);
+                            }
+                        }
+
                         
                         if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
                             return response()->json([
