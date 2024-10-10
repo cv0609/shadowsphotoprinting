@@ -71,6 +71,7 @@ class CouponController extends Controller
       }
 
       Coupon::whereId($request->coupon_id)->update(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'product_category'=>$product_category,'qty' => $request->bulk_qty]);
+      
       return redirect()->route('coupons-list')->with('success', 'Coupon updated successfully!');
    }
 

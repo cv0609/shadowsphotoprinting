@@ -287,7 +287,11 @@ class PaymentController extends Controller
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
-                'selected_images' => isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->watermark_image : $item->selected_images,
+
+                'selected_images' => (isset($item->is_test_print) && $item->is_test_print == '1')
+                ? $item->watermark_image 
+                : (isset($item->selected_images) && !empty($item->selected_images) && $item->selected_images == null ? $item->selected_images : ''),
+
                 'price' => $item_price,
                 'product_type' => $item->product_type ?? null,
                 'product_desc' => $item->product_desc,

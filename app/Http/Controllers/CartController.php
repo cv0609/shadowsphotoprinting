@@ -415,10 +415,19 @@ class CartController extends Controller
             $couponCategories = array_map('strval', $couponCategories);
             
             foreach ($cart->items as $item) {
+               
                 $productCategory = (string)$item->product->category_id;
-                
+
                 if (!in_array((string)$productCategory, $couponCategories)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+                }
+
+                if (in_array((string)$productCategory, $couponCategories)) {
+                    if (isset($coupon->qty) && !empty($coupon->qty) && $coupon->qty > 0) {
+                        if ((int)$item->quantity < (int)$coupon->qty) {
+                            return ['success' => false, 'message' => 'Quantity in the cart is less than the coupon required '. $coupon->qty. ' quantity.'];
+                        }
+                    }
                 }
             }
         }
@@ -427,8 +436,28 @@ class CartController extends Controller
         {
             $couponProducts = explode(',', $coupon->products);
             foreach ($cart->items as $item) {
+
                 if (!in_array($item->product->id, $couponProducts)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
+                }
+
+                if (in_array($item->product->id, $couponProducts)) {
+                    if (isset($coupon->qty) && !empty($coupon->qty) && $coupon->qty > 0) {
+                        if ((int)$item->quantity < (int)$coupon->qty) {
+                            return ['success' => false, 'message' => 'Quantity in the cart is less than the coupon required '. $coupon->qty. ' quantity.'];
+                        }
+                    }
+                }
+            }
+        }
+
+        if(!isset($coupon->products) && empty($coupon->products) && !isset($coupon->product_category) && empty($coupon->product_category)){
+
+            foreach ($cart->items as $item) {
+                if (isset($coupon->qty) && !empty($coupon->qty) && $coupon->qty > 0) {
+                    if ((int)$item->quantity < (int)$coupon->qty) {
+                        return ['success' => false, 'message' => 'Quantity in the cart is less than the coupon required '. $coupon->qty. ' quantity.'];
+                    }
                 }
             }
         }
