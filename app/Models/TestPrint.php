@@ -14,6 +14,7 @@ class TestPrint extends Model
         'product_id',
         'product_price',
         'qty',
+        'min_qty'
     ];
 
     public function product_category()

@@ -132,7 +132,7 @@ class CartController extends Controller
 
                         $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
                         
-                        if($cart_item['quantity'] < 1 || $cart_item['quantity'] > (int)$testPrintData->qty) {
+                        if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
                             return response()->json([
                                 'error' => true,
                                 'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
@@ -152,7 +152,8 @@ class CartController extends Controller
                         "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0',
                         "test_print_price" => isset($testPrintPrice) && !empty($testPrintPrice) ? $testPrintPrice  : 0.00,
                         "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
-                        "watermark_image" => isset($wtrelativeImagePath) && !empty($wtrelativeImagePath) ? $wtrelativeImagePath : null,
+                        "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
+                        "test_print_cat" => isset($testPrintQty) && !empty($testPrintQty) ? $testPrintCatId : '',
                     ];
 
                     if ($itemType == 'gift_card') {
@@ -472,7 +473,6 @@ class CartController extends Controller
     {
         foreach($request->data as $data)
         {
-
              if($data['product_type'] == 'hand_craft'){
                 $slug = 'hand-craft';
                 $hand_craft_cat = $this->CartService->getProductStock($slug,$data['product_id']);
@@ -483,6 +483,20 @@ class CartController extends Controller
                     if($stock_qty <  $quantity){
                         return response()->json(['error' => true, 'message' => 'Product out of stock.']);
                     }
+                }
+            }
+
+            if(isset($data['is_test_print']) && $data['is_test_print'] == '1'){
+
+                $is_test_print_cat = $data['is_test_print'];
+
+                $testPrintData = TestPrint::where('category_id',$is_test_print_cat)->first();
+               
+                if((int)$data['quantity'] < $testPrintData->min_qty || (int)$data['quantity'] > (int)$testPrintData->qty) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
+                    ]);
                 }
             }
 

@@ -49,18 +49,16 @@ class CartService
 
                 $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id',$item->product_id)->first();
 
-                if(isset($sale_price) && !empty($sale_price)){
-                    
-                    $product_price = $sale_price->sale_price;
-
-                }else {
-
-                    if (!empty($item->is_test_print) && $item->is_test_print == '1') {
-                        $product_price =  $item->test_print_price;
-                    }else{
+                if (!empty($item->is_test_print) && $item->is_test_print == '1') {
+                    $product_price =  $item->test_print_price;
+                }else{
+                    if(isset($sale_price) && !empty($sale_price)){
+                        $product_price = $sale_price->sale_price;
+                    }else {
                         $product_price = $item->product->product_price;
                     }
                 }
+
             }
             return $carry + ($product_price * $item->quantity);
         }, 0);
