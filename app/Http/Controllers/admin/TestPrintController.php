@@ -46,7 +46,7 @@ class TestPrintController extends Controller
         $data = [];
         $productsId =(isset($request->products) && !empty($request->products)) ? implode(',',$request->products) : null;
 
-        $data = ["category_id"=>$request->category_id,"product_id" => $productsId,"product_price"=>$request->product_price,"qty"=>$request->product_qty];
+        $data = ["category_id"=>$request->category_id,"product_id" => $productsId,"product_price"=>$request->product_price,"qty"=>$request->product_qty,'min_qty' => $request->product_min_qty];
 
         TestPrint::create($data);
 
@@ -73,7 +73,7 @@ class TestPrintController extends Controller
         $data = [];
         $productsId =(isset($request->products) && !empty($request->products)) ? implode(',',$request->products) : null;
 
-        $data = ["category_id"=>$request->category_id,"product_id" => $productsId,"product_price"=>$request->product_price,"qty"=>$request->product_qty];
+        $data = ["category_id"=>$request->category_id,"product_id" => $productsId,"product_price"=>$request->product_price,"qty"=>$request->product_qty,'min_qty' => $request->product_min_qty];
 
         TestPrint::where('id',$request->test_print_id)->update($data);
 

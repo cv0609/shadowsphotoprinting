@@ -125,19 +125,25 @@
                                             @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                                                 {{ number_format($item->product_price, 2) }}
                                             @else
-                                                {{ 
-                                                    isset($product_sale_price) && !empty($product_sale_price) 
-                                                        ? number_format($product_sale_price, 2) 
-                                                        : (isset($item->is_test_print) && ($item->is_test_print == '1')
-                                                            ? number_format($item->test_print_price, 2) 
-                                                            : number_format($product_detail->product_price, 2)) 
+                                               
+                                                @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                {{ number_format($item->test_print_price, 2) }}
+                                                @else
+                                                {{ isset($product_sale_price) && !empty($product_sale_price) 
+                                                    ? number_format($product_sale_price, 2) 
+                                                    : number_format($product_detail->product_price, 2)
                                                 }}
+                                                @endif
+
                                             @endif
                                         </bdi>
                                     </span>
                                 </td>
                                 <td class="product-quantity">
-                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_qty : $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}" {{ isset($item->is_test_print) && ($item->is_test_print == '1') ? 'readonly' : '' }}>
+                                
+                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}"
+                                    data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}"
+                                    >
                                 </td>
                                 <td class="product-subtotal">
                                     <span>
@@ -146,15 +152,17 @@
                                             @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
                                                 {{ number_format($item->quantity * $item->product_price, 2) }}
                                             @else
-                                                {{ 
-                                                    isset($product_sale_price) && !empty($product_sale_price) 
+
+
+                                                @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                    {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
+                                                @else
+                                                    {{ isset($product_sale_price) && !empty($product_sale_price) 
                                                         ? number_format($item->quantity * $product_sale_price, 2) 
-                                                        : (
-                                                            isset($item->is_test_print) && ($item->is_test_print == '1')
-                                                                ? number_format($item->test_print_qty * $item->test_print_price, 2) 
-                                                                : number_format($item->quantity * $product_detail->product_price, 2)
-                                                        ) 
-                                                }}
+                                                        : number_format($item->quantity * $product_detail->product_price, 2)
+                                                    }}
+                                                @endif
+                                        
                                             @endif
                                         </bdi>
                                     </span>
@@ -405,7 +413,7 @@
         $("input[name='product_quantity[]']").each(function(i,v) {
             if($(v).val() > 0)
              {
-                data.push({'quantity':$(v).val(),'rowId':$(v).data('row'),'product_type':$(v).data('product_type'),'product_id':$(v).data('product_id')})
+                data.push({'quantity':$(v).val(),'rowId':$(v).data('row'),'product_type':$(v).data('product_type'),'product_id':$(v).data('product_id'),'is_test_print':$(v).data('is_test_print')})
 
              }
              else

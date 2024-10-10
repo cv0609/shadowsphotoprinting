@@ -30,7 +30,14 @@
 
     <span>
 
-        ${{ isset($product_sale_price) && !empty($product_sale_price) ? $product_sale_price : (isset($product->test_print[0]->product_price) ? $product->test_print[0]->product_price : $product->product_price) }}
+        $ {{ 
+            isset($product->test_print[0]->product_price) 
+                ? $product->test_print[0]->product_price 
+                : (isset($product_sale_price) && !empty($product_sale_price) 
+                    ? $product_sale_price 
+                    : $product->product_price)
+        }}
+        
 
     </span>
 

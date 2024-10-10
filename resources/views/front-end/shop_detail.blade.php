@@ -293,28 +293,58 @@ function updateCartTotals() {
     let total = 0;
     let totalQuantity = 0;
 
+    let testPrintTotal = 0;
+    let testPrintTotalQuantity = 0;
+    var is_test_print = 0;
+
     $("input[name=quantity]").each(function() {
         var quantity = $(this).val();
         var rowId = $(this).attr('id').split('-')[1];
 
+        var testprint = $(this).data('testprint');
+        is_test_print += testprint;
+        var test_print_price = $(this).data('test_print_price');
+        var test_print_qty = $(this).data('test_print_qty');
+
         var price = parseFloat($(this).data('price'));
-        console.log(price,'price');
+        
         var totalPrice = quantity * price;
         total += totalPrice;
         totalQuantity += +quantity;
 
+        var testPrintTotalPrice = test_print_qty * test_print_price;
+        testPrintTotal += testPrintTotalPrice;
+        testPrintTotalQuantity += +test_print_qty;
+
         if(quantity == ''){
             totalPrice=0;
-            $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+            testPrintTotalPrice=0;
+            if(testprint){
+                $("#quantity-price-" + rowId).children('.show-details').text(testPrintTotalPrice.toFixed(2));
+            }else{
+                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+            }
         }
 
         if (quantity !== '' && quantity > 0) {
-            $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+            if(testprint){
+                $("#quantity-price-" + rowId).children('.show-details').text(testPrintTotalPrice.toFixed(2));
+            }else{
+                $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
+            }
         }
     });
 
-    $("#cart-total-price").children('.show-details').text( total.toFixed(2)); // Format total to 2 decimal places
-    $("#cart-total-itmes").children('.show-details').text(totalQuantity);
+    if(is_test_print != 0){
+        console.log(is_test_print,'test1');
+        $("#cart-total-price").children('.show-details').text( testPrintTotal.toFixed(2)); 
+        $("#cart-total-itmes").children('.show-details').text(testPrintTotalQuantity);
+    }else{
+        is_test_print = 0;
+        $("#cart-total-price").children('.show-details').text( total.toFixed(2)); 
+        $("#cart-total-itmes").children('.show-details').text(totalQuantity);
+    }
+
 }
 
 

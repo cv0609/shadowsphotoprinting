@@ -219,20 +219,20 @@
 
                                             <td>
                                                 <span>
+                                                    
                                                     <bdi>
                                                         <span>$</span>
                                                         @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
                                                             {{ number_format($item->quantity * $item->product_price, 2) }}
                                                         @else
-                                                            {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : 
-                                                            
-                                                            (
-                                                            isset($item->is_test_print) && ($item->is_test_print == '1')
-                                                                ? number_format($item->test_print_qty * $item->test_print_price, 2) 
-                                                                : number_format($item->quantity * $item->product->product_price, 2)
-                                                             ) 
-                                                            
-                                                            }}
+                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                                {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
+                                                            @else
+                                                                {{ isset($productSalePrice) && !empty($productSalePrice) 
+                                                                    ? number_format($item->quantity * $productSalePrice, 2) 
+                                                                    : number_format($item->quantity * $item->product->product_price, 2)
+                                                                }}
+                                                            @endif
                                                         @endif
                                                     </bdi>
                                                 </span>

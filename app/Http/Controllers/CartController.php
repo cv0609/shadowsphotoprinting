@@ -109,7 +109,7 @@ class CartController extends Controller
                 $testPrint = '0';
 
                 
-                foreach ($request->selectedImages  as $selectedImage) {
+                foreach ($request->selectedImages as $selectedImage) {
 
                     $tempFileName = basename($selectedImage);
                     $tempImagePath = 'public/temp/' . $tempFileName;
@@ -132,7 +132,7 @@ class CartController extends Controller
 
                         $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
                         
-                        if($cart_item['quantity'] < 1 || $cart_item['quantity'] > (int)$testPrintData->qty) {
+                        if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
                             return response()->json([
                                 'error' => true,
                                 'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
@@ -152,7 +152,8 @@ class CartController extends Controller
                         "is_test_print" => isset($testPrint) && ($testPrint == '1') ? '1' : '0',
                         "test_print_price" => isset($testPrintPrice) && !empty($testPrintPrice) ? $testPrintPrice  : 0.00,
                         "test_print_qty" =>isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
-                        "watermark_image" => isset($wtrelativeImagePath) && !empty($wtrelativeImagePath) ? $wtrelativeImagePath : null,
+                        "watermark_image" =>isset($testPrintQty) && !empty($testPrintQty) ? $wtrelativeImagePath  : '',
+                        "test_print_cat" => isset($testPrintQty) && !empty($testPrintQty) ? $testPrintCatId : '',
                     ];
 
                     if ($itemType == 'gift_card') {
@@ -414,10 +415,19 @@ class CartController extends Controller
             $couponCategories = array_map('strval', $couponCategories);
             
             foreach ($cart->items as $item) {
+               
                 $productCategory = (string)$item->product->category_id;
-                
+
                 if (!in_array((string)$productCategory, $couponCategories)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
+                }
+
+                if (in_array((string)$productCategory, $couponCategories)) {
+                    if (isset($coupon->qty) && !empty($coupon->qty) && $coupon->qty > 0) {
+                        if ((int)$item->quantity < (int)$coupon->qty) {
+                            return ['success' => false, 'message' => 'Quantity in the cart is less than the coupon required '. $coupon->qty. ' quantity.'];
+                        }
+                    }
                 }
             }
         }
@@ -426,8 +436,28 @@ class CartController extends Controller
         {
             $couponProducts = explode(',', $coupon->products);
             foreach ($cart->items as $item) {
+
                 if (!in_array($item->product->id, $couponProducts)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
+                }
+
+                if (in_array($item->product->id, $couponProducts)) {
+                    if (isset($coupon->qty) && !empty($coupon->qty) && $coupon->qty > 0) {
+                        if ((int)$item->quantity < (int)$coupon->qty) {
+                            return ['success' => false, 'message' => 'Quantity in the cart is less than the coupon required '. $coupon->qty. ' quantity.'];
+                        }
+                    }
+                }
+            }
+        }
+
+        if(!isset($coupon->products) && empty($coupon->products) && !isset($coupon->product_category) && empty($coupon->product_category)){
+
+            foreach ($cart->items as $item) {
+                if (isset($coupon->qty) && !empty($coupon->qty) && $coupon->qty > 0) {
+                    if ((int)$item->quantity < (int)$coupon->qty) {
+                        return ['success' => false, 'message' => 'Quantity in the cart is less than the coupon required '. $coupon->qty. ' quantity.'];
+                    }
                 }
             }
         }
@@ -472,7 +502,6 @@ class CartController extends Controller
     {
         foreach($request->data as $data)
         {
-
              if($data['product_type'] == 'hand_craft'){
                 $slug = 'hand-craft';
                 $hand_craft_cat = $this->CartService->getProductStock($slug,$data['product_id']);
@@ -483,6 +512,20 @@ class CartController extends Controller
                     if($stock_qty <  $quantity){
                         return response()->json(['error' => true, 'message' => 'Product out of stock.']);
                     }
+                }
+            }
+
+            if(isset($data['is_test_print']) && $data['is_test_print'] == '1'){
+
+                $is_test_print_cat = $data['is_test_print'];
+
+                $testPrintData = TestPrint::where('category_id',$is_test_print_cat)->first();
+               
+                if((int)$data['quantity'] < $testPrintData->min_qty || (int)$data['quantity'] > (int)$testPrintData->qty) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
+                    ]);
                 }
             }
 

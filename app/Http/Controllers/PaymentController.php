@@ -256,7 +256,10 @@ class PaymentController extends Controller
                     ])->decrement('qty', $item->quantity);
                 }
             }
-            
+
+            $sale_price = null;
+            $sale_on = 0;
+
             if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft"){
                 $product_price =  number_format($item->product_price, 2);
                 $item_price = $item->quantity * $product_price;
@@ -267,19 +270,17 @@ class PaymentController extends Controller
                 $product_sale_price = $this->CartService->getProductSalePrice($item->product_id);
                 $product_details =  $this->CartService->getProductDetailsByType($item->product_id,$item->product_type);
                 $product_price = number_format($product_details->product_price, 2);
-                
-                if(isset($product_sale_price) && !empty($product_sale_price)){
-                    $item_price = $item->quantity * $product_sale_price;
-                    $sale_price = number_format($product_sale_price, 2);
-                    $sale_on = 1;
+
+                if(isset($item->is_test_print) && ($item->is_test_print == '1')){
+                    $item_price = $item->quantity * $item->test_print_price;
                 }else{
-
-                    $sale_on = 0;
-                    $sale_price=null;
-
-                    if(isset($item->is_test_print) && ($item->is_test_print == '1')){
-                        $item_price = $item->quantity * $item->test_print_price;
+                    if(isset($product_sale_price) && !empty($product_sale_price)){
+                        $item_price = $item->quantity * $product_sale_price;
+                        $sale_price = number_format($product_sale_price, 2);
+                        $sale_on = 1;
                     }else{
+                        $sale_on = 0;
+                        $sale_price=null;
                         $item_price = $item->quantity * $product_price;
                     }
                 }
@@ -288,9 +289,7 @@ class PaymentController extends Controller
             OrderDetail::create([
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
-                'quantity' => (!empty($item->is_test_print) && $item->is_test_print == '1') 
-                                ? $item->test_print_qty 
-                                : $item->quantity,
+                'quantity' => $item->quantity,
                 'selected_images' => isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->watermark_image : $item->selected_images,
                 'price' => $item_price,
                 'product_type' => $item->product_type ?? null,
