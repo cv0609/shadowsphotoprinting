@@ -193,6 +193,7 @@ class PagesController extends Controller
     $relatedProduct = HandCraftProduct::where('slug','!=',$slug)->paginate(10);
     $page_content = ["meta_title"=>$productDetails['slug'].' | Shadows Photo Printing',"meta_description"=>$productDetails['product_description']];
     return view('front-end/hand-craft-details',compact('productDetails','relatedProduct','page_content'));
+    
   }
 
 

@@ -64,7 +64,7 @@
                             </div> --}}
                             <a id="selectfiles" href="javascript:;" class="button" style="position: relative; z-index: 1;">Select images</a>
                             <input type="file" id="fileInput" name="image[]" multiple style="display: none;" accept="image/*">
-                            <button type="submit" id="uploadfiles" class="button button-primary"><span class="upload-image-text">Upload images</span><span class="upload-image-loader" style="display:none"><img src="{{ asset('assets/images/loader.gif') }}" alt="Loading..." /></span></button>
+                            <button type="submit" id="uploadfiles" class="button button-primary"><span class="upload-image-text">Upload images</span><span class="upload-image-loader d-none" ><img src="{{ asset('assets/images/loader.gif') }}" alt="Loading..." /></span></button>
                         </div>
                     </div>
                 </form>
@@ -148,7 +148,9 @@
 
         $('#uploadForm').on('submit', function() {
             $('#uploadfiles').attr('disabled', true);
-            $('#loader').show();
+            $('#fileInput').attr('disabled', true);
+            $('.upload-image-text').addClass('d-none');
+            $('.upload-image-loader').removeClass('d-none');
         });
 
     </script>
