@@ -28,6 +28,14 @@ class ShopController extends Controller
 
    public function uploadImage(Request $request)
     {
+      $this->validate($request, [
+          'image.*' => 'required|file|max:512000', // Validate each image (1 MB = 1024 KB)
+      ], [
+          'image.*.required' => 'Please upload an image.', // Custom error message
+          'image.*.file' => 'The uploaded file must be a valid file.',
+          'image.*.max' => 'Image size must not exceed 1 MB to upload.', // Custom message for size
+      ]);
+
       $temImagesStore = [];
         if($request->allimages)
         {

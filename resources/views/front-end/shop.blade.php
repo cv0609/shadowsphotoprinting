@@ -42,6 +42,16 @@
                 </div>
             </div>
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="fcsg-wrap">
                 <form id="uploadForm" action="{{ route('shop-upload-image') }}" method="post" enctype="multipart/form-data">
                     @csrf
@@ -65,7 +75,10 @@
 <section class="kad_product_wrapper">
     <div class="container">
         <div class="kad_product">
+
             <div class="row">
+
+               
                 {{-- <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
                         <a href="javascript:void(0)">
