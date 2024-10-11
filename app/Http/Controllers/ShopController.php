@@ -29,7 +29,7 @@ class ShopController extends Controller
    public function uploadImage(Request $request)
     {
       $this->validate($request, [
-          'image.*' => 'required|file|max:512000', // Validate each image (1 MB = 1024 KB)
+          'image.*' => 'required|file|max:204800', // Validate each image (1 MB = 1024 KB)
       ], [
           'image.*.required' => 'Please upload an image.', // Custom error message
           'image.*.file' => 'The uploaded file must be a valid file.',
