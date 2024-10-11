@@ -181,6 +181,9 @@ Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset
 
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
+Route::post('/product-qty-validation', [CartController::class, 'productQtyValidation'])->name('product-qty-validation');
+
+
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');
 Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);

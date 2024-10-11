@@ -42,6 +42,10 @@ $ProductCategories = $PageDataService->getProductCategories();
                                 </div>
                                 <div class="so-widget-sow-button" data-aos="fade-left">
                                     <a href="{{ url('shop') }}">{{ $page_content['shop_now'] }}</a>
+                                    {{-- <p>Buy now, pay later with</p> --}}
+                                    <div class="afterPay-img">
+                                        <img src="{{asset('assets/images/afterPay.png')}}" alt="">
+                                    </div>
                                 </div>
                             </div>
                         </div>

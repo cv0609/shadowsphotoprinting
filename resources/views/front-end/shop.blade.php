@@ -42,19 +42,35 @@
                 </div>
             </div>
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="fcsg-wrap">
-                <form id="uploadForm" action="{{ route('shop-upload-image') }}" method="post" enctype="multipart/form-data">
+                <form id="uploadForm" action="{{ route('shop-upload-image') }}" method="post" enctype="multipart/form-data" accept="image/*">
                     @csrf
                     <div class="uploading">
                         <div class="uploading-img">
                             <p>{{ $page_content['select_images_for_upload_title'] }}</p>
                             <div id="selectedFiles"></div>
+                            {{-- <div id="shop-page-loader" style="">
+                                
+                            </div> --}}
                             <a id="selectfiles" href="javascript:;" class="button" style="position: relative; z-index: 1;">Select images</a>
                             <input type="file" id="fileInput" name="image[]" multiple style="display: none;" accept="image/*">
-                            <button type="submit" id="uploadfiles" class="button button-primary" style="display: none;">Upload images</button>
+                            <button type="submit" id="uploadfiles" class="button button-primary"><span class="upload-image-text">Upload images</span><span class="upload-image-loader" style="display:none"><img src="{{ asset('assets/images/loader.gif') }}" alt="Loading..." /></span></button>
                         </div>
                     </div>
                 </form>
+
+                
+
             </div>
 
         </div>
@@ -102,6 +118,14 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="after-pay-img">
+                        <div class="afterPay-img">
+                            <img src="{{asset('assets/images/afterPay.png')}}" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -121,5 +145,13 @@
             fade: true,
             cssEase: 'linear'
         });
+
+        $('#uploadForm').on('submit', function() {
+            $('#uploadfiles').attr('disabled', true);
+            $('#loader').show();
+        });
+
     </script>
+
+    
 @endsection

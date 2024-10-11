@@ -141,9 +141,10 @@
                                 </td>
                                 <td class="product-quantity">
                                 
-                                    <input type="number" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}"
+                                    <input type="number" class="product_quantity" name="product_quantity[]" id="product_quantity" placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}" data-product_type="{{ $item->product_type }}" data-product_id="{{ $item->product_id }}"
                                     data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}"
                                     >
+                                    
                                 </td>
                                 <td class="product-subtotal">
                                     <span>
@@ -409,7 +410,10 @@
 
 <script>
    $("#update_cart").on('click',function(){
-    $('#qty-validation').addClass('d-none');
+
+    $('#qty-validation').addClass('d-none'); 
+    $('#qty-validation p').text(''); 
+
       var data = [];
         $("input[name='product_quantity[]']").each(function(i,v) {
             if($(v).val() > 0)
@@ -451,6 +455,61 @@
    $("#modal-close").on('click',function(){
     $("#ImgViewer").modal('hide');
    })
+
+
+   $(document).ready(function() {
+
+        $(".product_quantity").on('keyup', function() {
+            var $this = $(this);
+            var rowId = $this.data('row');              
+            var productType = $this.data('product_type'); 
+            var productId = $this.data('product_id');   
+            var isTestPrint = $this.data('is_test_print'); 
+            var quantity = $this.val();                  
+
+            // AJAX request to validate quantity
+            $.ajax({
+                url: "{{ route('product-qty-validation') }}", 
+                method: 'POST',
+                data: {
+                    row_id: rowId,
+                    product_type: productType,
+                    product_id: productId,
+                    is_test_print: isTestPrint,
+                    quantity: quantity,
+                    '_token': "{{ csrf_token() }}" 
+                },
+                success: function(response) {
+                   
+                    $("input[name='product_quantity[]']").removeClass('validator');
+
+                    $('#update_cart').attr('disabled', true);
+
+                    $('#session-error').addClass('d-none');
+                    $('#session-error').text('');
+
+                    if (response.error) {
+                        $this.val('');
+                        $('#qty-validation').removeClass('d-none'); 
+                        $('#qty-validation p').text(response.message); 
+                        $this.addClass('validator'); 
+                    } else {
+                        $('#update_cart').removeAttr('disabled');
+                        $this.removeClass('validator');
+                        $('#qty-validation').addClass('d-none'); 
+                        $('#qty-validation p').text(''); 
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('An error occurred:', error);
+                }
+            });
+        });
+    });
+
+
+
+
 </script>
 
 @endsection

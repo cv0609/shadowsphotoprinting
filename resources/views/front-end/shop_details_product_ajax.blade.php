@@ -11,10 +11,10 @@
         <input 
         type="number" 
         name="quantity" 
-        id="quantity-{{ $key }}" 
-    
+        id="quantity-{{ $key }}"
+        class="product_quantity"
         data-price="{{ isset($product_sale_price) && !empty($product_sale_price) ? $product_sale_price : (isset($product->test_print[0]->product_price) ? $product->test_print[0]->product_price : $product->product_price) }}"
-    
+     
         data-productid="{{ $product->id }}" 
         data-testprint="{{ isset($product->test_print[0]->qty) ? '1' : '' }}" 
         data-category_id="{{ isset($product->test_print[0]->category_id) ? $product->test_print[0]->category_id : '' }}"

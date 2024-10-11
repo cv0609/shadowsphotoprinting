@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
 use App\Mail\MakeOrder;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ImageUploadRequest;
 use App\Models\TestPrint;
 use Session;
 
@@ -26,7 +27,7 @@ class ShopController extends Controller
         $this->CartService = $CartService;
     }
 
-   public function uploadImage(Request $request)
+   public function uploadImage(ImageUploadRequest $request)
     {
       $temImagesStore = [];
         if($request->allimages)

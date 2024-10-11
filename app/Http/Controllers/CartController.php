@@ -149,7 +149,6 @@ class CartController extends Controller
                                 ]);
                             }
                         }
-
                         
                         if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
                             return response()->json([
@@ -533,21 +532,6 @@ class CartController extends Controller
                     }
                 }
             }
-
-            if(isset($data['is_test_print']) && $data['is_test_print'] == '1'){
-
-                $is_test_print_cat = $data['is_test_print'];
-
-                $testPrintData = TestPrint::where('category_id',$is_test_print_cat)->first();
-               
-                if((int)$data['quantity'] < $testPrintData->min_qty || (int)$data['quantity'] > (int)$testPrintData->qty) {
-                    return response()->json([
-                        'error' => true,
-                        'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
-                    ]);
-                }
-            }
-
             CartData::whereId($data['rowId'])->update(['quantity'=>$data['quantity']]);
         }
 
@@ -588,5 +572,27 @@ class CartController extends Controller
         }
 
         return $itemCount;
+    }
+
+    public function productQtyValidation(Request $request){
+
+       $product_id = $request->product_id;
+       $is_test_print = $request->is_test_print;
+       $quantity = $request->quantity;
+
+            if(isset($is_test_print) && !empty($is_test_print)){
+
+                $testPrintData = TestPrint::where('category_id',$is_test_print)->first();
+        
+                    if((int)$quantity > (int)$testPrintData->qty) {
+                        return response()->json([
+                            'error' => true,
+                            'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '. Please check your cart for this item.',
+                            'product_id' => $product_id,
+                            'cat_id' => $is_test_print 
+                        ]);
+                    }
+            }
+        // }
     }
 }

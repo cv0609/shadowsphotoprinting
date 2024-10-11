@@ -4,12 +4,12 @@ return
    'default_country' => 'Australia',
    'pages_meta' => [
       'photos_for_sale' =>[
-         'meta_title' =>'Photo For Sale | Shadows Photo Printing',
-         'meta_description' => ''
+         'meta_title' =>'Stunning Photos for Sale | Shadows Photo Printing',
+         'meta_description' => 'Explore our curated collection of stunning photos for sale. Perfect for home decor or unique gifts, find high-quality prints that capture the beauty of every moment.'
       ],
       'gift_card' =>[
-         'meta_title' =>'Gift Card | Shadows Photo Printing',
-         'meta_description' => ''
+         'meta_title' =>'Gift Cards | Shadows Photo Printing',
+         'meta_description' => 'Discover the perfect gift with Shadows Photo Printing&#39;s gift cards! Ideal for photography enthusiasts, our gift cards offer flexibility and creativity for all your printing needs.'
       ],
       'shop_detail' =>[
          'meta_title' =>'Shadows Photo Printing',
@@ -24,8 +24,8 @@ return
          'meta_description' => ''
       ],
       'hand_craft' =>[
-         'meta_title' =>'Hand Craft | Shadows Photo Printing',
-         'meta_description' => ''
+         'meta_title' =>'Handmade Photo Products | Shadows Photo Printing',
+         'meta_description' => 'Unique handcrafted photo products - From personalized gifts to custom prints, explore creative ways to showcase your cherished memories.'
       ]
    ],
 

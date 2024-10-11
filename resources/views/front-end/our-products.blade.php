@@ -31,6 +31,14 @@
                             </div>
                         </div>
                     @endforeach
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="after-pay-img minus-top">
+                            <div class="afterPay-img">
+                                <img src="{{asset('assets/images/afterPay.png')}}" alt="">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

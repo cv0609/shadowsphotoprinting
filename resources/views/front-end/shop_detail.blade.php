@@ -107,9 +107,11 @@
                                     @endphp
                                     <tr class="gi-prod">
                                         <td>
-                                            <input type="number" name="quantity" id="quantity-{{$key}}"
+
+                                            <input type="number" class="product_quantity" name="quantity" id="quantity-{{$key}}"
                                            data-price="{{ isset($product_sale_price) && !empty($product_sale_price) ? $product_sale_price : $product->product_price }}"
                                            data-productid="{{ $product->id }}">
+
                                         </td>
                                         <td>
                                             {{ $product->product_title }}
@@ -186,6 +188,7 @@ $(document).ready(function() {
     updateCartTotals();
 
     $(document).on('keyup change', "input[name=quantity]", function() {
+        qtyValidation(this);
         updateCartTotals();
     });
 
@@ -200,7 +203,8 @@ $(document).ready(function() {
 
     // Event listener for "Add to Cart" button
     $("#add-to-cart").on('click', function(event) {
-        event.preventDefault(); // Prevent default action
+
+        event.preventDefault();
 
         let cartItems = [];
         let total = 0;
@@ -291,8 +295,53 @@ $(document).ready(function() {
     updateCartTotals();
 });
 
+function qtyValidation(inputElement) {
+    var $this = $(inputElement); 
+    var rowId = $this.data('row'); 
+    var productType = $this.data('product_type'); 
+    var productId = $this.data('productid'); 
+    var categoryId = $this.data('category_id');
+    var quantity = $this.val();
+
+    $.ajax({
+        url: "{{ route('product-qty-validation') }}", 
+        method: 'POST', 
+        data: {
+            row_id: rowId,
+            product_type: productType,
+            product_id: productId,
+            is_test_print: categoryId,
+            quantity: quantity,
+            '_token': "{{ csrf_token() }}" 
+        },
+        success: function(response) {
+            $("input[name='product_quantity[]']").removeClass('validator');
+
+            $('#add-to-cart').attr('disabled', true);
+
+            $('#session-error').addClass('d-none').text(''); 
+
+            if (response.error) {
+                $this.val('');
+                $('#qty-validation').removeClass('d-none'); 
+                $('#qty-validation p').text(response.message); 
+                $this.addClass('validator');
+            } else {
+                $('#add-to-cart').removeAttr('disabled'); 
+                $('#qty-validation').addClass('d-none'); 
+                $('#qty-validation p').text('');
+                $this.removeClass('validator'); 
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('An error occurred:', error); // Log any server errors
+        }
+    });
+}
+
 
 function updateCartTotals() {
+
     let total = 0;
     let totalQuantity = 0;
 
@@ -332,7 +381,6 @@ function updateCartTotals() {
 
         if (quantity !== '' && quantity > 0) {
             if(testprint){
-                console.log('hellotes');
                 $("#quantity-price-" + rowId).children('.show-details').text(testPrintTotalPrice.toFixed(2));
             }else{
                 $("#quantity-price-" + rowId).children('.show-details').text(totalPrice.toFixed(2));
@@ -394,6 +442,62 @@ function updateCartTotals() {
             });
         });
     });
+</script>
+
+<script>
+
+
+$(document).ready(function() {
+
+$(".product_quantity").on('keyup', function() {
+
+    var $this = $(this);
+    var rowId = '';              
+    var productType = ''; 
+    var productId = $this.data('productid');   
+    var isTestPrint = $this.data('is_test_print'); 
+    var quantity = $this.val();                  
+
+    $.ajax({
+        url: "{{ route('product-qty-validation') }}", 
+        method: 'POST',
+        data: {
+            row_id: rowId,
+            product_type: productType,
+            product_id: productId,
+            is_test_print: category_id,
+            quantity: quantity,
+            '_token': "{{ csrf_token() }}" 
+        },
+        success: function(response) {
+           
+            $("input[name='product_quantity[]']").removeClass('validator');
+
+            $('#update_cart').attr('disabled', true);
+
+            $('#session-error').addClass('d-none');
+            $('#session-error').text('');
+
+            if (response.error) {
+                $this.val('');
+                $('#qty-validation').removeClass('d-none'); 
+                $('#qty-validation p').text(response.message); 
+                $this.addClass('validator'); 
+            } else {
+                $('#update_cart').removeAttr('disabled');
+                $this.removeClass('validator');
+                $('#qty-validation').addClass('d-none'); 
+                $('#qty-validation p').text(''); 
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('An error occurred:', error);
+        }
+    });
+});
+});
+
+
 </script>
 
 @endsection
