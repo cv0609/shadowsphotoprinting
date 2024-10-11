@@ -28,6 +28,14 @@ class ShopController extends Controller
 
    public function uploadImage(Request $request)
     {
+      $this->validate($request, [
+          'image.*' => 'required|file|max:512000', // Validate each image (1 MB = 1024 KB)
+      ], [
+          'image.*.required' => 'Please upload an image.', // Custom error message
+          'image.*.file' => 'The uploaded file must be a valid file.',
+          'image.*.max' => 'Image size must not exceed 1 MB to upload.', // Custom message for size
+      ]);
+
       $temImagesStore = [];
         if($request->allimages)
         {
@@ -57,7 +65,7 @@ class ShopController extends Controller
       $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
     // dd($productCategories);
-    $products = Product::select(['id','product_title','product_price'])->get();
+    $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     $currentDate = date('F-j-Y-1');
     $page_content = [
         "meta_title" => "{$currentDate} - " . config('constant.pages_meta.shop_detail.meta_title'),
@@ -73,7 +81,7 @@ class ShopController extends Controller
     $products = [];
     if($categorySlug == "all")
     {
-      $products = Product::select(['id','product_title','product_price'])->get();
+      $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     }
     else
     {

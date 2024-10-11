@@ -152,6 +152,18 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="item form-group ">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="products" >Bulk Quantity<span ></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="number" class="form-control inputDate" name="bulk_qty" placeholder="Quantity" value="{{ $coupon_detail->qty }}">
+                            @error('bulk_qty')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="item form-group control-label">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="auto_applied">Automatic coupon applied<span class="required"></span>
                         </label>

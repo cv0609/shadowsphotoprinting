@@ -51,13 +51,25 @@
                         </div>
                     </div>
 
+
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_qty">Product Quantity <span class="required">*</span></label>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_qty">Product Min Quantity <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="number" id="product_min_qty" name="product_min_qty" required="required" class="form-control" step=".01">
+                            <span class="validation-error product_qty_error text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_qty">Product Max Quantity <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6">
                             <input type="number" id="product_qty" name="product_qty" required="required" class="form-control" step=".01">
                             <span class="validation-error product_qty_error text-danger"></span>
                         </div>
                     </div>
+
+                   
+
 
                     <div class="ln_solid"></div>
                     <div class="item form-group">
