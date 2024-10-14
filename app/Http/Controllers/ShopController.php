@@ -30,7 +30,6 @@ class ShopController extends Controller
    public function uploadImage(ImageUploadRequest $request)
     {
       $temImagesStore = [];
-      // dd($request->allimages);
       
         if($request->allimages)
         {
@@ -59,7 +58,7 @@ class ShopController extends Controller
     {
       $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
-    // dd($productCategories);
+    
     $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     $currentDate = date('F-j-Y-1');
     $page_content = [

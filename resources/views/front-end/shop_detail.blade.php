@@ -313,6 +313,7 @@ function qtyValidation(inputElement) {
             product_id: productId,
             is_test_print: categoryId,
             quantity: quantity,
+            slug: 'shop',
             '_token': "{{ csrf_token() }}" 
         },
         success: function(response) {
@@ -325,7 +326,7 @@ function qtyValidation(inputElement) {
             if (response.error) {
                 $this.val('');
                 $this.addClass('validator');
-                $('#product-validation-msg').css('color','red').text(response.message);
+                $('#product-validation-msg').css({'color':'red','font-size':'13px'}).text(response.message);
             } else {
                 $('#add-to-cart').removeAttr('disabled'); 
                 $this.removeClass('validator'); 

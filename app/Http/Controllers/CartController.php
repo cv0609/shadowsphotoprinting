@@ -580,48 +580,51 @@ class CartController extends Controller
        $is_test_print = $request->is_test_print;
        $quantity = $request->quantity;
 
-        if(isset($is_test_print) && !empty($is_test_print)){
+       $testPrintData = TestPrint::where('category_id',$is_test_print)->first();
 
-            $testPrintData = TestPrint::where('category_id',$is_test_print)->first();
+       if(isset($request->slug) && !empty($request->slug) && $request->slug == 'shop'){
 
-            if((int)$quantity < (int)$testPrintData->min_qty || (int)$quantity > (int)$testPrintData->qty) {
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        }else{
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
+
+        if(isset($cart) && !empty($cart)){
+
+            $existingCartItem = CartData::where('cart_id', $cart->id)
+           ->where('product_id', $product_id)
+           ->first();
+    
+           if(isset($existingCartItem) && !empty($existingCartItem)){
+    
+               $newExistingQty = $existingCartItem->quantity+$quantity;
+    
+               if((int)$newExistingQty > (int)$testPrintData->qty) {
+
                 return response()->json([
                     'error' => true,
                     'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '. Please check your cart for this item.',
                     'product_id' => $product_id,
                     'cat_id' => $is_test_print 
                 ]);
+               }
+           }
+        }
+       }
+       
+        if(isset($is_test_print) && !empty($is_test_print)){
+
+            if((int)$quantity < (int)$testPrintData->min_qty || (int)$quantity > (int)$testPrintData->qty) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.',
+                    'product_id' => $product_id,
+                    'cat_id' => $is_test_print 
+                ]);
             }
         }
-
-
-
-
-
-        // $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
-
-        // $existingCartItem = CartData::where('cart_id', $cartId)
-        // ->where('product_id', $product_id)
-        // ->where('selected_images', $ImagePath)
-        // ->first();
-
-        // if(isset($existingCartItem) && !empty($existingCartItem)){
-
-        //     $newExistingQty = $existingCartItem->quantity+$quantity;
-
-        //     if((int)$newExistingQty > (int)$testPrintData->qty) {
-        //         return response()->json([
-        //             'error' => true,
-        //             'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '. Please check your cart for this item.'
-        //         ]);
-        //     }
-        // }
-        
-        // if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
-        //     return response()->json([
-        //         'error' => true,
-        //         'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
-        //     ]);
-        // }
     }
 }
