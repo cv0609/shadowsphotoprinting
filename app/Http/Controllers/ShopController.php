@@ -36,21 +36,24 @@ class ShopController extends Controller
           'image.*.max' => 'Image size must not exceed 1 MB to upload.', // Custom message for size
       ]);
 
-      $temImagesStore = [];
-        if($request->allimages)
-        {
-            foreach($request->allimages as $key => $image)
-            {
-                $temImages = time().$key.'.'.$image->extension();
+      // Retrieve existing images from the session, or initialize an empty array
+      if( $request->input('is_first_upload') ){
+        $temImagesStore = [];
+      }else{
+        $temImagesStore = Session::get('temImages', []);
+      }
 
-                // Store image in the temporary directory
-                $image->storeAs('public/temp', $temImages);
-                $temImagesStore[] = $temImages;
-            }
-            
-        }
-        Session::put('temImages',$temImagesStore);
-        return redirect()->route('shop-detail');
+      if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $temImages = time() . '.' . $image->extension();
+
+        // Store image in the temporary directory
+        $image->storeAs('public/temp', $temImages);
+        $temImagesStore[] = $temImages;
+      }
+
+      Session::put('temImages', $temImagesStore);
+      return response()->json(['csrf_token' => csrf_token()]);
     }
   public function shopDetail($category_slug = null)
   {
