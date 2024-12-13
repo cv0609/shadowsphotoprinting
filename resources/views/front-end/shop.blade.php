@@ -154,6 +154,7 @@
             flash_swf_url : '{{ asset("assets/js/Moxie.swf") }}',
             silverlight_xap_url : '{{ asset("assets/js/Moxie.xap") }}',
             dragdrop: true,
+            max_retries: 3,
             
             filters : {
                 max_file_size : '100mb',
@@ -230,7 +231,7 @@
                 },
 
                 Error: function(up, err) {
-                    alert("Upload error: "+err.message); // err.code
+                    alert('Upload interrupted. Retrying...');
                 }
             }
         });
