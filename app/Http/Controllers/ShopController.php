@@ -14,6 +14,7 @@ use App\Services\CartService;
 use App\Mail\MakeOrder;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TestPrint;
+use Intervention\Image\Facades\Image;
 use Session;
 
 class ShopController extends Controller
@@ -26,35 +27,50 @@ class ShopController extends Controller
         $this->CartService = $CartService;
     }
 
-   public function uploadImage(Request $request)
-    {
-      $this->validate($request, [
-          'image.*' => 'required|file|max:204800', // Validate each image (1 MB = 1024 KB)
+  public function uploadImage(Request $request)
+  {
+    $this->validate($request, [
+      'image.*' => 'required|file|max:204800', // Validate each image (1 MB = 1024 KB)
       ], [
-          'image.*.required' => 'Please upload an image.', // Custom error message
+          'image.*.required' => 'Please upload an image.',
           'image.*.file' => 'The uploaded file must be a valid file.',
-          'image.*.max' => 'Image size must not exceed 1 MB to upload.', // Custom message for size
-      ]);
+          'image.*.max' => 'Image size must not exceed 1 MB to upload.',
+      ]
+    );
 
-      // Retrieve existing images from the session, or initialize an empty array
-      if( $request->input('is_first_upload') ){
+    // Retrieve existing images from the session, or initialize an empty array
+    if ($request->input('is_first_upload')) {
         $temImagesStore = [];
-      }else{
+    } else {
         $temImagesStore = Session::get('temImages', []);
-      }
-
-      if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $temImages = time() . '.' . $image->extension();
-
-        // Store image in the temporary directory
-        $image->storeAs('public/temp', $temImages);
-        $temImagesStore[] = $temImages;
-      }
-
-      Session::put('temImages', $temImagesStore);
-      return response()->json(['csrf_token' => csrf_token()]);
     }
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+      $originalImageName = time() . '.' . $image->extension();
+
+      $image->storeAs('public/temp', $originalImageName);
+
+      // Create a resized version of the image (150x150)
+      $resizedImageName = 'thumb_' . $originalImageName;
+      $resizedImage = Image::make($image)->resize(200, null, function ($constraint) {
+        $constraint->aspectRatio();
+        $constraint->upsize();
+      });
+      
+      // Store the resized image in the temporary directory
+      $imageContent = $resizedImage->stream()->__toString();
+      Storage::disk('public')->put('temp/' . $resizedImageName, $imageContent);
+
+      $temImagesStore[] = $originalImageName;
+    }
+
+    // Save the updated session data
+    Session::put('temImages', $temImagesStore);
+
+    return response()->json(['csrf_token' => csrf_token()]);
+  }
+
   public function shopDetail($category_slug = null)
   {
     $imageName = Session::get('temImages'); 
