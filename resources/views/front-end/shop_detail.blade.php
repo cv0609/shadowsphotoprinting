@@ -20,7 +20,7 @@
                 @foreach($imageName as $temImages)
                     <div class="decoding-wrapper selected-images">
                         <a href="javascript:void(0)" class="product-img">
-                            <img class="main_check_img" src="{{ asset('storage/temp/' . $temImages) }}" alt="">
+                            <img class="main_check_img" src="{{ asset('storage/temp/thumb_' . $temImages) }}" data-src="{{ asset('storage/temp/' . $temImages) }}" alt="">
                         </a>
 
                         <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}" id="image-checkbox-{{ $counter }}">
@@ -188,7 +188,7 @@ $(document).ready(function() {
     });
 
     $(".product-img").on('click',function(){
-        $("#modal-img").attr('src',$(this).children('img').attr('src'));
+        $("#modal-img").attr('src',$(this).children('img').attr('data-src'));
         $("#ImgViewer").modal('show');
     });
 
