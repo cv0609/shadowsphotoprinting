@@ -24,7 +24,7 @@ class ShopController extends Controller
 
     public function __construct(CartService $CartService)
     {
-        $this->CartService = $CartService;
+      $this->CartService = $CartService;
     }
 
   public function uploadImage(Request $request)
