@@ -20,7 +20,7 @@ use Session;
 class ShopController extends Controller
 {
 
-    protected $CartService;
+  protected $CartService;
 
     public function __construct(CartService $CartService)
     {
@@ -30,45 +30,32 @@ class ShopController extends Controller
   public function uploadImage(Request $request)
   {
     $this->validate($request, [
-      'image.*' => 'required|file|max:204800', // Validate each image (1 MB = 1024 KB)
-      ], [
-          'image.*.required' => 'Please upload an image.',
-          'image.*.file' => 'The uploaded file must be a valid file.',
-          'image.*.max' => 'Image size must not exceed 1 MB to upload.',
-      ]
-    );
+      'images' => 'required|array',
+      'images.*' => 'url'
+    ], [
+      'images.required' => 'No images were uploaded.',
+      'images.array' => 'The images must be provided as an array.',
+      'images.*.url' => 'Each image must be a valid URL.',
+    ]);
 
-    // Retrieve existing images from the session, or initialize an empty array
-    if ($request->input('is_first_upload')) {
-        $temImagesStore = [];
-    } else {
-        $temImagesStore = Session::get('temImages', []);
+    $temImagesStore = Session::get('temImages', []);
+
+    $imageUrls = $request->input('images');
+
+    foreach ($imageUrls as $imageUrl) {
+      $temImagesStore[] = $imageUrl;
     }
 
-    if ($request->hasFile('image')) {
-      $image = $request->file('image');
-      $originalImageName = time() . '.' . $image->extension();
-
-      $image->storeAs('public/temp', $originalImageName);
-
-      // Create a resized version of the image (150x150)
-      $resizedImageName = 'thumb_' . $originalImageName;
-      $resizedImage = Image::make($image)->resize(200, null, function ($constraint) {
-        $constraint->aspectRatio();
-        $constraint->upsize();
-      });
-      
-      // Store the resized image in the temporary directory
-      $imageContent = $resizedImage->stream()->__toString();
-      Storage::disk('public')->put('temp/' . $resizedImageName, $imageContent);
-
-      $temImagesStore[] = $originalImageName;
-    }
-
-    // Save the updated session data
     Session::put('temImages', $temImagesStore);
 
-    return response()->json(['csrf_token' => csrf_token()]);
+    return response()->json([
+      'csrf_token' => csrf_token(),
+    ]);
+  }    
+
+  public function uploadImageCsrfRefresh()
+  {
+    return json_encode(['csrf_token' => csrf_token()]);
   }
 
   public function shopDetail($category_slug = null)

@@ -170,6 +170,7 @@ Route::post('/user-register',[LoginController::class,'registerUser'])->name('use
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
 Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');
 Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('shop-upload-image');
+Route::get('/shop-upload-image-csrf-refresh',[ShopController::class,'uploadImageCsrfRefresh'])->name('shop-upload-image-csrf-refresh');
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
