@@ -1,8 +1,58 @@
 @extends('front-end.layout.main')
 @section('content')
 @php
-   $PageDataService = app(App\Services\PageDataService::class);
-   $productCount = $PageDataService->getShopProductsBySlug();
+    $PageDataService = app(App\Services\PageDataService::class);
+    $productCount = $PageDataService->getShopProductsBySlug();
+
+    // Get X-Amz-Signature
+    $fcsg_settings = [
+        "s3_access_key" => env("S3_ACCESS_KEY"),
+        "s3_secret_key" => env("S3_SECRET_KEY"),
+        "s3_bucket" => "fotovenderau",
+        "s3_region" => "ap-southeast-2",
+        "s3_path" => "shadowsphotoprinting",
+        "s3_max_size" => 100,
+        "download_zip_api_url" => "https://k83zjjpyfb.execute-api.ap-southeast-2.amazonaws.com/prod/artworkzippersubfolders",
+        "zip_archive_style" => 1,
+        "zip_archive_sname" => "oidsku",
+    ];
+
+    $s3_access_key = $fcsg_settings['s3_access_key'];
+	$s3_secret_key = $fcsg_settings['s3_secret_key'];
+	$s3_bucketname = $fcsg_settings['s3_bucket'];
+	$s3_region = $fcsg_settings['s3_region'];
+	$s3_max_size = $fcsg_settings['s3_max_size'];
+	$s3_path = $fcsg_settings['s3_path'];
+
+	$amazon_url = 'https://'.$s3_bucketname.'.s3-'.$s3_region.'.amazonaws.com/';
+
+	$short_date = gmdate('Ymd');
+	$iso_date = gmdate("Ymd\THis\Z");
+	$expiration_date = gmdate('Y-m-d\TG:i:s\Z', strtotime('+1 hours'));
+
+	$policy = utf8_encode(
+		json_encode(
+			array(
+				'expiration' => $expiration_date,  
+				'conditions' => array(
+					array('acl' => "private"),
+					array('bucket' => $s3_bucketname),
+					array('starts-with', '$key', ''),
+					array('starts-with', '$name', ''),
+					array('starts-with', '$Content-Type', ''),
+					array('content-length-range', '1', 5000000000),
+					array('x-amz-credential' => $s3_access_key.'/'.$short_date.'/'.$s3_region.'/s3/aws4_request'),
+					array('x-amz-algorithm' => 'AWS4-HMAC-SHA256'),
+					array('X-amz-date' => $iso_date)
+				)
+			)
+		)
+	); 
+	$kdate = hash_hmac('sha256', $short_date, 'AWS4' . $s3_secret_key, true);
+	$kregion = hash_hmac('sha256', $s3_region, $kdate, true);
+	$kservice = hash_hmac('sha256', "s3", $kregion, true);
+	$ksigning = hash_hmac('sha256', "aws4_request", $kservice, true);
+	$signature = hash_hmac('sha256', base64_encode($policy), $ksigning);
 @endphp
 
  <div class="banner-slider fade-slider">
@@ -126,6 +176,8 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('assets/js/plupload.full.min.js') }}"></script>
+    <script src="{{ asset('assets/js/unicode.js') }}"></script>
+    <script src="{{ asset('assets/js/plupload.helper.js') }}"></script>
     <script>
         $('.fade-slider').slick({
             autoplay: true,
@@ -136,6 +188,18 @@
             cssEase: 'linear'
         });
 
+        // Keep CSRF Token Fresh
+        setInterval(function(){
+            $.ajax({
+                method: "GET",
+                url: "{{ route('shop-upload-image-csrf-refresh') }}",
+                success: function(){
+                    resp = JSON.parse(result.response);
+                    document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
+                }
+            });
+        }, 1800000);
+
         // PLUPLOAD
         var fupload_nmb = 1;
         var is_first_upload = 1;
@@ -144,98 +208,117 @@
         var fupload_files = [];
         var fuploaded_files = [];
         var fuploading = false;
-        var uploader = new plupload.Uploader({
-            runtimes : 'html5,flash,silverlight,html4',
-            file_data_name: 'image',
-            browse_button : 'selectfiles', // you can pass an id...
-            container: document.getElementById('img-upload-container'), // ... or DOM Element itself
-            drop_element: document.getElementById('img-upload-container'), // ... or DOM Element itself
-            url : '{{ route("shop-upload-image") }}',
-            flash_swf_url : '{{ asset("assets/js/Moxie.swf") }}',
-            silverlight_xap_url : '{{ asset("assets/js/Moxie.xap") }}',
-            dragdrop: true,
-            max_retries: 3,
-            
-            filters : {
-                max_file_size : '100mb',
-                mime_types: [
-                    {title : "Image files", extensions : "jpg,jpeg,gif,png,webp"}
-                ]
-            },
-
-            init: {
-                PostInit: function() {
-                    jQuery('#selectedFiles').html('').hide();
-                    jQuery('#uploadfiles').hide();
-                    jQuery('.fupload-process').hide();
-
-                    document.getElementById('uploadfiles').onclick = function() {
-                        if (!fuploading) {
-                            fuploading = true;
-                            fupload_files = [];
-                            jQuery('#selectfiles').hide();
-                            jQuery('#uploadfiles').hide();
-                            jQuery('.fupload-loading').css('visibility', 'visible');
-                            uploader.start();
-                        }
-                        return false;
-                    };
-                },
+        var fupload_folder = 'shadowsphotoprinting/raw/{{ strtolower(date("F")) . "-" . date("d-Y-Y-m-d-H-i-s") }}';
+        jQuery(document).ready(function() {
+            var uploader = new plupload.Uploader({
+                runtimes : 'html5,flash,silverlight,html4',
+                file_data_name: 'image',
+                browse_button : 'selectfiles', // you can pass an id...
+                container: document.getElementById('img-upload-container'), // ... or DOM Element itself
+                drop_element: document.getElementById('img-upload-container'), // ... or DOM Element itself
+                url : 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/',
+                flash_swf_url : '{{ asset("assets/js/Moxie.swf") }}',
+                silverlight_xap_url : '{{ asset("assets/js/Moxie.xap") }}',
+                dragdrop: true,
+                max_retries: 3,
                 
-                FilesAdded: function(up, files) {
-                    jQuery('#selectedFiles').show();
-                    jQuery('.fupload-process').hide();
-                    jQuery('#uploadfiles').show();
-                    plupload.each(files, function(file) {
-                        if (fupload_nmb <= fupload_allowed_nmb) {
-                            document.getElementById('selectedFiles').innerHTML += '<p id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b> <i></i></p>';
+                filters : {
+                    max_file_size : '100mb',
+                    mime_types: [
+                        {title : "Image files", extensions : "jpg,jpeg,gif,png,webp"}
+                    ]
+                },
+
+                multipart: true,
+                multipart_params: {
+                    'acl': 'private',
+                    'X-Amz-Credential' : 'AKIAIIBRCWLBWYRHTTJQ/20241224/ap-southeast-2/s3/aws4_request',
+                    'X-Amz-Algorithm' : 'AWS4-HMAC-SHA256',
+                    'X-Amz-Date' : '{{ $iso_date }}',
+                    'policy' : 'eyJleHBpcmF0aW9uIjoiMjAyNC0xMi0yNFQ3OjQyOjU5WiIsImNvbmRpdGlvbnMiOlt7ImFjbCI6InByaXZhdGUifSx7ImJ1Y2tldCI6ImZvdG92ZW5kZXJhdSJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiIl0sWyJzdGFydHMtd2l0aCIsIiRuYW1lIiwiIl0sWyJzdGFydHMtd2l0aCIsIiRDb250ZW50LVR5cGUiLCIiXSxbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwiMSIsNTAwMDAwMDAwMF0seyJ4LWFtei1jcmVkZW50aWFsIjoiQUtJQUlJQlJDV0xCV1lSSFRUSlFcLzIwMjQxMjI0XC9hcC1zb3V0aGVhc3QtMlwvczNcL2F3czRfcmVxdWVzdCJ9LHsieC1hbXotYWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsiWC1hbXotZGF0ZSI6IjIwMjQxMjI0VDA2NDI1OVoifV19',
+                    'X-Amz-Signature' : '{{ $signature }}'
+                },
+
+                init: {
+                    PostInit: function() {
+                        jQuery('#selectedFiles').html('').hide();
+                        jQuery('#uploadfiles').hide();
+                        jQuery('.fupload-process').hide();
+
+                        document.getElementById('uploadfiles').onclick = function() {
+                            if (!fuploading) {
+                                fuploading = true;
+                                fupload_files = [];
+                                jQuery('#selectfiles').hide();
+                                jQuery('#uploadfiles').hide();
+                                jQuery('.fupload-loading').css('visibility', 'visible');
+                                uploader.start();
+                            }
+                            return false;
+                        };
+                    },
+                    
+                    FilesAdded: function(up, files) {
+                        jQuery('#selectedFiles').show();
+                        jQuery('.fupload-process').hide();
+                        jQuery('#uploadfiles').show();
+                        plupload.each(files, function(file) {
+                            if (fupload_nmb <= fupload_allowed_nmb) {
+                                document.getElementById('selectedFiles').innerHTML += '<p id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b> <i></i></p>';
+                            }
+                            fupload_nmb++;
+                        });
+                        if (fupload_nmb > fupload_allowed_nmb) {
+                            up.splice(fupload_allowed_nmb);
+                            jQuery('#selectfiles').addClass('disabled');
                         }
-                        fupload_nmb++;
-                    });
-                    if (fupload_nmb > fupload_allowed_nmb) {
-                        up.splice(fupload_allowed_nmb);
-                        jQuery('#selectfiles').addClass('disabled');
-                    }
-                },
-                
-                UploadProgress: function(up, file) {
-                    document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-                },
+                    },
+                    
+                    UploadProgress: function(up, file) {
+                        document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                    },
 
-                
-                BeforeUpload: function(up, file) {
-                    fupload_files[fupload_files.length] = file;
-
-                    var regex = /(?:\.([^.]+))?$/;
-                    for (var i = 0; i < up.files.length; i++) {
-                        if (file.id == up.files[i].id) {
-                            var ext = regex.exec(up.files[i].name)[1];
-                            up.settings.multipart_params['Content-Type'] = file.type;
-                            up.settings.multipart_params['_token'] = document.querySelector('#uploadForm [name="_token"]').getAttribute('value');
-                            up.settings.multipart_params['is_first_upload'] = is_first_upload;
+                    
+                    BeforeUpload: function(up, file) {
+                        file.name = fupload_sanitize(file.name);
+                        fupload_files[fupload_files.length] = file;
+                        up.settings.multipart_params['key'] = fupload_folder+'/'+file.name;
+                        
+                        var regex = /(?:\.([^.]+))?$/;
+                        for (var i = 0; i < up.files.length; i++) {
+                            if (file.id == up.files[i].id) {
+                                var ext = regex.exec(up.files[i].name)[1];
+                                up.settings.multipart_params['Content-Type'] = file.type;
+                            }
                         }
-                    }
-                },
+                    },
 
-                FileUploaded: function(uploader, file, result) {
-                    if( result.status == 200 ){
-                        resp = JSON.parse(result.response);
-                        console.log(resp);
-                        document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
+                    FileUploaded: function(uploader, file, result) {
+                        var ufileurl = 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
+                        fuploaded_files[fuploaded_files.length] = ufileurl;
                         is_first_upload = 0;
+                    },
+
+                    UploadComplete: function(files) {
+                        $.ajax({
+                            method: "POST",
+                            url: "{{ route('shop-upload-image') }}",
+                            data: {"images": fuploaded_files},
+                            success: function(html){
+                                resp = JSON.parse(result.response);
+                                document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
+                                
+                                window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
+                            }
+                        });
+                    },
+
+                    Error: function(up, err) {
+                        alert('Upload interrupted. Retrying...');
                     }
-                },
-
-                UploadComplete: function(files) {
-                    window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
-                },
-
-                Error: function(up, err) {
-                    alert('Upload interrupted. Retrying...');
                 }
-            }
+            });
+            uploader.init();
         });
-
-        uploader.init();
     </script>
 @endsection
