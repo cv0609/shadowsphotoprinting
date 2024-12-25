@@ -31,10 +31,10 @@
                 @foreach($imageName as $temImages)
                     <div class="decoding-wrapper selected-images">
                         <a href="javascript:void(0)" class="product-img">
-                            <img class="main_check_img" src="{{ getS3Img($temImages, 'medium') }}" data-src="{{ getS3Img($temImages, 'large') }}" alt="">
+                            <img class="main_check_img" src="{{ getS3Img($temImages, 'medium') }}" data-src="{{ getS3Img($temImages, 'original') }}" alt="">
                         </a>
 
-                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ getS3Img($temImages, 'large') }}" id="image-checkbox-{{ $counter }}">
+                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ getS3Img($temImages, 'original') }}" id="image-checkbox-{{ $counter }}">
                         <div id="unchecked-img-{{ $counter }}" class="common_check unchecked-img" onclick="check_img({{ $counter }})">
                             <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid">
                         </div>
