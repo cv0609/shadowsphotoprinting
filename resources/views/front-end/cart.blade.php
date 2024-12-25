@@ -68,14 +68,14 @@
                                     <a href="javascript:void(0)" class="product-img">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
-                                                {{ getS3Img($product_detail->product_image, 'medium') }}
+                                                {{ asset($product_detail->product_image) }}
                                             @elseif($item->product_type == 'photo_for_sale')
 
-                                                {{ getS3Img($image1, 'medium') }}
+                                                {{ asset($image1) }}
 
                                             @elseif($item->product_type == 'hand_craft')
 
-                                                 {{ getS3Img($image1, 'medium') }}
+                                                {{ asset($image1) }}
 
                                             @else
                                             {{-- @php
@@ -93,14 +93,14 @@
                                             @endif
                                         " data-src="
                                             @if($item->product_type == 'gift_card')
-                                                {{ $product_detail->product_image }}
+                                                {{ asset($product_detail->product_image) }}
                                             @elseif($item->product_type == 'photo_for_sale')
 
-                                                {{ $image1 }}
+                                                {{ asset($image1) }}
 
                                             @elseif($item->product_type == 'hand_craft')
 
-                                                {{ $image1 }}
+                                                {{ asset($image1) }}
 
                                             @else
                                             {{-- @php
