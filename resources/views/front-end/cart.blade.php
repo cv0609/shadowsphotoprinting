@@ -2,6 +2,11 @@
 @section('content')
 @php
    $CartService = app(App\Services\CartService::class);
+
+    function getS3Img($str, $size){
+        $str = str_replace('original', $size, $str);
+        return $str;
+    }
 @endphp
 <section class="coupon-main">
 <div class="container">
@@ -63,14 +68,14 @@
                                     <a href="javascript:void(0)" class="product-img">
                                         <img src="
                                             @if($item->product_type == 'gift_card')
-                                                {{ asset($product_detail->product_image) }}
+                                                {{ getS3Img($product_detail->product_image, 'medium') }}
                                             @elseif($item->product_type == 'photo_for_sale')
 
-                                                {{ asset($image1) }}
+                                                {{ getS3Img($image1, 'medium') }}
 
                                             @elseif($item->product_type == 'hand_craft')
 
-                                                 {{ asset($image1) }}
+                                                 {{ getS3Img($image1, 'medium') }}
 
                                             @else
                                             {{-- @php
@@ -82,7 +87,33 @@
                                                     {{ asset($item->watermark_image) }}
                                                    {{-- {{ asset($item->selected_images) }} --}}
                                                  @else
-                                                   {{ asset($item->selected_images) }}
+                                                 {{-- {{ asset($item->selected_images) }} --}}
+                                                 {{ getS3Img($item->selected_images, 'medium') }}
+                                                 @endif
+                                            @endif
+                                        " data-src="
+                                            @if($item->product_type == 'gift_card')
+                                                {{ $product_detail->product_image }}
+                                            @elseif($item->product_type == 'photo_for_sale')
+
+                                                {{ $image1 }}
+
+                                            @elseif($item->product_type == 'hand_craft')
+
+                                                {{ $image1 }}
+
+                                            @else
+                                            {{-- @php
+                                                dd(addWaterMark(asset($item->selected_images)));
+                                            @endphp --}}
+
+                                                 @if($item->is_test_print == '1')
+                                                   {{-- {{ addWaterMark($item->selected_images) }} --}}
+                                                    {{ asset($item->watermark_image) }}
+                                                   {{-- {{ asset($item->selected_images) }} --}}
+                                                 @else
+                                                 {{-- {{ asset($item->selected_images) }} --}}
+                                                 {{ $item->selected_images }}
                                                  @endif
                                             @endif
                                         " alt="">
@@ -443,7 +474,7 @@
    })
 
    $(".product-img").on('click',function(){
-      $("#modal-img").attr('src',$(this).children('img').attr('src'));
+      $("#modal-img").attr('src',$(this).children('img').attr('data-src'));
       $("#ImgViewer").modal('show');
    });
 
