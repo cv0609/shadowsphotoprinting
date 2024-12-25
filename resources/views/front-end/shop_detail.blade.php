@@ -1,7 +1,18 @@
 @extends('front-end.layout.main')
 @section('content')
 @php
-   $CartService = app(App\Services\CartService::class);
+    $CartService = app(App\Services\CartService::class);
+
+    function getS3Img($str, $size){
+        $str = str_replace('raw/', '', $str);
+        $str = preg_replace('/(.*)(\/[^\/]*?$)/', "$1/$size$2", $str);
+        return $str;
+    }
+
+    function getS3ImgName($str){
+        $str = preg_replace('/.*\/([^\/]*?$)/', "$1", $str);
+        return $str;
+    }
 @endphp
 
 <section class="envira-gallery">
@@ -20,17 +31,17 @@
                 @foreach($imageName as $temImages)
                     <div class="decoding-wrapper selected-images">
                         <a href="javascript:void(0)" class="product-img">
-                            <img class="main_check_img" src="{{ asset('storage/temp/thumb_' . $temImages) }}" data-src="{{ asset('storage/temp/' . $temImages) }}" alt="">
+                            <img class="main_check_img" src="{{ getS3Img($temImages, 'medium') }}" data-src="{{ getS3Img($temImages, 'large') }}" alt="">
                         </a>
 
-                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ asset('storage/temp/' . $temImages) }}" id="image-checkbox-{{ $counter }}">
+                        <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ getS3Img($temImages, 'large') }}" id="image-checkbox-{{ $counter }}">
                         <div id="unchecked-img-{{ $counter }}" class="common_check unchecked-img" onclick="check_img({{ $counter }})">
                             <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid">
                         </div>
                         <div id="checked-img-{{ $counter }}" class="d-none common_check checked-img" onclick="uncheck_img({{ $counter }})">
                             <img src="assets/images/active_image_tick.png" alt="" class="img-fluid">
                         </div>
-                        <p class="title_image_p">{{ $temImages }}</p>
+                        <p class="title_image_p">{{ getS3ImgName($temImages) }}</p>
                     </div>
                     @php
                         $counter++;

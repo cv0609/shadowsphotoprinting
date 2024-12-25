@@ -1,8 +1,44 @@
 @extends('front-end.layout.main')
 @section('content')
 @php
-   $PageDataService = app(App\Services\PageDataService::class);
-   $productCount = $PageDataService->getShopProductsBySlug();
+    $PageDataService = app(App\Services\PageDataService::class);
+    $productCount = $PageDataService->getShopProductsBySlug();
+
+    // Get X-Amz-Signature
+    $s3_access_key = env("S3_ACCESS_KEY");
+	$s3_secret_key = env("S3_SECRET_KEY");
+	$s3_bucketname = env("S3_BUCKET");
+	$s3_region = env("S3_REGION");
+
+	$amazon_url = 'https://'.$s3_bucketname.'.s3-'.$s3_region.'.amazonaws.com/';
+
+	$short_date = gmdate('Ymd');
+	$iso_date = gmdate("Ymd\THis\Z");
+	$expiration_date = gmdate('Y-m-d\TG:i:s\Z', strtotime('+1 hours'));
+
+	$policy = utf8_encode(
+		json_encode(
+			array(
+				'expiration' => $expiration_date,  
+				'conditions' => array(
+					array('acl' => "private"),
+					array('bucket' => $s3_bucketname),
+					array('starts-with', '$key', ''),
+					array('starts-with', '$name', ''),
+					array('starts-with', '$Content-Type', ''),
+					array('content-length-range', '1', 5000000000),
+					array('x-amz-credential' => $s3_access_key.'/'.$short_date.'/'.$s3_region.'/s3/aws4_request'),
+					array('x-amz-algorithm' => 'AWS4-HMAC-SHA256'),
+					array('X-amz-date' => $iso_date)
+				)
+			)
+		)
+	); 
+	$kdate = hash_hmac('sha256', $short_date, 'AWS4' . $s3_secret_key, true);
+	$kregion = hash_hmac('sha256', $s3_region, $kdate, true);
+	$kservice = hash_hmac('sha256', "s3", $kregion, true);
+	$ksigning = hash_hmac('sha256', "aws4_request", $kservice, true);
+	$signature = hash_hmac('sha256', base64_encode($policy), $ksigning);
 @endphp
 
  <div class="banner-slider fade-slider">
@@ -126,6 +162,8 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('assets/js/plupload.full.min.js') }}"></script>
+    <script src="{{ asset('assets/js/unicode.js') }}"></script>
+    <script src="{{ asset('assets/js/plupload.helper.js') }}"></script>
     <script>
         $('.fade-slider').slick({
             autoplay: true,
@@ -136,6 +174,18 @@
             cssEase: 'linear'
         });
 
+        // Keep CSRF Token Fresh
+        setInterval(function(){
+            $.ajax({
+                method: "GET",
+                url: "{{ route('shop-upload-image-csrf-refresh') }}",
+                success: function(){
+                    resp = JSON.parse(result.response);
+                    document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
+                }
+            });
+        }, 1800000);
+
         // PLUPLOAD
         var fupload_nmb = 1;
         var is_first_upload = 1;
@@ -144,13 +194,14 @@
         var fupload_files = [];
         var fuploaded_files = [];
         var fuploading = false;
+        var fupload_folder = 'shadowsphotoprinting/raw/{{ strtolower(date("F")) . "-" . date("d-Y-Y-m-d-H-i-s") }}';
         var uploader = new plupload.Uploader({
             runtimes : 'html5,flash,silverlight,html4',
-            file_data_name: 'image',
+            file_data_name: 'file',
             browse_button : 'selectfiles', // you can pass an id...
             container: document.getElementById('img-upload-container'), // ... or DOM Element itself
             drop_element: document.getElementById('img-upload-container'), // ... or DOM Element itself
-            url : '{{ route("shop-upload-image") }}',
+            url : 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/',
             flash_swf_url : '{{ asset("assets/js/Moxie.swf") }}',
             silverlight_xap_url : '{{ asset("assets/js/Moxie.xap") }}',
             dragdrop: true,
@@ -161,6 +212,16 @@
                 mime_types: [
                     {title : "Image files", extensions : "jpg,jpeg,gif,png,webp"}
                 ]
+            },
+
+            multipart: true,
+            multipart_params: {
+                'acl': 'private',
+                'X-Amz-Credential' : '{{ $s3_access_key }}/{{ $short_date }}/{{ $s3_region }}/s3/aws4_request',
+                'X-Amz-Algorithm' : 'AWS4-HMAC-SHA256',
+                'X-Amz-Date' : '{{ $iso_date }}',
+                'policy' : '{{ base64_encode($policy) }}',
+                'X-Amz-Signature' : '{{ $signature }}'
             },
 
             init: {
@@ -204,30 +265,39 @@
 
                 
                 BeforeUpload: function(up, file) {
+                    file.name = fupload_sanitize(file.name);
                     fupload_files[fupload_files.length] = file;
-
+                    up.settings.multipart_params['key'] = fupload_folder+'/'+file.name;
+                    
                     var regex = /(?:\.([^.]+))?$/;
                     for (var i = 0; i < up.files.length; i++) {
                         if (file.id == up.files[i].id) {
                             var ext = regex.exec(up.files[i].name)[1];
                             up.settings.multipart_params['Content-Type'] = file.type;
-                            up.settings.multipart_params['_token'] = document.querySelector('#uploadForm [name="_token"]').getAttribute('value');
-                            up.settings.multipart_params['is_first_upload'] = is_first_upload;
                         }
                     }
                 },
 
                 FileUploaded: function(uploader, file, result) {
-                    if( result.status == 200 ){
-                        resp = JSON.parse(result.response);
-                        console.log(resp);
-                        document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
-                        is_first_upload = 0;
-                    }
+                    var ufileurl = 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
+                    fuploaded_files[fuploaded_files.length] = ufileurl;
+                    is_first_upload = 0;
                 },
 
                 UploadComplete: function(files) {
-                    window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ route('shop-upload-image') }}",
+                        data: {
+                            "images": fuploaded_files,
+                            "_token": document.querySelector('#uploadForm [name="_token"]').getAttribute('value')
+                        },
+                        success: function(resp){
+                            document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
+                            
+                            window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
+                        }
+                    });
                 },
 
                 Error: function(up, err) {
@@ -235,7 +305,6 @@
                 }
             }
         });
-
         uploader.init();
     </script>
 @endsection
