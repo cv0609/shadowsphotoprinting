@@ -2,6 +2,11 @@
 @section('page-content')
 @php
    $CartService = app(App\Services\CartService::class);
+
+  function getS3Img($str, $size){
+    $str = str_replace('original', $size, $str);
+    return $str;
+  }
 @endphp
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">
@@ -164,7 +169,7 @@
                           {{ asset($image1) }}
 
                       @else
-                          {{ asset($item->selected_images) }}
+                          {{ getS3Img($item->selected_images, 'medium') }}
                       @endif
                   " alt="">
                 
@@ -193,7 +198,7 @@
                   <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
                   <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
 
-                  <a href="{{ asset($item->selected_images) }}" download>Download image</a>
+                  <a href="{{ str_contains($item->selected_images, 'amazonaws.com') ? $item->selected_images : asset($item->selected_images) }}" download>Download image</a>
               </td>
 
 
