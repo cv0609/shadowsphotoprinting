@@ -96,9 +96,8 @@
                             <p>{{ $page_content['select_images_for_upload_title'] }}</p>
                             <div id="selectedFiles"></div>
                             <a id="selectfiles" href="javascript:;" class="button" style="position: relative; z-index: 1;">Select images</a>
-                            <a id="uploadfiles" href="javascript:;" class="button" style="display: none;">Upload images</button>
-                            <div class="fupload-process" style="display: none; color: #fff">Processing image <span class="fcsg-process-num">1</span> of <span class="fcsg-process-total">1</span></div>
-                            <div class="fupload-process" style="display: none; color: #fff">Processing: <span class="fcsg-process-name"></span></div>
+                            <a id="uploadfiles" href="javascript:;" class="button" style="display: none;">Upload images</a>
+                            <div class="fupload-processing mt-2" style="display: none; color: #fff">Processing images...</div>
                         </div>
                     </div>
                 </form>
@@ -285,6 +284,7 @@
                 },
 
                 UploadComplete: function(files) {
+                    $('.fupload-processing').show();
                     $.ajax({
                         method: "POST",
                         url: "{{ route('shop-upload-image') }}",
@@ -293,9 +293,12 @@
                             "_token": document.querySelector('#uploadForm [name="_token"]').getAttribute('value')
                         },
                         success: function(resp){
-                            document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
-                            
-                            window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
+                            setTimeout(() => {
+                                $('.fupload-processing').hide();
+                                document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
+                                
+                                window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
+                            }, 5000);
                         }
                     });
                 },
