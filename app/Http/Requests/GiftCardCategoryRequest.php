@@ -22,7 +22,7 @@ class GiftCardCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_title' => 'required|unique:gift_card_category,name',
+            'name' => 'required|unique:gift_card_category,product_title',
             "image" => 'image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
