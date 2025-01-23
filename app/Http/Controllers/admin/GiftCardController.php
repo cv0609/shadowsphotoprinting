@@ -32,7 +32,7 @@ class GiftCardController extends Controller
              $file->move($destinationPath, $fileName);
              $image =  $destinationPath.'/'.$fileName;
          }
-         GiftCardCategory::insert(["product_name"=>$request->name,'slug'=>$slug,'product_image'=>$image]);
+         GiftCardCategory::insert(["product_title"=>$request->name,'slug'=>$slug,'product_image'=>$image]);
         return redirect()->route('gift-card-list')->with('success','Card inserted successfully');
     }
 
