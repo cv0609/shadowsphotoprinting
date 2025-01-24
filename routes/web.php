@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\HandCraftController;
 use App\Http\Controllers\admin\TestPrintController;
+use App\Http\Controllers\admin\NewsletterController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -147,6 +148,8 @@ Route::prefix('admin')->group(function () {
         Route::delete('size-type-delete/{id}',[VariationsController::class,'deleteSizeType'])->name('size-type-delete');
         Route::get('size-type-edit/{id}',[VariationsController::class,'editSizeType'])->name('size-type-edit');
         Route::post('edit-size-type-save',[VariationsController::class,'editSizeTypeSave'])->name('edit-size-type-save');
+        Route::get('news-letter',[NewsletterController::class,'allNewsLetter'])->name('size-type-edit');
+        
     });
 });
 
