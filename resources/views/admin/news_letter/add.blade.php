@@ -18,7 +18,7 @@
                     </div>
                     <div class="x_content">
                         <br>
-                        <form action="{{ route('blogs.store') }}" method="POST" id="demo-form2" data-parsley-validate=""
+                        <form action="{{ route('news-letter-save') }}" method="POST" id="demo-form2" data-parsley-validate=""
                             class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                             @csrf
 
@@ -59,12 +59,12 @@
                                 content <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <textarea id="description" name="content" required="required"
+                                    <textarea id="description" name="content"
                                         class="form-control "></textarea>
                                     @if(Session::has('error'))
                                     <p class="text-danger">{{ Session::get('error') }}</p>
                                     @endif
-                                    @error('description')
+                                    @error('content')
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>

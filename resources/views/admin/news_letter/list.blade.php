@@ -48,18 +48,18 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $newzletter->title }}</td>
-                                <td><img src="{{ $newzletter->image }}" alt=""></td>
-                                <td>{{ substr($newzletter->content,0,10) }}</td>
+                                <td><img src="{{ (isset($category['product_image']) && !empty($category['product_image'])) ? asset($category['product_image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="" height="100px" width="100px"></td>
+                                <td>{{ substr(strip_tags($newzletter->content), 0, 10) }}</td>
                                 <td>
                                   <label class="switch">
-                                    <input type="checkbox" @if($coupon->is_active == 1) checked @endif data-id="{{$coupon->id}}">
+                                    <input type="checkbox" @if($newzletter->is_active == 1) checked @endif data-id="{{$newzletter->id}}">
                                     <span class="slider round"></span>
                                   </label>
                                 </td>
                                 <td>
                                     <div class="x_content">
-                                      <a href="{{ route('coupon-show', ['id' => $coupon->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                      <form action="{{ route('coupon-delete', ['id' => $coupon->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
+                                      <a href="{{ route('coupon-show', ['id' => $newzletter->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                      <form action="{{ route('news-letter-delete', ['id' => $newzletter->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
                                           @csrf
                                           @method('DELETE')
                                           <button type="submit" class="btn btn-danger">Delete</button>
@@ -85,16 +85,16 @@
 <script>
    $(document).ready(function() {
       $('input[type=checkbox]').change(function() {
-          var coupon_id = $(this).data('id');
+          var newzletter_id = $(this).data('id');
           var checkedValue = $(this).is(':checked') ? 1 : 0;
 
           var data = {
-            coupon_id: coupon_id,
+            newzletter_id: newzletter_id,
             checkedValue: checkedValue
           };
 
           $.ajax({
-              url: "{{ route('coupon-update-status') }}",
+              url: "{{ route('news-letter-update-status') }}",
               type: "GET",
               data: data,
               success: function(res) {

@@ -150,7 +150,10 @@ Route::prefix('admin')->group(function () {
         Route::post('edit-size-type-save',[VariationsController::class,'editSizeTypeSave'])->name('edit-size-type-save');
         Route::get('news-letter',[NewsletterController::class,'allNewsLetter'])->name('news-letter');
         Route::get('news-letter-add',[NewsletterController::class,'addNewsLetter'])->name('news-letter-add');
-        Route::post('news-letter-add',[NewsletterController::class,'aveNewsLetter'])->name('news-letter-save');
+        Route::post('news-letter-add',[NewsletterController::class,'saveNewsLetter'])->name('news-letter-save');
+        Route::get('news-letter-update-status',[NewsletterController::class,'updateStatus'])->name('news-letter-update-status');
+        Route::delete('/news-letter-delete/{id}',[NewsletterController::class,'newsletterDistroy'])->name('news-letter-delete');
+
         
     });
 });

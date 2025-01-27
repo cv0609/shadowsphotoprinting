@@ -23,7 +23,6 @@ class NewzLetterRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'image' => 'required',
             'content' => 'required'
         ];
     }
