@@ -33,6 +33,24 @@
         font-weight: 600;
         color: #ffc205;
     }
+    .home-button {
+        background-color: #16a085;
+        color: #fff;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        margin-top: 16px;
+    }
+
+    .home-button:hover {
+        background-color: #149174;
+    }
 
     </style>
 </head>
@@ -40,6 +58,7 @@
     <div class="page-not-found">
         <h1>404 Not Found</h1>
         <p>The page you requested could not be found.</p>
+        <a href="/" class="home-button">Go to Home Page</a>
     </div>
 </body>
 </html>

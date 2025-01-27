@@ -96,7 +96,7 @@ $ProductCategories = $PageDataService->getProductCategories();
         <!-- Shop By Categories -->
 
 
-        <div id="sailImagePopup" class="modal fade" role="dialog">
+        <div id="sailImagePopup222" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <!-- Modal content-->
               <div class="modal-content">
@@ -217,18 +217,18 @@ $ProductCategories = $PageDataService->getProductCategories();
     }
 
     // Check if the cookie exists
-    if (!getCookie("sailpopupcokies")) {
-      // If the cookie does not exist, show the modal after 3 minutes
-      setTimeout(function() {
-        $('#sailImagePopup').modal('show');
-      }, 2000); // 2 second delay
-    }
+    // if (!getCookie("sailpopupcokies")) {
+    //   // If the cookie does not exist, show the modal after 3 minutes
+    //   setTimeout(function() {
+    //     $('#sailImagePopup').modal('show');
+    //   }, 2000); // 2 second delay
+    // }
 
     // When the close button is clicked, hide the modal and set the cookie
-    $('#close-sail-modal').on('click', function() {
-      $('#sailImagePopup').modal('hide');
-      setCookie("sailpopupcokies", "closed", 1); // Cookie valid for 1 day (24 hours)
-    });
+    // $('#close-sail-modal').on('click', function() {
+    //   $('#sailImagePopup').modal('hide');
+    //   setCookie("sailpopupcokies", "closed", 1); // Cookie valid for 1 day (24 hours)
+    // });
         
         })
     </script>
