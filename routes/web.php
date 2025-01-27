@@ -149,6 +149,8 @@ Route::prefix('admin')->group(function () {
         Route::get('size-type-edit/{id}',[VariationsController::class,'editSizeType'])->name('size-type-edit');
         Route::post('edit-size-type-save',[VariationsController::class,'editSizeTypeSave'])->name('edit-size-type-save');
         Route::get('news-letter',[NewsletterController::class,'allNewsLetter'])->name('news-letter');
+        Route::get('news-letter-add',[NewsletterController::class,'addNewsLetter'])->name('news-letter-add');
+        Route::post('news-letter-add',[NewsletterController::class,'aveNewsLetter'])->name('news-letter-save');
         
     });
 });

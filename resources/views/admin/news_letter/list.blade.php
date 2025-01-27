@@ -4,7 +4,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="#">Coupons</a></li>
+      <li class="breadcrumb-item"><a href="#">news-letter</a></li>
     </ol>
   </nav>
   @if(Session::has('success'))
@@ -14,7 +14,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Coupons</h3>
+          <h3>Newsletter</h3>
         </div>
 
       </div>
@@ -25,9 +25,9 @@
         <div class="col-md-12 col-sm-6  ">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Coupons List</h2>
-              <a href="{{ route('coupon-add') }}">
-                <button class="btn btn-info panel_toolbox">Add Coupons</button>
+              <h2>Newsletter List</h2>
+              <a href="{{ route('news-letter-add') }}">
+                <button class="btn btn-info panel_toolbox">Add Newsletter</button>
               </a>
               <div class="clearfix"></div>
             </div>
@@ -36,20 +36,20 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Coupon Code</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Title</th>
+                            <th>Image</th>
+                            <th>Content</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($coupons as $key => $coupon)
+                        @foreach ($newzletters as $key => $newzletter)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ $coupon->code }}</td>
-                                <td>{{ date('d-m-Y',strtotime($coupon->start_date)) }}</td>
-                                <td>{{ date('d-m-Y',strtotime($coupon->end_date)) }}</td>
+                                <td>{{ $newzletter->title }}</td>
+                                <td><img src="{{ $newzletter->image }}" alt=""></td>
+                                <td>{{ substr($newzletter->content,0,10) }}</td>
                                 <td>
                                   <label class="switch">
                                     <input type="checkbox" @if($coupon->is_active == 1) checked @endif data-id="{{$coupon->id}}">
@@ -71,7 +71,7 @@
                     </tbody>
 
                 </table>
-                {{ $coupons->links('pagination::bootstrap-4') }}
+                {{ $newzletters->links('pagination::bootstrap-4') }}
             </div>
           </div>
         </div>
