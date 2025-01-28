@@ -36,9 +36,9 @@
                         {{-- <p>Have you ever wanted to bring your memories back to life? Photo restoration can
                             help you do just that! With the right tools, you can take old photos and restore
                             them to their former glory. Whether it’s restoring a single … </p> --}}
-                        <div class="read-printing">
+                        <!-- <div class="read-printing">
                             <a href="{{ route('blog-detail',['slug'=>$value->slug]) }}"> Read More <i class="fa-solid fa-arrow-right-long"></i></a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </article>
