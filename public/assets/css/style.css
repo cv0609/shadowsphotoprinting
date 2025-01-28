@@ -4775,3 +4775,60 @@ div#sailImagePopup .modal-dialog {
 margin: 0;
 }
 }
+
+
+
+/* 28/01/2025 */
+.newsletter-popup-button-container {
+    position: fixed;
+    bottom: 29px;
+    left: 20px;
+    z-index: 9;
+}
+.newspopup{
+    -webkit-box-shadow: inset 0 0 0 0 transparent;
+    box-shadow: inset 0 0 0 0 transparent;
+    background-color: #16a085;
+    border: 0;
+    border-radius: 0;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 16px;
+    line-height: 24px;
+    text-decoration: none;
+    text-shadow: 0-1px 0 rgba(0,0,0,.1);
+    width: auto;
+    -webkit-transition: box-shadow .2s ease-in-out;
+    -o-transition: box-shadow .2s ease-in-out;
+    transition: box-shadow .2s ease-in-out;
+}
+
+#newsletter-modal .modal-content {
+    background-color: #fff;
+    border-radius: 0;
+    position: relative;
+}
+#newsletter-modal .btn-close {
+    padding: 5px;
+    font-size: 9px;
+}
+
+#newsletter-modal .modal-header {
+    position: absolute;
+    top: -10px;
+    right:-2px;
+    display: block;
+    z-index: 999;
+}
+#newsletter-modal .modal-body {
+    padding: 0;
+}
+#newsletter-modal .sib-form {
+    padding: 10px 12px 32px !important;
+}
+div#newsletter-modal {
+    width: auto;
+    margin-left: 20px;
+}

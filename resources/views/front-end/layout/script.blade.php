@@ -112,3 +112,11 @@ $(document).ready(function () {
 });
 
 </script>
+
+<script>
+    $(document).ready(function () {
+        $('#newsletter-popup-button').on('click', function () {
+            $('.newsletter-popup-container').toggle(); 
+        });
+    });
+</script>
