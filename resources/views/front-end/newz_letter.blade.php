@@ -1,12 +1,11 @@
 @extends('front-end.layout.main')
 @section('content')
+
 <section class="blog-new">
     <div class="container">
         <div class="blog-new-wrapper">
             <div class="blog-heading">
-                <h2>NewzLetter</h2>
-                {{-- <h2>{{ $details['photo_printing_blog_title'] }} </h2> --}}
-
+                <h2>{{ $page_content['meta_title'] }}</h2>
             </div>
             <div class="kadence-posts">
 
@@ -20,11 +19,11 @@
                 </a>
                 <div class="kadence-posts-content">
                     <div class="kadence-street">
-                        <div class="entry-taxonomies">
+                        <!-- <div class="entry-taxonomies">
                             <span>
                                 <a href="javascript:void(0)">Uncategorized</a>
                             </span>
-                        </div>
+                        </div> -->
                         <h2><a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">{{ $value['title'] }}</a></h2>
                         <div class="divider-dot">
                             <span>By Terri Pangas</span>

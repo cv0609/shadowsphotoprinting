@@ -268,7 +268,7 @@ class PagesController extends Controller
   public function newletter()
    {
      $newzletter = Newzletter::get(); 
-     dd($newzletter);
-     return view('front-end.newz_letter',compact('newzletter'));
+     $page_content = ["meta_title"=>"Newz Letter","meta_description"=>"Newz Letter"];
+     return view('front-end.newz_letter',compact('newzletter','page_content'));
    } 
 }
