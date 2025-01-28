@@ -196,6 +196,7 @@ Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout'
 Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
 Route::get('/thank-you/{order_id}', [PaymentController::class,'thankyou'])->name('thankyou');
+Route::get('/new-letter', [PagesController::class, 'newletter'])->name('new-letter');
 
 Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account', [MyAccountController::class, 'dashboard'])->name('dashboard');

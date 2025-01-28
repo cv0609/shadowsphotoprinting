@@ -17,6 +17,7 @@ use App\Mail\QuoteMail;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Expr\FuncCall;
 use App\Models\ProductCategory;
+use App\Models\Newzletter;
 
 class PagesController extends Controller
 {
@@ -263,4 +264,11 @@ class PagesController extends Controller
   // public function giftcardSearch(Request $request){
   //    dd($request->all());
   // }
+
+  public function newletter()
+   {
+     $newzletter = Newzletter::get(); 
+     dd($newzletter);
+     return view('front-end.newz_letter',compact('newzletter'));
+   } 
 }
