@@ -17,6 +17,7 @@ use App\Mail\QuoteMail;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Expr\FuncCall;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Session;
 
 class PagesController extends Controller
 {

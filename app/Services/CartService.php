@@ -245,6 +245,7 @@ class CartService
                 $query->whereNull('products')
                     ->orWhereRaw('FIND_IN_SET(?, products)', [$productId]);
             })
+            ->orderByDesc('qty')
             ->first();
 
         // If a coupon is found, calculate the discount

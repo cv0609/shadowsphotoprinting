@@ -596,18 +596,18 @@ class CartController extends Controller
         $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
         isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
 
-        if (!Session::has('coupon')) {
+        // if (!Session::has('coupon')) {
 
-            foreach ($cart->items as $item) {
-                $productCategoryId = (string)$item->product->category_id;
-                $productId = (string)$item->product_id;
-                $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
-                // Check if a coupon was applied and terminate the loop if it was
-                if (Session::has('coupon')) {
-                    break; // Exit the loop if a coupon is applied
-                }
+        foreach ($cart->items as $item) {
+            $productCategoryId = (string)$item->product->category_id;
+            $productId = (string)$item->product_id;
+            $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
+            // Check if a coupon was applied and terminate the loop if it was
+            if (Session::has('coupon')) {
+                break; // Exit the loop if a coupon is applied
             }
         }
+        // }
 
         session()->flash('success', 'Cart updated successfully.');
     }
