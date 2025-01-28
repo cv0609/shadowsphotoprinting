@@ -83,4 +83,17 @@ class PageDataService
         }
         return '0';
     }
+
+    public function getNewzLetter()
+    {
+       $blogs = Blog::get();
+       if(isset($blogs) && !empty($blogs))
+        {
+           return $blogs;
+        }
+        else
+        {
+            return null;
+        } 
+    }
 }

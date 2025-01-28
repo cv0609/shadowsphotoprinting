@@ -121,6 +121,7 @@
                             <li><a href="{{ url('/') }}">Home</a></li>
                             <li><a href="{{ url('shop') }}">Shop</a></li>
                             <li><a href="{{ url('blogs') }}">Blog</a></li>
+                            <li><a href="{{ url('new-letter') }}">News Letter</a></li>
                             <li><a href="{{ url('fun-facts') }}">Fun Facts</a></li>
                             <li class="dropdown"><a href="{{ url('our-products') }}">Our Products  <i class="fa-solid fa-caret-down dropdown_icon"></i></a>
 
