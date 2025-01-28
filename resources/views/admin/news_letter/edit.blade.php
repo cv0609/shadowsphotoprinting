@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('blogs.index') }}">Newsletter</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('news-letter') }}">Newsletter</a></li>
             <li class="breadcrumb-item"><a href="#">Edit Newsletter</a></li>
         </ol>
     </nav>
@@ -52,7 +52,7 @@
                                     @enderror
                                     <div class="choose-file-single">
                                         <figure>
-                                            <img src="{{ asset($detail->product_image) }}" alt="img-single">                                   
+                                            <img src="{{ asset($detail->image) }}" alt="img-single" height="100px" width="100px">                                   
                                         </figure>
                                     </div>
                                 </div>

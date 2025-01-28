@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('blogs.index') }}">Newsletter</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('news-letter') }}">Newsletter</a></li>
             <li class="breadcrumb-item"><a href="#">Add Newsletter</a></li>
         </ol>
     </nav>

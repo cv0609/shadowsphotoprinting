@@ -48,7 +48,7 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $newzletter->title }}</td>
-                                <td><img src="{{ (isset($category['product_image']) && !empty($category['product_image'])) ? asset($category['product_image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="" height="100px" width="100px"></td>
+                                <td><img src="{{ (isset($newzletter['image']) && !empty($newzletter['image'])) ? asset($newzletter['image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="" height="100px" width="100px"></td>
                                 <td>{{ substr(strip_tags($newzletter->content), 0, 10) }}</td>
                                 <td>
                                   <label class="switch">
