@@ -58,7 +58,7 @@
                                 </td>
                                 <td>
                                     <div class="x_content">
-                                      <a href="{{ route('coupon-show', ['id' => $newzletter->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                                      <a href="{{ route('news-letter-edit', ['id' => $newzletter->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
                                       <form action="{{ route('news-letter-delete', ['id' => $newzletter->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" style="display:inline;">
                                           @csrf
                                           @method('DELETE')

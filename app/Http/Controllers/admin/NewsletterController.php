@@ -48,4 +48,11 @@ class NewsletterController extends Controller
       $coupon_detail = Newzletter::whereId($id)->delete();
       return redirect()->route('news-letter')->with('success','News letter is deleted successfully');
    }
+
+   public function editnewsletter($id)
+    {
+      $detail = Newzletter::where('id', $id)->first();
+      return view('admin.news_letter.edit',compact('detail'));
+       
+    }
 }
