@@ -5,7 +5,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{{ route('news-letter') }}">Newsletter</a></li>
-            <li class="breadcrumb-item"><a href="#">Add Newsletter</a></li>
+            <li class="breadcrumb-item"><a href="#">Edit Newsletter</a></li>
         </ol>
     </nav>
     <div class="">
@@ -13,12 +13,12 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Add Newsletter</h2>
+                        <h2>Edit Newsletter</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                         <br>
-                        <form action="{{ route('news-letter-save') }}" method="POST" id="demo-form2" data-parsley-validate=""
+                        <form action="{{ route('news-letter-edit-save') }}" method="POST" id="demo-form2" data-parsley-validate=""
                             class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                             @csrf
 
@@ -28,7 +28,7 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="text" id="title" name="title" required="required"
-                                        class="form-control ">
+                                        class="form-control " value="{{ $detail->title }}">
                                     @if(Session::has('error'))
                                     <p class="text-danger">{{ Session::get('error') }}</p>
                                     @endif
@@ -50,6 +50,11 @@
                                     @error('image')
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
+                                    <div class="choose-file-single">
+                                        <figure>
+                                            <img src="{{ asset($detail->image) }}" alt="img-single" height="100px" width="100px">                                   
+                                        </figure>
+                                    </div>
                                 </div>
                             </div>
 
@@ -60,7 +65,7 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <textarea id="description" name="content"
-                                        class="form-control "></textarea>
+                                        class="form-control ">{{ $detail->content }}</textarea>
                                     @if(Session::has('error'))
                                     <p class="text-danger">{{ Session::get('error') }}</p>
                                     @endif
@@ -69,8 +74,7 @@
                                     @enderror
                                 </div>
                             </div>
-
-
+                            <input type="hidden" name="id" value="{{ $detail->id }}">
                             <div class="ln_solid"></div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 offset-md-3">
