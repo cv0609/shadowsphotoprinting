@@ -154,6 +154,7 @@ Route::prefix('admin')->group(function () {
         Route::get('news-letter-update-status',[NewsletterController::class,'updateStatus'])->name('news-letter-update-status');
         Route::delete('/news-letter-delete/{id}',[NewsletterController::class,'newsletterDistroy'])->name('news-letter-delete');
         Route::get('news-letter-edit/{id}',[NewsletterController::class,'editnewsletter'])->name('news-letter-edit');
+        Route::post('news-letter-edit-save',[NewsletterController::class,'newsletterUpdateStatus'])->name('news-letter-edit-save');
  
         
     });

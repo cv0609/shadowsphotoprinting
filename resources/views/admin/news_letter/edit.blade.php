@@ -18,7 +18,7 @@
                     </div>
                     <div class="x_content">
                         <br>
-                        <form action="{{ route('news-letter-save') }}" method="POST" id="demo-form2" data-parsley-validate=""
+                        <form action="{{ route('news-letter-edit-save') }}" method="POST" id="demo-form2" data-parsley-validate=""
                             class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                             @csrf
 
@@ -74,8 +74,7 @@
                                     @enderror
                                 </div>
                             </div>
-
-
+                            <input type="hidden" name="id" value="{{ $detail->id }}">
                             <div class="ln_solid"></div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 offset-md-3">

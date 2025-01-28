@@ -55,4 +55,20 @@ class NewsletterController extends Controller
       return view('admin.news_letter.edit',compact('detail'));
        
     }
+
+    public function newsletterUpdateStatus(Request $request){
+      $slug = \Str::slug($request->title);
+      $imagee = "";
+      if($request->image)
+       {
+           $file = $request->file('image');
+           $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+           $destinationPath = 'assets/admin/uploads/blogs';
+           $file->move($destinationPath, $fileName);
+           $imagee =  $destinationPath.'/'.$fileName;
+       }
+       Newzletter::where(['id'=>$request->id])->update(['title'=>$request->title,'content'=>$request->content,'image'=>$imagee,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
+
+       return redirect()->route('news-letter')->with('success','Newzletter is updated successfully');
+   }
 }
