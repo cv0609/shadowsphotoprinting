@@ -76,5 +76,27 @@ if (!function_exists('getWatermarkedImageUrl')) {
     }
 }
 
+if (!function_exists('getS3Img')) {
+    function getS3Img($str, $size){
+        $str = str_replace('original', $size, $str);
+        return $str;
+    }
+}
+
+if (!function_exists('getS3Img2')) {
+    function getS3Img2($str, $size){
+        $str = str_replace('raw/', '', $str);
+        $str = preg_replace('/(.*)(\/[^\/]*?$)/', "$1/$size$2", $str);
+        return $str;
+    }
+}
+
+if (!function_exists('getS3ImgName')) {
+    function getS3ImgName($str){
+        $str = preg_replace('/.*\/([^\/]*?$)/', "$1", $str);
+        return $str;
+    }
+}
+
 
 

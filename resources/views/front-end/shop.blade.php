@@ -127,6 +127,20 @@
                         </a>
                     </div>
                 </div> --}}
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="product-category">
+                        <a href="{{ url('our-products/bulkprints') }}">
+                            <div class="cat-intrinsic">
+                                <img src="{{ asset('assets/images/bulk-print-img.jpg') }}" alt="">
+                            </div>
+                            <div class="product-cat-title">
+                                <h3>Bulkprints <small class="count">({{ $productCount['productCount'] }})</small></h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
                         <a href="{{ url('our-products/gift-card') }}">
@@ -139,6 +153,20 @@
                         </a>
                     </div>
                 </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="product-category">
+                        <a href="{{ url('our-products/hand-craft') }}">
+                            <div class="cat-intrinsic">
+                                <img src="{{ asset('assets/images/shop-handcraft.png') }}" alt="">
+                            </div>
+                            <div class="product-cat-title">
+                                <h3>Hand Craft<small class="count">({{ $productCount['handCraftCount'] }})</small></h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
                         <a href="{{ url('our-products/photos-for-sale') }}">
