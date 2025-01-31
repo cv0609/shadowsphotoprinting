@@ -20,7 +20,7 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ url('our-products/hand-craft') }}">images</a></span>
                 <span class="bc-delimiter">»</span>
-                <span>A PLATYPUS DOWN UNDER</span>
+                <span>{{$productDetails->slug}}</span>
             </div>
         </div>
     </div>
