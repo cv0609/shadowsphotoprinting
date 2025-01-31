@@ -94,7 +94,7 @@
             </ul>
             <div class="woocommerce-tabs">
                 {{-- <h2>Description</h2> --}}
-               <p class="woocommerce-tabs-desc">{{ $productDetails->product_description ?? '' }}</p>
+               <p class="woocommerce-tabs-desc">{!! $productDetails->product_description ?? '' !!}</p>
             </div>
         </div>
     </div>
