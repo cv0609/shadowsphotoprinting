@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Expr\FuncCall;
 use App\Models\ProductCategory;
 use App\Models\Newzletter;
+use App\Models\Product;
 
 class PagesController extends Controller
 {
@@ -271,4 +272,23 @@ class PagesController extends Controller
      $page_content = ["meta_title"=>"News Letter","meta_description"=>"News Letter"];
      return view('front-end.newz_letter',compact('newzletter','page_content'));
    } 
+
+  public function bulkprints(){
+     $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug' ,'!=','gift-card')->where('slug' ,'!=','hand-craft')->where('slug' ,'!=','test-print')->where('slug' ,'!=','test')->get();
+     $products = Product::paginate(10);
+
+     $page_content = ["meta_title"=>"Bulk prints","meta_description"=>"Bulk prints"];
+     return view('front-end.bulkprints',compact('productCategories','page_content','products'));
+  } 
+
+  public function bulkprints_details($slug){
+    $related_products = [];
+    $productDetails = Product::where('slug',$slug)->first();
+    if(isset($productDetails) && !empty($productDetails)){
+      $category_id = $productDetails->category_id;
+      $related_products = Product::where('category_id',$category_id)->get();
+    }
+    $page_content = ["meta_title"=>"Bulk prints details","meta_description"=>"Bulk prints details"];
+    return view('front-end.bulkprints-details',compact('productDetails','page_content','related_products'));
+  }
 }

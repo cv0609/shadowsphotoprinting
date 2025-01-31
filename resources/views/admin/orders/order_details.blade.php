@@ -3,10 +3,10 @@
 @php
    $CartService = app(App\Services\CartService::class);
 
-  function getS3Img($str, $size){
-    $str = str_replace('original', $size, $str);
-    return $str;
-  }
+  // function getS3Img($str, $size){
+  //   $str = str_replace('original', $size, $str);
+  //   return $str;
+  // }
 @endphp
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">

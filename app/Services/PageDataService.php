@@ -5,6 +5,8 @@ use App\Models\GiftCardCategory;
 use App\Models\ProductCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Models\Admin;
+use App\Models\HandCraftProduct;
+use App\Models\Product;
 
 class PageDataService
 {
@@ -54,6 +56,8 @@ class PageDataService
      {
        $data['giftcardCount'] = GiftCardCategory::count();
        $data['photoSaleCount'] = PhotoForSaleProduct::count();
+       $data['productCount'] = Product::count();
+       $data['handCraftCount'] = HandCraftProduct::count();
        return  $data;
      }
 

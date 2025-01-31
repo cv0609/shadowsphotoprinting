@@ -176,6 +176,9 @@ Route::get('/our-products/hand-craft-details/{slug?}',[BasePagesController::clas
 Route::get('/our-products/photos-for-sale-details/{slug?}',[BasePagesController::class,'PhotosForSaleDetails'])->name('photos-for-sale-details');
 Route::get('/our-products/gift-card',[BasePagesController::class,'giftCard'])->name('gift-card');
 Route::get('/our-products/gift-card-detail/{slug}',[BasePagesController::class,'giftCard_detail'])->name('gift-card-detail');
+Route::get('/our-products/bulkprints',[BasePagesController::class,'bulkprints'])->name('bulkprints');
+Route::get('bulkprints-product/{slug}',[BasePagesController::class,'bulkprints_details'])->name('bulkprints-product');
+
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
 Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout');
