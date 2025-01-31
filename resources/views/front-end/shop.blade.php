@@ -128,7 +128,7 @@
                     </div>
                 </div> --}}
 
-                <div class="col-xl-3 col-lg-4 col-md-6">
+                {{-- <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
                         <a href="{{ url('our-products/bulkprints') }}">
                             <div class="cat-intrinsic">
@@ -139,7 +139,7 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-category">
