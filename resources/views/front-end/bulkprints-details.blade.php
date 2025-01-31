@@ -20,7 +20,7 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ url('our-products/hand-craft') }}">images</a></span>
                 <span class="bc-delimiter">»</span>
-                <span>A PLATYPUS DOWN UNDER</span>
+                <span>{{$productDetails->slug}}</span>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
             </ul>
             <div class="woocommerce-tabs">
                 {{-- <h2>Description</h2> --}}
-               <p class="woocommerce-tabs-desc">{{ $productDetails->product_description ?? '' }}</p>
+               <p class="woocommerce-tabs-desc">{!! $productDetails->product_description ?? '' !!}</p>
             </div>
         </div>
     </div>
