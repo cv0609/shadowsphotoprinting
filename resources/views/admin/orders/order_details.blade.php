@@ -169,7 +169,7 @@
                           {{ asset($image1) }}
 
                       @else
-                          {{ getS3Img($item->selected_images, 'medium') }}
+                          {{ getS3Img(asset($item->selected_images), 'medium') }}
                       @endif
                   " alt="">
                 
