@@ -145,7 +145,7 @@
                     <div class="product-category">
                         <a href="{{ url('our-products/gift-card') }}">
                             <div class="cat-intrinsic">
-                                <img src="{{ asset('assets/images/giftcard-shop-page.png') }}" alt="">
+                                <img src="{{ asset('assets/images/giftcard-shoppage.png') }}" alt="">
                             </div>
                             <div class="product-cat-title">
                                 <h3>Gift Card <small class="count">({{ $productCount['giftcardCount'] }})</small></h3>
