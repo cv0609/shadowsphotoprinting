@@ -1059,9 +1059,16 @@ a#uploadfiles {
     position: relative;
 }
 
-.product-cat-title {
+/* .product-cat-title {
     padding: 10px;
     position: absolute;
+    bottom: 0;
+    background: rgba(255, 255, 255, .8);
+} */
+
+.product-cat-title {
+    padding: 10px;
+    position: static;
     bottom: 0;
     background: rgba(255, 255, 255, .8);
 }
