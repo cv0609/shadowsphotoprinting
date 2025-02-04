@@ -62,7 +62,7 @@
                       <li><a href="{{ route('size-types-list') }}">Sizes Type</a></li>
                     </ul>
                   </li>
-                  <li><a href="{{route('news-letter')}}"><i class="fa fa-first-order"></i>Newsletter</a></li>
+                  <li><a href="{{route('news-letter')}}"><i class="fa fa-first-order"></i>Promotions</a></li>
 
                 </ul>
               </div>
