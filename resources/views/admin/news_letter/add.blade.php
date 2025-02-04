@@ -4,8 +4,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('news-letter') }}">Newsletter</a></li>
-            <li class="breadcrumb-item"><a href="#">Add Newsletter</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('news-letter') }}">Promotions</a></li>
+            <li class="breadcrumb-item"><a href="#">Add Promotion</a></li>
         </ol>
     </nav>
     <div class="">
@@ -13,7 +13,7 @@
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Add Newsletter</h2>
+                        <h2>Add Promotions</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -23,7 +23,7 @@
                             @csrf
 
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Newsletter Title <span
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Promotion Title <span
                                         class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Newsletter Image <span
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Promotion Image <span
                                         class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
@@ -55,7 +55,7 @@
 
 
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="description">Newsletter
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="description">Promotion
                                 content <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">

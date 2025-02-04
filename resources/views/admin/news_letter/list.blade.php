@@ -4,7 +4,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="#">news-letter</a></li>
+      <li class="breadcrumb-item"><a href="#">Promotions</a></li>
     </ol>
   </nav>
   @if(Session::has('success'))
@@ -14,7 +14,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Newsletter</h3>
+          <h3>Promotions</h3>
         </div>
 
       </div>
@@ -25,9 +25,9 @@
         <div class="col-md-12 col-sm-6  ">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Newsletter List</h2>
+              <h2>Promotions List</h2>
               <a href="{{ route('news-letter-add') }}">
-                <button class="btn btn-info panel_toolbox">Add Newsletter</button>
+                <button class="btn btn-info panel_toolbox">Add Promotion</button>
               </a>
               <div class="clearfix"></div>
             </div>
