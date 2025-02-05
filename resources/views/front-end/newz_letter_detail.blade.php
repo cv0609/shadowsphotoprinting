@@ -38,7 +38,7 @@
 </section>
 
 <section class="previous-link">
-    @if($previousBlog != null)
+    @if($previousPromotion != null)
     <div class="container">
         <div class="previous-box">
             <a href="{{ route('blog-detail',['slug'=>$previousBlog->slug]) }}">
@@ -49,7 +49,7 @@
     </div>
     @endif
 
-    @if($nextBlog != null)
+    @if($nextPromotion != null)
     <div class="container">
         <div class="next-link">
             <a href="{{ route('blog-detail',['slug'=>$nextBlog->slug]) }}">
