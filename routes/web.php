@@ -222,7 +222,7 @@ Route::middleware(['myAccount'])->group(function () {
 
 Route::get('/home2',[BasePagesController::class,'pages2']);
 
-Route::prefix('afterpay')->group(function () {1
+Route::prefix('afterpay')->group(function () {
     Route::post('/checkout', [PaymentController::class, 'afterPayCheckout'])->name('afterPay.checkout');
     Route::get('/success', [PaymentController::class, 'afterpaySuccess'])->name('checkout.success');
     Route::get('/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
