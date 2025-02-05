@@ -43,7 +43,7 @@
         <div class="previous-box">
             <a href="{{ route('promotion-detail',['slug'=>$previousPromotion->slug]) }}">
                 <span class="kt_color_gray">Previous Post</span>
-                <span class="kt_postlink_title">{{ $previousBlog->title }}</span>
+                <span class="kt_postlink_title">{{ $previousPromotion->title }}</span>
             </a>
         </div>
     </div>
