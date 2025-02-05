@@ -11,7 +11,7 @@
 
                @foreach ($newzletter as $value)
                <article>
-                <a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">
+                <a href="{{ route('promotion-detail',['slug'=>$value->slug]) }}">
                     <div class="post-thumbnail-inner">
                         <img src="{{ $value['image'] }}" alt="Image">
                         {{-- <img src="assets/images/table.png" alt="jon-tyson"> --}}
