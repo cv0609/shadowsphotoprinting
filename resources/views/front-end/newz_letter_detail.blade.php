@@ -8,7 +8,7 @@
                 <span class="bc-delimiter">»</span>
                 {{-- <span><a href="#">uncategorized</a></span>
                 <span class="bc-delimiter">»</span> --}}
-                <span> {{ strtoupper($blog_details['title']) }}</span>
+                <span> {{ strtoupper($promotionDetail['title']) }}</span>
             </div>
         </div>
     </div>
