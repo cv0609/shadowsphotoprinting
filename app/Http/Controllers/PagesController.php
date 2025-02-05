@@ -276,8 +276,15 @@ class PagesController extends Controller
    public function promotionDetail($slug)
    {
      $promotionDetail = Newzletter::where(['slug'=>$slug,'is_active'=>'1'])->first(); 
+     $previousPromotion = Newzletter::where('id', '<', $promotionDetail->id)
+     ->orderBy('id', 'desc')
+     ->first();
+
+    $nextPromotion = Newzletter::where('id', '>', $promotionDetail->id)
+      ->orderBy('id', 'asc')
+      ->first();
      $page_content = ["meta_title"=>"Promotions","meta_description"=>"Promotions"];
-     return view('front-end.newz_letter_detail',compact('promotionDetail','page_content'));
+     return view('front-end.newz_letter_detail',compact('promotionDetail','page_content','previousPromotion','nextPromotion'));
    }
 
   public function bulkprints(){
