@@ -24,7 +24,7 @@
                                 <a href="javascript:void(0)">Uncategorized</a>
                             </span>
                         </div> -->
-                        <h2><a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">{{ $value['title'] }}</a></h2>
+                        <h2><a href="{{ route('promotion-detail',['slug'=>$value->slug]) }}">{{ $value['title'] }}</a></h2>
                         <div class="divider-dot">
                             <span>By Terri Pangas</span>
                             <span class=""></span>
