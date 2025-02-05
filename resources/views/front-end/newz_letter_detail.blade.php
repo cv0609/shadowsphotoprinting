@@ -41,7 +41,7 @@
     @if($previousPromotion != null)
     <div class="container">
         <div class="previous-box">
-            <a href="{{ route('blog-detail',['slug'=>$previousBlog->slug]) }}">
+            <a href="{{ route('promotion-detail',['slug'=>$previousBlog->slug]) }}">
                 <span class="kt_color_gray">Previous Post</span>
                 <span class="kt_postlink_title">{{ $previousBlog->title }}</span>
             </a>
@@ -52,7 +52,7 @@
     @if($nextPromotion != null)
     <div class="container">
         <div class="next-link">
-            <a href="{{ route('blog-detail',['slug'=>$nextBlog->slug]) }}">
+            <a href="{{ route('promotion-detail',['slug'=>$nextBlog->slug]) }}">
                 <span class="kt_color_gray">NEXT POST</span>
                 <span class="kt_postlink_title">{{ $nextBlog->title }}</span>
             </a>
