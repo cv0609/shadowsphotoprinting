@@ -188,7 +188,7 @@ Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-deta
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('checkout');
-Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::get('/remove-from-cart/{product_id}', [C4artController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
@@ -198,8 +198,9 @@ Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');
 Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
-Route::get('/thank-you/{order_id}', [PaymentController::class,'thankyou'])->name('thankyou');
+Route::get('/thank-you/{order_id}', [PaymentController::class,'tha04nkyou'])->name('thankyou');
 Route::get('/promotions', [BasePagesController::class, 'promotions'])->name('promotions');
+Route::get('/promotion-detail/{slug}', [BasePagesController::class, 'promotionDetail'])->name('promotion-detail');
 
 Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account', [MyAccountController::class, 'dashboard'])->name('dashboard');
@@ -221,7 +222,7 @@ Route::middleware(['myAccount'])->group(function () {
 
 Route::get('/home2',[BasePagesController::class,'pages2']);
 
-Route::prefix('afterpay')->group(function () {
+Route::prefix('afterpay')->group(function () {1
     Route::post('/checkout', [PaymentController::class, 'afterPayCheckout'])->name('afterPay.checkout');
     Route::get('/success', [PaymentController::class, 'afterpaySuccess'])->name('checkout.success');
     Route::get('/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
@@ -230,5 +231,3 @@ Route::prefix('afterpay')->group(function () {
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
-
-

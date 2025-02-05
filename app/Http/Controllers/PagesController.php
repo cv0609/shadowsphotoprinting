@@ -273,6 +273,13 @@ class PagesController extends Controller
      return view('front-end.newz_letter',compact('newzletter','page_content'));
    } 
 
+   public function promotionDetail($slug)
+   {
+     $promotionDetail = Newzletter::where(['slug'=>$slug,'is_active'=>'1'])->first(); 
+     $page_content = ["meta_title"=>"Promotions","meta_description"=>"Promotions"];
+     return view('front-end.newz_letter_detail',compact('promotionDetail','page_content'));
+   }
+
   public function bulkprints(){
      $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug' ,'!=','gift-card')->where('slug' ,'!=','hand-craft')->where('slug' ,'!=','test-print')->where('slug' ,'!=','test')->get();
      $products = Product::paginate(10);
