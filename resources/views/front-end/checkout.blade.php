@@ -1,7 +1,14 @@
 @extends('front-end.layout.main')
 @section('content')
 @php
-   $CartService = app(App\Services\CartService::class);
+    $CartService = app(App\Services\CartService::class);
+    $order_type = 0;
+    if(Session::has('order_type')){
+        $order_type = Session::get('order_type');
+        if($order_type != 0){
+            $shipping_with_test_print = 0;
+        }
+    }
 @endphp
 
 <section class="coupon-main">
@@ -261,7 +268,8 @@
                                             <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}</span> </td>
                                         </tr>
                                         @endif
-                                        @if($shipping->status == "1")
+
+                                        @if($shipping->status == "1" && $order_type != 1)
                                         <tr>
                                             <th>Shipping</th>
                                             <td>
@@ -271,12 +279,17 @@
                                                         <label>Flat rate:
                                                             <span><bdi><span>$</span>{{ number_format($shipping_with_test_print,2) }}</bdi></span>
                                                         </label>
-                                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($shipping_with_test_print,2) }}">
+                                                       
                                                     </li>
                                                 </ul>
                                             </td>
                                         </tr>
                                         @endif
+
+                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($shipping_with_test_print,2) }}">
+
+                                        <input type="hidden" name="customer_order_type" id="customer_order_type" value="{{$order_type}}">
+
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
@@ -442,6 +455,8 @@
         var username = $('#username').val();
         var shipping_charge = $('#shipping_charge').val();
         var total_amount = $('#total_amount').val();
+        var customer_order_type = $('#customer_order_type').val();
+        
         
         
         var password = $('#password').val();
@@ -505,6 +520,7 @@
             password: password,
             company_name:company_name,
             shipping_charge:shipping_charge,
+            customer_order_type: customer_order_type
         };
 
         if ($('#shipcheckbox').is(':checked')) {

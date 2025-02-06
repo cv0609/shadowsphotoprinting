@@ -144,6 +144,7 @@ class PaymentController extends Controller
             'password' => $request->password,
             'payment_method' => $request->payment_method,
             'shipping_charge' => $request->shipping_charge,
+            'order_type' => $request->customer_order_type,
         ];
 
         // Check if shipping details are provided
@@ -206,10 +207,12 @@ class PaymentController extends Controller
         $coupon_id = (isset($cartTotal['coupon_id']) && !empty($cartTotal['coupon_id'])) ? $cartTotal['coupon_id'] : null;
 
         $payment_method = '';
+        $order_type = '';
         if(Session::has('order_address')){
             $order_address = Session::get('order_address');
             $payment_method = $order_address['payment_method'];
             $shippingCharge = $order_address['shipping_charge'];
+            $order_type = $order_address['order_type'];
         }
 
         $order = Order::create([
@@ -233,6 +236,7 @@ class PaymentController extends Controller
                     : ($afterPay->paymentState ?? ''),
             'payment_method' => $payment_method,
             'order_status' => "0",
+            'order_type' => $order_type
         ]);
 
         foreach ($cart->items as $item) {
@@ -332,7 +336,7 @@ class PaymentController extends Controller
             Mail::to(env('APP_MAIL'))->send(new AdminNotifyOrder($orderDetail));
         }
 
-        Session::forget(['order_address', 'coupon','billing_details']);
+        Session::forget(['order_address', 'coupon','billing_details','order_type']);
 
         return response()->json(['error' => false,'message'=>'success','order_id'=>$order->id]);
     } 
