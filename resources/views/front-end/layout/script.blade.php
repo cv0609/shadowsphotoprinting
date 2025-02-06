@@ -120,3 +120,19 @@ $(document).ready(function () {
         });
     });
 </script>
+
+<script>
+    $(".orderType").on('click',function(){
+       var orderTypeValue = $(this).val();
+        if(orderTypeValue == "0")
+         {
+            $(".shipping-section").removeClass('d-none');
+         }
+        else
+         {
+            $(".shipping-section").addClass('d-none');
+
+         } 
+    })
+</script>
+

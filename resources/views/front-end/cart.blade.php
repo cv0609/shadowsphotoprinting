@@ -251,11 +251,11 @@ $CartService = app(App\Services\CartService::class);
                                             <td>
                                                 <div class="rad-btns-box">
                                                     <div class="rad-btns">
-                                                        <input type="radio" id="cart-shipping" name="radio" value="c-shipping">
+                                                        <input type="radio" id="cart-shipping" name="order_type" class="orderType" value="0" checked>
                                                         <label for="c-shipping">Shipping</label>
                                                     </div>
                                                     <div class="rad-btns">
-                                                    <input type="radio" id="cart-pickup" name="radio" value="c-pickup">
+                                                    <input type="radio" id="cart-pickup" name="order_type" class="orderType" value="1">
                                                     <label for="c-pickup">Pickup</label>
                                                     </div>
                                                 </div>
@@ -278,7 +278,7 @@ $CartService = app(App\Services\CartService::class);
                                         </tr>
                                         @endif
                                         @if($shipping->status == "1")
-                                        <tr>
+                                        <tr class="shipping-section">
                                             <th>Shipping</th>
                                             <td>
 
