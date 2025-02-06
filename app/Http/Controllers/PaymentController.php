@@ -352,7 +352,8 @@ class PaymentController extends Controller
     public function afterPayCheckout(Request $request)
     {
         $formData = $request->input('data');
-
+        
+        $shipping_charge = $formData['shipping_charge'] ?? 0;
         $fname = $formData['fname'] ?? '';
         $lname = $formData['lname'] ?? '';
         $street1 = $formData['street1'] ?? '';
@@ -425,8 +426,8 @@ class PaymentController extends Controller
 
         $cartTotal = $this->CartService->getCartTotal();
        
-        $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
-        $cart_total = $cartTotal['total'] ?? 0;
+        // $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
+        $cart_total = $cartTotal['total']+$shipping_charge ?? 0;
         $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
         $coupon_code = $cartTotal['coupon_code'] ?? '';
 
@@ -457,7 +458,7 @@ class PaymentController extends Controller
         }
         
         $totalAmountInCents = number_format($cart_total * 100, 2, '.', '');
-        $shippingAmountInCents = number_format($shipping_amount * 100, 2, '.', '');
+        $shippingAmountInCents = number_format($shipping_charge * 100, 2, '.', '');
         $couponDiscountInCents = number_format($coupon_discount * 100, 2, '.', '');
 
         $orderDetails2 = [
@@ -525,7 +526,7 @@ class PaymentController extends Controller
 
         $orderDetails = [
             "amount" => [
-                "amount" => "0.04",
+                "amount" => "5",
                 "currency" => "AUD"
             ],
             "consumer" => [
@@ -603,6 +604,11 @@ class PaymentController extends Controller
             Session::put('afterpay_token', $token);
             return response()->json(['error'=>false,'data' => $response['redirectCheckoutUrl']]);
         }
+
+        $log = new AfterPayLogs;
+        $log->logs = json_encode($response) ?? '';
+        $log->save();
+
         return response()->json(['error'=>true,'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
     }
 
