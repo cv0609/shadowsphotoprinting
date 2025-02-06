@@ -17,19 +17,19 @@
 <section class="single-article">
     <div class="container">
         <div class="single-arti">
-            <div class="category-kt">
+            {{-- <div class="category-kt">
                 <a href="javascript:void(0)">Uncategorized</a>
-            </div>
+            </div> --}}
             <div class="benefit">
-                <h3>{{ $promotionDetail['title'] }}</h3>
+                {{-- <h3>{{ $promotionDetail['title'] }}</h3> --}}
                 <div class="kt_color_gray">
-                    <span>{{ date("F d,Y",$promotionDetail['update_at']) }}</span>
+                    {{-- <span>{{ date("F d,Y",$promotionDetail['update_at']) }}</span>
                     <span>by</span>
-                    <span> <a href="shadtpang.html">Terri Pangas</a> </span>
+                    <span> <a href="shadtpang.html">Terri Pangas</a> </span> --}}
 
                     <div class="shadtpang">
-                        <img src="{{ asset($promotionDetail['image']) }}" alt="Image">
-                        {!! html_entity_decode($promotionDetail['description']) !!}
+                        {{-- <img src="{{ asset($promotionDetail['image']) }}" alt="Image"> --}}
+                        {!! html_entity_decode($promotionDetail['content']) !!}
                     </div>
                 </div>
             </div>
@@ -38,27 +38,28 @@
 </section>
 
 <section class="previous-link">
-    @if($previousPromotion != null)
     <div class="container">
+    <div class="promotion-container">
+
+      @if($previousPromotion != null)
         <div class="previous-box">
             <a href="{{ route('promotion-detail',['slug'=>$previousPromotion->slug]) }}">
                 <span class="kt_color_gray">Previous Post</span>
                 <span class="kt_postlink_title">{{ $previousPromotion->title }}</span>
             </a>
         </div>
-    </div>
-    @endif
+      @endif
 
-    @if($nextPromotion != null)
-    <div class="container">
+       @if($nextPromotion != null)
         <div class="next-link">
             <a href="{{ route('promotion-detail',['slug'=>$nextPromotion->slug]) }}">
                 <span class="kt_color_gray">NEXT POST</span>
                 <span class="kt_postlink_title">{{ $nextPromotion->title }}</span>
             </a>
         </div>
+        @endif
     </div>
-    @endif
+    </div>
 
 </section>
 @endsection
@@ -77,6 +78,12 @@
         $(document).ready(function(){
             $('.restoration-cls').attr('href', "{{ url('home') }}");
         });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('.custom-design').css('margin','0 auto');
+        })
     </script>
 
 @endsection
