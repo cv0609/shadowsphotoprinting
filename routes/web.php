@@ -188,7 +188,7 @@ Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-deta
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('checkout');
-Route::get('/remove-from-cart/{product_id}', [C4artController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
