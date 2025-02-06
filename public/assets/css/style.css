@@ -4840,9 +4840,23 @@ div#newsletter-modal {
     margin-left: 20px;
 }
 /* cart radio buttons css start */
+/* .rad-btns-box {
+    display: inline-flex;
+    margin-left: 5px;
+    justify-content: flex-start;
+} */
 .rad-btns-box {
     display: inline-flex;
     margin-left: 5px;
     justify-content: flex-start;
+    gap: 10px;
+}
+a {
+    text-decoration: none !important;
+}
+.promotion-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 /* cart radio buttons css end */
