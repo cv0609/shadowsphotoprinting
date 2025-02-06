@@ -279,10 +279,21 @@
 
             @endif 
 
+            @if($orderDetail->order_type != '1')
+
             <tr>
                 <td style="padding: 5px;">Shipping:</td>
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['shippingCharge'],2) }}</strong></td>
             </tr>
+
+            @else
+
+            <tr>
+              <td style="padding: 5px;">Pickup:</td>
+              <td style="text-align: right; padding: 5px;"><strong>-</strong></td>
+            </tr>
+
+            @endif
             <tr>
                 <td style="padding: 5px;">Order Total:</td>
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->total,2) }}</strong></td>
