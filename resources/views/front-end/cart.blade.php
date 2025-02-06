@@ -250,13 +250,19 @@ $CartService = app(App\Services\CartService::class);
                                         <tr>
                                             <td>
                                                 <div class="rad-btns-box">
+                                                    @php
+                                                        $order_type = 0;
+                                                        if(Session::has('order_type')){
+                                                            $order_type = Session::get('order_type');
+                                                        }
+                                                    @endphp
                                                     <div class="rad-btns">
-                                                        <input type="radio" id="cart-shipping" name="order_type" class="orderType" value="0" checked>
+                                                        <input type="radio" id="cart-shipping" name="order_type" class="orderType" value="0" @if($order_type == 0) checked @endif>
                                                         <label for="c-shipping">Shipping</label>
                                                     </div>
                                                     <div class="rad-btns">
-                                                    <input type="radio" id="cart-pickup" name="order_type" class="orderType" value="1">
-                                                    <label for="c-pickup">Pickup</label>
+                                                       <input type="radio" id="cart-pickup" name="order_type" class="orderType" value="1" @if($order_type == 1) checked @endif>
+                                                        <label for="c-pickup">Pickup</label>
                                                     </div>
                                                 </div>
                                             </td>
@@ -374,7 +380,7 @@ $CartService = app(App\Services\CartService::class);
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td data-title="Total">
-                                                <strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
+                                                <strong><span class="cart-total"><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small> --}}
@@ -447,6 +453,56 @@ $CartService = app(App\Services\CartService::class);
                 });
         }
     })
+</script>
+
+<script>
+    $(document).ready(function () {    
+    
+    function updateShippingAndTotal(orderType) {
+        let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Base total
+        let shippingCost = parseFloat("{{ $shipping_with_test_print }}"); // Shipping cost
+
+        if (orderType == 1) { 
+            $(".shipping-section").hide(); // Hide shipping section
+            $(".cart-total").html(`<bdi><span>$</span>${baseTotal.toFixed(2)}</bdi>`);
+        } else {
+            $(".shipping-section").show(); // Show shipping section
+            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal + shippingCost).toFixed(2)}</bdi>`);
+        }
+    }
+
+    let orderType = {{$order_type}}; 
+    updateShippingAndTotal(orderType);
+
+
+    $(".orderType").change(function () {
+        let orderType = $("input[name='order_type']:checked").val(); // Get selected value
+        
+        $.ajax({
+            url: "{{route('order-type')}}",  // Your Laravel route
+            type: "POST",
+            data: {
+                order_type: orderType,
+                _token: "{{ csrf_token() }}", 
+            },
+            success: function (response) {
+
+                updateShippingAndTotal(response.order_type);
+                // // Update total dynamically
+                // let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Get base total
+                // let shippingCost = parseFloat("{{ $shipping_with_test_print }}"); // Get shipping cost
+
+                // let newTotal = (response.order_type == 1) ? baseTotal : (baseTotal + shippingCost);
+                // $(".cart-total").html(`<bdi><span>$</span>${newTotal.toFixed(2)}</bdi>`);
+
+                console.log("Order type updated:", response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+});
 
 </script>
 

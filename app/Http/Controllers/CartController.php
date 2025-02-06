@@ -256,6 +256,12 @@ class CartController extends Controller
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
+    public function orderType(Request $request){
+       $order_type = $request['order_type'];
+       Session::put('order_type',$order_type);
+       return response()->json(['order_type' => $request->order_type]);
+    }
+
     public function cart()
     {
         if (Auth::check() && !empty(Auth::user())) {
