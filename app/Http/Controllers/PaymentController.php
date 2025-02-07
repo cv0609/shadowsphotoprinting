@@ -455,8 +455,8 @@ class PaymentController extends Controller
                 "sku" => $sku,
                 "quantity" => $qty,
                 "price" => [
-                    "amount" => $productPriceInCents,
-                    // "amount" => "522000",
+                    // "amount" => $productPriceInCents,
+                    "amount" => "0.55",
                     "currency" => "AUD"
                 ]
             ];
