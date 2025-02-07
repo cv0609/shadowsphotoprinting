@@ -279,6 +279,26 @@ class OrderController extends Controller
 
     private function addFileToZip($zip, $imagePath, $folder, &$fileCounter)
     {
+        if (strpos($imagePath, env('AWS_URL')) === 0) {
+            // Define a folder to save downloaded images temporarily
+            $downloadFolder = public_path('temp_images/');
+            if (!file_exists($downloadFolder)) {
+                mkdir($downloadFolder, 0777, true);
+            }
+    
+            // Extract file name
+            $fileName = basename($imagePath);
+            $localFilePath = $downloadFolder . $fileName;
+    
+            // Download the image if it doesn't already exist
+            if (!file_exists($localFilePath)) {
+                file_put_contents($localFilePath, file_get_contents($imagePath));
+            }
+    
+            // Use the downloaded file path
+            $imagePath = $localFilePath;
+        }
+
         if (file_exists($imagePath)) {
             $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
             $extension = pathinfo($imagePath, PATHINFO_EXTENSION);

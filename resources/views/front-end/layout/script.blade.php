@@ -4,8 +4,10 @@
 <script src="{{ asset('assets/js/slick.js') }}"></script>
 <script src="{{ asset('assets/js/aos.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
-<script>
+<script type="module" src="https://cdn.myafterpay.com/elements/embed/afterpay-elements.js" async="true"></script>
+<script nomodule src="https://cdn.myafterpay.com/elements/embed/afterpay-elements.legacy.js" async="true"></script>
 
+<script>
 $("#user-register").on('click',function(){
     $(".error").addClass('d-none').html('');
     if(!$("#register-name").val())
@@ -135,4 +137,17 @@ $(document).ready(function () {
          } 
     })
 </script>
+
+<script>
+    $(document).ready(function () {
+        $(".afterpayButton").click(function () {
+            $("#afterpay-modal").modal("show");
+        });
+
+        $("#close-sail-modal").click(function () {
+            $("#afterpay-modal").modal("hide");
+        });
+    });
+</script>
+
 

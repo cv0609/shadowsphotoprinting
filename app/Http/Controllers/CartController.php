@@ -106,7 +106,6 @@ class CartController extends Controller
 
                 $testPrint = '0';
 
-
                 foreach ($request->selectedImages as $selectedImage) {
 
                     // $tempFileName = basename($selectedImage);
@@ -115,31 +114,31 @@ class CartController extends Controller
                     // Storage::move($tempImagePath, $permanentImagePath);
                     // $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
                     $ImagePath = $selectedImage;
+                    $wtrelativeImagePath = '';
 
+                    // dd($ImagePath);
                     // $wtimagePath = public_path('storage/assets/images/order_images/' . $tempFileName);
 
                     // if (!file_exists($wtimagePath)) {
                     //     return response()->json(['error' => 'Image not found: ' . $tempFileName], 404);
                     // }
 
-                    // if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
+                    if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
+                        $testPrint = $cart_item['testPrint'];
+                        $testPrintPrice = $cart_item['testPrintPrice'];
+                        $testPrintQty = $cart_item['testPrintQty'];
+                        $testPrintCatId = $cart_item['testPrintCategory_id'];
 
-                    //     $testPrint = $cart_item['testPrint'];
-                    //     $testPrintPrice = $cart_item['testPrintPrice'];
-                    //     $testPrintQty = $cart_item['testPrintQty'];
-                    //     $testPrintCatId = $cart_item['testPrintCategory_id'];
+                        $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
 
-                    //     $testPrintData = TestPrint::where('category_id',$testPrintCatId)->first();
-
-                    //     if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
-                    //         return response()->json([
-                    //             'error' => true,
-                    //             'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
-                    //         ]);
-                    //     }
-
-                    //     $wtrelativeImagePath = $this->CartService->addWaterMark($wtimagePath,$tempFileName);
-                    // }
+                        if($cart_item['quantity'] < $testPrintData->min_qty || $cart_item['quantity'] > (int)$testPrintData->qty) {
+                            return response()->json([
+                                'error' => true,
+                                'message' => 'The quantity must be greater than 1 and less than or equal to ' . $testPrintData->qty . '.'
+                            ]);
+                        }
+                        $wtrelativeImagePath = $this->CartService->addWaterMark($ImagePath);
+                    }
 
                     $insertData = [
                         "cart_id" => $cartId,
