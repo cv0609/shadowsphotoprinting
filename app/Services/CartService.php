@@ -16,8 +16,9 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
-use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class CartService
 {
@@ -231,11 +232,11 @@ class CartService
             ->where('end_date', '>=', $currentDate)
             ->where(function ($query) use ($CartTotal) {
                 $query->where('minimum_spend', '<=', $CartTotal['subtotal'])
-                      ->orWhere('minimum_spend', 0.00); // Include 0.00 as valid
+                    ->orWhere('minimum_spend', 0.00); // Include 0.00 as valid
             })
             ->where(function ($query) use ($CartTotal) {
                 $query->where('maximum_spend', '>=', $CartTotal['subtotal'])
-                      ->orWhere('maximum_spend', 0.00); // Include 0.00 as valid
+                    ->orWhere('maximum_spend', 0.00); // Include 0.00 as valid
             })
             ->where(function ($query) use ($productCategoryId) {
                 $query->whereNull('product_category')
@@ -312,32 +313,42 @@ class CartService
         }
     }
 
-    public function addWaterMark($wtimagePath, $tempFileName)
+    
+    public function addWaterMark($url)
     {
+        // Extract the filename
+        $fileName = basename($url);
+
+        // Define paths
+        $testPrintPath = public_path('testprint/');
         $watermarkPath = public_path('assets/images/order_images/watermark.png');
 
-        $img = Image::make($wtimagePath);
-
-        $width = $img->width();
-        $height = $img->height();
-
-        $watermark = Image::make($watermarkPath)->resize($width, $height);
-
-        $img->insert($watermark, 'top-left');
-
-        $outputDir = public_path('assets/images/watermark');
-
-        if (!file_exists($outputDir)) {
-            mkdir($outputDir, 0755, true);
+        // Ensure the testprint directory exists
+        if (!file_exists($testPrintPath)) {
+            mkdir($testPrintPath, 0777, true);
         }
 
-        $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($tempFileName, PATHINFO_FILENAME) . '.jpg';
-        $outputImagePath = $outputDir . '/' . $outputImageName;
+        // Download the image
+        $imagePath = $testPrintPath . $fileName;
+        file_put_contents($imagePath, file_get_contents($url));
 
+        // Load the image with Intervention Image
+        $img = Image::make($imagePath);
+
+        // Load and resize watermark
+        $watermark = Image::make($watermarkPath)->resize($img->width(), $img->height());
+
+        // Apply watermark
+        $img->insert($watermark, 'top-left');
+
+        // Generate new filename
+        $outputImageName = 'watermarked_' . uniqid() . '_' . pathinfo($fileName, PATHINFO_FILENAME) . '.jpg';
+        $outputImagePath = $testPrintPath . $outputImageName;
+
+        // Save the watermarked image
         $img->save($outputImagePath);
 
-        $wtrelativeImagePath = 'assets/images/watermark/' . $outputImageName;
-
-        return $wtrelativeImagePath;
+        // Return the relative path for database storage
+        return 'testprint/' . $outputImageName;
     }
 }
