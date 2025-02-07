@@ -469,7 +469,7 @@ class PaymentController extends Controller
         $orderDetails = [
             "amount" => [
                 // "amount" => $totalAmountInCents,
-                "amount" => "5",
+                "amount" => "55",
                 "currency" => "AUD"
             ],
             "consumer" => [
