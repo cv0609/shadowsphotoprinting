@@ -748,6 +748,7 @@ class PaymentController extends Controller
 
     public function afterpayCancel()
     {
+        \Log::info('cancel pay');
         Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
         return redirect()->route('checkout')->with('error', 'Payment was cancelled. Please try again.');
     }
