@@ -610,6 +610,8 @@ class PaymentController extends Controller
         
         if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
             $token = $response['token'];
+            \Log::info($token);
+            \Log::info('token');
             Session::put('afterpay_token', $token);
             return response()->json(['error'=>false,'data' => $response['redirectCheckoutUrl']]);
         }
@@ -624,6 +626,8 @@ class PaymentController extends Controller
     public function afterpaySuccess()
     {
         $token = Session::get('afterpay_token');
+        \Log::info($token);
+        \Log::info('afterpay_token success');
 
         if (!$token) {
             return redirect()->route('checkout')->with('error', 'Session expired or invalid.');
@@ -631,6 +635,7 @@ class PaymentController extends Controller
 
         $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
         \Log::info($afterPay);
+        \Log::info('afterpay_logs success');
 
         if(isset($afterPay) && !empty($afterPay)){
             $log = new AfterPayLogs;
