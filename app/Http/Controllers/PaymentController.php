@@ -466,102 +466,37 @@ class PaymentController extends Controller
         $shippingAmountInCents = number_format($shipping_charge * 100, 2, '.', '');
         $couponDiscountInCents = number_format($coupon_discount * 100, 2, '.', '');
 
-        $orderDetails = [
-            "amount" => [
-                // "amount" => $totalAmountInCents,
-                "amount" => "1.00",
-                "currency" => "AUD"
-            ],
-            "consumer" => [
-                "phoneNumber" => $phone,
-                "givenNames" => $fname,
-                "surname" => $lname,
-                "email" => $email
-            ],
-            "billing" => [
-                "name" =>  $fname . ' ' . $lname,
-                "line1" => $street1,
-                "line2" => $street2,
-                "suburb" => $suburb,
-                "state" => 'NSW',
-                "postcode" => $postcode,
-                "countryCode" => "AU",
-                "phoneNumber" => $phone,
-            ],
-            "shipping" => [
-                "name" => $ship_fname ? ($ship_fname . ' ' . $ship_lname) : ($fname . ' ' . $lname),
-                "line1" => $ship_street1 ? $ship_street1 : $street1,
-                "line2" => $ship_street2 ? $ship_street2 : $street2,
-                "suburb" => $ship_suburb ? $ship_suburb : $suburb,
-                "state" => 'NSW',
-                "postcode" => $ship_postcode ? $ship_postcode : $postcode,
-                "countryCode" => "AU",
-                "phoneNumber" => $phone
-            ],
-            "courier" => [
-                "shippedAt" => "2024-08-30",
-                "name" => "DHL",
-                "tracking" => "ABC123XYZ",
-                "priority" => "STANDARD"  // Changed to a valid value
-            ],
-            "description" => "Order for consumer",
-            "items" => $itemsArray,
-            "discounts" => [
-                [
-                    "displayName" => !empty($coupon_code) ? $coupon_code : 'Summer Discount',
-                    "amount" => [
-                        "amount" => $couponDiscountInCents ?? "0.00",
-                        // "amount" => "5000.00",
-                        "currency" => "AUD"
-                    ]
-                ]
-            ],
-            "merchant" => [
-                "redirectConfirmUrl" => route('checkout.success'),
-                "redirectCancelUrl" => route('checkout.cancel'),
-            ],
-            "merchantReference" => "order_reference_001",
-            "taxAmount" => [
-                "amount" => "0.00",
-                "currency" => "AUD"
-            ],
-            "shippingAmount" => [
-                "amount" => $shippingAmountInCents ?? "0.00",
-                // "amount" => "5000.00",
-                "currency" => "AUD"
-            ]
-        ];
-
         // $orderDetails = [
         //     "amount" => [
-        //         "amount" => "5",
+        //         // "amount" => $totalAmountInCents,
+        //         "amount" => "1.00",
         //         "currency" => "AUD"
         //     ],
         //     "consumer" => [
-        //         "phoneNumber" => "0412345678",
-        //         "givenNames" => "Test",
-        //         "surname" => "Consumer",
-        //         "email" => "test@example.com"
+        //         "phoneNumber" => $phone,
+        //         "givenNames" => $fname,
+        //         "surname" => $lname,
+        //         "email" => $email
         //     ],
         //     "billing" => [
-        //         "name" => "Test Consumer",
-        //         "line1" => "123 Fake Street",
-        //         "line2" => "Unit 4",
-        //         "suburb" => "Realville",
-        //         "state" => "NSW",
-        //         "postcode" => "2000",
+        //         "name" =>  $fname . ' ' . $lname,
+        //         "line1" => $street1,
+        //         "line2" => $street2,
+        //         "suburb" => $suburb,
+        //         "state" => 'NSW',
+        //         "postcode" => $postcode,
         //         "countryCode" => "AU",
-        //         "phoneNumber" => "0412345678"
+        //         "phoneNumber" => $phone,
         //     ],
         //     "shipping" => [
-        //         "name" => "Test Shipping Consumer",
-        //         "line1" => "123 Fake Street",
-        //         "line2" => "",
-        //         "suburb" => "Realville",
-        //         "state" => "NSW",
-        //         "postcode" => "2000",
+        //         "name" => $ship_fname ? ($ship_fname . ' ' . $ship_lname) : ($fname . ' ' . $lname),
+        //         "line1" => $ship_street1 ? $ship_street1 : $street1,
+        //         "line2" => $ship_street2 ? $ship_street2 : $street2,
+        //         "suburb" => $ship_suburb ? $ship_suburb : $suburb,
+        //         "state" => 'NSW',
+        //         "postcode" => $ship_postcode ? $ship_postcode : $postcode,
         //         "countryCode" => "AU",
-        //         "phoneNumber" => "0412345678"
+        //         "phoneNumber" => $phone
         //     ],
         //     "courier" => [
         //         "shippedAt" => "2024-08-30",
@@ -570,22 +505,13 @@ class PaymentController extends Controller
         //         "priority" => "STANDARD"  // Changed to a valid value
         //     ],
         //     "description" => "Order for consumer",
-        //     "items" => [
-        //         [
-        //             "name" => "Sample Item",
-        //             "sku" => "ITEM001",
-        //             "quantity" => 1,
-        //             "price" => [
-        //                 "amount" => "0.00",
-        //                 "currency" => "AUD"
-        //             ]
-        //         ]
-        //     ],
+        //     "items" => $itemsArray,
         //     "discounts" => [
         //         [
-        //             "displayName" => "Summer Discount",
+        //             "displayName" => !empty($coupon_code) ? $coupon_code : 'Summer Discount',
         //             "amount" => [
-        //                 "amount" => "0.00",
+        //                 "amount" => $couponDiscountInCents ?? "0.00",
+        //                 // "amount" => "5000.00",
         //                 "currency" => "AUD"
         //             ]
         //         ]
@@ -600,10 +526,84 @@ class PaymentController extends Controller
         //         "currency" => "AUD"
         //     ],
         //     "shippingAmount" => [
-        //         "amount" => "0.00",
+        //         "amount" => $shippingAmountInCents ?? "0.00",
+        //         // "amount" => "5000.00",
         //         "currency" => "AUD"
         //     ]
         // ];
+
+        $orderDetails = [
+            "amount" => [
+                "amount" => "0.55",
+                "currency" => "AUD"
+            ],
+            "consumer" => [
+                "phoneNumber" => "0412345678",
+                "givenNames" => "Test",
+                "surname" => "Consumer",
+                "email" => "test@example.com"
+            ],
+            "billing" => [
+                "name" => "Test Consumer",
+                "line1" => "123 Fake Street",
+                "line2" => "Unit 4",
+                "suburb" => "Realville",
+                "state" => "NSW",
+                "postcode" => "2000",
+                "countryCode" => "AU",
+                "phoneNumber" => "0412345678"
+            ],
+            "shipping" => [
+                "name" => "Test Shipping Consumer",
+                "line1" => "123 Fake Street",
+                "line2" => "",
+                "suburb" => "Realville",
+                "state" => "NSW",
+                "postcode" => "2000",
+                "countryCode" => "AU",
+                "phoneNumber" => "0412345678"
+            ],
+            "courier" => [
+                "shippedAt" => "2024-08-30",
+                "name" => "DHL",
+                "tracking" => "ABC123XYZ",
+                "priority" => "STANDARD"  // Changed to a valid value
+            ],
+            "description" => "Order for consumer",
+            "items" => [
+                [
+                    "name" => "Sample Item",
+                    "sku" => "ITEM001",
+                    "quantity" => 1,
+                    "price" => [
+                        "amount" => "0.55",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ],
+            "discounts" => [
+                [
+                    "displayName" => "Summer Discount",
+                    "amount" => [
+                        "amount" => "0.00",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ],
+            "merchant" => [
+                "redirectConfirmUrl" => route('checkout.success'),
+                "redirectCancelUrl" => route('checkout.cancel'),
+            ],
+            "merchantReference" => "order_reference_001",
+            "taxAmount" => [
+                "amount" => "0.00",
+                "currency" => "AUD"
+            ],
+            "shippingAmount" => [
+                "amount" => "0.00",
+                "currency" => "AUD"
+            ]
+        ];
         
         $response = $this->AfterPayService->charge($orderDetails);
         \Log::info($response);
