@@ -301,11 +301,11 @@ $(document).ready(function() {
 
 
 function updateCartTotals() {
-    let total = 0;
-    let totalQuantity = 0;
+    var total = 0;
+    var totalQuantity = 0;
 
-    let testPrintTotal = 0;
-    let testPrintTotalQuantity = 0;
+    var testPrintTotal = 0;
+    var testPrintTotalQuantity = 0;
     var is_test_print = 0;
 
     $("input[name=quantity]").each(function() {
@@ -313,19 +313,22 @@ function updateCartTotals() {
         var rowId = $(this).attr('id').split('-')[1];
 
         var testprint = $(this).data('testprint');
-        is_test_print += testprint;
-        var test_print_price = $(this).data('test_print_price');
-        var test_print_qty = $(this).data('test_print_qty');
+        if(testprint){
+            is_test_print += testprint;
+            var test_print_price = $(this).data('test_print_price');
+            var test_print_qty = $(this).data('test_print_qty');
+            console.log(test_print_qty,'test_print_qty');
+
+            var testPrintTotalPrice = test_print_qty * test_print_price;
+            testPrintTotal += testPrintTotalPrice;
+            testPrintTotalQuantity += test_print_qty;
+        }
 
         var price = parseFloat($(this).data('price'));
         
         var totalPrice = quantity * price;
         total += totalPrice;
         totalQuantity += +quantity;
-
-        var testPrintTotalPrice = test_print_qty * test_print_price;
-        testPrintTotal += testPrintTotalPrice;
-        testPrintTotalQuantity += +test_print_qty;
 
         if(quantity == ''){
             totalPrice=0;
@@ -348,10 +351,13 @@ function updateCartTotals() {
 
     if(is_test_print != 0){
         console.log(is_test_print,'test1');
+        console.log(testPrintTotalQuantity);
         $("#cart-total-price").children('.show-details').text( testPrintTotal.toFixed(2)); 
-        $("#cart-total-itmes").children('.show-details').text(testPrintTotalQuantity);
+        $("#cart-total-itmes").children('.show-details').text(totalQuantity);
     }else{
+        console.log(is_test_print,'test122');
         is_test_print = 0;
+        console.log(totalQuantity,'totalQuantity');
         $("#cart-total-price").children('.show-details').text( total.toFixed(2)); 
         $("#cart-total-itmes").children('.show-details').text(totalQuantity);
     }
@@ -360,6 +366,8 @@ function updateCartTotals() {
 
 
  $("#category").on('change',function(){
+    var total = 0;
+    var totalQuantity = 0;
 
     $.post("{{ route('products-by-category') }}",
     {
@@ -371,6 +379,8 @@ function updateCartTotals() {
         $("#products-main").html(res);
         // updateCartTotals();
     });
+    $("#cart-total-price").children('.show-details').text( total.toFixed(2)); 
+    $("#cart-total-itmes").children('.show-details').text(totalQuantity);
  })
 
 </script>
