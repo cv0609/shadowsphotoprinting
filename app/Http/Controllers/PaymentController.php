@@ -606,6 +606,7 @@ class PaymentController extends Controller
         // ];
         
         $response = $this->AfterPayService->charge($orderDetails);
+        \Log::info($response);
         
         if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
             $token = $response['token'];
@@ -629,6 +630,7 @@ class PaymentController extends Controller
         }
 
         $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
+        \Log::info($afterPay);
 
         if(isset($afterPay) && !empty($afterPay)){
             $log = new AfterPayLogs;
@@ -636,11 +638,11 @@ class PaymentController extends Controller
             $log->save();
         }
 
-        if (isset($response['status'])) {
+        if (isset($afterPay['status'])) {
 
             $this->createOrder($charge=null,$afterPay=null);
 
-            Session::forget(['order_address', 'coupon','billing_details','afterpay_token']);
+            Session::forget(['order_address', 'coupon','billing_details','afterpay_token','order_type']);
             return redirect()->route('order.success');
 
         } else {
@@ -650,7 +652,7 @@ class PaymentController extends Controller
 
     public function afterpayCancel()
     {
-        Session::forget(['order_address', 'coupon','billing_details','afterpay_token']);
+        Session::forget(['order_address', 'coupon','billing_details','afterpay_token','order_type']);
         return redirect()->route('checkout')->with('error', 'Payment was cancelled. Please try again.');
     }
 
