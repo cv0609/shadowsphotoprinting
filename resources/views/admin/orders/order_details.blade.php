@@ -289,7 +289,7 @@
             @else
 
             <tr>
-              <td style="padding: 5px;">Pickup:</td>
+              <td style="padding: 5px;">Pickup (Free Shipping):</td>
               <td style="text-align: right; padding: 5px;"><strong>-</strong></td>
             </tr>
 
