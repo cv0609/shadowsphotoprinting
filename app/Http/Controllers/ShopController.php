@@ -103,7 +103,7 @@ class ShopController extends Controller
 
         $productIds = array_unique($productIds);
 
-        $products = Product::whereIn('id', $productIds)->get();
+        $products = Product::whereIn('id', $productIds)->orderBy('position', 'asc')->get();
 
         foreach ($products as $product) {
           $testPrintData = $testPrintCollection->filter(function ($testPrint) use ($product) {
@@ -113,7 +113,8 @@ class ShopController extends Controller
         }
       }else{
         $category =  ProductCategory::where('slug', $categorySlug)->first();
-        $products = $category->products;
+        // $products = $category->products;
+        $products = $category->products()->orderBy('position', 'asc')->get();
       }
     }
     echo view('front-end/shop_details_product_ajax', compact('products'));
