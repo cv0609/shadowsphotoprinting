@@ -465,71 +465,71 @@ class PaymentController extends Controller
         $shippingAmountInCents = number_format($shipping_charge * 100, 2, '.', '');
         $couponDiscountInCents = number_format($coupon_discount * 100, 2, '.', '');
 
-        // $orderDetails = [
-        //     "amount" => [
-        //         // "amount" => $totalAmountInCents,
-        //         "amount" => "0.55",
-        //         "currency" => "AUD"
-        //     ],
-        //     "consumer" => [
-        //         "phoneNumber" => $phone,
-        //         "givenNames" => $fname,
-        //         "surname" => $lname,
-        //         "email" => $email
-        //     ],
-        //     "billing" => [
-        //         "name" =>  $fname . ' ' . $lname,
-        //         "line1" => $street1,
-        //         "line2" => $street2,
-        //         "suburb" => $suburb,
-        //         "state" => 'NSW',
-        //         "postcode" => $postcode,
-        //         "countryCode" => "AU",
-        //         "phoneNumber" => $phone,
-        //     ],
-        //     "shipping" => [
-        //         "name" => $ship_fname ? ($ship_fname . ' ' . $ship_lname) : ($fname . ' ' . $lname),
-        //         "line1" => $ship_street1 ? $ship_street1 : $street1,
-        //         "line2" => $ship_street2 ? $ship_street2 : $street2,
-        //         "suburb" => $ship_suburb ? $ship_suburb : $suburb,
-        //         "state" => 'NSW',
-        //         "postcode" => $ship_postcode ? $ship_postcode : $postcode,
-        //         "countryCode" => "AU",
-        //         "phoneNumber" => $phone
-        //     ],
-        //     "courier" => [
-        //         "shippedAt" => "2024-08-30",
-        //         "name" => "DHL",
-        //         "tracking" => "ABC123XYZ",
-        //         "priority" => "STANDARD"  // Changed to a valid value
-        //     ],
-        //     "description" => "Order for consumer",
-        //     "items" => $itemsArray,
-        //     "discounts" => [
-        //         [
-        //             "displayName" => !empty($coupon_code) ? $coupon_code : 'Summer Discount',
-        //             "amount" => [
-        //                 "amount" => $couponDiscountInCents ?? "0.00",
-        //                 // "amount" => "5000.00",
-        //                 "currency" => "AUD"
-        //             ]
-        //         ]
-        //     ],
-        //     "merchant" => [
-        //         "redirectConfirmUrl" => route('checkout.success'),
-        //         "redirectCancelUrl" => route('checkout.cancel'),
-        //     ],
-        //     "merchantReference" => "order_reference_001",
-        //     "taxAmount" => [
-        //         "amount" => "0.00",
-        //         "currency" => "AUD"
-        //     ],
-        //     "shippingAmount" => [
-        //         "amount" => $shippingAmountInCents ?? "0.00",
-        //         // "amount" => "5000.00",
-        //         "currency" => "AUD"
-        //     ]
-        // ];
+        $orderDetails = [
+            "amount" => [
+                // "amount" => $totalAmountInCents,
+                "amount" => "0.55",
+                "currency" => "AUD"
+            ],
+            "consumer" => [
+                "phoneNumber" => $phone ?? '0412345678',
+                "givenNames" => $fname ?? 'Test',
+                "surname" => $lname ?? 'Test',
+                "email" => $email ?? 'test@gmail.com'
+            ],
+            "billing" => [
+                "name" =>  $fname . ' ' . $lname,
+                "line1" => $street1 ?? 'address1',
+                "line2" => $street2 ?? 'address2',
+                "suburb" => $suburb ?? 'suberb',
+                "state" => 'NSW',
+                "postcode" => $postcode ?? '123456',
+                "countryCode" => "AU",
+                "phoneNumber" => $phone ?? '0412345678',
+            ],
+            "shipping" => [
+                "name" => $ship_fname ? ($ship_fname . ' ' . $ship_lname) : ($fname . ' ' . $lname),
+                "line1" => $ship_street1 ? $ship_street1 : $street1,
+                "line2" => $ship_street2 ? $ship_street2 : $street2,
+                "suburb" => $ship_suburb ? $ship_suburb : $suburb,
+                "state" => 'NSW',
+                "postcode" => $ship_postcode ? $ship_postcode : $postcode,
+                "countryCode" => "AU",
+                "phoneNumber" => $phone ?? '0412345678'
+            ],
+            "courier" => [
+                "shippedAt" => "2024-08-30",
+                "name" => "DHL",
+                "tracking" => "ABC123XYZ",
+                "priority" => "STANDARD"  // Changed to a valid value
+            ],
+            "description" => "Order for consumer",
+            "items" => $itemsArray,
+            "discounts" => [
+                [
+                    "displayName" => !empty($coupon_code) ? $coupon_code : 'Summer Discount',
+                    "amount" => [
+                        "amount" => $couponDiscountInCents ?? "0.00",
+                        // "amount" => "5000.00",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ],
+            "merchant" => [
+                "redirectConfirmUrl" => route('checkout.success'),
+                "redirectCancelUrl" => route('checkout.cancel'),
+            ],
+            "merchantReference" => "order_reference_001",
+            "taxAmount" => [
+                "amount" => "0.00",
+                "currency" => "AUD"
+            ],
+            "shippingAmount" => [
+                "amount" => $shippingAmountInCents ?? "0.00",
+                // "amount" => "5000.00",
+                "currency" => "AUD"
+            ]
+        ];
 
         // $orderDetails = [
         //     "amount" => [
@@ -604,97 +604,97 @@ class PaymentController extends Controller
         //     ]
         // ];
 
-        $orderDetails = [
-            "amount" => [
-                "amount" => "0.55",
-                "currency" => "AUD"
-            ],
-            "consumer" => [
-                "email" => "test@example.com",
-                "givenNames" => "Joe",
-                "surname" => "Consumer",
-                "phoneNumber" => "0400 000 000"
-            ],
-            "merchantReference" => "string",
-            "billing" => [
-                "name" => "Joe Consumer",
-                "line1" => "Level 5",
-                "line2" => "390 Collins Street",
-                "area1" => "Melbourne",
-                "region" => "VIC",
-                "postcode" => "3000",
-                "countryCode" => "AU",
-                "phoneNumber" => "0400 000 000"
-            ],
-            "shipping" => [
-                "name" => "Joe Consumer",
-                "line1" => "Level 5",
-                "line2" => "390 Collins Street",
-                "area1" => "Melbourne",
-                "region" => "VIC",
-                "postcode" => "3000",
-                "countryCode" => "AU",
-                "phoneNumber" => "0400 000 000"
-            ],
-            "merchant" => [
-                // "redirectConfirmUrl" => "https://example.com/checkout/confirm",
-                // "redirectCancelUrl" => "https://example.com/checkout/cancel",
-                "redirectConfirmUrl" => route('checkout.success'),
-                "redirectCancelUrl" => route('checkout.cancel'),
-                "popupOriginUrl" => "https://merchant.com/cart",
-                "name" => "string"
-            ],
-            "items" => [
-                [
-                    "name" => "Blue Carabiner",
-                    "sku" => "12341234",
-                    "quantity" => 1,
-                    "pageUrl" => "https://merchant.example.com/carabiner-354193.html",
-                    "imageUrl" => "https://merchant.example.com/carabiner-7378-391453-1.jpg",
-                    "price" => [
-                        "amount" => "0.55",
-                        "currency" => "AUD"
-                    ],
-                    "categories" => [
-                        [
-                            "Sporting Goods",
-                            "Climbing Equipment",
-                            "Climbing",
-                            "Climbing Carabiners"
-                        ],
-                        [
-                            "Sale",
-                            "Climbing"
-                        ]
-                    ],
-                    "estimatedShipmentDate" => "2023-08-01"
-                ]
-            ],
-            "courier" => [
-                "shippedAt" => "2023-08-24T14:15:22Z",
-                "name" => "Australia Post",
-                "tracking" => "AA0000000000000",
-                "priority" => "STANDARD"
-            ],
-            "taxAmount" => [
-                "amount" => "0.00",
-                "currency" => "AUD"
-            ],
-            "shippingAmount" => [
-                "amount" => "0.00",
-                "currency" => "AUD"
-            ],
-            "discounts" => [
-                [
-                    "displayName" => "New Customer Coupon",
-                    "amount" => [
-                        "amount" => "0.00",
-                        "currency" => "AUD"
-                    ]
-                ]
-            ],
-            "description" => "string"
-        ];
+        // $orderDetails = [
+        //     "amount" => [
+        //         "amount" => "0.55",
+        //         "currency" => "AUD"
+        //     ],
+        //     "consumer" => [
+        //         "email" => "test@example.com",
+        //         "givenNames" => "Joe",
+        //         "surname" => "Consumer",
+        //         "phoneNumber" => "0400 000 000"
+        //     ],
+        //     "merchantReference" => "string",
+        //     "billing" => [
+        //         "name" => "Joe Consumer",
+        //         "line1" => "Level 5",
+        //         "line2" => "390 Collins Street",
+        //         "area1" => "Melbourne",
+        //         "region" => "VIC",
+        //         "postcode" => "3000",
+        //         "countryCode" => "AU",
+        //         "phoneNumber" => "0400 000 000"
+        //     ],
+        //     "shipping" => [
+        //         "name" => "Joe Consumer",
+        //         "line1" => "Level 5",
+        //         "line2" => "390 Collins Street",
+        //         "area1" => "Melbourne",
+        //         "region" => "VIC",
+        //         "postcode" => "3000",
+        //         "countryCode" => "AU",
+        //         "phoneNumber" => "0400 000 000"
+        //     ],
+        //     "merchant" => [
+        //         // "redirectConfirmUrl" => "https://example.com/checkout/confirm",
+        //         // "redirectCancelUrl" => "https://example.com/checkout/cancel",
+        //         "redirectConfirmUrl" => route('checkout.success'),
+        //         "redirectCancelUrl" => route('checkout.cancel'),
+        //         "popupOriginUrl" => "https://merchant.com/cart",
+        //         "name" => "string"
+        //     ],
+        //     "items" => [
+        //         [
+        //             "name" => "Blue Carabiner",
+        //             "sku" => "12341234",
+        //             "quantity" => 1,
+        //             "pageUrl" => "https://merchant.example.com/carabiner-354193.html",
+        //             "imageUrl" => "https://merchant.example.com/carabiner-7378-391453-1.jpg",
+        //             "price" => [
+        //                 "amount" => "0.55",
+        //                 "currency" => "AUD"
+        //             ],
+        //             "categories" => [
+        //                 [
+        //                     "Sporting Goods",
+        //                     "Climbing Equipment",
+        //                     "Climbing",
+        //                     "Climbing Carabiners"
+        //                 ],
+        //                 [
+        //                     "Sale",
+        //                     "Climbing"
+        //                 ]
+        //             ],
+        //             "estimatedShipmentDate" => "2023-08-01"
+        //         ]
+        //     ],
+        //     "courier" => [
+        //         "shippedAt" => "2023-08-24T14:15:22Z",
+        //         "name" => "Australia Post",
+        //         "tracking" => "AA0000000000000",
+        //         "priority" => "STANDARD"
+        //     ],
+        //     "taxAmount" => [
+        //         "amount" => "0.00",
+        //         "currency" => "AUD"
+        //     ],
+        //     "shippingAmount" => [
+        //         "amount" => "0.00",
+        //         "currency" => "AUD"
+        //     ],
+        //     "discounts" => [
+        //         [
+        //             "displayName" => "New Customer Coupon",
+        //             "amount" => [
+        //                 "amount" => "0.00",
+        //                 "currency" => "AUD"
+        //             ]
+        //         ]
+        //     ],
+        //     "description" => "string"
+        // ];
         
 
         $response = $this->AfterPayService->charge($orderDetails);
@@ -715,27 +715,25 @@ class PaymentController extends Controller
         return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
     }
 
-    public function afterpaySuccess()
+    public function afterpaySuccess(Request $request)
     {
-        $token = Session::get('afterpay_token');
-        \Log::info($token);
+        $orderId = $request->query('orderId');
+        // $token = Session::get('afterpay_token');
+        \Log::info($orderId);
         \Log::info('afterpay_token success');
 
-        if (!$token) {
-            return redirect()->route('checkout')->with('error', 'Session expired or invalid.');
+        if (!$orderId) {
+            return redirect()->route('checkout')->with('error', 'Missing order ID.');
         }
 
-        $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
-        \Log::info($afterPay);
-        \Log::info('afterpay_logs success');
+        $captureResponse = $this->AfterPayService->capturePayment($orderId);
+        $log = new AfterPayLogs;
+        $log->logs = json_encode($captureResponse) ?? '';
+        $log->save();
 
-        if (isset($afterPay) && !empty($afterPay)) {
-            $log = new AfterPayLogs;
-            $log->logs = json_encode($afterPay) ?? '';
-            $log->save();
-        }
+        \Log::info($captureResponse);
 
-        if (isset($afterPay['status'])) {
+        if (isset($captureResponse['status'])) {
 
             $this->createOrder($charge = null, $afterPay = null);
 
@@ -744,6 +742,26 @@ class PaymentController extends Controller
         } else {
             return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
         }
+
+        // $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
+        // \Log::info($afterPay);
+        // \Log::info('afterpay_logs success');
+
+        // if (isset($afterPay) && !empty($afterPay)) {
+        //     $log = new AfterPayLogs;
+        //     $log->logs = json_encode($afterPay) ?? '';
+        //     $log->save();
+        // }
+
+        // if (isset($afterPay['status'])) {
+
+        //     $this->createOrder($charge = null, $afterPay = null);
+
+        //     Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+        //     return redirect()->route('order.success');
+        // } else {
+        //     return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
+        // }
     }
 
     public function afterpayCancel()
