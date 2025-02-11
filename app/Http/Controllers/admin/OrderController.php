@@ -344,7 +344,7 @@ class OrderController extends Controller
 
     public function refundOrder($order_id)
      {
-       $order = Order::whereId($order_id)->select('payment_id')->first();
+       $order = Order::whereId($order_id)->first();
        $payment_method = $order->payment_method;
        $payment_status = $order->payment_status;
        $payment_id = $order->payment_id;
