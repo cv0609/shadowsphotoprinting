@@ -447,7 +447,7 @@ class PaymentController extends Controller
             $product_price = ($product_type != 'shop') ? $items->product_price : $items->product->product_price;
             $sku = 'SKU-' . Str::upper(Str::random(8));
 
-            $productPriceInCents = number_format($product_price * 100, 2, '.', '');
+            $productPriceInCents = number_format($product_price, 2, '.', '');
 
             $itemsArray[] = [
                 "name" => $product_name,
@@ -461,7 +461,7 @@ class PaymentController extends Controller
             ];
         }
 
-        $totalAmountInCents = number_format($cart_total * 100, 2, '.', '');
+        $totalAmountInCents = number_format($cart_total, 2, '.', '');
         $shippingAmountInCents = number_format($shipping_charge * 100, 2, '.', '');
         $couponDiscountInCents = number_format($coupon_discount * 100, 2, '.', '');
 
