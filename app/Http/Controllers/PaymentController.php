@@ -717,31 +717,32 @@ class PaymentController extends Controller
 
     public function afterpaySuccess(Request $request)
     {
-        $orderId = $request->query('orderId');
-        // $token = Session::get('afterpay_token');
-        \Log::info($orderId);
-        \Log::info('afterpay_token success');
+        dd($request->all());
+        // $orderId = $request->query('orderId');
+        // // $token = Session::get('afterpay_token');
+        // \Log::info($orderId);
+        // \Log::info('afterpay_token success');
 
-        if (!$orderId) {
-            return redirect()->route('checkout')->with('error', 'Missing order ID.');
-        }
+        // if (!$orderId) {
+        //     return redirect()->route('checkout')->with('error', 'Missing order ID.');
+        // }
 
-        $captureResponse = $this->AfterPayService->capturePayment($orderId);
-        $log = new AfterPayLogs;
-        $log->logs = json_encode($captureResponse) ?? '';
-        $log->save();
+        // $captureResponse = $this->AfterPayService->capturePayment($orderId);
+        // $log = new AfterPayLogs;
+        // $log->logs = json_encode($captureResponse) ?? '';
+        // $log->save();
 
-        \Log::info($captureResponse);
+        // \Log::info($captureResponse);
 
-        if (isset($captureResponse['status'])) {
+        // if (isset($captureResponse['status'])) {
 
-            $this->createOrder($charge = null, $captureResponse);
+        //     $this->createOrder($charge = null, $captureResponse);
 
-            Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
-            return redirect()->route('order.success');
-        } else {
-            return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
-        }
+        //     Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+        //     return redirect()->route('order.success');
+        // } else {
+        //     return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
+        // }
 
         // $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
         // \Log::info($afterPay);
