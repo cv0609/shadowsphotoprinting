@@ -717,6 +717,7 @@ class PaymentController extends Controller
 
     public function afterpaySuccess(Request $request)
     {
+        \Log::info(json_encode($request->all(), JSON_PRETTY_PRINT));
         dd($request->all());
         // $orderId = $request->query('orderId');
         // // $token = Session::get('afterpay_token');
