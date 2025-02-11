@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Str;
 
 class AfterPayService
 {
@@ -36,7 +37,7 @@ class AfterPayService
     public function charge(array $orderDetails)
     {
         $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
-    
+
         try {
             $response = $this->client->post('/v2/checkouts', [
                 'json' => $orderDetails,
@@ -46,44 +47,42 @@ class AfterPayService
                     'User-Agent' => 'Afterpay Online API',
                 ],
             ]);
-    
-            return json_decode($response->getBody()->getContents(), true);
-    
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $response = $e->getResponse();
-                $responseBody = json_decode($response->getBody()->getContents(), true);
-                return $responseBody; 
-            }
-            return ['error' => 'Unable to process Afterpay order.'];
-        }
-    }
-
-    public function validateAfterPayOrder($token)
-    {
-        $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
-
-        try {
-            $response = $this->client->get("/v2/payments/token/{$token}", [
-                'headers' => [
-                    'Authorization' => "Basic $auth",
-                    'Content-Type' => 'application/json',
-                    'User-Agent' => 'Afterpay Online API',
-                    'Accept' => 'application/json',
-                ],
-            ]);
 
             return json_decode($response->getBody()->getContents(), true);
-
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 $responseBody = json_decode($response->getBody()->getContents(), true);
                 return $responseBody;
             }
-            return ['error' => 'Unable to validate Afterpay order.'];
+            return ['error' => 'Unable to process Afterpay order.'];
         }
     }
+
+    // public function validateAfterPayOrder($token)
+    // {
+    //     $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
+
+    //     try {
+    //         $response = $this->client->get("/v2/payments/token/{$token}", [
+    //             'headers' => [
+    //                 'Authorization' => "Basic $auth",
+    //                 'Content-Type' => 'application/json',
+    //                 'User-Agent' => 'Afterpay Online API',
+    //                 'Accept' => 'application/json',
+    //             ],
+    //         ]);
+
+    //         return json_decode($response->getBody()->getContents(), true);
+    //     } catch (RequestException $e) {
+    //         if ($e->hasResponse()) {
+    //             $response = $e->getResponse();
+    //             $responseBody = json_decode($response->getBody()->getContents(), true);
+    //             return $responseBody;
+    //         }
+    //         return ['error' => 'Unable to validate Afterpay order.'];
+    //     }
+    // }
 
     public function refundPayment($payment_id)
     {
@@ -100,7 +99,6 @@ class AfterPayService
             ]);
 
             return json_decode($response->getBody()->getContents(), true);
-
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
@@ -111,29 +109,92 @@ class AfterPayService
         }
     }
 
-    public function capturePayment($orderId){
-
+    public function getCheckoutDetails($orderToken)
+    {
         $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
+
         try {
-            $response = $this->client->get("/v2/payments/{$orderId}/capture", [
+            $response = $this->client->get("/v2/checkouts/{$orderToken}", [
                 'headers' => [
                     'Authorization' => "Basic $auth",
-                    'Content-Type' => 'application/json',
-                    'User-Agent' => 'Afterpay Online API',
                     'Accept' => 'application/json',
+                    'User-Agent' => 'Afterpay API Client',
                 ],
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $data = json_decode($response->getBody()->getContents(), true);
+            \Log::info('Afterpay Checkout Details:', $data);
 
+            return $data;
         } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $response = $e->getResponse();
-                $responseBody = json_decode($response->getBody()->getContents(), true);
-                return $responseBody;
-            }
-            return ['error' => 'Unable to validate Afterpay order.'];
+            $errorResponse = $e->getResponse() ? $e->getResponse()->getBody()->getContents() : 'No response received';
+            \Log::error('Afterpay Checkout Details Error:', ['error' => $errorResponse]);
+
+            return [
+                'error' => 'Unable to retrieve Afterpay checkout details.',
+                'details' => json_decode($errorResponse, true) ?? $errorResponse
+            ];
         }
     }
 
+    // public function getOrderDetails($orderToken)
+    // {
+    //     $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
+
+    //     try {
+    //         $response = $this->client->get("/v2/orders/{$orderToken}", [
+    //             'headers' => [
+    //                 'Authorization' => "Basic $auth",
+    //                 'Accept' => 'application/json',
+    //                 'User-Agent' => 'Afterpay API Client',
+    //             ],
+    //         ]);
+
+    //         $data = json_decode($response->getBody()->getContents(), true);
+    //         \Log::info('Afterpay Order Details:', $data);
+
+    //         return $data;
+    //     } catch (RequestException $e) {
+    //         $errorResponse = $e->getResponse() ? $e->getResponse()->getBody()->getContents() : 'No response received';
+    //         \Log::error('Afterpay Order Details Error:', ['error' => $errorResponse]);
+
+    //         return [
+    //             'error' => 'Unable to retrieve Afterpay order details.',
+    //             'details' => json_decode($errorResponse, true) ?? $errorResponse
+    //         ];
+    //     }
+    // }
+
+    public function capturePayment($orderToken)
+    {
+        $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
+
+        try {
+            $response = $this->client->post('/v2/payments/capture', [
+                'headers' => [
+                    'Authorization' => "Basic $auth",
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => 'Afterpay API Client',
+                ],
+                'json' => [
+                    'token' => $orderToken,
+                    'merchantReference' => 'order_reference_001',
+                ],
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+            \Log::info('Afterpay Payment Captured:', $data);
+
+            return $data;
+        } catch (RequestException $e) {
+            $errorResponse = $e->getResponse() ? $e->getResponse()->getBody()->getContents() : 'No response received';
+            \Log::error('Afterpay Capture Payment Error:', ['error' => $errorResponse]);
+
+            return [
+                'error' => 'Unable to capture Afterpay payment.',
+                'details' => json_decode($errorResponse, true) ?? $errorResponse
+            ];
+        }
+    }
 }

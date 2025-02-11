@@ -183,9 +183,7 @@ class PaymentController extends Controller
 
     private function createOrder($charge = null, $afterPay = null)
     {
-
         $cart = '';
-
         $orderNumber = Order::generateOrderNumber();
 
         if (Auth::check() && !empty(Auth::user())) {
@@ -226,13 +224,13 @@ class PaymentController extends Controller
             'total' => $shipping_amount != 0 ? $cart_total : $cart_total + $shippingCharge,
             'payment_id' => ($payment_method === 'stripe')
                 ? ($charge->id ?? "")
-                : ($afterPay->id ?? ""),
+                : ($afterPay['token'] ?? ""),
             'is_paid' => ($payment_method === 'stripe')
                 ? ($charge->captured ?? '')
-                : ($afterPay->status ?? ''),
+                : ($afterPay['status'] ?? ''),
             'payment_status' => ($payment_method === 'stripe')
                 ? ($charge->status ?? '')
-                : ($afterPay->paymentState ?? ''),
+                : ($afterPay['status'] ?? ''),
             'payment_method' => $payment_method,
             'order_status' => "0",
             'order_type' => $order_type
@@ -462,8 +460,8 @@ class PaymentController extends Controller
         }
 
         $totalAmountInCents = number_format($cart_total, 2, '.', '');
-        $shippingAmountInCents = number_format($shipping_charge * 100, 2, '.', '');
-        $couponDiscountInCents = number_format($coupon_discount * 100, 2, '.', '');
+        $shippingAmountInCents = number_format($shipping_charge, 2, '.', '');
+        $couponDiscountInCents = number_format($coupon_discount, 2, '.', '');
 
         $orderDetails = [
             "amount" => [
@@ -531,244 +529,43 @@ class PaymentController extends Controller
             ]
         ];
 
-        // $orderDetails = [
-        //     "amount" => [
-        //         "amount" => "5",
-        //         "currency" => "AUD"
-        //     ],
-        //     "consumer" => [
-        //         "phoneNumber" => "0412345678",
-        //         "givenNames" => "Test",
-        //         "surname" => "Consumer",
-        //         "email" => "test@example.com"
-        //     ],
-        //     "billing" => [
-        //         "name" => "Test Consumer",
-        //         "line1" => "123 Fake Street",
-        //         "line2" => "Unit 4",
-        //         "suburb" => "Realville",
-        //         "state" => "NSW",
-        //         "postcode" => "2000",
-        //         "countryCode" => "AU",
-        //         "phoneNumber" => "0412345678"
-        //     ],
-        //     "shipping" => [
-        //         "name" => "Test Shipping Consumer",
-        //         "line1" => "123 Fake Street",
-        //         "line2" => "",
-        //         "suburb" => "Realville",
-        //         "state" => "NSW",
-        //         "postcode" => "2000",
-        //         "countryCode" => "AU",
-        //         "phoneNumber" => "0412345678"
-        //     ],
-        //     "courier" => [
-        //         "shippedAt" => "2024-08-30",
-        //         "name" => "DHL",
-        //         "tracking" => "ABC123XYZ",
-        //         "priority" => "STANDARD"  // Changed to a valid value
-        //     ],
-        //     "description" => "Order for consumer",
-        //     "items" => [
-        //         [
-        //             "name" => "Sample Item",
-        //             "sku" => "ITEM001",
-        //             "quantity" => 1,
-        //             "price" => [
-        //                 "amount" => "0.00",
-        //                 "currency" => "AUD"
-        //             ]
-        //         ]
-        //     ],
-        //     "discounts" => [
-        //         [
-        //             "displayName" => "Summer Discount",
-        //             "amount" => [
-        //                 "amount" => "0.00",
-        //                 "currency" => "AUD"
-        //             ]
-        //         ]
-        //     ],
-        //     "merchant" => [
-        //         "redirectConfirmUrl" => route('checkout.success'),
-        //         "redirectCancelUrl" => route('checkout.cancel'),
-        //     ],
-        //     "merchantReference" => "order_reference_001",
-        //     "taxAmount" => [
-        //         "amount" => "0.00",
-        //         "currency" => "AUD"
-        //     ],
-        //     "shippingAmount" => [
-        //         "amount" => "0.00",
-        //         "currency" => "AUD"
-        //     ]
-        // ];
-
-        // $orderDetails = [
-        //     "amount" => [
-        //         "amount" => "0.55",
-        //         "currency" => "AUD"
-        //     ],
-        //     "consumer" => [
-        //         "email" => "test@example.com",
-        //         "givenNames" => "Joe",
-        //         "surname" => "Consumer",
-        //         "phoneNumber" => "0400 000 000"
-        //     ],
-        //     "merchantReference" => "string",
-        //     "billing" => [
-        //         "name" => "Joe Consumer",
-        //         "line1" => "Level 5",
-        //         "line2" => "390 Collins Street",
-        //         "area1" => "Melbourne",
-        //         "region" => "VIC",
-        //         "postcode" => "3000",
-        //         "countryCode" => "AU",
-        //         "phoneNumber" => "0400 000 000"
-        //     ],
-        //     "shipping" => [
-        //         "name" => "Joe Consumer",
-        //         "line1" => "Level 5",
-        //         "line2" => "390 Collins Street",
-        //         "area1" => "Melbourne",
-        //         "region" => "VIC",
-        //         "postcode" => "3000",
-        //         "countryCode" => "AU",
-        //         "phoneNumber" => "0400 000 000"
-        //     ],
-        //     "merchant" => [
-        //         // "redirectConfirmUrl" => "https://example.com/checkout/confirm",
-        //         // "redirectCancelUrl" => "https://example.com/checkout/cancel",
-        //         "redirectConfirmUrl" => route('checkout.success'),
-        //         "redirectCancelUrl" => route('checkout.cancel'),
-        //         "popupOriginUrl" => "https://merchant.com/cart",
-        //         "name" => "string"
-        //     ],
-        //     "items" => [
-        //         [
-        //             "name" => "Blue Carabiner",
-        //             "sku" => "12341234",
-        //             "quantity" => 1,
-        //             "pageUrl" => "https://merchant.example.com/carabiner-354193.html",
-        //             "imageUrl" => "https://merchant.example.com/carabiner-7378-391453-1.jpg",
-        //             "price" => [
-        //                 "amount" => "0.55",
-        //                 "currency" => "AUD"
-        //             ],
-        //             "categories" => [
-        //                 [
-        //                     "Sporting Goods",
-        //                     "Climbing Equipment",
-        //                     "Climbing",
-        //                     "Climbing Carabiners"
-        //                 ],
-        //                 [
-        //                     "Sale",
-        //                     "Climbing"
-        //                 ]
-        //             ],
-        //             "estimatedShipmentDate" => "2023-08-01"
-        //         ]
-        //     ],
-        //     "courier" => [
-        //         "shippedAt" => "2023-08-24T14:15:22Z",
-        //         "name" => "Australia Post",
-        //         "tracking" => "AA0000000000000",
-        //         "priority" => "STANDARD"
-        //     ],
-        //     "taxAmount" => [
-        //         "amount" => "0.00",
-        //         "currency" => "AUD"
-        //     ],
-        //     "shippingAmount" => [
-        //         "amount" => "0.00",
-        //         "currency" => "AUD"
-        //     ],
-        //     "discounts" => [
-        //         [
-        //             "displayName" => "New Customer Coupon",
-        //             "amount" => [
-        //                 "amount" => "0.00",
-        //                 "currency" => "AUD"
-        //             ]
-        //         ]
-        //     ],
-        //     "description" => "string"
-        // ];
-        
-
         $response = $this->AfterPayService->charge($orderDetails);
-        \Log::info($response);
-
-        if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
-            $token = $response['token'];
-            \Log::info($token);
-            \Log::info('token');
-            Session::put('afterpay_token', $token);
-            return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
-        }
 
         $log = new AfterPayLogs;
         $log->logs = json_encode($response) ?? '';
         $log->save();
+
+        if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
+            return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
+        }
 
         return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
     }
 
     public function afterpaySuccess(Request $request)
     {
-        \Log::info(json_encode($request->all(), JSON_PRETTY_PRINT));
-        dd($request->all());
-        // $orderId = $request->query('orderId');
-        // // $token = Session::get('afterpay_token');
-        // \Log::info($orderId);
-        // \Log::info('afterpay_token success');
-
-        // if (!$orderId) {
-        //     return redirect()->route('checkout')->with('error', 'Missing order ID.');
-        // }
-
-        // $captureResponse = $this->AfterPayService->capturePayment($orderId);
-        // $log = new AfterPayLogs;
-        // $log->logs = json_encode($captureResponse) ?? '';
-        // $log->save();
-
-        // \Log::info($captureResponse);
-
-        // if (isset($captureResponse['status'])) {
-
-        //     $this->createOrder($charge = null, $captureResponse);
-
-        //     Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
-        //     return redirect()->route('order.success');
-        // } else {
-        //     return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
-        // }
-
-        // $afterPay = $this->AfterPayService->validateAfterpayOrder($token);
-        // \Log::info($afterPay);
-        // \Log::info('afterpay_logs success');
-
-        // if (isset($afterPay) && !empty($afterPay)) {
-        //     $log = new AfterPayLogs;
-        //     $log->logs = json_encode($afterPay) ?? '';
-        //     $log->save();
-        // }
-
-        // if (isset($afterPay['status'])) {
-
-        //     $this->createOrder($charge = null, $afterPay = null);
-
-        //     Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
-        //     return redirect()->route('order.success');
-        // } else {
-        //     return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
-        // }
+        if ($request->status == "SUCCESS" && !empty($request->orderToken)) {
+            $orderToken = $request->orderToken;
+            // Call Afterpay Payment API to capture the order
+            $paymentResponse = $this->AfterPayService->capturePayment($orderToken);
+             
+            $log = new AfterPayLogs;
+            $log->logs = json_encode($paymentResponse) ?? '';
+            $log->save();
+                
+            if (isset($paymentResponse['status']) && $paymentResponse['status'] === "APPROVED") {
+                $this->createOrder($charge = null, $paymentResponse);
+                Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+                return redirect()->route('order.success');
+            } else {
+                return redirect()->route('checkout')->with('error', 'Payment capture failed.');
+            }
+        }
+        return redirect()->route('checkout')->with('error', 'Payment failed or was canceled.');
     }
 
     public function afterpayCancel()
     {
-        \Log::info('cancel pay');
         Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
         return redirect()->route('checkout')->with('error', 'Payment was cancelled. Please try again.');
     }
