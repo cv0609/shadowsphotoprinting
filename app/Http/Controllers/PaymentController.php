@@ -422,8 +422,6 @@ class PaymentController extends Controller
             ];
         }
 
-        \Log::info($address);
-
         Session::put('order_address', $address);
 
         if (Auth::check() && !empty(Auth::user())) {
@@ -461,8 +459,8 @@ class PaymentController extends Controller
                 "sku" => $sku,
                 "quantity" => $qty,
                 "price" => [
-                    // "amount" => $productPriceInCents,
-                    "amount" => "0.55",
+                    "amount" => $productPriceInCents,
+                    // "amount" => "0.55",
                     "currency" => "AUD"
                 ]
             ];
@@ -474,8 +472,8 @@ class PaymentController extends Controller
 
         $orderDetails = [
             "amount" => [
-                // "amount" => $totalAmountInCents,
-                "amount" => "0.55",
+                "amount" => $totalAmountInCents,
+                // "amount" => "0.55",
                 "currency" => "AUD"
             ],
             "consumer" => [
