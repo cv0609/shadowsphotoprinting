@@ -207,9 +207,9 @@ class PaymentController extends Controller
         $order_type = '';
         if (Session::has('order_address')) {
             $order_address = Session::get('order_address');
-            $payment_method = $order_address['payment_method'];
-            $shippingCharge = $order_address['shipping_charge'];
-            $order_type = $order_address['order_type'];
+            $payment_method = $order_address['payment_method'] ?? '';
+            $shippingCharge = $order_address['shipping_charge'] ?? '';
+            $order_type = $order_address['order_type'] ?? '';
         }
 
         $order = Order::create([
