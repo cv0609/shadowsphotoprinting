@@ -359,11 +359,11 @@ class OrderController extends Controller
             if($payment_status == 'APPROVED'){
                 $afterPayRefund = $this->AfterPayService->refundPayment($payment_id, $total, $currency = 'AUD', $merchantReference = null);
 
-                Order::where('id',$order_id)->update(['refund_id' => $afterPayRefund['refundId'],'payment_status' => 'REFUNDED','order_status' => '3']);
-
                 $log = new AfterPayLogs;
                 $log->logs = json_encode($afterPayRefund) ?? '';
                 $log->save();
+
+                Order::where('id',$order_id)->update(['refund_id' => $afterPayRefund['refundId'],'payment_status' => 'REFUNDED','order_status' => '3']);
 
             }else{
                 return redirect()->back()->with('success', 'Payment refunded failed.');

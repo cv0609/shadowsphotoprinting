@@ -226,7 +226,7 @@ class PaymentController extends Controller
             'total' => $shipping_amount != 0 ? $cart_total : $cart_total + $shippingCharge,
             'payment_id' => ($payment_method === 'stripe')
                 ? ($charge->id ?? "")
-                : ($afterPay['token'] ?? ""),
+                : ($afterPay['id'] ?? ""),
             'is_paid' => ($payment_method === 'stripe')
                 ? ($charge->captured ?? '')
                 : ($afterPay['status'] ?? ''),
