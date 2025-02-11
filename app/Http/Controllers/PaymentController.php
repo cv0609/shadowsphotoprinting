@@ -195,6 +195,7 @@ class PaymentController extends Controller
         }
 
         $cartTotal = $this->CartService->getCartTotal();
+        \Log::info($cartTotal);
 
         $subtotal = $cartTotal['subtotal'] ?? 0;
         $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
@@ -207,9 +208,10 @@ class PaymentController extends Controller
         $order_type = '';
         if (Session::has('order_address')) {
             $order_address = Session::get('order_address');
-            $payment_method = $order_address['payment_method'] ?? '';
-            $shippingCharge = $order_address['shipping_charge'] ?? '';
-            $order_type = $order_address['order_type'] ?? '';
+            \Log::info($order_address);
+            $payment_method = $order_address['payment_method'];
+            $shippingCharge = $order_address['shipping_charge'];
+            $order_type = $order_address['order_type'];
         }
 
         $order = Order::create([
@@ -353,7 +355,9 @@ class PaymentController extends Controller
     public function afterPayCheckout(Request $request)
     {
         $formData = $request->input('data');
-
+        
+        $payment_method = $formData['payment_method'] ?? '';
+        $customer_order_type = $formData['customer_order_type'] ?? '';
         $shipping_charge = $formData['shipping_charge'] ?? 0;
         $fname = $formData['fname'] ?? '';
         $lname = $formData['lname'] ?? '';
@@ -397,6 +401,9 @@ class PaymentController extends Controller
             'email' => $email,
             'username' => $username,
             'password' => $password,
+            'payment_method' => $payment_method,
+            'shipping_charge' => $shipping_charge,
+            'order_type' => $customer_order_type,
         ];
 
         if (isset($ship_fname) || isset($ship_lname) || isset($ship_street1) || isset($ship_suburb) || isset($ship_state) || isset($ship_postcode)) {
@@ -414,6 +421,8 @@ class PaymentController extends Controller
                 'order_comments' => $order_comments
             ];
         }
+
+        \Log::info($address);
 
         Session::put('order_address', $address);
 
@@ -535,11 +544,18 @@ class PaymentController extends Controller
         $log->logs = json_encode($response) ?? '';
         $log->save();
 
-        if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
-            return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
-        }
+        $paymentResponse = [
+          'status' => true,
+          'token' => 'dsfdsfdsf'
+        ];
 
-        return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
+        $this->createOrder($charge = null, $paymentResponse);
+
+        // if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
+        //     return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
+        // }
+
+        // return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
     }
 
     public function afterpaySuccess(Request $request)
