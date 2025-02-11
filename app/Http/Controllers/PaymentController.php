@@ -735,7 +735,7 @@ class PaymentController extends Controller
 
         if (isset($captureResponse['status'])) {
 
-            $this->createOrder($charge = null, $captureResponse = null);
+            $this->createOrder($charge = null, $captureResponse);
 
             Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
             return redirect()->route('order.success');
