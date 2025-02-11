@@ -5,8 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\AfterPayLogs;
 use App\Services\CartService;
 use App\Services\StripeService;
+use App\Services\AfterPayService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\OrderDetail;
@@ -23,11 +25,13 @@ class OrderController extends Controller
 {
     protected $CartService;
     protected $StripeService;
+    protected $AfterPayService;
 
-    public function __construct(CartService $CartService,StripeService $StripeService)
+    public function __construct(CartService $CartService,StripeService $StripeService,AfterPayService $AfterPayService)
     {
         $this->CartService = $CartService;
         $this->StripeService = $StripeService;
+        $this->AfterPayService = $AfterPayService;
     }
 
     public function index()
@@ -46,8 +50,9 @@ class OrderController extends Controller
         $stripe = $this->StripeService->retrivePaymentDetails($orderDetail->payment_id);
 
         $stripe_fee = 0;
+        // dd($stripe);
 
-        if(isset($stripe) && !empty($stripe)){
+        if(isset($stripe) && isset($stripe->fee) && !empty($stripe->fee)){
             $stripe_fee = floatval($stripe->fee) / 100;
         }
 
@@ -339,12 +344,32 @@ class OrderController extends Controller
 
     public function refundOrder($order_id)
      {
-       $payment_id = Order::whereId($order_id)->select('payment_id')->first();
-       $refundedData = $this->StripeService->refundOrder($payment_id->payment_id);
+       $order = Order::whereId($order_id)->select('payment_id')->first();
+       $payment_method = $order->payment_method;
+       $payment_status = $order->payment_status;
+       $payment_id = $order->payment_id;
+       $total = $order->total;
+       
+       if($payment_method != 'afterPay'){
+           $refundedData = $this->StripeService->refundOrder($order->payment_id);
+           if(isset($refundedData['id']) && !empty($refundedData['id'])){
+              Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object'],'order_status' => '3']);
+            }
+       }else{
+            if($payment_status == 'APPROVED'){
+                $afterPayRefund = $this->AfterPayService->refundPayment($payment_id, $total, $currency = 'AUD', $merchantReference = null);
+
+                Order::where('id',$order_id)->update(['refund_id' => $afterPayRefund['refundId'],'payment_status' => 'REFUNDED','order_status' => '3']);
+
+                $log = new AfterPayLogs;
+                $log->logs = json_encode($afterPayRefund) ?? '';
+                $log->save();
+
+            }else{
+                return redirect()->back()->with('success', 'Payment refunded failed.');
+            }
+       }
     
-       if(isset($refundedData['id']) && !empty($refundedData['id'])){
-          Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object'],'order_status' => '3']);
-        }
         return redirect()->back()->with('success', 'Payment refunded successfully.');
      }
 
