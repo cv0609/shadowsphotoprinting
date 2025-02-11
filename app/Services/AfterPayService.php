@@ -84,28 +84,40 @@ class AfterPayService
     //     }
     // }
 
-    public function refundPayment($payment_id)
+    public function refundPayment($payment_id, $amount, $currency = 'AUD', $merchantReference = null)
     {
         $auth = base64_encode("{$this->merchantId}:{$this->secretKey}");
+        $merchantReference = $merchantReference ?? "merchantRefundId-" . Str::random(8);
+        $requestId = Str::uuid(); // Generate a unique request ID
+
+        $payload = [
+            'requestId' => $requestId,
+            'amount' => [
+                'amount' => number_format($amount, 2, '.', ''), // Ensure proper format
+                'currency' => $currency
+            ],
+            'merchantReference' => $merchantReference,
+            'refundMerchantReference' => $merchantReference
+        ];
 
         try {
-            $response = $this->client->get("/v2/payments/token/{$payment_id}", [
+            $response = $this->client->post("/v2/payments/{$payment_id}/refund", [
                 'headers' => [
                     'Authorization' => "Basic $auth",
                     'Content-Type' => 'application/json',
                     'User-Agent' => 'Afterpay Online API',
                     'Accept' => 'application/json',
                 ],
+                'json' => $payload
             ]);
 
             return json_decode($response->getBody()->getContents(), true);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
-                $responseBody = json_decode($response->getBody()->getContents(), true);
-                return $responseBody;
+                return json_decode($response->getBody()->getContents(), true);
             }
-            return ['error' => 'Unable to validate Afterpay order.'];
+            return ['error' => 'Unable to process the refund.'];
         }
     }
 

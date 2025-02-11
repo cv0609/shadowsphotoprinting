@@ -51,9 +51,15 @@
 
 
                       </div>
+                      @if($orderDetail->payment_method != 'afterPay')
                         <div class="lower_header">
                           <p>Payment via Credit Card (Stripe) ( <a href="{{ env('STRIPE_URL').$orderDetail->payment_id }}" target="_blank">{{ $orderDetail->payment_id }}</a>). Paid on {{ date('d F Y H:s A',strtotime($orderDetail->created_at)) }}</p>
                         </div>
+                      @else
+                        <div class="lower_header">
+                          <p>Payment via AfterPay ( <a href="#">{{ $orderDetail->payment_id }}</a>). Paid on {{ date('d F Y H:s A',strtotime($orderDetail->created_at)) }}</p>
+                        </div>
+                      @endif
                     </div>
                   </div>
             </div>
@@ -309,13 +315,15 @@
                     <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->total,2) }}</strong></td>
                 </tr>
                 <tr>
-                    <td colspan="" style="padding: 5px;">{{ date('F j, Y', strtotime($orderDetail->created_at ?? '')) }}
-                      via Credit Card (Stripe)</td>
+                      <td colspan="" style="padding: 5px;">{{ date('F j, Y', strtotime($orderDetail->created_at ?? '')) }}
+                      @if($orderDetail->payment_method != 'afterPay')  via Credit Card (Stripe) @else via AfterPay @endif
+                      </td>
                     <td></td>
                 </tr>
             </table>
             <div class="clear"></div>
             <table class="wc-order-totals">
+              @if($orderDetail->payment_method != 'afterPay')
                 <tr>
                     <td style="padding: 5px;"> <i class="fa fa-question-circle" aria-hidden="true"></i>
                         Stripe Fee:</td>
@@ -326,6 +334,7 @@
                     </td>
                     <td style="text-align: right; padding: 5px;"><strong>${{(float)$orderDetail->total-$stripe_fee}}</strong></td>
                 </tr>
+              @endif  
                 <tr>
                     <td style="padding: 5px;">Total cart count:</td>
                     <td style="text-align: right; padding: 5px;"><strong>{{$orderDetail->order_details_count ?? 0}}</strong></td>
@@ -338,6 +347,7 @@
       </div>
 
     </div>
+
     <div class="bottom_refund_btn_class">
        <div class="fefund_btn">
           <a href="{{ ($orderDetail->order_status != "3") ? route('refund-order',['order_id'=>$orderDetail->id]) : '#' }}" class="{{ (($orderDetail->order_status == "3")) ? 'not-allowed' : '' }}"  
