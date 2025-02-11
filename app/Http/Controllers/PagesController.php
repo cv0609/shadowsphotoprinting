@@ -12,6 +12,7 @@ use App\Models\HandCraftCategory;
 use App\Models\HandCraftProduct;
 use App\Models\PhotoForSaleSizePrices;
 use App\Services\PageDataService;
+use App\Services\AfterPayService;
 use App\Http\Requests\GetAQuoteRequest;
 use App\Mail\QuoteMail;
 use Illuminate\Support\Facades\Mail;
@@ -23,10 +24,12 @@ use App\Models\Product;
 class PagesController extends Controller
 {
   private $PageDataServices;
+  private $AfterPayService;
 
-  public function __construct(PageDataService $PageDataService)
+  public function __construct(PageDataService $PageDataService,AfterPayService $AfterPayService)
   {
     $this->PageDataServices = $PageDataService;
+    $this->AfterPayService = $AfterPayService;
   }
   public function pages(Request $request)
   {
