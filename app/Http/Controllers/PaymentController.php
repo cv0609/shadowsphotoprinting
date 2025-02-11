@@ -544,18 +544,11 @@ class PaymentController extends Controller
         $log->logs = json_encode($response) ?? '';
         $log->save();
 
-        $paymentResponse = [
-          'status' => true,
-          'token' => 'dsfdsfdsf'
-        ];
+        if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
+            return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
+        }
 
-        $this->createOrder($charge = null, $paymentResponse);
-
-        // if (isset($response['redirectCheckoutUrl']) && !empty($response['redirectCheckoutUrl'])) {
-        //     return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
-        // }
-
-        // return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
+        return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
     }
 
     public function afterpaySuccess(Request $request)
