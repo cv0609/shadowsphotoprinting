@@ -212,17 +212,18 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
         });
         $(document).ready(function(){
 
+        $('.textwidget p').css('margin-bottom','10px')
 
 
-            function setCookie(name, value, days) {
-      var expires = "";
-      if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Adds 1 day in milliseconds
-        expires = "; expires=" + date.toUTCString(); // Set expiration date
-      }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/"; // Cookie applies to entire site
-    }
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Adds 1 day in milliseconds
+                expires = "; expires=" + date.toUTCString(); // Set expiration date
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/"; // Cookie applies to entire site
+        }
 
     // Function to get a cookie by name
     function getCookie(name) {
