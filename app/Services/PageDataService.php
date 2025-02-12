@@ -36,6 +36,19 @@ class PageDataService
         }    
     }
 
+    public function getProductCategoriesForBulk()
+    {
+        $ProductCategories = ProductCategory::where('slug' ,'!=','test-print')->where('slug' ,'!=','gift-card')->where('slug' ,'!=','hand-craft')->get();
+        if(isset($ProductCategories) && !empty($ProductCategories))
+        {
+            return $ProductCategories;
+        }
+        else
+        {
+            return null;
+        }    
+    }
+
     public function getProductBySlug($slug)
      {
         $categoryProducts = ProductCategory::with(['products' => function ($query) {
