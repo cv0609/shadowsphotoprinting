@@ -3,6 +3,7 @@
 @php
 $PageDataService = app(App\Services\PageDataService::class);
 $ProductCategories = $PageDataService->getProductCategories();
+$ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
 @endphp
 
         <div class="banner-slider fade-slider">
@@ -176,7 +177,7 @@ $ProductCategories = $PageDataService->getProductCategories();
                                     <h2>{{ ucwords($page_content['accept_bulk_order_description']) }}</h2>
                                     {{-- <h2>We accept bulk orders for</h2> --}}
                                     <p>
-                                        @foreach ($ProductCategories as $ProductCategory)
+                                        @foreach ($ProductCategoriesForBulk as $ProductCategory)
                                           <a href="{{ url('our-products/'.$ProductCategory->slug) }}">{{ ucfirst($ProductCategory->name) }}  {{ (!$loop->last) ? ',' : '' }} </a>
                                         @endforeach
                                     </p>
