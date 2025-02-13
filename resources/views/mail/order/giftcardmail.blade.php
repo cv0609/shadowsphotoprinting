@@ -76,6 +76,9 @@ a[x-apple-data-detectors='true'] {
 }
 
 table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }
+.v-button {
+  text-decoration: none !Important;
+}
     </style>
 
 
@@ -231,7 +234,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
 <div align="center">
 
-    <a href="" target="_blank" class="v-button" style="background-color: #16a085;color: #FFF;padding: 15px;border-radius: 10px;border: 2px solid #fff;" rel="noopener">
+    <a href="" target="_blank" class="v-button">
       <span style="display:block;padding:13px 22px;line-height:120%;background-color: #16a085;color: #FFF;padding: 15px;border-radius: 10px;border: 2px solid #fff;">{{ $order['code'] }}</span>
     </a>
 

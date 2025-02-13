@@ -300,6 +300,8 @@
                                             <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
                                         </tr>
 
+                                        @if($CartTotal['total'] > 0)
+
                                         <tr>
                                             <td>
                                                 <div class="afterpay-4-payment">
@@ -323,66 +325,73 @@
                                             </td>
                                         </tr>
 
+                                        @endif
 
                                     </tfoot>
                                 </table>
 
-                                <div class="mt-5">
-                                   <h3 class="mb-4">Select Payment Method</h3>
-                                    <div class="row">
-                                        @if(env('STRIPE') == true)
-                                        <div class="col-md-6">
-                                            <label class="payment-option active-payment" for="stripeId">
-                                                <input type="radio" name="payment" id="stripeId" value="stripe" checked>
-                                                <!-- <i class="fab fa-cc-stripe"></i> -->
-                                                <i class="fas fa-credit-card"></i>
-                                                <span>Stripe</span>
-                                            </label>
-                                        </div>
-                                        @endif
+                                @if($CartTotal['total'] > 0)
 
-                                         @if(env('AFFTERPAY') == true)
-                                        <div class="col-md-6">
-                                            <label class="payment-option active-payment" for="afterpayId">
-                                                <input type="radio" name="payment" id="afterpayId" value="afterpay">
-                                                 <img src="{{asset('assets/images/favicon.ico')}}" alt="" class="afterPayIcon">
-                                                <span>Afterpay</span>
-                                            </label>
+                                    <div class="mt-5">
+                                    <h3 class="mb-4">Select Payment Method</h3>
+                                        <div class="row">
+                                            @if(env('STRIPE') == true)
+                                            <div class="col-md-6">
+                                                <label class="payment-option active-payment" for="stripeId">
+                                                    <input type="radio" name="payment" id="stripeId" value="stripe" checked>
+                                                    <!-- <i class="fab fa-cc-stripe"></i> -->
+                                                    <i class="fas fa-credit-card"></i>
+                                                    <span>Stripe</span>
+                                                </label>
+                                            </div>
+                                            @endif
+
+                                            @if(env('AFFTERPAY') == true)
+                                            <div class="col-md-6">
+                                                <label class="payment-option active-payment" for="afterpayId">
+                                                    <input type="radio" name="payment" id="afterpayId" value="afterpay">
+                                                    <img src="{{asset('assets/images/favicon.ico')}}" alt="" class="afterPayIcon">
+                                                    <span>Afterpay</span>
+                                                </label>
+                                            </div>
+                                            @endif
                                         </div>
-                                        @endif
                                     </div>
-                                </div>
+
+                                @endif
 
                                 <div id="payment">
                                     <form id="payment-form">
+                                        @if($CartTotal['total'] > 0)
                                         <div class="payment_methods stripe-details">
                                             <ul>
                                             {{-- @if(env('STRIPE') == true)      --}}
-                                            <li>
-                                                <label for=""> Credit Card (Stripe) </label>
-                                                <p>Pay with your credit card via Stripe.</p><br>
-                                                <span id="stripe-error"></span>
-                                                <div class="payment_form-wrap">
-                                                    <div class="form-group">
-                                                        <label>Card Number</label>
-                                                        <div id="card-number-element"></div>
-                                                        <div id="card-number-errors" role="alert"></div>
+                                                <li>
+                                                    <label for=""> Credit Card (Stripe) </label>
+                                                    <p>Pay with your credit card via Stripe.</p><br>
+                                                    <span id="stripe-error"></span>
+                                                    <div class="payment_form-wrap">
+                                                        <div class="form-group">
+                                                            <label>Card Number</label>
+                                                            <div id="card-number-element"></div>
+                                                            <div id="card-number-errors" role="alert"></div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Expiration Date</label>
+                                                            <div id="card-expiry-element"></div>
+                                                            <div id="card-expiry-errors" role="alert"></div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>CVC Number</label>
+                                                            <div id="card-cvc-element"></div>
+                                                            <div id="card-cvc-errors" role="alert"></div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label>Expiration Date</label>
-                                                        <div id="card-expiry-element"></div>
-                                                        <div id="card-expiry-errors" role="alert"></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>CVC Number</label>
-                                                        <div id="card-cvc-element"></div>
-                                                        <div id="card-cvc-errors" role="alert"></div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            {{-- @endif --}}
-                                        </ul>
-                                    </div>
+                                                </li>
+                                                {{-- @endif --}}
+                                            </ul>
+                                        </div>
+                                        @endif
                                     <div class="experience-throughout">
                                         <p id="afterPayError"></p>
                                         {{-- <p>Your personal data will be used to process your order, support your
@@ -426,36 +435,41 @@
         });
     });
 
+    var order_cart_total = {{$CartTotal['total']}};
+
 
     var authcheck = "{{Auth::check()}}";
-    
-    var stripe = Stripe("{{ env('STRIPE_KEY') }}");
-    
-    var elements = stripe.elements();
-    var style =  {
-        base: {
-        iconColor: '#666EE8',
-        color: '#000',
-        lineHeight: '40px',
-        fontWeight: 300,
-        fontFamily: 'Helvetica Neue',
-        fontSize: '15px',
-        padding:'10px',
-        background:'red',
 
-        '::placeholder': {
-            color: '#CFD7E0',
-        },
-        },
+    if(order_cart_total > 0){
+        var stripe = Stripe("{{ env('STRIPE_KEY') }}");
+        
+        var elements = stripe.elements();
+        var style =  {
+            base: {
+            iconColor: '#666EE8',
+            color: '#000',
+            lineHeight: '40px',
+            fontWeight: 300,
+            fontFamily: 'Helvetica Neue',
+            fontSize: '15px',
+            padding:'10px',
+            background:'red',
+    
+            '::placeholder': {
+                color: '#CFD7E0',
+            },
+            },
+        }
+        var cardNumber = elements.create('cardNumber', {style: style});
+        cardNumber.mount('#card-number-element');
+    
+        var cardExpiry = elements.create('cardExpiry', {style: style});
+        cardExpiry.mount('#card-expiry-element');
+    
+        var cardCvc = elements.create('cardCvc', {style: style});
+        cardCvc.mount('#card-cvc-element');
     }
-    var cardNumber = elements.create('cardNumber', {style: style});
-		    cardNumber.mount('#card-number-element');
-
-		    var cardExpiry = elements.create('cardExpiry', {style: style});
-		    cardExpiry.mount('#card-expiry-element');
-
-		    var cardCvc = elements.create('cardCvc', {style: style});
-		    cardCvc.mount('#card-cvc-element');
+    
 
     var form = document.getElementById('payment-form');
 
@@ -559,79 +573,110 @@
             formData.isShippingAddress = isShippingAddress;
         }
 
-        if ($('#stripeId').is(':checked')) {
+        if(order_cart_total > 0){
+            if ($('#stripeId').is(':checked')) {
 
-            if (cardNumber._empty) {
-                isValid = false;
-                $('#card-number-element').after('<span class="error-message" style="color: red;">Card number is required.</span>');
-            }
-    
-            if (cardExpiry._empty) {
-                isValid = false;
-                $('#card-expiry-element').after('<span class="error-message" style="color: red;">Expiry date is required.</span>');
-            }
-    
-            if (cardCvc._empty) {
-                isValid = false;
-                $('#card-cvc-element').after('<span class="error-message" style="color: red;">CVC is required.</span>');
-            }
-    
-            if (!isValid) {
-                return;
-            }
-            
-            stripe.createToken(cardNumber).then(function(result) {
+                if (cardNumber._empty) {
+                    isValid = false;
+                    $('#card-number-element').after('<span class="error-message" style="color: red;">Card number is required.</span>');
+                }
+        
+                if (cardExpiry._empty) {
+                    isValid = false;
+                    $('#card-expiry-element').after('<span class="error-message" style="color: red;">Expiry date is required.</span>');
+                }
+        
+                if (cardCvc._empty) {
+                    isValid = false;
+                    $('#card-cvc-element').after('<span class="error-message" style="color: red;">CVC is required.</span>');
+                }
+        
+                if (!isValid) {
+                    return;
+                }
                 
-                if (result.error) {
-    
-                    $('#stripe-error').text(result.error.message).css('color','red');
-                   
-                    $('#place-order-btn').removeClass('d-none');
-                    $('#loader-order-btn').addClass('d-none');
-                } else {
-                    $('#place-order-btn').addClass('d-none');
-                    $('#loader-order-btn').removeClass('d-none');
-                    // Send the token to your server    
-                    formData.stripeToken = result.token.id;
-                    formData.payment_method = 'stripe';
-                    var cent_total_amount = total_amount * 100;
-                    fetch('/create-customer', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify(formData)
-                    })
-                    .then(response => response.json())
-    
-                    .then(response => {
-                        fetch('/charge-customer', {
+                stripe.createToken(cardNumber).then(function(result) {
+                    
+                    if (result.error) {
+        
+                        $('#stripe-error').text(result.error.message).css('color','red');
+                    
+                        $('#place-order-btn').removeClass('d-none');
+                        $('#loader-order-btn').addClass('d-none');
+                    } else {
+                        $('#place-order-btn').addClass('d-none');
+                        $('#loader-order-btn').removeClass('d-none');
+                        // Send the token to your server    
+                        formData.stripeToken = result.token.id;
+                        formData.payment_method = 'stripe';
+                        var cent_total_amount = total_amount * 100;
+                        fetch('/create-customer', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             },
-                            body: JSON.stringify({
-                                customer_id: response.id,
-                                amount:  cent_total_amount // amount in cents
-                            })
+                            body: JSON.stringify(formData)
                         })
                         .then(response => response.json())
-                        .then(charge => {
-                             if(charge.error == false){
-                                let url = "{{ route('thankyou', ['order_id' => ':orderId']) }}";
-                                url = url.replace(':orderId', charge.order_id);
-                                window.location.href = url;
-                             }else{
-                                console.log('something went wrong.');
-                             }
+        
+                        .then(response => {
+                            fetch('/charge-customer', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    customer_id: response.id,
+                                    amount:  cent_total_amount // amount in cents
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(charge => {
+                                if(charge.error == false){
+                                    let url = "{{ route('thankyou', ['order_id' => ':orderId']) }}";
+                                    url = url.replace(':orderId', charge.order_id);
+                                    window.location.href = url;
+                                }else{
+                                    console.log('something went wrong.');
+                                }
+                            });
                         });
-                    });
-                }
-            });
-        }else{
+                    }
+                });
+            }else{
 
+                if (!isValid) {
+                    $('#place-order-btn').removeClass('d-none');
+                    $('#loader-order-btn').addClass('d-none');
+                    return;
+                }
+                $('#place-order-btn').addClass('d-none');
+                $('#loader-order-btn').removeClass('d-none');
+
+                formData.payment_method = 'afterPay';
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{route('afterPay.checkout')}}", // Replace with your Laravel route
+                    data: {
+                        _token: "{{ csrf_token() }}", // Include CSRF token
+                        data: formData // Include your data here
+                    },
+                    success: function(data) {
+                        if (data.error == false) {
+                            window.location = data.data; 
+                        } else {
+                            $('#afterPayError').text(data.data).css('color','red');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error: " + error);
+                    }
+                });
+            }
+        }else{
             if (!isValid) {
                 $('#place-order-btn').removeClass('d-none');
                 $('#loader-order-btn').addClass('d-none');
@@ -640,11 +685,11 @@
             $('#place-order-btn').addClass('d-none');
             $('#loader-order-btn').removeClass('d-none');
 
-            formData.payment_method = 'afterPay';
+            formData.payment_method = 'free';
 
             $.ajax({
                 type: "POST",
-                url: "{{route('afterPay.checkout')}}", // Replace with your Laravel route
+                url: "{{route('free_order.checkout')}}", // Replace with your Laravel route
                 data: {
                     _token: "{{ csrf_token() }}", // Include CSRF token
                     data: formData // Include your data here
