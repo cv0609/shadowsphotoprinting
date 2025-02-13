@@ -32,7 +32,9 @@ class Coupon extends Model
         'used',
         'product_category',
         'coupon_code',
-        'qty'
+        'qty',
+        'is_gift_card',
+        'is_active'
     ];
 
     // public function isExpired()

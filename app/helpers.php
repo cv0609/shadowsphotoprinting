@@ -1,6 +1,8 @@
 <?php
 
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+use App\Models\Coupon;
 
 function read_json($file_name = ''){
     $pointer = base_path('resources/pages_json/'.$file_name);
@@ -71,5 +73,12 @@ if (!function_exists('getS3ImgName')) {
     }
 }
 
-
-
+if (!function_exists('generateGiftCardCoupon')) {
+    function generateGiftCardCoupon($length = 8){
+        do {
+            $code = strtoupper(Str::random($length));
+        } while (Coupon::where('code', $code)->exists()); // Check if it already exists
+    
+        return $code;
+    }
+}

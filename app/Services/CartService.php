@@ -63,10 +63,15 @@ class CartService
             return $carry + ($product_price * $item->quantity);
         }, 0);
 
+        $shippingCharge = 0;
+        // Calculate the total after applying the discount
+        $shippingCharge = $this->getShippingCharges($cart);
+
         $couponCode = Session::get('coupon'); // Assume coupon code is stored in session
         $discount = 0;
         $coupon_code = "";
         $coupon_id = "";
+        $totalAfterDiscount = $subtotal;
         if ($couponCode) {
             $coupon = Coupon::where(['code' => $couponCode['code']])->where('is_active', true)->first();
 
@@ -78,29 +83,62 @@ class CartService
                     $discount = $coupon->amount;
                 }
                 // Ensure the discount does not exceed the total
-                $discount = min($discount, $subtotal);
+                
+                $discount = min($discount, $subtotal); // Ensure discount is not more than subtotal
                 $coupon_id = $coupon->id;
+
+                if($coupon->is_gift_card != '1'){
+                    $totalAfterDiscount = $subtotal - $discount;
+                }else{
+                    $totalAfterDiscount = max(0, $subtotal - $discount); // Ensure total is never negative
+                }
             }
         }
 
-        // Calculate the total after applying the discount
-        $totalAfterDiscount = $subtotal - $discount;
-
-        $shipping = $this->getShippingCharge();
-
-        // if($shipping->status == "1" && Session::has('billing_details')){
-        //     $shippingCharge = $shipping->amount; // Example shipping charge
-        // }
-        // else
-        // {
-        // $shippingCharge = 0;
-        // }
-        $shippingCharge = 0;
+        $order_type = 0;
+        if(Session::has('order_type')){
+            $order_type = Session::get('order_type');
+            if($order_type != 0){
+                $shippingCharge = 0;
+            }
+        }
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
 
         $data = ['subtotal' => $subtotal, 'total' => $totalAfterShipping, 'coupon_discount' => $discount, "coupon_code" => $coupon_code, 'coupon_id' => $coupon_id, "shippingCharge" => $shippingCharge];
         return $data;
+    }
+
+    public function getShippingCharges($cart){
+        $shipping_with_test_print = 0;
+        $hasTestPrint = false;
+        $hasRegularPrint = false;
+
+        $shipping = $this->getShippingCharge();
+        $testPrintShipping = $this->getTestPrintShippingCharge()->amount;
+
+        foreach ($cart->items as $items) {
+            if ($items->is_test_print == '1') {
+                $hasTestPrint = true;
+            }
+
+            if ($items->is_test_print == '0') {
+                $hasRegularPrint = true;
+            }
+
+            if ($hasTestPrint && $hasRegularPrint) {
+                break;
+            }
+        }
+
+        if ($hasTestPrint && $hasRegularPrint) {
+            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
+        } elseif ($hasTestPrint) {
+            $shipping_with_test_print += $testPrintShipping;
+        } elseif ($hasRegularPrint) {
+            $shipping_with_test_print += $shipping->amount;
+        }
+        return $shipping_with_test_print;
     }
 
     public function getProductDetailsByType($product_id, $product_type)

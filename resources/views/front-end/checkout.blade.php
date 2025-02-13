@@ -6,7 +6,7 @@
     if(Session::has('order_type')){
         $order_type = Session::get('order_type');
         if($order_type != 0){
-            $shipping_with_test_print = 0;
+            $CartTotal['shippingCharge'] = 0;
         }
     }
 @endphp
@@ -265,7 +265,7 @@
                                         @if(Session::has('coupon'))
                                         <tr>
                                             <th>Coupon: {{ $CartTotal['coupon_code']['code'] }}</th>
-                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_code']['discount_amount'],2) }}</span> </td>
+                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_discount'],2) }}</span> </td>
                                         </tr>
                                         @endif
 
@@ -277,7 +277,7 @@
                                                     <li>
                                                         <input type="hidden" data-index="0">
                                                         <label>Flat rate:
-                                                            <span><bdi><span>$</span>{{ number_format($shipping_with_test_print,2) }}</bdi></span>
+                                                            <span><bdi><span>$</span>{{ number_format($CartTotal['shippingCharge'],2) }}</bdi></span>
                                                         </label>
                                                        
                                                     </li>
@@ -286,24 +286,24 @@
                                         </tr>
                                         @endif
 
-                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($shipping_with_test_print,2) }}">
+                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($CartTotal['shippingCharge'] ?? 0, 2) }}">
 
                                         <input type="hidden" name="customer_order_type" id="customer_order_type" value="{{$order_type}}">
 
                                         <tr class="order-total">
                                             <th>Total</th>
-                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
+                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                                     <span><span>$</span>1.12</span>
                                                     GST)</small> --}}
                                             </td>
-                                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}">
+                                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
                                         </tr>
 
                                         <tr>
                                             <td>
                                                 <div class="afterpay-4-payment">
-                                                    <span>or 4 payments as low as ${{ number_format(($CartTotal['total']+$shipping_with_test_print)/4,2) }} with </span>
+                                                    <span>or 4 payments as low as ${{ number_format(($CartTotal['total'])/4,2) }} with </span>
                                                     <div class="after-pay-modal afterpayButton">
                                                     <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="98" height="36" class="compact-badge-logo" viewBox="0 0 100 21">
                                                         <path class="afterpay-logo-badge-background" fill="#b2fce4" d="M89.85 20.92h-78.9a10.42 10.42 0 110-20.82h78.89a10.42 10.42 0 010 20.83v-.01z"></path>
