@@ -32,6 +32,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+        \Log::info($request->all());
         if (Session::has('coupon')) {
             $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
             $response = $this->applyCoupon($request_data);
@@ -115,6 +116,8 @@ class CartController extends Controller
                     // $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
                     $ImagePath = $selectedImage;
                     $wtrelativeImagePath = '';
+                    \Log::info($ImagePath);
+                    \Log::info('2');
 
                     // dd($ImagePath);
                     // $wtimagePath = public_path('storage/assets/images/order_images/' . $tempFileName);
@@ -139,6 +142,9 @@ class CartController extends Controller
                         }
                         $wtrelativeImagePath = $this->CartService->addWaterMark($ImagePath);
                     }
+
+                    \Log::info($ImagePath);
+                    \Log::info('1');
 
                     $insertData = [
                         "cart_id" => $cartId,
@@ -431,33 +437,24 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
-        if ($total['subtotal'] < $coupon->minimum_cart_total) {
-            return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
-        }
+        if($coupon->is_gift_card != '1'){
 
-        if ($coupon->auto_applied != '1') {
-            if ($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend) {
-                return ['success' => false, 'message' => 'you can use this coupon between ' . $coupon->minimum_spend . ' To ' . $coupon->maximum_spend . ' amount'];
+            if ($total['subtotal'] < $coupon->minimum_cart_total) {
+                return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
+            }
+
+            if ($coupon->auto_applied != '1') {
+                if ($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend) {
+                    return ['success' => false, 'message' => 'you can use this coupon between ' . $coupon->minimum_spend . ' To ' . $coupon->maximum_spend . ' amount'];
+                }
+            }
+
+            if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
+                return ['success' => false, 'message' => 'This coupon has reached its usage limit.'];
             }
         }
 
-
-        if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
-            return ['success' => false, 'message' => 'This coupon has reached its usage limit.'];
-        }
-
         if (isset($coupon->product_category) && !empty($coupon->product_category) && $coupon->product_category != null) {
-            // $couponCategories = explode(',', $coupon->product_category);
-            // foreach ($cart->items as $item) {
-            //     $productCategory = $item->product->category_id;
-            //     // $productCategories = $item->product->category_id->pluck('id')->toArray();
-            //     if (!in_array($productCategory, $couponCategories)) {
-            //         return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
-            //     }
-            //     if (!in_array($productCategories, $couponCategories)) {
-            //         return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
-            //     }
-            // }
 
             $couponCategories = explode(',', $coupon->product_category);
 
@@ -511,6 +508,14 @@ class CartController extends Controller
         }
 
         $amount = 0;
+
+        if($coupon->is_gift_card == '1'){
+
+            if($coupon->amount <= 0){
+                return ['success' => false, 'message' => 'Expired Gift card voucher.'];
+            }
+            $amount = $coupon->amount;
+        }
 
         if ($coupon->type == "0") {
             $amount = $coupon->amount;

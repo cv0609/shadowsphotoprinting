@@ -13,16 +13,19 @@ use App\Services\AfterPayService;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\ProductStock;
+use App\Models\Coupon;
 use App\Models\State;
 use App\Models\AfterPayLogs;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
 use App\Mail\Order\MakeOrder;
+use App\Mail\Order\GiftCardMail;
 use App\Mail\AdminNotifyOrder;
 use App\Models\UserDetails;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -49,41 +52,14 @@ class PaymentController extends Controller
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
         }
 
-        $shipping_with_test_print = 0;
-        $hasTestPrint = false;
-        $hasRegularPrint = false;
-
         $shipping = $this->CartService->getShippingCharge();
-        $testPrintShipping = $this->CartService->getTestPrintShippingCharge()->amount;
-
-        foreach ($cart->items as $items) {
-            if ($items->is_test_print == '1') {
-                $hasTestPrint = true;
-            }
-
-            if ($items->is_test_print == '0') {
-                $hasRegularPrint = true;
-            }
-
-            if ($hasTestPrint && $hasRegularPrint) {
-                break;
-            }
-        }
-
-        if ($hasTestPrint && $hasRegularPrint) {
-            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
-        } elseif ($hasTestPrint) {
-            $shipping_with_test_print += $testPrintShipping;
-        } elseif ($hasRegularPrint) {
-            $shipping_with_test_print += $shipping->amount;
-        }
 
         $countries = Country::find(14);
         $CartTotal = $this->CartService->getCartTotal();
 
         $page_content = ["meta_title" => config('constant.pages_meta.checkout.meta_title'), "meta_description" => config('constant.pages_meta.checkout.meta_description')];
 
-        return view('front-end.checkout', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content', 'user_address', 'shipping_with_test_print'));
+        return view('front-end.checkout', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content', 'user_address'));
     }
 
     public function createCustomer(Request $request)
@@ -195,7 +171,6 @@ class PaymentController extends Controller
         }
 
         $cartTotal = $this->CartService->getCartTotal();
-        \Log::info($cartTotal);
 
         $subtotal = $cartTotal['subtotal'] ?? 0;
         $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
@@ -222,8 +197,8 @@ class PaymentController extends Controller
             'coupon_code' => $coupon_code['code'] ?? '',
             'discount' => $coupon_discount ?? 0,
             'sub_total' => $subtotal ?? 0,
-            'shipping_charge' => $shipping_amount != 0 ? $shipping_amount : $shippingCharge,
-            'total' => $shipping_amount != 0 ? $cart_total : $cart_total + $shippingCharge,
+            'shipping_charge' => $shipping_amount,
+            'total' => $cart_total,
             'payment_id' => ($payment_method === 'stripe')
                 ? ($charge->id ?? "")
                 : ($afterPay['id'] ?? ""),
@@ -237,6 +212,17 @@ class PaymentController extends Controller
             'order_status' => "0",
             'order_type' => $order_type
         ]);
+
+        if(!empty($coupon_code)){
+            $g_coupon = Coupon::where('code', $coupon_code['code'])
+            ->where('is_gift_card', '1')
+            ->where('is_active', 1)
+            ->first();
+        
+            if ($g_coupon) {
+                $g_coupon->update(['amount' => $g_coupon->amount - $coupon_discount]);
+            }
+        }
 
         foreach ($cart->items as $item) {
 
@@ -258,6 +244,32 @@ class PaymentController extends Controller
                         'product_id' => $item->product_id
                     ])->decrement('qty', $item->quantity);
                 }
+            }
+
+            // To create coupon for gift card
+            $generateGiftCardCoupon = generateGiftCardCoupon(8);
+
+            if ($item->product_type == 'gift_card') {
+                $g_order_total = $shipping_amount != 0 ? $cart_total : $cart_total + $shippingCharge;
+                $product_price =  number_format($item->product_price, 2);
+                // Set coupon price based on the smaller value
+                $coupon_price = min($product_price, $g_order_total);
+
+                Coupon::create(['code'=>$generateGiftCardCoupon,'type' => '0','amount'=>$coupon_price,'minimum_spend'=>0.00,'maximum_spend'=>10000000000.00,'start_date'=>Carbon::now()->format('Y-m-d'),'end_date'=>Carbon::now()->addYears(3)->format('Y-m-d'),'is_active' => 1,'is_gift_card' => '1']);
+
+                // Decode JSON into an associative array
+                $giftcardDesc = json_decode($item->product_desc, true);
+
+                // Check if 'reciept_email' exists and retrieve it
+                $recieptEmail = $giftcardDesc['reciept_email'] ?? null;
+
+                $giftcardData = [
+                   'reciept_email' => $recieptEmail ?? '',
+                   'code' => $generateGiftCardCoupon ?? '',
+                   'image' => $item->selected_images ?? ''
+                ];
+
+                Mail::to($recieptEmail)->send(new GiftCardMail($giftcardData));
             }
 
             $sale_price = null;
@@ -435,7 +447,7 @@ class PaymentController extends Controller
         $cartTotal = $this->CartService->getCartTotal();
 
         // $shipping_amount = $cartTotal['shippingCharge'] ?? 0;
-        $cart_total = $cartTotal['total'] + $shipping_charge ?? 0;
+        $cart_total = $cartTotal['total'] ?? 0;
         $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
         $coupon_code = $cartTotal['coupon_code'] ?? '';
 

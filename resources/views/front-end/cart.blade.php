@@ -2,7 +2,7 @@
 @section('content')
 @php
 $CartService = app(App\Services\CartService::class);
-
+// dd($CartTotal);
 // function getS3Img($str, $size){
 // $str = str_replace('original', $size, $str);
 // return $str;
@@ -381,7 +381,7 @@ $CartService = app(App\Services\CartService::class);
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td data-title="Total">
-                                                <strong><span class="cart-total"><bdi><span>$</span>{{ number_format($CartTotal['total']+$shipping_with_test_print,2) }}</bdi></span></strong>
+                                                <strong><span class="cart-total"><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small> --}}
@@ -461,14 +461,16 @@ $CartService = app(App\Services\CartService::class);
     
     function updateShippingAndTotal(orderType) {
         let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Base total
-        let shippingCost = parseFloat("{{ $shipping_with_test_print }}"); // Shipping cost
+        let shippingCost = parseFloat("{{ $CartTotal['shippingCharge'] }}"); // Shipping cost
 
         if (orderType == 1) { 
             $(".shipping-section").hide(); // Hide shipping section
-            $(".cart-total").html(`<bdi><span>$</span>${baseTotal.toFixed(2)}</bdi>`);
+            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal - shippingCost).toFixed(2)}</bdi>`);
+            console.log(baseTotal - shippingCost,'baseTotal');
         } else {
             $(".shipping-section").show(); // Show shipping section
-            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal + shippingCost).toFixed(2)}</bdi>`);
+            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal).toFixed(2)}</bdi>`);
+            console.log(baseTotal+shippingCost,'baseTotalss');
         }
     }
 
