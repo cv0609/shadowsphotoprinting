@@ -561,6 +561,97 @@ class PaymentController extends Controller
         return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
     }
 
+    public function freeOrderCheckout(Request $request){
+
+        $formData = $request->input('data');
+        
+        $payment_method = $formData['payment_method'] ?? '';
+        $customer_order_type = $formData['customer_order_type'] ?? '';
+        $shipping_charge = $formData['shipping_charge'] ?? 0;
+        $fname = $formData['fname'] ?? '';
+        $lname = $formData['lname'] ?? '';
+        $street1 = $formData['street1'] ?? '';
+        $street2 = $formData['street2'] ?? '';
+        $state = $formData['state'] ?? '';
+        $postcode = $formData['postcode'] ?? '';
+        $phone = $formData['phone'] ?? '';
+        $suburb = $formData['suburb'] ?? '';
+        $email = $formData['email'] ?? '';
+        $username = $formData['username'] ?? '';
+        $password = $formData['password'] ?? '';
+        $company_name = $formData['company_name'] ?? '';
+
+        $ship_fname = $formData['ship_fname'] ?? '';
+        $ship_lname = $formData['ship_lname'] ?? '';
+        $ship_company = $formData['ship_company'] ?? '';
+        $ship_street1 = $formData['ship_street1'] ?? '';
+        $ship_street2 = $formData['ship_street2'] ?? '';
+        $ship_suburb = $formData['ship_suburb'] ?? '';
+        $ship_state = $formData['ship_state'] ?? '';
+        $ship_postcode = $formData['ship_postcode'] ?? '';
+        $order_comments = $formData['order_comments'] ?? '';
+        $isShippingAddress = $formData['isShippingAddress'] ?? '';
+
+        $state_name = State::whereId($state)->select('name')->first();
+        $ship_state_name = State::whereId($ship_state)->select('name')->first();
+
+        $address = [
+            'fname' => $fname,
+            'lname' => $lname,
+            'street1' => $street1,
+            'street2' => $street2,
+            'state' => $state_name->name ?? '',
+            'company_name' => $company_name ?? '',
+            'country_region' => config('constant.default_country'),
+            'state' => $state_name->name ?? '',
+            'postcode' => $postcode,
+            'phone' => $phone,
+            'suburb' => $suburb,
+            'email' => $email,
+            'username' => $username,
+            'password' => $password,
+            'payment_method' => $payment_method,
+            'shipping_charge' => $shipping_charge,
+            'order_type' => $customer_order_type,
+        ];
+
+        if (isset($ship_fname) || isset($ship_lname) || isset($ship_street1) || isset($ship_suburb) || isset($ship_state) || isset($ship_postcode)) {
+            $address += [
+                'ship_fname' => $ship_fname,
+                'ship_lname' => $ship_lname,
+                'ship_company' => $ship_company,
+                'ship_street1' => $ship_street1,
+                'ship_street2' => $ship_street2,
+                'ship_suburb' => $ship_suburb,
+                'ship_state' => $ship_state_name->name ?? '',
+                'ship_postcode' => $ship_postcode,
+                'isShippingAddress' => isset($isShippingAddress) && ($isShippingAddress == true) ? $isShippingAddress : false,
+                'ship_country_region' => config('constant.default_country'),
+                'order_comments' => $order_comments
+            ];
+        }
+
+        Session::put('order_address', $address);
+        $randomId = Str::random(10);
+        $paymentResponse = [
+             'id' => $randomId,
+             'status' => 'APPROVED'
+        ];
+
+        if(Session::has('order_address')){
+            $orderResponse = $this->createOrder($charge = null, $paymentResponse);
+            $orderData = json_decode($orderResponse->getContent(), true); // Decode JSON response
+            Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+            // return response()->json(['error' => false, 'data' => route('thankyou')]);
+            return response()->json([
+                'error' => false, 
+                'data' => route('thankyou', ['order_id' => $orderData['order_id']])
+            ]);
+        }else{
+            return response()->json(['error' => true, 'data' => 'Something went wrong.']);
+        }
+    }
+
     public function afterpaySuccess(Request $request)
     {
         if ($request->status == "SUCCESS" && !empty($request->orderToken)) {
