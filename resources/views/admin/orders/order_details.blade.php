@@ -348,6 +348,8 @@
 
     </div>
 
+    @if($orderDetail->total > 0)
+
     <div class="bottom_refund_btn_class">
        <div class="fefund_btn">
           <a href="{{ ($orderDetail->order_status != "3") ? route('refund-order',['order_id'=>$orderDetail->id]) : '#' }}" class="{{ (($orderDetail->order_status == "3")) ? 'not-allowed' : '' }}"  
@@ -360,8 +362,9 @@
         <div class="refund_paragraph">
           <p>This order is no longer editable.</p>
         </div>
-     
      </div>
+
+     @endif
     </div>
     </div>
 
