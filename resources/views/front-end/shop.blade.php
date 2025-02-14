@@ -326,7 +326,7 @@
                                 document.querySelector('#uploadForm [name="_token"]').setAttribute('value', resp.csrf_token);
                                 
                                 window.location.replace(document.getElementById('uploadForm').getAttribute('action'));
-                            }, 5000);
+                            }, 12000);
                         }
                     });
                 },
