@@ -28,8 +28,7 @@
     <div class="container">
         <div class="footerbase">
             <div class="footercredits">
-                <p> © 2024 Shadows Photo Printing - WordPress Theme by <a href="#">Kadence WP</a>
-                </p>
+                <p>© 2025 Shadows Photo Printing</p>
             </div>
         </div>
     </div>
