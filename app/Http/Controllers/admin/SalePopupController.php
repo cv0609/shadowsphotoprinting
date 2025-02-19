@@ -9,7 +9,7 @@ use App\Models\ProductCategory;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\ProductRequest;
 use App\Models\product_sale;
-use App\Models\SalePopUp;
+use App\Models\SalePopupModel;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
@@ -18,7 +18,7 @@ use PhpParser\Node\Expr\FuncCall;
 class SalePopupController extends Controller
 {
     public function index(){
-        $sale_popups = SalePopUp::all();
+        $sale_popups = SalePopupModel::all();
         return view('admin.sale_popup.index', compact('sale_popups'));
     }
 
@@ -45,17 +45,17 @@ class SalePopupController extends Controller
             $image =  $destinationPath.'/'.$fileName;
         }
         $sale_arr = ["name"=>$request->name,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'image'=>$image];  
-        SalePopUp::create($sale_arr);
+        SalePopupModel::create($sale_arr);
         return redirect()->route('popup-index')->with('success','Sale popup added successfully');
     }
 
     public function salePopupUpdateStatus(Request $request){
-       SalePopUp::where('id', $request->id)->update(['status' => $request->checkedValue]);
+        SalePopupModel::where('id', $request->id)->update(['status' => $request->checkedValue]);
        return response()->json(['error' => false, 'message' => 'Status updated successfully.','checked' =>$request->checkedValue]);
     }
 
     public function editPopupShow($id){
-       $sale_popup_details = SalePopUp::where('id',$id)->first();
+       $sale_popup_details = SalePopupModel::where('id',$id)->first();
        return view('admin.sale_popup.edit', compact('sale_popup_details'));
     }
 
@@ -73,13 +73,13 @@ class SalePopupController extends Controller
             $data['image'] = $image;
         }
 
-        SalePopUp::whereId($request->id)->update($data);
+        SalePopupModel::whereId($request->id)->update($data);
 
         return redirect()->route('edit-popup-show',['id' => $request->id])->with('success','Sale popup updated successfully');
     }
 
     public function salePopupDelete($id){
-        $saleDetail = SalePopUp::whereId($id)->delete();
+        $saleDetail = SalePopupModel::whereId($id)->delete();
         return redirect()->route('popup-index')->with('success','Sale popup deleted successfully');
     }
 }
