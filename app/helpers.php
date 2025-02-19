@@ -86,8 +86,8 @@ if (!function_exists('generateGiftCardCoupon')) {
 
 if (!function_exists('getSalePopup')) {
     function getSalePopup(){
-        $popup = SalePopupModel::getTopPrioritySale();
         $popup = "";
+        $popup = SalePopupModel::getTopPrioritySale();
         if(isset($popup) && !empty($popup)){
             return $popup;
         }else{
