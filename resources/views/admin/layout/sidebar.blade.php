@@ -63,6 +63,7 @@
                     </ul>
                   </li>
                   <li><a href="{{route('news-letter')}}"><i class="fa fa-first-order"></i>Promotions</a></li>
+                  <li><a href="{{route('popup-index')}}"><i class="fa fa-first-order"></i>Manage Sale Popup</a></li>
 
                 </ul>
               </div>
