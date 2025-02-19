@@ -136,6 +136,8 @@ $sale_popup = getSalePopup();
             </div>
             <div class="modal-body sail-modal-body">
                 <img src="{{asset($sale_popup->image)}}" alt="image">
+                {{-- <img src="{{asset('assets/images/sail-image-popup.png')}}" alt="image"> --}}
+
             </div>
             {{-- <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

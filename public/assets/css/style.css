@@ -4718,10 +4718,10 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         }
         
         div#sailImagePopup .modal-header {
-        position: absolute;
-        top: -25px;
-        right: -27px;
-        z-index: 9;
+            position: absolute;
+            top: -25px;
+            right: 20%;
+            z-index: 9;
         }
         
         div#sailImagePopup .modal-header button {
@@ -4733,8 +4733,9 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         }
         div#sailImagePopup .modal-dialog img {
             width: 100%;
-            height: auto;
-            }
+            height: 500px;
+            object-fit: contain;
+        }
 
 #ImgViewer .modal-dialog {
 transform: translateY(-50%);
@@ -4765,23 +4766,6 @@ height: auto;
 }
 
 
-/* responsive */
-@media (max-width: 575px) { 
-
-#ImgViewer .modal-dialog {
-margin: 0;
-}
-}
-
-            
-
-   /* responsive */
-@media (max-width: 575px) { 
-
-div#sailImagePopup .modal-dialog {
-margin: 0;
-}
-}
 
 
 
@@ -4963,6 +4947,15 @@ grid-template-columns: repeat(2, 1fr);
 }
 
 @media (max-width: 575px) { 
+    div#sailImagePopup .modal-dialog {
+        margin: 0;
+        }
+        div#sailImagePopup .modal-dialog img {
+            height: 340px;
+        }
+        #ImgViewer .modal-dialog {
+        margin: 0;
+        }
     #afterpay-modal .model-svg-flex {
     grid-template-columns: 1fr;
     margin: 20px 0;
@@ -4998,4 +4991,14 @@ text-align: left;
 #afterpay-modal .afterpay-modal-logo {
 max-width: 190px;
 }
+}
+@media (max-width: 480px) {         
+    div#sailImagePopup .modal-header {
+        right: 60px;
+    }
+    }
+    @media (max-width: 420px) {   
+        div#sailImagePopup .modal-header {
+            right: 20px;
+        }
 }
