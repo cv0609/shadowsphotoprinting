@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SalePopUp extends Model
+class SalePopupModel extends Model
 {
-    protected $table = 'sale_popup';
     use HasFactory;
+    protected $table = 'sale_popup';
     protected $fillable = [
         'name',
         'image',
