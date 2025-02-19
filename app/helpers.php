@@ -3,6 +3,7 @@
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 use App\Models\Coupon;
+use App\Models\SalePopup;
 
 function read_json($file_name = ''){
     $pointer = base_path('resources/pages_json/'.$file_name);
@@ -80,5 +81,16 @@ if (!function_exists('generateGiftCardCoupon')) {
         } while (Coupon::where('code', $code)->exists()); // Check if it already exists
     
         return $code;
+    }
+}
+
+if (!function_exists('getSalePopup')) {
+    function getSalePopup(){
+        $popup = SalePopup::getTopPrioritySale();
+        if(isset($popup) && !empty($popup)){
+            return $popup;
+        }else{
+            return "";
+        }
     }
 }

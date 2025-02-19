@@ -20,6 +20,7 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\HandCraftController;
 use App\Http\Controllers\admin\TestPrintController;
 use App\Http\Controllers\admin\NewsletterController;
+use App\Http\Controllers\admin\SalePopupController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -155,8 +156,16 @@ Route::prefix('admin')->group(function () {
         Route::delete('/news-letter-delete/{id}',[NewsletterController::class,'newsletterDistroy'])->name('news-letter-delete');
         Route::get('news-letter-edit/{id}',[NewsletterController::class,'editnewsletter'])->name('news-letter-edit');
         Route::post('news-letter-edit-save',[NewsletterController::class,'newsletterUpdateStatus'])->name('news-letter-edit-save');
- 
-        
+
+        Route::prefix('sale')->group(function () {
+            Route::get('/popup', [SalePopupController::class, 'index'])->name('popup-index');
+            Route::get('/add-sale-popup', [SalePopupController::class, 'addSalePopup'])->name('add-sale-popup');
+            Route::post('/add-sale-popup-save', [SalePopupController::class, 'addSalePopupSave'])->name('add-sale-popup-save');
+            Route::get('/sale-popup-update-status', [SalePopupController::class, 'salePopupUpdateStatus'])->name('sale-popup-update-status');
+            Route::get('/edit-popup-show/{id}', [SalePopupController::class, 'editPopupShow'])->name('edit-popup-show');
+            Route::post('/edit-sale-popup-save', [SalePopupController::class, 'editSalePopupSave'])->name('edit-sale-popup-save');
+            Route::delete('/sale-popup-delete/{id}', [SalePopupController::class, 'salePopupDelete'])->name('sale-popup-delete');
+        });
     });
 });
 
