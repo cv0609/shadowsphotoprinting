@@ -34,7 +34,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/test', [UserController::class, 'index'])->name('test');
+// Route::get('/test', [UserController::class, 'index'])->name('test');
 
 
 
