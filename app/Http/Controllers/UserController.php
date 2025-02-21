@@ -10,31 +10,36 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        // Fetch WP users in chunks
-        DB::table('wp_users')->orderBy('ID')->chunk(50, function ($users) {
-            $userData = [];
-    
-            foreach ($users as $user) {
-                $userData = [
-                    'username' => $user->user_login, // Assuming 'user_login' is the username
-                    'email' => $user->user_email, // Assuming 'user_email' is the email
-                    'password' => $user->user_pass, // Set a default password or migrate from WP
+ public function index()
+{
+    // Fetch WP users in chunks
+    DB::table('wp_users')->orderBy('ID')->chunk(50, function ($users) {
+        foreach ($users as $user) {
+            // Check if user already exists
+            $existingUser = DB::table('users')->where('email', $user->user_email)->first();
+            
+            if (!$existingUser) {
+                // Insert new user
+                $id = DB::table('users')->insertGetId([
+                    'username' => $user->user_login,
+                    'email' => $user->user_email,
+                    'password' => Hash::make('defaultPassword'), // Laravel hashing
                     'created_at' => now(),
                     'updated_at' => now(),
-                ];
-                $id = DB::table('users')->insertGetId($userData);
-                if($id)
-                 {
-                    DB::table('user_details')->insert(['user_id'=>$id,'fname'=>$user->display_name]);
-                 }
+                ]);
+
+                // Insert user details
+                if ($id) {
+                    DB::table('user_details')->insert([
+                        'user_id' => $id,
+                        'fname' => $user->display_name,
+                    ]);
+                }
             }
-    
-            // Insert batch into user table
-            
-        });
-    
-        return response()->json(['message' => 'Users imported successfully']);
-    }
+        }
+    });
+
+    return response()->json(['message' => 'Users imported successfully']);
+}
+
 }
