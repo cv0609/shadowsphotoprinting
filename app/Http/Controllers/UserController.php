@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         // Fetch WP users in chunks
-        DB::table('wp_users')->chunk(50, function ($users) {
+        DB::table('wp_users')->orderBy('ID')->chunk(50, function ($users) {
             $userData = [];
     
             foreach ($users as $user) {
