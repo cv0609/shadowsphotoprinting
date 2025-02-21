@@ -23,7 +23,7 @@ class UserController extends Controller
                 $id = DB::table('users')->insertGetId([
                     'username' => $user->user_login,
                     'email' => $user->user_email,
-                    'password' => Hash::make('defaultPassword'), // Laravel hashing
+                    'password' => Hash::make('user_1234'), // Laravel hashing
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
