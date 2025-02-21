@@ -4709,20 +4709,22 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     }
 
     div#sailImagePopup .modal-dialog {
-        transform: translateY(-50%);
+        transform: translate(-50%, -50%);
         top: 50%;
         width: 100%;
-        max-width: 700px;
+        max-width: fit-content;
         padding-left: 20px;
         padding-right: 20px;
-        }
+        margin: 0;
+        left: 50%;
+    }
         
-        div#sailImagePopup .modal-header {
-            position: absolute;
-            top: -25px;
-            right: 20%;
-            z-index: 9;
-        }
+    div#sailImagePopup .modal-header {
+        position: absolute;
+        top: -25px;
+        right: -19px;
+        z-index: 9;
+    }
         
         div#sailImagePopup .modal-header button {
         background: #d7d7d7;
@@ -4991,14 +4993,4 @@ text-align: left;
 #afterpay-modal .afterpay-modal-logo {
 max-width: 190px;
 }
-}
-@media (max-width: 480px) {         
-    div#sailImagePopup .modal-header {
-        right: 60px;
-    }
-    }
-    @media (max-width: 420px) {   
-        div#sailImagePopup .modal-header {
-            right: 20px;
-        }
 }
