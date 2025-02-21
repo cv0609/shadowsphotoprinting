@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
      {
-        $wptable = DB::table('wp_users')->all();
+        $wptable = DB::table('wp_users')->get();
         dd($wptable);
         $user = User::insert(['username'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
 
