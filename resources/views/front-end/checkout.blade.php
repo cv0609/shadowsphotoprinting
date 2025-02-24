@@ -639,7 +639,10 @@
                                     url = url.replace(':orderId', charge.order_id);
                                     window.location.href = url;
                                 }else{
-                                    console.log('something went wrong.');
+                                    $('#stripe-error').text(charge.data).css('color','red');
+                                    $('#place-order-btn').removeClass('d-none');
+                                    $('#loader-order-btn').addClass('d-none');
+                                    console.log(charge.data);
                                 }
                             });
                         });

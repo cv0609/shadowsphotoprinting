@@ -94,8 +94,6 @@ class PaymentController extends Controller
             $log = new StripeLogs();
             $log->logs = json_encode($logs_stripeCustomer) ?? '';
             $log->save();
-
-            \Log::info('createCustomer');
     
             $customer_id = $stripeCustomer->id;
         } else {
@@ -164,13 +162,13 @@ class PaymentController extends Controller
         $log = new StripeLogs();
         $log->logs = json_encode($charge_logs) ?? '';
         $log->save();
-        \Log::info('charge');
 
-        if (isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')) {
+        if (isset($charge) && isset($charge->status) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')) {
 
             return $this->createOrder($charge);
+
         } else {
-            return response()->json(['error' => true, 'message' => 'Something went wrong']);
+            return response()->json(['error' => true, 'message' => 'Something went wrong','data' => $charge]);
         }
     }
 
