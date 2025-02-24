@@ -607,6 +607,8 @@
                         $('#place-order-btn').addClass('d-none');
                         $('#loader-order-btn').removeClass('d-none');
                         // Send the token to your server    
+                       
+                        formData.cardId = result.token.card.id;
                         formData.stripeToken = result.token.id;
                         formData.payment_method = 'stripe';
                         var cent_total_amount = total_amount * 100;
