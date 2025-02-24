@@ -32,7 +32,7 @@ class StripeService
         try {
             return Charge::create([
                 'customer' => $customerId,
-                'amount' => $amount,
+                'amount' => $amount * 100,
                 'currency' => 'AUD',
                 
             ]);
