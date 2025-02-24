@@ -632,6 +632,7 @@
                                 body: JSON.stringify({
                                     customer_id: response.id,
                                     amount:  cent_total_amount // amount in cents
+                                    stripeToken : stripeToken
                                 })
                             })
                             .then(response => response.json())

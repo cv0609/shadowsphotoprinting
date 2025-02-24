@@ -155,8 +155,9 @@ class PaymentController extends Controller
         $customerId = $request->input('customer_id');
         $amount = $request->input('amount');
         $cardId = $request->input('cardId');
+        $stripeToken = $request->input('stripeToken');
 
-        $charge = $this->stripe->chargeCustomer($customerId, $amount , $cardId);
+        $charge = $this->stripe->chargeCustomer($customerId, $amount , $stripeToken);
 
         $charge_logs = $charge;
 
