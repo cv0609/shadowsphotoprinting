@@ -27,14 +27,16 @@ class StripeService
         }
     }
 
-    public function chargeCustomer($customerId, $amount)
+    public function chargeCustomer($customerId, $amount, $cardId)
     {
         try {
             return Charge::create([
                 'customer' => $customerId,
                 'amount' => $amount,
                 'currency' => 'AUD',
+                'source' => $cardId,
             ]);
+
         } catch (ApiErrorException $e) {
             return $e->getMessage();
         }

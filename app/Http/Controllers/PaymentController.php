@@ -154,8 +154,9 @@ class PaymentController extends Controller
     {
         $customerId = $request->input('customer_id');
         $amount = $request->input('amount');
+        $cardId = $request->input('cardId');
 
-        $charge = $this->stripe->chargeCustomer($customerId, $amount);
+        $charge = $this->stripe->chargeCustomer($customerId, $amount , $cardId);
 
         $charge_logs = $charge;
 
