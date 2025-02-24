@@ -34,7 +34,7 @@ class StripeService
                 'customer' => $customerId,
                 'amount' => $amount,
                 'currency' => 'AUD',
-                'source' => $stripeToken,
+                
             ]);
 
         } catch (ApiErrorException $e) {

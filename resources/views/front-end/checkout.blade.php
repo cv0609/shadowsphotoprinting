@@ -596,7 +596,7 @@
                 }
                 
                 stripe.createToken(cardNumber).then(function(result) {
-                    
+                     
                     if (result.error) {
         
                         $('#stripe-error').text(result.error.message).css('color','red');
@@ -612,7 +612,7 @@
                         formData.stripeToken = result.token.id;
                         formData.payment_method = 'stripe';
                         var chargeStripeToken = result.token.id;
-
+                        
                         var cent_total_amount = total_amount * 100;
                         fetch('/create-customer', {
                             method: 'POST',
@@ -625,6 +625,7 @@
                         .then(response => response.json())
         
                         .then(response => {
+                            
                             fetch('/charge-customer', {
                                 method: 'POST',
                                 headers: {
