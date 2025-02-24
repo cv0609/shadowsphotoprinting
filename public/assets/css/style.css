@@ -4230,6 +4230,9 @@ section.sans-ser {
     font-size: 20px;
     min-height: 38px;
 }
+.nl2go-default-textstyle p {
+    color: #3b3f44 !important;
+}
 
 .instock-udik a {
     margin-right: 1%;
