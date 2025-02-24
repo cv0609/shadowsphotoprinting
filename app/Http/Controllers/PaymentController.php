@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\ProductStock;
 use App\Models\Coupon;
+use App\Models\StripeLogs;
 use App\Models\State;
 use App\Models\AfterPayLogs;
 use App\Models\OrderDetail;
@@ -87,6 +88,15 @@ class PaymentController extends Controller
         if (isset($is_exist) && $is_exist == false) {
 
             $stripeCustomer = $this->stripe->createCustomer($email, $source);
+
+            $logs_stripeCustomer = $stripeCustomer;
+
+            $log = new StripeLogs();
+            $log->logs = json_encode($logs_stripeCustomer) ?? '';
+            $log->save();
+
+            \Log::info('createCustomer');
+    
             $customer_id = $stripeCustomer->id;
         } else {
             $customer_id = $is_exist->id;
@@ -148,6 +158,13 @@ class PaymentController extends Controller
         $amount = $request->input('amount');
 
         $charge = $this->stripe->chargeCustomer($customerId, $amount);
+
+        $charge_logs = $charge;
+
+        $log = new StripeLogs();
+        $log->logs = json_encode($charge_logs) ?? '';
+        $log->save();
+        \Log::info('charge');
 
         if (isset($charge) && ($charge->status == 'succeeded' || $charge->status == 'processing' || $charge->status == 'amount_capturable_updated' || $charge->status == 'payment_failed')) {
 
