@@ -595,65 +595,60 @@
                     return;
                 }
                 
-                stripe.createToken(cardNumber).then(function(result) {
-                     
-                    if (result.error) {
-        
-                        $('#stripe-error').text(result.error.message).css('color','red');
-                    
-                        $('#place-order-btn').removeClass('d-none');
-                        $('#loader-order-btn').addClass('d-none');
-                    } else {
-                        $('#place-order-btn').addClass('d-none');
-                        $('#loader-order-btn').removeClass('d-none');
-                        // Send the token to your server    
-                       
-                        formData.cardId = result.token.card.id;
-                        formData.stripeToken = result.token.id;
-                        formData.payment_method = 'stripe';
-                        var chargeStripeToken = result.token.id;
-                        
-                        var cent_total_amount = total_amount * 100;
-                        fetch('/create-customer', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify(formData)
-                        })
-                        .then(response => response.json())
-        
-                        .then(response => {
-                            
-                            fetch('/charge-customer', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    customer_id: response.id,
-                                    amount:  cent_total_amount, // amount in cents
-                                    stripeToken : chargeStripeToken
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(charge => {
-                                if(charge.error == false){
-                                    let url = "{{ route('thankyou', ['order_id' => ':orderId']) }}";
-                                    url = url.replace(':orderId', charge.order_id);
-                                    window.location.href = url;
-                                }else{
-                                    $('#stripe-error').text(charge.data).css('color','red');
-                                    $('#place-order-btn').removeClass('d-none');
-                                    $('#loader-order-btn').addClass('d-none');
-                                    console.log(charge.data);
-                                }
-                            });
-                        });
-                    }
-                });
+                stripe.createToken(cardNumber).then(function (result) {
+    if (result.error) {
+        $('#stripe-error').text(result.error.message).css('color', 'red');
+        $('#place-order-btn').removeClass('d-none');
+        $('#loader-order-btn').addClass('d-none');
+    } else {
+        $('#place-order-btn').addClass('d-none');
+        $('#loader-order-btn').removeClass('d-none');
+
+        // Send the token to the server    
+        formData.stripeToken = result.token.id;
+        formData.payment_method = 'stripe';
+
+        var cent_total_amount = total_amount * 100; // Convert to cents
+
+        fetch('/create-customer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(response => {
+            fetch('/charge-customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    customer_id: response.id,
+                    amount: cent_total_amount, // amount in cents
+                    stripeToken: formData.stripeToken // Fix: Correct token usage
+                })
+            })
+            .then(response => response.json())
+            .then(charge => {
+                if (charge.error === false) {
+                    let url = "{{ route('thankyou', ['order_id' => ':orderId']) }}";
+                    url = url.replace(':orderId', charge.order_id);
+                    window.location.href = url;
+                } else {
+                    $('#stripe-error').text(charge.data).css('color', 'red');
+                    $('#place-order-btn').removeClass('d-none');
+                    $('#loader-order-btn').addClass('d-none');
+                    console.log(charge.data);
+                }
+            });
+        });
+    }
+});
+
             }else{
 
                 if (!isValid) {

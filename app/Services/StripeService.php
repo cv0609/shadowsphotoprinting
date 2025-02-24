@@ -27,20 +27,21 @@ class StripeService
         }
     }
 
-    public function chargeCustomer($customerId, $amount, $stripeToken)
+    public function chargeCustomer($customerId, $amount, $source)
     {
         try {
-            return Charge::create([
+            return \Stripe\Charge::create([
                 'customer' => $customerId,
-                'amount' => $amount * 100,
+                'amount' => $amount,
                 'currency' => 'AUD',
-                
+                'source' => $source, // Ensure this is passed
+                'description' => 'Order Payment',
             ]);
-
-        } catch (ApiErrorException $e) {
-            return $e->getMessage();
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            return ['error' => true, 'message' => $e->getMessage()];
         }
     }
+    
 
 
     public function searchCustomerByEmail($email)
