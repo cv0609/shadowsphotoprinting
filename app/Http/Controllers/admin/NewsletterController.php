@@ -58,16 +58,24 @@ class NewsletterController extends Controller
 
     public function newsletterUpdateStatus(Request $request){
       $slug = \Str::slug($request->title);
-      $imagee = "";
+      $update_arr = [
+          'title'=>$request->title,
+          'content'=>$request->content,
+          'slug'=>$slug,
+          "added_by"=>Auth::guard('admin')->id()
+        ];
+
       if($request->image)
        {
-           $file = $request->file('image');
-           $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
-           $destinationPath = 'assets/admin/uploads/blogs';
-           $file->move($destinationPath, $fileName);
-           $imagee =  $destinationPath.'/'.$fileName;
+          $file = $request->file('image');
+          $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+          $destinationPath = 'assets/admin/uploads/blogs';
+          $file->move($destinationPath, $fileName);
+          $imagee =  $destinationPath.'/'.$fileName;
+          $update_arr['image'] = $imagee;
        }
-       Newzletter::where(['id'=>$request->id])->update(['title'=>$request->title,'content'=>$request->content,'image'=>$imagee,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
+
+       Newzletter::where(['id'=>$request->id])->update($update_arr);
 
        return redirect()->route('news-letter')->with('success','Newzletter is updated successfully');
    }

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
 
-    <title>Gentelella Alela!</title>
+    <title>shadowsphotoprinting.com.au</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
     <!-- Bootstrap -->
     <link href="{{ asset('assets/admin/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
