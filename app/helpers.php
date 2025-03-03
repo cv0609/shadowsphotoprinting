@@ -4,6 +4,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 use App\Models\SalePopupModel;
 use App\Models\Coupon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Http\Request;
 
 function read_json($file_name = ''){
     $pointer = base_path('resources/pages_json/'.$file_name);
@@ -93,5 +95,17 @@ if (!function_exists('getSalePopup')) {
         }else{
             return "";
         }
+    }
+}
+
+if (!function_exists('setAppTimezone')) {
+    function setAppTimezone()
+    {
+        $timezone = request()->cookie('user_timezone', config('app.timezone'));
+        // Set Laravel and PHP timezone
+        Config::set('app.timezone', $timezone);
+        date_default_timezone_set($timezone);
+        // Return the timezone for use in JavaScript
+        return json_encode($timezone);
     }
 }
