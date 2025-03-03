@@ -45,6 +45,7 @@ class OrderController extends Controller
         $orderDetail = Order::where('order_number', $orderNumber)
             ->with(['orderDetails', 'orderBillingShippingDetails'])
             ->withCount('orderDetails')
+            ->withSum('orderDetails', 'quantity')
             ->first();
 
         $stripe = $this->StripeService->retrivePaymentDetails($orderDetail->payment_id);

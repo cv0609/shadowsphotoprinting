@@ -337,7 +337,7 @@
               @endif  
                 <tr>
                     <td style="padding: 5px;">Total cart count:</td>
-                    <td style="text-align: right; padding: 5px;"><strong>{{$orderDetail->order_details_count ?? 0}}</strong></td>
+                    <td style="text-align: right; padding: 5px;"><strong>{{$orderDetail->order_details_sum_quantity ?? 0}}</strong></td>
                 </tr>
             </table>
             <div class="clear"></div>
