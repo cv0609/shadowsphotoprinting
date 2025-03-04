@@ -27,7 +27,7 @@ class OrderController extends Controller
     protected $StripeService;
     protected $AfterPayService;
 
-    public function __construct(CartService $CartService,StripeService $StripeService,AfterPayService $AfterPayService)
+    public function __construct(CartService $CartService, StripeService $StripeService, AfterPayService $AfterPayService)
     {
         $this->CartService = $CartService;
         $this->StripeService = $StripeService;
@@ -36,44 +36,45 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with('orderBillingShippingDetails')->orderBy('id','desc')->paginate(10);
-        return view('admin.orders.index',compact('orders'));
+        $orders = Order::with('orderBillingShippingDetails')->orderBy('id', 'desc')->paginate(10);
+        return view('admin.orders.index', compact('orders'));
     }
 
     public function orderDetail($orderNumber)
     {
         $orderDetail = Order::where('order_number', $orderNumber)
-        ->with(['orderDetails', 'orderBillingShippingDetails'])
-        ->withCount('orderDetails')
-        ->first();
-       
+            ->with(['orderDetails', 'orderBillingShippingDetails'])
+            ->withCount('orderDetails')
+            ->withSum('orderDetails', 'quantity')
+            ->first();
+
         $stripe = $this->StripeService->retrivePaymentDetails($orderDetail->payment_id);
 
         $stripe_fee = 0;
         // dd($stripe);
 
-        if(isset($stripe) && isset($stripe->fee) && !empty($stripe->fee)){
+        if (isset($stripe) && isset($stripe->fee) && !empty($stripe->fee)) {
             $stripe_fee = floatval($stripe->fee) / 100;
         }
 
         $OrderTotal = $this->CartService->getOrderTotal($orderNumber);
-        
-        return view('admin.orders.order_details',compact('orderDetail','OrderTotal','stripe_fee'));
+
+        return view('admin.orders.order_details', compact('orderDetail', 'OrderTotal', 'stripe_fee'));
     }
 
     public function search(Request $request)
     {
         $searchTerm  = $request->input('query');
-       
+
         $startDate = ($request->input('start_date')) ? $request->input('start_date') : "";
         $endDate = ($request->input('end_date')) ? $request->input('end_date') : "";
         $orders_result = Order::query();
 
         if ($searchTerm) {
             $orders_result->where('order_number', 'LIKE', "%{$searchTerm}%")
-                        ->orWhereHas('orderBillingShippingDetails', function($query) use ($searchTerm) {
-                        $query->where('fname', 'LIKE', "%{$searchTerm}%");
-            });
+                ->orWhereHas('orderBillingShippingDetails', function ($query) use ($searchTerm) {
+                    $query->where('fname', 'LIKE', "%{$searchTerm}%");
+                });
         }
 
         if (!empty($startDate) && !empty($endDate)) {
@@ -82,126 +83,12 @@ class OrderController extends Controller
             $orders_result->whereBetween('created_at', [$startDate, $endDate]);
         }
         $orders = $orders_result->with('orderBillingShippingDetails')->get();
-    
-        if(empty($orders))
-        {
-            $orders = Order::with('orderBillingShippingDetails')->orderBy('id','desc')->paginate(10);
+
+        if (empty($orders)) {
+            $orders = Order::with('orderBillingShippingDetails')->orderBy('id', 'desc')->paginate(10);
         }
-        echo view('admin.orders.order_search',compact('orders'));
+        echo view('admin.orders.order_search', compact('orders'));
     }
-
-    // public function downloadOrderzip($orderId)
-    // {
-    //     $order_id = $orderId;
-
-    //     $order = Order::with('orderDetails')->where('id', $order_id)->first();
-
-    //     $uniqueOrderDetails = [];
-
-    //     $orderDetailsGrouped = $order->orderDetails->groupBy('product_id');
-
-    //     foreach ($orderDetailsGrouped as $productId => $details) {
-    //         $quantities = $details->pluck('quantity')->unique();
-    //         if ($quantities->count() === 1) {
-    //             $uniqueOrderDetails[] = $details->first();
-    //         } else {
-    //             foreach ($details as $detail) {
-    //                 $uniqueOrderDetails[] = $detail;
-    //             }
-    //         }
-    //     }
-
-    //     $zip = new ZipArchive();
-    //     $zipFileName = "$order->order_number.zip";
-    //     $zipFilePath = public_path('order_zip/'.$zipFileName);
-
-    //     if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
-    //         foreach ($uniqueOrderDetails as $details) {
-    //             $productId = $details->product_id;
-    //             $quantity = $details->quantity;
-    //             $productType = $details->product_type;
-
-    //             $productDetails = $this->CartService->getProductDetailsByType($productId, $productType);
-
-    //             $productTitle = isset($productDetails->product_title) ? $productDetails->product_title : '';
-
-    //             $quantityFolder = "$productTitle/qty_{$quantity}/";
-    //             $zip->addEmptyDir($quantityFolder);
-
-
-    //             $orderDetails = OrderDetail::where('product_id', $productId)->where('order_id', $order_id)->where('quantity',$quantity)->get();
-
-    //             $fileCounter = [];
-
-    //             if($productType == 'shop'){
-    //                 foreach ($orderDetails as $image) {
-    //                     $imagePath = $image->selected_images;
-    //                     if (file_exists($imagePath)) {
-    //                         $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
-    //                         $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
-
-    //                         if (!isset($fileCounter[$baseName])) {
-    //                             $fileCounter[$baseName] = 0;
-    //                         }
-
-    //                         $fileCounter[$baseName]++;
-    //                         $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
-    //                         $zip->addFile($imagePath, $uniqueFileName);
-    //                     }
-    //                 }
-    //             }
-
-    //             if($productType == 'photo_for_sale' || $productType == 'hand_craft'){
-
-    //                 $imagePath = '';
-                    
-    //                 if(isset($productDetails->product_image)){
-    //                     $imageArray = explode(',', $productDetails->product_image);
-    //                     $imagePath = $imageArray[0] ?? '';
-    //                 }
-
-    //                 if (file_exists($imagePath)) {
-    //                     $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
-    //                     $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
-
-    //                     if (!isset($fileCounter[$baseName])) {
-    //                         $fileCounter[$baseName] = 0;
-    //                     }
-
-    //                     $fileCounter[$baseName]++;
-    //                     $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
-    //                     $zip->addFile($imagePath, $uniqueFileName);
-    //                 }
-    //             }
-
-    //             if($productType == 'gift_card'){
-    //                 $imagePath = $productDetails->product_image;
-    //                 if (file_exists($imagePath)) {
-    //                     $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
-    //                     $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
-
-    //                     if (!isset($fileCounter[$baseName])) {
-    //                         $fileCounter[$baseName] = 0;
-    //                     }
-
-    //                     $fileCounter[$baseName]++;
-    //                     $uniqueFileName = $quantityFolder . $baseName . '_' . $fileCounter[$baseName] . '.' . $extension;
-    //                     $zip->addFile($imagePath, $uniqueFileName);
-    //                 }
-    //             }
-    //         }
-
-    //         $zip->close();
-
-    //         if (file_exists($zipFilePath)) {
-    //             return response()->download($zipFilePath);
-    //         } else {
-    //             return response()->json(['message' => 'Failed to create the zip file.'], 500);
-    //         }
-    //     } else {
-    //         return response()->json(['message' => 'Failed to open zip file.'], 500);
-    //     }
-    // }
 
     public function downloadOrderzip($orderId)
     {
@@ -242,16 +129,16 @@ class OrderController extends Controller
 
                 switch ($productType) {
                     case 'shop':
-                        $this->addShopImagesToZip($zip, $orderDetails, $quantityFolder, $fileCounter);
+                        $this->addShopImagesToZip($zip, $orderDetails, $quantityFolder, $fileCounter, $quantity);
                         break;
 
                     case 'photo_for_sale':
                     case 'hand_craft':
-                        $this->addProductImageToZip($zip, $productDetails->product_image ?? '', $quantityFolder, $fileCounter);
+                        $this->addProductImageToZip($zip, $productDetails->product_image ?? '', $quantityFolder, $fileCounter, $quantity);
                         break;
 
                     case 'gift_card':
-                        $this->addProductImageToZip($zip, $productDetails->product_image ?? '', $quantityFolder, $fileCounter);
+                        $this->addProductImageToZip($zip, $productDetails->product_image ?? '', $quantityFolder, $fileCounter, $quantity);
                         break;
                 }
             }
@@ -266,19 +153,25 @@ class OrderController extends Controller
         }
     }
 
-    private function addShopImagesToZip($zip, $orderDetails, $folder, &$fileCounter)
+    private function addShopImagesToZip($zip, $orderDetails, $folder, &$fileCounter, $quantity)
     {
         foreach ($orderDetails as $image) {
             $imagePath = $image->selected_images;
-            $this->addFileToZip($zip, $imagePath, $folder, $fileCounter);
+            // Loop based on quantity and add the same image multiple times
+            for ($i = 1; $i <= $quantity; $i++) {
+                $this->addFileToZip($zip, $imagePath, $folder, $fileCounter);
+            }
         }
     }
 
-    private function addProductImageToZip($zip, $imagePath, $folder, &$fileCounter)
+    private function addProductImageToZip($zip, $imagePath, $folder, &$fileCounter, $quantity)
     {
         if (!empty($imagePath)) {
             $imageArray = explode(',', $imagePath);
-            $this->addFileToZip($zip, $imageArray[0] ?? '', $folder, $fileCounter);
+
+            for ($i = 1; $i <= $quantity; $i++) {
+                $this->addFileToZip($zip, $imageArray[0] ?? '', $folder, $fileCounter);
+            }
         }
     }
 
@@ -290,16 +183,16 @@ class OrderController extends Controller
             if (!file_exists($downloadFolder)) {
                 mkdir($downloadFolder, 0777, true);
             }
-    
+
             // Extract file name
             $fileName = basename($imagePath);
             $localFilePath = $downloadFolder . $fileName;
-    
+
             // Download the image if it doesn't already exist
             if (!file_exists($localFilePath)) {
                 file_put_contents($localFilePath, file_get_contents($imagePath));
             }
-    
+
             // Use the downloaded file path
             $imagePath = $localFilePath;
         }
@@ -320,63 +213,61 @@ class OrderController extends Controller
 
 
     public function updateOrder(Request $request)
-     {
-        $orderDetail = Order::whereId($request->order_id)->with('orderDetails.product','orderBillingShippingDetails')->first();
-       
-        Order::whereId($request->order_id)->update(["order_status"=>$request->order_status]);
+    {
+        $orderDetail = Order::whereId($request->order_id)->with('orderDetails.product', 'orderBillingShippingDetails')->first();
+
+        Order::whereId($request->order_id)->update(["order_status" => $request->order_status]);
         $status = '';
-        if($request->order_status == "0") {
-          $status = "Processing";
-        }elseif($request->order_status == "1"){
-          $status = "Completed";
-          Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new CompleteOrder($orderDetail));
-
-        }elseif($request->order_status == "2"){
-          $status = "Cancelled";
-          Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new CancelOrder($orderDetail));
-
-        }elseif($request->order_status == "3"){
-          $status = "Refunded";
-          Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new RefundOrder($orderDetail));
+        if ($request->order_status == "0") {
+            $status = "Processing";
+        } elseif ($request->order_status == "1") {
+            $status = "Completed";
+            Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new CompleteOrder($orderDetail));
+        } elseif ($request->order_status == "2") {
+            $status = "Cancelled";
+            Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new CancelOrder($orderDetail));
+        } elseif ($request->order_status == "3") {
+            $status = "Refunded";
+            Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new RefundOrder($orderDetail));
         }
-        Session::flash('success', 'Order '.$status .' successfully');
-     }
+        Session::flash('success', 'Order ' . $status . ' successfully');
+    }
 
     public function refundOrder($order_id)
-     {
-       $order = Order::whereId($order_id)->first();
-       $payment_method = $order->payment_method;
-       $payment_status = $order->payment_status;
-       $payment_id = $order->payment_id;
-       $total = $order->total;
-       
-       if($payment_method != 'afterPay'){
-           $refundedData = $this->StripeService->refundOrder($order->payment_id);
-           if(isset($refundedData['id']) && !empty($refundedData['id'])){
-              Order::where('id',$order_id)->update(['refund_id' => $refundedData['id'],'payment_status' => $refundedData['object'],'order_status' => '3']);
+    {
+        $order = Order::whereId($order_id)->first();
+        $payment_method = $order->payment_method;
+        $payment_status = $order->payment_status;
+        $payment_id = $order->payment_id;
+        $total = $order->total;
+
+        if ($payment_method != 'afterPay') {
+            $refundedData = $this->StripeService->refundOrder($order->payment_id);
+            if (isset($refundedData['id']) && !empty($refundedData['id'])) {
+                Order::where('id', $order_id)->update(['refund_id' => $refundedData['id'], 'payment_status' => $refundedData['object'], 'order_status' => '3']);
             }
-       }else{
-            if($payment_status == 'APPROVED'){
+        } else {
+            if ($payment_status == 'APPROVED') {
                 $afterPayRefund = $this->AfterPayService->refundPayment($payment_id, $total, $currency = 'AUD', $merchantReference = null);
 
                 $log = new AfterPayLogs;
                 $log->logs = json_encode($afterPayRefund) ?? '';
                 $log->save();
 
-                Order::where('id',$order_id)->update(['refund_id' => $afterPayRefund['refundId'],'payment_status' => 'REFUNDED','order_status' => '3']);
-
-            }else{
+                Order::where('id', $order_id)->update(['refund_id' => $afterPayRefund['refundId'], 'payment_status' => 'REFUNDED', 'order_status' => '3']);
+            } else {
                 return redirect()->back()->with('success', 'Payment refunded failed.');
             }
-       }
-    
-        return redirect()->back()->with('success', 'Payment refunded successfully.');
-     }
+        }
 
-     public function addNote(Request $request){
+        return redirect()->back()->with('success', 'Payment refunded successfully.');
+    }
+
+    public function addNote(Request $request)
+    {
         $order_id = $request->order_id;
         $order_notes = $request->order_notes;
-        OrderBillingDetails::where('order_id',$order_id)->update(['order_notes' => $order_notes]);
-        return back()->with('success','Order notes added successfully.');
-     }
+        OrderBillingDetails::where('order_id', $order_id)->update(['order_notes' => $order_notes]);
+        return back()->with('success', 'Order notes added successfully.');
+    }
 }

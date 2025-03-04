@@ -150,4 +150,15 @@ $(document).ready(function () {
     });
 </script>
 
+<script>
+    var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.cookie = "user_timezone=" + userTimeZone + "; path=/";
+</script>
+
+<script>
+  var userTimezone = {!! setAppTimezone() !!};
+  console.log(userTimeZone);
+</script>
+
+
 
