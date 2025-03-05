@@ -166,8 +166,7 @@ class CartService
 
     public function getProductSalePrice($product_id)
     {
-        $currentDate = Carbon::now();
-        $currentDate = date('Y-m-d', strtotime($currentDate->toDateTimeString()));
+        $currentDate = Carbon::now()->timezone(config('app.timezone'))->format('Y-m-d');
         $product_price = null;
 
         $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id', $product_id)->first();
