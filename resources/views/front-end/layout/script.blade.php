@@ -150,7 +150,7 @@ $(document).ready(function () {
     });
 </script>
 
-<script>
+{{-- <script>
     var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     document.cookie = "user_timezone=" + userTimeZone + "; path=/";
 </script>
@@ -158,6 +158,22 @@ $(document).ready(function () {
 <script>
   var userTimezone = {!! setAppTimezone() !!};
   console.log(userTimeZone);
+</script> --}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        var currentCookie = document.cookie.match('(^|;)\\s*user_timezone\\s*=\\s*([^;]+)')?.pop() || '';
+
+        if (!currentCookie || currentCookie !== userTimeZone) {
+            document.cookie = "user_timezone=" + userTimeZone + "; path=/";
+            location.reload(); // Reload page after setting timezone
+        } else {
+            console.log("User Timezone:", userTimeZone);
+            var userTimezone = {!! setAppTimezone() !!}; 
+            console.log("Laravel Timezone:", userTimezone);
+        }
+    });
 </script>
 
 
