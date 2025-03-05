@@ -30,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
             date_default_timezone_set($timezone);
             Carbon::setTestNow(Carbon::now($timezone)); // Ensures Carbon respects timezone
         }
-
         \Log::info('Current Laravel Timezone: ' . config('app.timezone'));
         \Log::info('PHP Timezone: ' . date_default_timezone_get());
         \Log::info('Carbon Now: ' . Carbon::now());
