@@ -32,7 +32,6 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        \Log::info($request->all());
         if (Session::has('coupon')) {
             $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
             $response = $this->applyCoupon($request_data);
@@ -109,22 +108,8 @@ class CartController extends Controller
 
                 foreach ($request->selectedImages as $selectedImage) {
 
-                    // $tempFileName = basename($selectedImage);
-                    // $tempImagePath = 'public/temp/' . $tempFileName;
-                    // $permanentImagePath = 'public/assets/images/order_images/'.$tempFileName;
-                    // Storage::move($tempImagePath, $permanentImagePath);
-                    // $ImagePath = 'storage/assets/images/order_images/' . $tempFileName;
                     $ImagePath = $selectedImage;
                     $wtrelativeImagePath = '';
-                    \Log::info($ImagePath);
-                    \Log::info('2');
-
-                    // dd($ImagePath);
-                    // $wtimagePath = public_path('storage/assets/images/order_images/' . $tempFileName);
-
-                    // if (!file_exists($wtimagePath)) {
-                    //     return response()->json(['error' => 'Image not found: ' . $tempFileName], 404);
-                    // }
 
                     if (isset($cart_item['testPrint']) && !empty($cart_item['testPrint'])) {
                         $testPrint = $cart_item['testPrint'];
@@ -142,9 +127,6 @@ class CartController extends Controller
                         }
                         $wtrelativeImagePath = $this->CartService->addWaterMark($ImagePath);
                     }
-
-                    \Log::info($ImagePath);
-                    \Log::info('1');
 
                     $insertData = [
                         "cart_id" => $cartId,
@@ -238,26 +220,6 @@ class CartController extends Controller
             }
         }
 
-        // Auto Applied sail
-
-        // $currentDate = Carbon::now()->format('Y-m-d'); 
-
-        // $coupon = Coupon::where('is_active', '1')
-        //     ->where('auto_applied', '1')
-        //     ->where('start_date', '<=', $currentDate) // Check if coupon has started
-        //     ->where('end_date', '>=', $currentDate)   // Check if coupon hasn't expired
-        //     ->first();
-
-        // if(isset($coupon) && !empty($coupon)){
-        //     $request_data = request()->merge(['coupon_code' => $coupon->code]);
-        //     $response = $this->applyCoupon($request_data);
-
-        //     if($response['success'] === false)
-        //     {
-        //       Session::forget('coupon');
-        //     }
-        // }
-
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
@@ -282,42 +244,13 @@ class CartController extends Controller
         $countries = Country::with('states')->find(14);
 
         $CartTotal = $this->CartService->getCartTotal();
-        // $shipping = $this->CartService->getShippingCharge();
-
-
-        $shipping_with_test_print = 0;
-        $hasTestPrint = false;
-        $hasRegularPrint = false;
 
         $shipping = $this->CartService->getShippingCharge();
-        $testPrintShipping = $this->CartService->getTestPrintShippingCharge()->amount;
-
-        foreach ($cart->items as $items) {
-            if ($items->is_test_print == '1') {
-                $hasTestPrint = true;  // Flag that the cart has test print shipping
-            }
-
-            if ($items->is_test_print == '0') {
-                $hasRegularPrint = true;
-            }
-
-            if ($hasTestPrint && $hasRegularPrint) {
-                break;
-            }
-        }
-
-        if ($hasTestPrint && $hasRegularPrint) {
-            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
-        } elseif ($hasTestPrint) {
-            $shipping_with_test_print += $testPrintShipping;
-        } elseif ($hasRegularPrint) {
-            $shipping_with_test_print += $shipping->amount;
-        }
 
         $page_content = ["meta_title" => config('constant.pages_meta.cart.meta_title'), "meta_description" => config('constant.pages_meta.cart.meta_description')];
 
         if (!empty($cart)) {
-            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content', 'shipping_with_test_print'));
+            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content'));
         } else {
 
             return redirect('shop');
@@ -448,10 +381,9 @@ class CartController extends Controller
                     return ['success' => false, 'message' => 'you can use this coupon between ' . $coupon->minimum_spend . ' To ' . $coupon->maximum_spend . ' amount'];
                 }
             }
-
-            if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
-                return ['success' => false, 'message' => 'This coupon has reached its usage limit.'];
-            }
+            // if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
+            //     return ['success' => false, 'message' => 'This coupon has reached its usage limit.'];
+            // }
         }
 
         if (isset($coupon->product_category) && !empty($coupon->product_category) && $coupon->product_category != null) {
@@ -507,6 +439,10 @@ class CartController extends Controller
             }
         }
 
+        if ($coupon->use_limit !== null && $coupon->use_limit <= 0) {
+            return ['success' => false, 'message' => 'Your coupon limit has expired.'];
+        }
+
         $amount = 0;
 
         if($coupon->is_gift_card == '1'){
@@ -522,7 +458,7 @@ class CartController extends Controller
         } elseif ($coupon->type == "1") {
             $amount = ($coupon->amount / 100) * $total['subtotal'];
         }
-        $coupon->used++;
+        // $coupon->used++;
         $coupon->save();
 
         Session::put('coupon', [
