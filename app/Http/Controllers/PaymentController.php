@@ -255,6 +255,7 @@ class PaymentController extends Controller
         ]);
 
         if(!empty($coupon_code)){
+
             $g_coupon = Coupon::where('code', $coupon_code['code'])
             ->where('is_gift_card', '1')
             ->where('is_active', 1)
@@ -263,6 +264,9 @@ class PaymentController extends Controller
             if ($g_coupon) {
                 $g_coupon->update(['amount' => $g_coupon->amount - $coupon_discount]);
             }
+
+            $coupon = Coupon::where('code', $coupon_code['code'])->where('is_active', true)->first();
+            $coupon->decrement('use_limit', $coupon->use_limit > 0 ? 1 : 0);
         }
 
         foreach ($cart->items as $item) {
