@@ -291,7 +291,7 @@ $CartService = app(App\Services\CartService::class);
 
                                                 @if(Session::has('billing_details'))
                                                 <span class="flat-rate"> Flat rate:
-                                                    ${{ number_format($shipping_with_test_print,2) }}</span>
+                                                    ${{ number_format($CartTotal['shippingCharge'],2) }}</span>
                                                 <p>
                                                     <p class="">
                                                         Shipping to
@@ -489,16 +489,7 @@ $CartService = app(App\Services\CartService::class);
                 _token: "{{ csrf_token() }}", 
             },
             success: function (response) {
-
                 updateShippingAndTotal(response.order_type);
-                // // Update total dynamically
-                // let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Get base total
-                // let shippingCost = parseFloat("{{ $shipping_with_test_print }}"); // Get shipping cost
-
-                // let newTotal = (response.order_type == 1) ? baseTotal : (baseTotal + shippingCost);
-                // $(".cart-total").html(`<bdi><span>$</span>${newTotal.toFixed(2)}</bdi>`);
-
-                console.log("Order type updated:", response);
             },
             error: function (xhr, status, error) {
                 console.error("Error:", error);
