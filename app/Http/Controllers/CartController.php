@@ -381,10 +381,9 @@ class CartController extends Controller
                     return ['success' => false, 'message' => 'you can use this coupon between ' . $coupon->minimum_spend . ' To ' . $coupon->maximum_spend . ' amount'];
                 }
             }
-
-            if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
-                return ['success' => false, 'message' => 'This coupon has reached its usage limit.'];
-            }
+            // if ($coupon->use_limit && $coupon->used >= $coupon->use_limit) {
+            //     return ['success' => false, 'message' => 'This coupon has reached its usage limit.'];
+            // }
         }
 
         if (isset($coupon->product_category) && !empty($coupon->product_category) && $coupon->product_category != null) {
@@ -440,6 +439,10 @@ class CartController extends Controller
             }
         }
 
+        if ($coupon->use_limit !== null && $coupon->use_limit <= 0) {
+            return ['success' => false, 'message' => 'Your coupon limit has expired.'];
+        }
+
         $amount = 0;
 
         if($coupon->is_gift_card == '1'){
@@ -455,7 +458,7 @@ class CartController extends Controller
         } elseif ($coupon->type == "1") {
             $amount = ($coupon->amount / 100) * $total['subtotal'];
         }
-        $coupon->used++;
+        // $coupon->used++;
         $coupon->save();
 
         Session::put('coupon', [
