@@ -37,6 +37,7 @@ use App\Http\Controllers\UserController;
 // Route::get('/test', [UserController::class, 'index'])->name('test');
 
 
+Route::get('/download-pdf', [BasePagesController::class, 'downloadPDF'])->name('download.pdf');
 
 Route::prefix('admin')->group(function () {
 

@@ -308,4 +308,14 @@ class PagesController extends Controller
     $page_content = ["meta_title"=>"Bulk prints details","meta_description"=>"Bulk prints details"];
     return view('front-end.bulkprints-details',compact('productDetails','page_content','related_products'));
   }
+
+  public function downloadPDF(){
+    $filePath = public_path('pdf/PhotoBingo10.pdf'); // PDF file path
+      // Check if the file exists
+      if (file_exists($filePath)) {
+          return response()->download($filePath, 'PhotoBingo10.pdf');
+      } else {
+          return response()->json(['error' => 'File not found.'], 404);
+      }
+  }
 }
