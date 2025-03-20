@@ -71,7 +71,7 @@
                     </tbody>
 
                 </table>
-                {{ $coupons->links('pagination::bootstrap-4') }}
+                {{-- {{ $coupons->links('pagination::bootstrap-4') }} --}}
             </div>
           </div>
         </div>
