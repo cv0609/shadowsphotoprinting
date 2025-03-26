@@ -39,6 +39,10 @@ use App\Http\Controllers\UserController;
 
 Route::get('/download-pdf', [BasePagesController::class, 'downloadPDF'])->name('download.pdf');
 
+Route::get('/sitemap.xml', function () {
+    return response()->file(public_path('sitemap.xml'));
+});
+
 Route::prefix('admin')->group(function () {
 
     Route::get('/login',[AuthController::class,'login'])->name('admin.login');
