@@ -101,6 +101,7 @@ function validateEmail(email) {
 }
 
 $(document).ready(function () {
+    $('.h1-missing').css('display','none');
     $(".toggle_menu").click(function () {
         $(".sidenavs").addClass("intro");
     });

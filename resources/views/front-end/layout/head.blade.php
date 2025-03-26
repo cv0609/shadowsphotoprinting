@@ -10,6 +10,7 @@
 <title>{{ html_entity_decode(ucfirst($page_content['meta_title']) ?? 'Default Title') }}</title>
 <meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
 <link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
+<link rel="canonical" href="{{ url()->current() }}" />
 <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/fonts/stylesheet.css') }}">

@@ -177,3 +177,4 @@ $CartCount = $cartModel::getCartCount();
         </div>
     </div>
 </div>
+<h1 class="h1-missing">.</h1>
