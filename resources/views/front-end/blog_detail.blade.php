@@ -4,7 +4,7 @@
     <div class="adbreadcrumbs">
         <div class="container">
             <div class="breadcrumbs-wrapper">
-                <span><a href="{{ url('/') }}">Home</a></span>
+                <span><a href="{{url('/')}}">Home</a></span>
                 <span class="bc-delimiter">»</span>
                 {{-- <span><a href="#">uncategorized</a></span>
                 <span class="bc-delimiter">»</span> --}}
@@ -25,7 +25,7 @@
                 <div class="kt_color_gray">
                     <span>{{ date("F d,Y",$blog_details['update_at']) }}</span>
                     <span>by</span>
-                    <span> <a href="shadtpang.html">Terri Pangas</a> </span>
+                    <span> <a href="#">Terri Pangas</a> </span>
 
                     <div class="shadtpang">
                         <img src="{{ asset($blog_details['image']) }}" alt="Image">
