@@ -191,7 +191,7 @@ $sale_popup = getSalePopup();
                             {{-- <h2>We accept bulk orders for</h2> --}}
                             <p>
                                 @foreach ($ProductCategoriesForBulk as $ProductCategory)
-                                <a href="{{ url('our-products/'.$ProductCategory->slug) }}">{{ ucwords($ProductCategory->name) }} {{ (!$loop->last) ? ',' : '' }} </a>
+                                <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">{{ ucwords($ProductCategory->name) }} {{ (!$loop->last) ? ',' : '' }} </a>
                                 @endforeach
                             </p>
                             <div class="restoration-btn">
