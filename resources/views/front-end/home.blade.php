@@ -127,12 +127,13 @@ $sale_popup = getSalePopup();
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content" style="background-color:transparent">
-            <div class="modal-header sail-modal-header">
-                <button type="button" class="close close-popup" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+           
             <div class="modal-body sail-modal-body">
+                <div class="modal-header sail-modal-header">
+                    <button type="button" class="close close-popup" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 @php
                     // Get file extension to check if it's a video
                     $fileExtension = pathinfo($sale_popup->image, PATHINFO_EXTENSION);
