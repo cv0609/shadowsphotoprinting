@@ -126,7 +126,7 @@ $sale_popup = getSalePopup();
 <div id="sailImagePopup" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
-        <div class="modal-content">
+        <div class="modal-content" style="background-color:transparent">
             <div class="modal-header sail-modal-header">
                 <button type="button" class="close close-popup" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
