@@ -141,7 +141,7 @@ $sale_popup = getSalePopup();
 
                 @if(in_array($fileExtension, $videoExtensions))
                     <!-- Show video if the type is video -->
-                    <video width="100%" height="auto" controls style="height: 500px;">
+                    <video id="saleVideo" width="100%" height="auto" autoplay muted playsinline loop style="height: 500px;">
                         <source src="{{ asset($sale_popup->image) }}" type="video/{{ $fileExtension }}">
                         Your browser does not support the video tag.
                     </video>
