@@ -128,25 +128,33 @@ $sale_popup = getSalePopup();
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header sail-modal-header">
-                {{-- <button type="button" class="close" id="close-sail-modal" data-dismiss="modal">&times;</button> --}}
-                {{-- <h4 class="modal-title">Modal Header</h4> --}}
                 <button type="button" class="close close-popup" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body sail-modal-body">
-                <img src="{{asset($sale_popup->image)}}" alt="image">
-                {{-- <img src="{{asset('assets/images/sail-image-popup.png')}}" alt="image"> --}}
+                @php
+                    // Get file extension to check if it's a video
+                    $fileExtension = pathinfo($sale_popup->image, PATHINFO_EXTENSION);
+                    $videoExtensions = ['mp4', 'webm', 'ogg'];
+                @endphp
 
+                @if(in_array($fileExtension, $videoExtensions))
+                    <!-- Show video if the type is video -->
+                    <video width="100%" height="auto" controls style="height: 500px;">
+                        <source src="{{ asset($sale_popup->image) }}" type="video/{{ $fileExtension }}">
+                        Your browser does not support the video tag.
+                    </video>
+                @else
+                    <!-- Show image if the type is not video -->
+                    <img src="{{ asset($sale_popup->image) }}" alt="image" width="100%">
+                @endif
             </div>
-            {{-- <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div> --}}
         </div>
-
     </div>
 </div>
 @endif
+
 
 
 
