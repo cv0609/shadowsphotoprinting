@@ -110,7 +110,7 @@
                                     <td class="shipping_address column-shipping_address" data-colname="Ship to" data-title="shipp-add">
                                         <a target="_blank" href="https://maps.google.com/maps?&amp;q=1145%20Eyre%20Street%2C%20%2C%20Newington%2C%20VIC%2C%203350%2C%20AU&amp;z=16">
                                     
-                                            @if($order->orderBillingShippingDetails->isShippingAddress == 1)
+                                            @if(isset($order->orderBillingShippingDetails?->isShippingAddress) &&$order->orderBillingShippingDetails->isShippingAddress == 1)
                                                 @php
                                                     $shippingAddressParts1 = [];
                                                     $shippingAddressParts2 = [];
