@@ -381,7 +381,7 @@
                 @csrf
                 <input type="hidden" name="order_id" value="{{$orderDetail->id}}">
                 <div class="modal-body">
-                    <textarea id="order-notes" name="order_notes" class="form-control" rows="4" placeholder="Enter your notes here...">{{ $orderDetail->orderBillingShippingDetails['order_notes'] }}</textarea>
+                    <textarea id="order-notes" name="order_notes" class="form-control" rows="4" placeholder="Enter your notes here...">{{ $orderDetail->orderBillingShippingDetails['order_notes']?? null }}</textarea>
                     <p id="notes-error"></p>
                 </div>
                 <div class="modal-footer">
