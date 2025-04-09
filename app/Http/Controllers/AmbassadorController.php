@@ -51,6 +51,9 @@ class AmbassadorController extends Controller
   
   public function saveForm(Request $request)
   {
+
+   // dd($request);
+
       $validated = $request->validate([
           'name' => 'required|string|max:255',
           'location' => 'required|string|max:255',
@@ -62,6 +65,7 @@ class AmbassadorController extends Controller
           'specialty.*' => 'string|max:255',
           'comments' => 'nullable|string',
           'otherSpecialty' => 'nullable|string|max:255',
+          'signatureData' => 'required',
       ]);
   
       $data = [
@@ -74,8 +78,12 @@ class AmbassadorController extends Controller
           'specialty' => implode(',', $validated['specialty']),
           'comments' => $validated['comments'] ?? '',
           'other_specialty' => $validated['otherSpecialty'] ?? null,
+          'signature' => $validated['signatureData'],
       ];
   
+
+     // dd($data);
+
       Ambassador::create($data);
   
       return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
