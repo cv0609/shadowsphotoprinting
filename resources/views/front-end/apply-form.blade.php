@@ -337,7 +337,15 @@
                         <input type="hidden" id="signatureData" name="signatureData" required>
                     </div>
                 </div>
-
+                @php
+                  // Set timezone to Australia/Sydney (or another Australian timezone if needed)
+                    date_default_timezone_set('Australia/Sydney');
+                    $australiaDate = date('Y-m-d');
+               @endphp
+            <div class="form-section">
+                    <label for="date">Date <span class="required">*</span></label>
+                    <input type="date" id="date" name="date" required value="{{ old('date', $australiaDate) }}" readonly>
+            </div>
 
             <div class="button-container">
                 <button type="submit">Submit Application</button>

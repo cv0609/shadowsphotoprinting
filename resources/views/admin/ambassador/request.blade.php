@@ -80,15 +80,16 @@
                                                     <p><strong>Name:</strong> {{ $ambassador->name }}</p>
                                                     <p><strong>Email:</strong> {{ $ambassador->email }}</p>
                                                     <p><strong>Location:</strong> {{ $ambassador->location }}</p>
-                                                    <p><strong>Business:</strong> {{ $ambassador->business }}</p>
+                                                    <p><strong>Business:</strong> {{ $ambassador->business_name }}</p>
                                                     <p><strong>Website:</strong> <a href="{{ $ambassador->website }}" target="_blank">{{ $ambassador->website }}</a></p>
                                                     <p><strong>Social Handle:</strong> {{ $ambassador->social_media_handle }}</p>
                                                     <p><strong>Photography Specialty:</strong>{{implode(', ',$items)}}</p>
-                                                    @if($ambassador->otherSpecialty)
-                                                        <p><strong>Other Specialty:</strong> {{ $ambassador->otherSpecialty }}</p>
+                                                    @if($ambassador->other_specialty)
+                                                        <p><strong>Other Specialty:</strong> {{ $ambassador->other_specialty }}</p>
                                                     @endif
                                                     <p><strong>Additional Comments:</strong><br>{{ $ambassador->comments }}</p>
                                                     <p><strong>Signature:</strong><br><img src="{{ $ambassador->signature }}" style="width:200px; height:auto;"/></p>
+                                                    <p><strong>Date:</strong><br>{{ $ambassador->submit_date }}</p>
                                                 </div>
 
                                                 <div class="modal-footer">
