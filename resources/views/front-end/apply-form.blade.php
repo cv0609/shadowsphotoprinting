@@ -185,7 +185,7 @@
     padding: 150px 0;
     text-align: center;
     background-color: #000;
-    background-image: url(./images/form-bg.jpg);
+    background-image: url("{{asset('assets/images/form-bg.jpg')}}");
     position: relative;
     background-position: top center;
     background-repeat: no-repeat;
@@ -380,7 +380,7 @@
                 alert('Please Draw your Signature.');
                 return false; 
             }
-            
+
             document.getElementById('signatureData').value = signaturePad.toDataURL();
 
             if (!confirmation) {
