@@ -54,7 +54,7 @@
 								<p style="margin-bottom: 10px;">In return, you will receive SPP Shutter Bucks, exclusive access to early promotions, an affiliate link to earn commissions on sales generated, a 20% discount code for your clients, and much more. </p>
 
 								<p style="margin-bottom: 10px;"><a href="{{route('apply-form')}}">SHADOWS PHOTO PRINTING PHOTOGRAPHER BRAND AMBASSADOR APPLICATION</a></p>
-								<p><small>*Currently only open to US applicants 18 and older*</small></p>
+								<!-- <p><small>*Currently only open to US applicants 18 and older*</small></p> -->
                             </div>
                         </div>
                     </div>
