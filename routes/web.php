@@ -9,6 +9,8 @@ use App\Http\Controllers\admin\PhotoForSaleController;
 use App\Http\Controllers\admin\GiftCardController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\admin\VariationsController;
+use App\Http\Controllers\admin\BrandAmbassadorController;
+
 use App\Http\Controllers\PagesController as BasePagesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ShopController;
@@ -22,6 +24,7 @@ use App\Http\Controllers\admin\TestPrintController;
 use App\Http\Controllers\admin\NewsletterController;
 use App\Http\Controllers\admin\SalePopupController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AmbassadorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -172,6 +175,15 @@ Route::prefix('admin')->group(function () {
             Route::post('/edit-sale-popup-save', [SalePopupController::class, 'editSalePopupSave'])->name('edit-sale-popup-save');
             Route::delete('/sale-popup-delete/{id}', [SalePopupController::class, 'salePopupDelete'])->name('sale-popup-delete');
         });
+        Route::prefix('ambassador')->group(function () {
+            Route::get('/', [BrandAmbassadorController::class, 'index'])->name('brand.index');
+            Route::get('/request', [BrandAmbassadorController::class, 'request'])->name('brand.requests');
+            Route::post('/{id}/approve', [BrandAmbassadorController::class, 'approve'])->name('admin.ambassador.approve');
+
+        });
+
+
+
     });
 });
 
@@ -206,6 +218,14 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::post('/order-type', [CartController::class, 'orderType'])->name('order-type');
+
+
+/*** Photographer Brand Ambassador  */
+Route::get('/apply-form', [AmbassadorController::class, 'applyForm'])->name('apply-form');
+Route::post('/apply-form', [AmbassadorController::class, 'saveForm'])->name('apply-form.post');
+Route::get('/featured-photographers', [AmbassadorController::class, 'featuredPhotographers'])->name('featured-photographers');
+Route::get('/photographer-brand-ambassador', [AmbassadorController::class, 'photographerBrandAmbassador'])->name('photographer-brandAmbassador');
+
 
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
