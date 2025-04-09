@@ -22,6 +22,7 @@ class Ambassador extends Model
         'comments',
         'other_specialty',
         'is_approved',
+        'signature',
         'user_id',
     ];
 

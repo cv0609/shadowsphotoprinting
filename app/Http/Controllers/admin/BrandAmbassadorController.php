@@ -5,8 +5,11 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ambassador;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+
 use Session;
 
 class BrandAmbassadorController extends Controller
@@ -60,5 +63,39 @@ class BrandAmbassadorController extends Controller
 
       return redirect()->route('brand.index')->with('success', 'Ambassador approved successfully!');
   }
+
+   
+  public function createAffliateUser(Ambassador $ambassador ){
+
+     $user = User::where('email',$ambassador->email)->first();
+      if(!$user){
+        $password = Str::random(8);
+        $hashedPassword = Hash::make($password);
+        $user = User::insert(['username'=>$ambassador->email, 'role' => 'affliate','email'=>$ambassador->email,'password'=>$hashedPassword,'is_email_verified'=>1]);
+      }
+   
+  
+
+
+    $hashedPassword = Hash::make($request->password);
+    $user = User::insert(['username'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
+
+    if(isset($user) && !empty($user)){
+        $user = User::where(['email' =>$request->email])->first();
+
+        $urls = route('email.verify', [
+            'token' => base64_encode($request->email),
+        ]);
+
+        $data = [
+            'email_verify_url' => $urls,
+            'username' => $user->username,
+        ];
+        Mail::to($request->email)->send(new RegisterMail($data));
+    }
+
+  }
+
+
 
 }
