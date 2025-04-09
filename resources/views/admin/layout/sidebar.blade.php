@@ -54,6 +54,14 @@
                   <li><a href="{{route('test-print-product-list')}}"><i class="fa fa-duotone fa-gift"></i>Test Print</a></li>
                   <li><a href="{{route('coupons-list')}}"><i class="fa fa-solid fa-tag"></i>Coupons</a>
                   <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>
+
+                  <li><a href="#"><i class="fa fa-picture-o"></i>Brand Ambassador</a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('brand.index') }}">Ambassador</a></li>
+                      <li><a href="{{route('brand.requests')}}">Request</a></li>
+                    </ul>
+                  </li>
+
                   <li><a href="{{route('shipping-list')}}"><i class="fa fa-truck"></i>Shipping</a></li>
                   <li><a href="{{route('orders-list')}}"><i class="fa fa-first-order"></i>Orders</a></li>
                   <li><a href="#"><i class="fa fa-list-alt"></i> Variations</a>
