@@ -29,6 +29,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Location</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -42,7 +43,7 @@
 
                                     <td>{{ $ambassador->email }}</td>
                                     <td>{{ $ambassador->location }}</td>
-
+                                    <td>{{ \Carbon\Carbon::parse($ambassador->created_at)->format('d M Y') }}</td>
                                     <td>        
                                         @if (!$ambassador->is_approved)
                                             <form method="POST" action="{{ route('admin.ambassador.approve', $ambassador->id) }}" style="display: inline-flex;">
@@ -81,12 +82,13 @@
                                                     <p><strong>Location:</strong> {{ $ambassador->location }}</p>
                                                     <p><strong>Business:</strong> {{ $ambassador->business }}</p>
                                                     <p><strong>Website:</strong> <a href="{{ $ambassador->website }}" target="_blank">{{ $ambassador->website }}</a></p>
-                                                    <p><strong>Social Handle:</strong> {{ $ambassador->social }}</p>
+                                                    <p><strong>Social Handle:</strong> {{ $ambassador->social_media_handle }}</p>
                                                     <p><strong>Photography Specialty:</strong>{{implode(', ',$items)}}</p>
                                                     @if($ambassador->otherSpecialty)
                                                         <p><strong>Other Specialty:</strong> {{ $ambassador->otherSpecialty }}</p>
                                                     @endif
                                                     <p><strong>Additional Comments:</strong><br>{{ $ambassador->comments }}</p>
+                                                    <p><strong>Signature:</strong><br><img src="{{ $ambassador->signature }}" style="width:200px; height:auto;"/></p>
                                                 </div>
 
                                                 <div class="modal-footer">
