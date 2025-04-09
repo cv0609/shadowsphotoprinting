@@ -119,6 +119,10 @@
             width: 20%;
             text-align: right;
         }
+        .apply-btn a:hover {
+            background: #000;
+            border: 1px solid #000;
+        }
         /* Responsive Design */
         @media (max-width: 768px) {
             .photographer-list th,
