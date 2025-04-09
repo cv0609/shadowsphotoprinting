@@ -74,25 +74,19 @@ class BrandAmbassadorController extends Controller
         $user = User::insert(['username'=>$ambassador->email, 'role' => 'affliate','email'=>$ambassador->email,'password'=>$hashedPassword,'is_email_verified'=>1]);
       }
    
-  
+      if(isset($user) && !empty($user)){
+          $user = User::where(['email' =>$request->email])->first();
 
+          $urls = route('email.verify', [
+              'token' => base64_encode($request->email),
+          ]);
 
-    $hashedPassword = Hash::make($request->password);
-    $user = User::insert(['username'=>$request->name,'email'=>$request->email,'password'=>$hashedPassword]);
-
-    if(isset($user) && !empty($user)){
-        $user = User::where(['email' =>$request->email])->first();
-
-        $urls = route('email.verify', [
-            'token' => base64_encode($request->email),
-        ]);
-
-        $data = [
-            'email_verify_url' => $urls,
-            'username' => $user->username,
-        ];
-        Mail::to($request->email)->send(new RegisterMail($data));
-    }
+          $data = [
+              'email_verify_url' => $urls,
+              'username' => $user->username,
+          ];
+          Mail::to($request->email)->send(new RegisterMail($data));
+      }
 
   }
 
