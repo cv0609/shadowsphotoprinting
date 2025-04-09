@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         @include('front-end.layout.head')
+        @yield('styles')
     </head>
 <body>
     <div class="main-page">
