@@ -19,6 +19,9 @@
 .photosec .row {
     align-items: center;
 }
+.photosec p a:hover {
+    text-decoration: none!important;
+}
 </style>
 
 @endsection
