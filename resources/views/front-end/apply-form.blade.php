@@ -86,7 +86,7 @@
         }
         .form-mm .checkbox-list input[type="checkbox"] {
             margin-right: 8px;
-            margin-top: 2px;
+            margin-top: 10px;
             vertical-align: top;
             accent-color: #000000;
             width: 16px;
@@ -236,6 +236,15 @@
     </div>
 </section>
 
+@if(Session::has('success'))
+<section class="form-mm">
+    <div class="container">
+           <div class="header">
+               <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+            </div>
+    </div>
+</section>
+@else
 <section class="form-mm">
     <div class="container">
            <div class="header">
@@ -340,6 +349,7 @@
         </div>
     </div>
 </section>
+@endif
 
 @endsection
 @section('scripts')

@@ -86,7 +86,9 @@ class AmbassadorController extends Controller
 
       Ambassador::create($data);
   
-      return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
+      //return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
+      return redirect()->back()->with('success', 'Thank you! We look forward to reviewing your application! You should hear a response from us within 7-10 days (or sooner).
+');
   }
   
 
