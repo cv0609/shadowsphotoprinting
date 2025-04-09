@@ -66,6 +66,7 @@ class AmbassadorController extends Controller
           'comments' => 'nullable|string',
           'otherSpecialty' => 'nullable|string|max:255',
           'signatureData' => 'required',
+          'date'=> 'required',
       ]);
   
       $data = [
@@ -79,6 +80,7 @@ class AmbassadorController extends Controller
           'comments' => $validated['comments'] ?? '',
           'other_specialty' => $validated['otherSpecialty'] ?? null,
           'signature' => $validated['signatureData'],
+          'submit_date' =>  $validated['date'],
       ];
   
 

@@ -23,6 +23,7 @@ class Ambassador extends Model
         'other_specialty',
         'is_approved',
         'signature',
+        'submit_date',
         'user_id',
     ];
 
