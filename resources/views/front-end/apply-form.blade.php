@@ -161,8 +161,10 @@
         }
 
         .form-mm button:hover {
-            background-color: #000000;
-            transform: translateY(-2px);
+            /* background-color: #000000; */
+            /* transform: translateY(-2px); */
+            -webkit-box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
+            box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
         }
 
         .form-mm .clear-btn {
