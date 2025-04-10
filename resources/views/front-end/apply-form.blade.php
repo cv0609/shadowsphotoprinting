@@ -30,36 +30,36 @@
             border-radius: 15px;
         }
         .form-mm .form-section label {
-            display: block;
-            font-weight: 500;
-            color: #fff;
-            margin-bottom: 6px;
-            font-size: 0.95em;
-            margin-top: 10px;
-        }
-        .form-mm .form-section input,
-        .form-mm .form-section textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #000000;
-            border-radius: 6px;
-            font-size: 0.95em;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            height: 40px;
-            transition: border-color 0.3s ease;
-            background: #000;
-            color: #fff;
-        }
+    display: block;
+    font-weight: 500;
+    color: #ffc205;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+    margin-top: 10px;
+}
+.form-mm .form-section input, .form-mm .form-section textarea {
+    font-size: 0.95em;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    height: 40px;
+    transition: border-color 0.3s ease;
+    background: #000;
+    border: 1px solid #fff;
+    color: #fff;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .07);
+    padding: 10px;
+    line-height: 20px;
+}
         .form-mm .form-section textarea {
             height: 80px;
             resize: vertical;
         }
-        .form-mm .form-section input:focus,
-        .form-mm .form-section textarea:focus {
-            border-color: #ffc205;
-            outline: none;
-        }
+        .form-mm .form-section input:focus, .form-mm .form-section textarea:focus {
+    border-color: #ffffff;
+    outline: none;
+    border-radius: 4px;
+}
         .form-mm .required {
             color: #e74c3c;
         }
@@ -118,16 +118,25 @@
             margin-top: 15px;
         }
         .form-mm button {
-            background-color: #ffc205;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
             font-size: 0.95em;
-            font-weight: 500;
-            cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             width: 48%;
+            -webkit-box-shadow: inset 0 0 0 0 transparent;
+            box-shadow: inset 0 0 0 0 transparent;
+            background-color: #16a085;
+            border: 0;
+            border-radius: 0;
+            display: inline-block;
+            color: #fff;
+            font-weight: 700;
+            padding: 8px 16px;
+            line-height: 24px;
+            text-decoration: none;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, .1);
+            -webkit-transition: box-shadow .2s ease-in-out;
+            -o-transition: box-shadow .2s ease-in-out;
+            transition: box-shadow .2s ease-in-out;
+            height: 40px;
         }
         .form-mm button:hover {
             background-color: #000000;
@@ -158,21 +167,25 @@
             text-decoration: underline;
         }
         .form-mm .signature-pad {
-            border: 2px solid #000000;
-            border-radius: 6px;
-            background: #000;
             margin-bottom: 10px;
+            border: 1px solid #fff;
+            color: #fff;
+            width: 100%;
+            background-color: rgba(0, 0, 0, .07);
+            line-height: 20px;
         }
         /* Enhance native date picker appearance */
         .form-mm .form-section input[type="date"] {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            padding: 8px 12px;
             background: #000;
+            border: 1px solid #fff;
             color: #fff;
-            border: 2px solid #000000;
-            border-radius: 6px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, .07);
+            padding: 10px;
+            line-height: 20px;
         }
         .form-mm .form-section input[type="date"]:focus {
             border-color: #ffc205;
@@ -185,9 +198,9 @@
     padding: 150px 0;
     text-align: center;
     background-color: #000;
-    background-image: url("{{asset('assets/images/form-bg.jpg')}}");
+    background-image: url("{{asset('assets/images/SBAs3.jpg')}}");
     position: relative;
-    background-position: top center;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }

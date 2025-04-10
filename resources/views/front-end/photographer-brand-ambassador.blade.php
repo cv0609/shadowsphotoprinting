@@ -41,7 +41,7 @@
                 <div class="col-lg-6">
                     <div class="entry-img">
                         <figure data-aos="fade-right" class="aos-init aos-animate">
-                            <img src="{{asset('assets/images/img-left.jpg')}}" alt="Side Image">
+                            <img src="{{asset('assets/images/SPBAs2.jpg')}}" alt="Side Image">
                         </figure>
                     </div>
                 </div>
