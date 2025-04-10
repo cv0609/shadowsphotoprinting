@@ -164,11 +164,14 @@
                 <div class="col-lg-6">
                     <div class="entry-text">
                         <div class="widget-title aos-init aos-animate" data-aos="fade-left">
-                            <h3>Meet the professionals who photograph our incredible imagery</h3>
+                            <h3>Meet the Professionals Behind Our Incredible Imagery</h3>
                             <div class="textwidget">
-                                <p style="margin-bottom: 10px;">Nations Photo Lab is proud to partner with talented professional photographers to showcase their imagery on our unique photo products. If you love the photos on our products, chances are it's the work of one of the photographers listed below.</p>
+                                <p style="margin-bottom: 10px;">At <strong>Shadows Photo Printing</strong>, we’re proud to collaborate with a talented community of professional photographers whose stunning work brings our products to life. Their images, captured with passion and precision, are showcased on our uniquely handcrafted, ready-to-hang canvas and photo prints—made right here in Australia. </p>
 
-								<p><small>Thank you so much to our amazing pros!</small></p>
+                                <p style="margin-bottom: 10px;">If you’ve fallen in love with the photos featured on our products, there’s a good chance you’re admiring the work of one of the amazing photographers listed below. </p>
+
+                                <p style="margin-bottom: 10px;">A heartfelt <strong>thank you</strong> to our incredible pros—we couldn’t do it without you! </p>
+                              
                             </div>
                         </div>
                     </div>
@@ -176,7 +179,7 @@
 				 <div class="col-lg-6">
                     <div class="entry-img-n">
                         <figure data-aos="fade-right" class="aos-init aos-animate">
-                            <img src="{{asset('assets/images/ftc-img.jpg')}}" alt="Side Image">
+                            <img src="{{asset('assets/images/onemeet.jpg')}}" alt="Side Image">
                         </figure>
                     </div>
                 </div>
@@ -240,7 +243,11 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<p>Have you noticed the incredible imagery on our unique photo products? Chances are it is the work of one of our incredible photography partner. At Nations Photo lab, we are proud to work with numerous talented professional photographers. From authentic lifestyle photographers like Tamara lackey to landscape photographers such as Matt Kloskowski and wedding photographers like Sam Stroud, we're thankful to partner with so many accomplished photographers who can help bring our products to life</p>
+               <p>Have you noticed the stunning imagery featured on our unique, handcrafted, ready-to-hang canvas and photo prints—proudly made right here in Australia? Chances are, it’s the work of one of our incredibly talented photography partners. </p>
+
+                <p >At <strong>Shadows Photo Printing</strong>, we’re proud to collaborate with a diverse group of professional photographers who bring our products to life. From authentic lifestyle photographers like [Photographer Name], to awe-inspiring landscape artists such as [Photographer Name], and romantic wedding storytellers like [Photographer Name], we’re grateful to work with creatives who truly elevate what we do.  </p>
+
+                <p>Each image tells a story—and through our high-quality prints, that story becomes a lasting piece of art for your space. </p>
 			</div>
 		</div>
 	</div>
