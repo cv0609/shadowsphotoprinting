@@ -246,6 +246,7 @@ Route::get('/promotion-detail/{slug}', [BasePagesController::class, 'promotionDe
 
 Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account', [MyAccountController::class, 'dashboard'])->name('dashboard');
+    Route::get('/my-account/ambassador', [AmbassadorController::class, 'ambassador'])->name('ambassador');
     Route::get('/my-account/orders', [MyAccountController::class, 'orders'])->name('orders');
     Route::get('/my-account/downloads', [MyAccountController::class, 'downloads'])->name('downloads');
     Route::get('/my-account/address', [MyAccountController::class, 'address'])->name('address');

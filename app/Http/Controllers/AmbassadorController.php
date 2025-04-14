@@ -48,6 +48,14 @@ class AmbassadorController extends Controller
     $page_content = ["meta_title"=>"photographer Brand Ambassador","meta_description"=>"photographer Brand Ambassador"];
     return view('front-end.photographer-brand-ambassador',compact('page_content'));
   } 
+
+
+  public function ambassador(){
+
+    $page_content = ["meta_title"=>"Ambassador Details","meta_description"=>"Ambassador Details"];
+            
+    return view('front-end.profile.ambassador',compact('page_content'));
+}
   
   public function saveForm(Request $request)
   {
@@ -89,8 +97,7 @@ class AmbassadorController extends Controller
       Ambassador::create($data);
   
       //return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
-      return redirect()->back()->with('success', 'Thank you! We look forward to reviewing your application! You should hear a response from us within 7-10 days (or sooner).
-');
+      return redirect()->back()->with('success', 'Thank you! We look forward to reviewing your application! You should hear a response from us within 7-10 days (or sooner).');
   }
   
 

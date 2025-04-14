@@ -15,7 +15,7 @@
                         <div class="endpointtitle">
                             <h2>My Account</h2>
                             <p>
-                                Hello <strong>{{ Auth::user()->name }}</strong> (not <strong>{{ Auth::user()->name }}</strong>?
+                                Hello <strong>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</strong> (not <strong>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</strong>?
                                 <a href="{{ route('user-logout') }}">Log out</a>)
                             </p>
                             <p> From your account dashboard you can view your <a href="{{ route('orders') }}">recent

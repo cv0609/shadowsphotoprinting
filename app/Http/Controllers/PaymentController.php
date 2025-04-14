@@ -23,9 +23,13 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\Order\MakeOrder;
 use App\Mail\Order\GiftCardMail;
 use App\Mail\AdminNotifyOrder;
+use App\Models\User;
 use App\Models\UserDetails;
+use App\Models\Affiliate;
+use App\Models\AffiliateSale;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class PaymentController extends Controller
@@ -117,8 +121,6 @@ class PaymentController extends Controller
         return response()->json(['id' => $customer_id]);
     }
     
-
-
     private function orderAddress($request, $state_name, $ship_state_name)
     {
 
@@ -141,6 +143,10 @@ class PaymentController extends Controller
             'shipping_charge' => $request->shipping_charge,
             'order_type' => $request->customer_order_type,
         ];
+
+         $data = ['fname'=>$request->fname,'lname'=>$request->lname,'username'=>$request->username,'email'=>$request->email,'password'=>$request->password];
+
+         $this->createSiteUser($data);
 
         // Check if shipping details are provided
         if (isset($request->isShippingAddress) && $request->isShippingAddress == true) {
@@ -197,6 +203,42 @@ class PaymentController extends Controller
     }
     
     
+    private function createSiteUser($data){
+        if(!Auth::check()){
+            //$password = Str::random(8);
+            $password = $data['password'];
+            $hashedPassword = Hash::make($password);
+              $user = User::create([
+                'first_name' => $data['fname'],
+                'last_name' => $data['lname'],
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'password' => $hashedPassword,
+                'is_email_verified' => '1',
+            ]);
+
+            // Check referral session
+            if (session()->has('referral_code')) {
+                $referrer = Affiliate::where('referral_code', session('referral_code'))->first();
+                
+                if ($referrer) {
+                    // Optionally log referral or save reference
+                    $user->referred_by = $referrer->user_id; // Add 'referred_by' column in users table if needed
+                    $user->save();
+
+                    // Increase referrer's stats
+                    $referrer->increment('referral_count');
+                }
+            }
+
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->first();
+            $cart->update(['user_id'=>$user->id]);
+
+            Auth::loginUsingId($user->id);
+        }
+
+    }
 
     private function createOrder($charge = null, $afterPay = null)
     {
@@ -254,6 +296,27 @@ class PaymentController extends Controller
             'order_type' => $order_type
         ]);
 
+       if (str_starts_with($coupon_code['code'], 'REF-')) {
+
+            $affiliate = Affiliate::where('coupon_code',$coupon_code['code'])->first();
+
+            $commission =  ($cart_total * 5)/100;
+
+            $commission_shutter = $commission * 100;
+
+            $affiliate->increment('commission', $commission);
+            $affiliate->increment('referral_sales_count');
+
+            AffiliateSale::create([
+                'affiliate_id'=>$affiliate->id,
+                'order_id'=>$order->id,
+                'commission'=>$commission,
+                'shutter_points'=>$commission_shutter,
+                'operation'=>'plus',
+            ]);
+       }
+
+        
         if(!empty($coupon_code)){
 
             $g_coupon = Coupon::where('code', $coupon_code['code'])
@@ -401,6 +464,7 @@ class PaymentController extends Controller
         $page_content = ["meta_title" => config('constant.order.thankyou.meta_title'), "meta_description" => config('constant.order.thankyou.meta_description')];
 
         $order_number = Order::whereId($orderId)->select('order_number')->first();
+
         return view('front-end.order_thank_you', compact('order_number', 'page_content'));
     }
 
@@ -442,6 +506,10 @@ class PaymentController extends Controller
 
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
+
+        $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$formData['username'],'email'=>$formData['email'],'password'=>$formData['password']];
+
+        $this->createSiteUser($data);
 
         $address = [
             'fname' => $fname,
@@ -639,6 +707,10 @@ class PaymentController extends Controller
 
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
+
+        $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$formData['username'],'email'=>$formData['email'],'password'=>$formData['password']];
+
+        $this->createSiteUser($data);
 
         $address = [
             'fname' => $fname,

@@ -274,13 +274,13 @@ $CartService = app(App\Services\CartService::class);
                                             <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">
                                                 -<span class="woocommerce-Price-amount amount"><span
                                                         class="woocommerce-Price-currencySymbol">$</span>
-                                                    {{-- @php
-                                                
-                                            @endphp --}}
+                                                    {{-- @php @endphp --}}
 
-                                                    {{ number_format($CartTotal['coupon_discount'],2) }}<a
-                                                        class="reset-coupon" href="{{ route('reset-coupon') }}"
-                                                        onclick="return confirm('Are you sure!')">×</a></span>
+                                                    {{ number_format($CartTotal['coupon_discount'],2) }}
+                                                    @if(!session()->has('referral_code'))
+                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
+                                                    @endif                                                
+                                                </span>
                                             </td>
                                         </tr>
                                         @endif
