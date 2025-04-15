@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ambassador;
-
+use App\Models\Blog;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Str;
+
+use App\Http\Requests\AdminBlogRequest;
 
 use Session;
 
@@ -98,6 +103,77 @@ class AmbassadorController extends Controller
   
       //return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
       return redirect()->back()->with('success', 'Thank you! We look forward to reviewing your application! You should hear a response from us within 7-10 days (or sooner).');
+  }
+
+
+  public function blog(){
+    $user_id = Auth::user()->id;
+    $blogs = Blog::where('user_id',$user_id)->get();
+
+    $page_content['meta_title'] = 'Blog';
+    $page_content['meta_description'] = 'Blog';
+
+     return view('front-end.profile.blogs.index',compact('blogs','page_content'));
+  }
+
+  public function create(){
+    $page_content['meta_title'] = 'Blog';
+    $page_content['meta_description'] = 'Blog';
+
+     return view('front-end.profile.blogs.add',compact('page_content'));
+  }
+  
+   
+  public function save(AdminBlogRequest $request){
+    $user_id = Auth::user()->id;
+    $slug = Str::slug($request->title);
+    $image = "";
+    if($request->has('image'))
+     {
+         $file = $request->file('image');
+         $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+         $destinationPath = 'assets/admin/uploads/blogs';
+         $file->move($destinationPath, $fileName);
+         $image =  $destinationPath.'/'.$fileName;
+     }
+     Blog::insert(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,'status'=>'2',"added_by"=>1,'user_id'=>$user_id]);
+
+     return redirect()->route('ambassador.blog')->with('success','Blog is submitted successfully');
+  }
+
+  public function viewBlog(Request $request,Blog $id){
+
+    $page_content['meta_title'] = 'Blog';
+    $page_content['meta_description'] = 'Blog';
+     $detail = $id;
+     return view('front-end.profile.blogs.edit',compact('page_content','detail'));
+  }
+
+  public function saveBlog(AdminBlogRequest $request,Blog $id){
+   
+    $blog = $id;
+    $user_id = Auth::user()->id;
+
+    $slug = Str::slug($request->title);
+    $data = ['title'=>$request->title,'description'=>$request->description,'slug'=>$slug,'status'=>'2',"added_by"=>1,'user_id'=>$user_id];
+   if($request->has('image'))
+    {
+        $file = $request->file('image');
+        $fileName = $file->getClientOriginalName().'-'.time().'.' . $file->getClientOriginalExtension();
+        $destinationPath = 'assets/admin/uploads/blogs';
+        $file->move($destinationPath, $fileName);
+        $image =  $destinationPath.'/'.$fileName;
+        $data['image']=$image;
+    }
+    $blog->update($data);
+
+    return redirect()->route('ambassador.blog')->with('success','Blog update submitted successfully');
+  }
+
+  public function destroy(Blog $blog)
+  {
+      $blog->delete();
+     return redirect()->route('ambassador.blog')->with('success','Blog post deleted successfully');
   }
   
 

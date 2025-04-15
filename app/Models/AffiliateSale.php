@@ -34,4 +34,15 @@ class AffiliateSale extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+
+    public static function getTotalsForAffiliate($affiliateId)
+    {
+        return self::where('affiliate_id', $affiliateId)
+            ->selectRaw("
+                SUM(CASE WHEN operation = 'plus' THEN commission ELSE -commission END) as total_commission,
+                SUM(CASE WHEN operation = 'plus' THEN shutter_points ELSE -shutter_points END) as total_shutter_points
+            ")
+            ->first();
+    }
 }

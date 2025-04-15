@@ -37,7 +37,8 @@ $CartCount = $cartModel::getCartCount();
                                                 <ul class="ashboard">
                                                     <li class=""> <a href="{{ route('dashboard') }}" class="active">Dashboard <i class="fa-solid fa-gauge"></i></a> </li>
                                                      @if(Auth::user()->role == 'affiliate')
-                                                      <li class=""> <a href="{{ route('ambassador') }}">Ambassador <i class="fa-solid fa-gauge"></i></a> </li>
+                                                     <li class=""> <a href="{{ route('ambassador') }}">Ambassador <i class="fa-solid fa-gauge"></i></a> </li>
+                                                     <li class=""> <a href="{{ route('ambassador.blog') }}">Blog <i class="fa-solid fa-gauge"></i></a> </li>
                                                      @endif 
                                                     
                                                     <li class=""> <a href="{{ route('orders') }}">Orders<i class="fa-solid fa-bag-shopping"></i></a></li>

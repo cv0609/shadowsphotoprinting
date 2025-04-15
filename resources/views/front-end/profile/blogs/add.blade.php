@@ -1,33 +1,35 @@
-@extends('admin.layout.main')
-@section('page-content')
-<div class="right_col" role="main" style="min-height: 3963px;">
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('blogs.index') }}">Blogs</a></li>
-        <li class="breadcrumb-item"><a href="#">Edit Blogs</a></li>
-    </ol>
-    </nav>
-<div class="">
-<div class="row">
-    <div class="col-md-12 col-sm-12 ">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Edit Blog</h2>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <br>
-                <form action="{{ route('blogs.update',['blog'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
-                    @csrf
-                    @method('PUT')
+@extends('front-end.layout.main')
+@php
+    $PageDataService = app(App\Services\PageDataService::class);
+    $ProductCategories = $PageDataService->getProductCategories();
+@endphp
+@section('content')
+   
+<section class="account-page">
+    <div class="container">
+        <div class="account-wrapper">
+            <div class="row">
+                @include('front-end.profile.component.account-sidebar')
+                <div class="col-md-9">
+                    @if(Session::has('success'))
+                      <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+                    @endif
+                    <div class="pangas-can">
+                        <div class="endpointtitle">
+                          
+                              <h2>Add Blog</h2>
+                              <div class="clearfix"></div>
+
+                            <div class="notices-wrapper row">
+
+                    <form action="{{ route('ambassador.blog.save') }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
 
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Blog Title <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="title" name="title" required="required" class="form-control" value="{{ $detail->title }}">
+                            <input type="text" id="title" name="title" required="required" class="form-control ">
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
@@ -38,40 +40,16 @@
                     </div>
 
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Blog Status <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            @php
-                            $status = ['0'=>'Draft','1'=>'publish','2'=>'In Review','3'=>'Modify'];
-                            @endphp
-                            <select name="status" class="form-control">
-                                @foreach($status as $key=>$val)
-                                  <option value="{{$key}}" @if($key == $detail->status) selected @endif >{{$val}}</option> 
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Blog Image <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-
-                            <div class="choose-file-wrap">
-                                <input type="file" id="image" name="image" class="form-control">
-                                @if(Session::has('error'))
-                                <p class="text-danger">{{ Session::get('error') }}</p>
+                            <input type="file" id="image" name="image" required="required" class="form-control">
+                            @if(Session::has('error'))
+                              <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
-                                <div class="choose-file-single">
-                                    <figure>
-                                        <img src="{{ asset($detail->image) }}" alt="img-single">
-                                        <span class="closed_btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-                                        </span>
-                                    </figure>
-                                </div>
-                            </div>
-            
+                            @error('image')
+                             <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -80,7 +58,7 @@
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="description">Blog Description <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <textarea id="description" name="description" required="required" class="form-control ">{{ $detail->description }}</textarea>
+                            <textarea id="description" name="description" required="required" class="form-control "></textarea>
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
@@ -99,15 +77,20 @@
                         </div>
 
                 </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-</div>
+</section>
 
 @endsection
-@section('custom-script')
+@section('scripts')
+<script src="https://cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Ensure CKEditor script is fully loaded before replacing the textarea

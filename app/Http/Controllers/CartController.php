@@ -33,43 +33,56 @@ class CartController extends Controller
 
     public function applyReferralCouponIfNeeded()
     {
-
+      
         if (Auth::check() && !empty(Auth::user())) {
-            $auth_id = Auth::user()->id;
+            $user = Auth::user();
+            $auth_id = $user->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            // If no referral code in session, check if user is referred and has no orders
+            if (!Session::has('referral_code') && $user->referred_by && $user->orders()->count() === 0 && $cart && $cart->items->count() > 0) {
+                $affiliate = Affiliate::find($user->referred_by);
+                if ($affiliate && $affiliate->coupon_code) {
+                    $coupon = Coupon::where('code', $affiliate->coupon_code)->where('is_active', true)->first();
+    
+                    if ($coupon) {
+                        $total = $this->CartService->getCartTotal();
+                        $amount = ($coupon->amount / 100) * $total['subtotal'];
+    
+                        Session::put('referral_code', $affiliate->referral_code); // store for future logic
+                        Session::put('coupon', [
+                            'code' => $coupon->code,
+                            'discount_amount' => $amount,
+                        ]);
+                    }
+                }
+            }
+    
         } else {
+            // Guest user logic with referral_code already in session
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
-        }
-
-        // Check if referral_code is stored
-        if (session()->has('referral_code') && count($cart->items) > 0) {
-
-            $referralCode = session('referral_code');
-
-            // Find the affiliate
-            $affiliate = Affiliate::where('referral_code', $referralCode)->first();
-
-            if ($affiliate && $affiliate->referral_code) {
-
-
-                $couponCode = $affiliate->coupon_code;
-
-                $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
-
-                $total = $this->CartService->getCartTotal();
-        
-                if (!empty($coupon)) {
-                    $amount = ($coupon->amount / 100) * $total['subtotal'];
-                    Session::put('coupon', [
-                        'code' => $coupon->code,
-                        'discount_amount' => $amount,
-                    ]);
+    
+            if (Session::has('referral_code') && $cart && $cart->items->count() > 0) {
+                $referralCode = Session::get('referral_code');
+                $affiliate = Affiliate::where('referral_code', $referralCode)->first();
+    
+                if ($affiliate && $affiliate->coupon_code) {
+                    $coupon = Coupon::where('code', $affiliate->coupon_code)->where('is_active', true)->first();
+    
+                    if ($coupon) {
+                        $total = $this->CartService->getCartTotal();
+                        $amount = ($coupon->amount / 100) * $total['subtotal'];
+    
+                        Session::put('coupon', [
+                            'code' => $coupon->code,
+                            'discount_amount' => $amount,
+                        ]);
+                    }
                 }
-
             }
         }
     }
+    
 
     public function addToCart(Request $request)
     {
@@ -272,11 +285,31 @@ class CartController extends Controller
        return response()->json(['order_type' => $request->order_type]);
     }
 
+
+    public function shutterPoint(Request $request){
+        $shutter_point = $request['shutter_point'];
+        Session::put('shutter_point',$shutter_point);
+       return response()->json(['order_type' => Session::get('order_type')]);
+    }
+
+
     public function cart()
     {
+        $affiliate_sales = null;
+
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            
+            if(Auth::user()->role === 'affiliate'){
+                $affiliate_id = Auth::user()->affiliate->id;
+                $affiliate_sales = \App\Models\AffiliateSale::getTotalsForAffiliate($affiliate_id);
+
+                if(Session::has('shutter_point')){
+                    $cart->update(['shutter_point'=>Session::get('shutter_point')]);
+                }
+            }
+
         } else {
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
@@ -291,11 +324,11 @@ class CartController extends Controller
         $CartTotal = $this->CartService->getCartTotal();
 
         $shipping = $this->CartService->getShippingCharge();
-
+        
         $page_content = ["meta_title" => config('constant.pages_meta.cart.meta_title'), "meta_description" => config('constant.pages_meta.cart.meta_description')];
 
         if (!empty($cart)) {
-            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content'));
+            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'affiliate_sales', 'countries', 'page_content'));
         } else {
 
             return redirect('shop');

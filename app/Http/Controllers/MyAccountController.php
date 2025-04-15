@@ -24,6 +24,8 @@ use App\Models\UserDetails;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Blog;
+
 
 class MyAccountController extends Controller
 {

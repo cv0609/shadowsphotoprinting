@@ -17,6 +17,8 @@ class Order extends Model
         'coupon_id',
         'coupon_code',
         'discount',
+        'shutter_point',
+        'commission',
         'sub_total',
         'shipping_charge',
         'total',
