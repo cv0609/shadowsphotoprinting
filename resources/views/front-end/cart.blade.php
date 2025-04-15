@@ -269,7 +269,7 @@ $CartService = app(App\Services\CartService::class);
                                             </td>
                                         </tr>
 
-                                        @if(Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
+                                        @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
                                         <tr class="cart-shutter-point">
                                             <th>Shutter Points</th>
                                             <td data-title="Shutter Points" >
@@ -501,13 +501,13 @@ $CartService = app(App\Services\CartService::class);
         let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Base total
         let shippingCost = parseFloat("{{ $CartTotal['shippingCharge'] }}"); // Shipping cost
 
-        @if(Auth::user()->role == 'affiliate')
+        @if(Auth::check() && !empty(Auth::user()) &&  Auth::user()->role == 'affiliate')
           let commission = parseFloat("{{$affiliate_sales->total_commission}}");
         @else
           let commission = 0;
         @endif  
 
-        @if(Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
+        @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
            if($("input[name='shutter_point']:checked").val() === '1')
            {
             baseTotal = baseTotal - commission;
@@ -548,7 +548,7 @@ $CartService = app(App\Services\CartService::class);
         });
     });
 
-    @if(Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
+    @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
         $(".shutterPoint").change(function () {
             let shutterPoint = $("input[name='shutter_point']:checked").val(); // Get selected value
             
