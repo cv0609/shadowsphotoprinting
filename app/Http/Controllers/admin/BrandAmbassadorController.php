@@ -76,9 +76,13 @@ class BrandAmbassadorController extends Controller
       if(!$user){
         //$password = Str::random(8);
         $password = "PASSWORD";
+        $name = explode(' ',$ambassador->name);
+
         $hashedPassword = Hash::make($password);
           $user = User::create([
             'username' => $ambassador->email,
+            'first_name'=>$name[0]??'',
+            'last_name'=>$name[1]??'',
             'role' => 'affiliate',
             'email' => $ambassador->email,
             'password' => $hashedPassword,
