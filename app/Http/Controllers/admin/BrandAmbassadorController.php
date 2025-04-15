@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ambassador;
 use App\Models\User;
+use App\Models\Coupon;
+use App\Models\Affiliate;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 use Session;
 
@@ -30,7 +33,7 @@ class BrandAmbassadorController extends Controller
       'other' => 'Other'
      ];
 
-      $ambassadors = Ambassador::where('is_approved',1)->paginate(10);
+      $ambassadors = Ambassador::where('is_approved',1)->with(['user'])->paginate(10);
       return view('admin.ambassador.index', compact('ambassadors','specialtyMap'));
   }
 
@@ -61,6 +64,8 @@ class BrandAmbassadorController extends Controller
       $ambassador->is_approved = true;
       $ambassador->save();
 
+      $this->createAffliateUser($ambassador);
+
       return redirect()->route('brand.index')->with('success', 'Ambassador approved successfully!');
   }
 
@@ -69,24 +74,40 @@ class BrandAmbassadorController extends Controller
 
      $user = User::where('email',$ambassador->email)->first();
       if(!$user){
-        $password = Str::random(8);
+        //$password = Str::random(8);
+        $password = "PASSWORD";
         $hashedPassword = Hash::make($password);
-        $user = User::insert(['username'=>$ambassador->email, 'role' => 'affliate','email'=>$ambassador->email,'password'=>$hashedPassword,'is_email_verified'=>1]);
+          $user = User::create([
+            'username' => $ambassador->email,
+            'role' => 'affiliate',
+            'email' => $ambassador->email,
+            'password' => $hashedPassword,
+            'is_email_verified' => '1',
+        ]);
+      }else{
+        $user->update(['role'=>'affiliate']);
       }
    
-      if(isset($user) && !empty($user)){
-          $user = User::where(['email' =>$request->email])->first();
+       $referral_code = Affiliate::generateUniqueCode();
 
-          $urls = route('email.verify', [
-              'token' => base64_encode($request->email),
-          ]);
+       $coupon = Coupon::create(['code'=>$referral_code,'type'=>'1','amount'=>20,'auto_applied'=>0,'is_active'=>1]);
 
-          $data = [
-              'email_verify_url' => $urls,
-              'username' => $user->username,
-          ];
-          Mail::to($request->email)->send(new RegisterMail($data));
-      }
+     if($coupon){
+        $data = [
+          'referral_code'=>$referral_code,
+          'coupon_code'=>$referral_code,
+          'referral_count'=>0,
+          'referral_sales_count'=>0,
+          'commission'=>0,
+          'user_id'=>$user->id,
+        ];
+       $affiliate =  Affiliate::create($data);
+
+       if($affiliate){
+        $ambassador->update(['user_id'=>$user->id]);
+       }
+
+     }
 
   }
 

@@ -58,9 +58,9 @@
                                     <td data-title="order-number">{{ $ambassador->name }}</td>
 
                                     <td>{{ $ambassador->email }}</td>
+                                    <td>{{$ambassador->user?->affiliate?->referral_code}}</td>
                                     <td>XXXX</td>
-                                    <td>XXXX</td>
-                                    <td>XXXX</td>
+                                    <td>{{$ambassador->user?->affiliate?->referral_count}}</td>
 
                                     <td>{{ $ambassador->status }}</td>
                                 </tr>

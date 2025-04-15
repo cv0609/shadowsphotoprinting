@@ -23,6 +23,19 @@ class PageDataService
         } 
     }
 
+    public function getWebBlogs()
+    {
+       $blogs = Blog::where('status','1')->get();
+       if(isset($blogs) && !empty($blogs))
+        {
+           return $blogs;
+        }
+        else
+        {
+            return null;
+        } 
+    }
+
     public function getProductCategories()
     {
         $ProductCategories = ProductCategory::where('slug' ,'!=','test-print')->get();

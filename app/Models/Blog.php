@@ -15,6 +15,7 @@ class Blog extends Model
         'slug',
         'status',
         'added_by',
+        'user_id',
     ];
      
     

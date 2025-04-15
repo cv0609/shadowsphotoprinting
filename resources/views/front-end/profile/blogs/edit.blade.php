@@ -1,26 +1,58 @@
-@extends('admin.layout.main')
-@section('page-content')
-<div class="right_col" role="main" style="min-height: 3963px;">
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('blogs.index') }}">Blogs</a></li>
-        <li class="breadcrumb-item"><a href="#">Edit Blogs</a></li>
-    </ol>
-    </nav>
-<div class="">
-<div class="row">
-    <div class="col-md-12 col-sm-12 ">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Edit Blog</h2>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <br>
-                <form action="{{ route('blogs.update',['blog'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
-                    @csrf
-                    @method('PUT')
+@extends('front-end.layout.main')
+@php
+    $PageDataService = app(App\Services\PageDataService::class);
+    $ProductCategories = $PageDataService->getProductCategories();
+@endphp
+@section('styles')
+<style>
+.choose-file-wrap {
+    margin: 5px 0 0;
+}
+.choose-file-wrap .choose-file-single figure {
+    max-width: 180px;
+}
+.choose-file-wrap img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #eee;
+    padding: 4px;
+}
+.choose-file-wrap figure span.closed_btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+</style>
+
+@endsection
+@section('content')
+<section class="account-page">
+    <div class="container">
+        <div class="account-wrapper">
+            <div class="row">
+                @include('front-end.profile.component.account-sidebar')
+                <div class="col-md-9">
+                    @if(Session::has('success'))
+                      <p class="alert alert-success text-center">{{ Session::get('success') }}</p>
+                    @endif
+                    <div class="pangas-can">
+                        <div class="endpointtitle">
+                          
+                              <h2>Edit Blog</h2>
+                              <div class="clearfix"></div>
+
+                            <div class="notices-wrapper row">
+
+                            <form action="{{ route('ambassador.blog.update',['id'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
 
                     <div class="item form-group">
@@ -34,21 +66,6 @@
                             @error('title')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
-                        </div>
-                    </div>
-
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Blog Status <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 ">
-                            @php
-                            $status = ['0'=>'Draft','1'=>'publish','2'=>'In Review','3'=>'Modify'];
-                            @endphp
-                            <select name="status" class="form-control">
-                                @foreach($status as $key=>$val)
-                                  <option value="{{$key}}" @if($key == $detail->status) selected @endif >{{$val}}</option> 
-                                @endforeach
-                            </select>
                         </div>
                     </div>
 
@@ -99,15 +116,20 @@
                         </div>
 
                 </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-</div>
+</section>
 
 @endsection
-@section('custom-script')
+@section('scripts')
+<script src="https://cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Ensure CKEditor script is fully loaded before replacing the textarea

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\CartData;
 use App\Models\Country;
 use App\Models\Coupon;
+use App\Models\Affiliate;
 use App\Models\Shipping;
 use App\Models\State;
 use App\Models\Product;
@@ -29,6 +30,59 @@ class CartController extends Controller
     {
         $this->CartService = $CartService;
     }
+
+    public function applyReferralCouponIfNeeded()
+    {
+      
+        if (Auth::check() && !empty(Auth::user())) {
+            $user = Auth::user();
+            $auth_id = $user->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            // If no referral code in session, check if user is referred and has no orders
+            if (!Session::has('referral_code') && $user->referred_by && $user->orders()->count() === 0 && $cart && $cart->items->count() > 0) {
+                $affiliate = Affiliate::find($user->referred_by);
+                if ($affiliate && $affiliate->coupon_code) {
+                    $coupon = Coupon::where('code', $affiliate->coupon_code)->where('is_active', true)->first();
+    
+                    if ($coupon) {
+                        $total = $this->CartService->getCartTotal();
+                        $amount = ($coupon->amount / 100) * $total['subtotal'];
+    
+                        Session::put('referral_code', $affiliate->referral_code); // store for future logic
+                        Session::put('coupon', [
+                            'code' => $coupon->code,
+                            'discount_amount' => $amount,
+                        ]);
+                    }
+                }
+            }
+    
+        } else {
+            // Guest user logic with referral_code already in session
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+    
+            if (Session::has('referral_code') && $cart && $cart->items->count() > 0) {
+                $referralCode = Session::get('referral_code');
+                $affiliate = Affiliate::where('referral_code', $referralCode)->first();
+    
+                if ($affiliate && $affiliate->coupon_code) {
+                    $coupon = Coupon::where('code', $affiliate->coupon_code)->where('is_active', true)->first();
+    
+                    if ($coupon) {
+                        $total = $this->CartService->getCartTotal();
+                        $amount = ($coupon->amount / 100) * $total['subtotal'];
+    
+                        Session::put('coupon', [
+                            'code' => $coupon->code,
+                            'discount_amount' => $amount,
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+    
 
     public function addToCart(Request $request)
     {
@@ -220,6 +274,8 @@ class CartController extends Controller
             }
         }
 
+        $this->applyReferralCouponIfNeeded();
+
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
@@ -229,11 +285,31 @@ class CartController extends Controller
        return response()->json(['order_type' => $request->order_type]);
     }
 
+
+    public function shutterPoint(Request $request){
+        $shutter_point = $request['shutter_point'];
+        Session::put('shutter_point',$shutter_point);
+       return response()->json(['order_type' => Session::get('order_type')]);
+    }
+
+
     public function cart()
     {
+        $affiliate_sales = null;
+
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            
+            if(Auth::user()->role === 'affiliate'){
+                $affiliate_id = Auth::user()->affiliate->id;
+                $affiliate_sales = \App\Models\AffiliateSale::getTotalsForAffiliate($affiliate_id);
+
+                if(Session::has('shutter_point')){
+                    $cart->update(['shutter_point'=>Session::get('shutter_point')]);
+                }
+            }
+
         } else {
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
@@ -242,15 +318,17 @@ class CartController extends Controller
         $session_id = Session::getId();
 
         $countries = Country::with('states')->find(14);
+        
+        $this->applyReferralCouponIfNeeded();
 
         $CartTotal = $this->CartService->getCartTotal();
 
         $shipping = $this->CartService->getShippingCharge();
-
+        
         $page_content = ["meta_title" => config('constant.pages_meta.cart.meta_title'), "meta_description" => config('constant.pages_meta.cart.meta_description')];
 
         if (!empty($cart)) {
-            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content'));
+            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'affiliate_sales', 'countries', 'page_content'));
         } else {
 
             return redirect('shop');
@@ -301,6 +379,8 @@ class CartController extends Controller
                 $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
                 isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
 
+                $this->applyReferralCouponIfNeeded();
+
                 if (!Session::has('coupon')) {
 
                     foreach ($cart->items as $item) {
@@ -314,6 +394,8 @@ class CartController extends Controller
                     }
                 }
             }
+
+
         }
 
         // Check if the cart is empty and forget the coupon if necessary
@@ -323,6 +405,8 @@ class CartController extends Controller
 
         return redirect()->route('cart')->with('success', 'Item removed from cart');
     }
+
+
 
     public function applyCoupon(Request $request)
     {
@@ -516,6 +600,8 @@ class CartController extends Controller
 
             CartData::whereId($data['rowId'])->update(['quantity' => $data['quantity']]);
         }
+
+        $this->applyReferralCouponIfNeeded();
 
         if (Session::has('coupon')) {
             $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);

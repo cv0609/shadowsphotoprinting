@@ -2,7 +2,7 @@
 @section('content')
 @php
     $PageDataService = app(App\Services\PageDataService::class);
-    $blogs = $PageDataService->getBlogs();
+    $blogs = $PageDataService->getWebBlogs();
 @endphp
 {{-- @php dd($page_content); @endphp --}}
 <section class="blog-new">

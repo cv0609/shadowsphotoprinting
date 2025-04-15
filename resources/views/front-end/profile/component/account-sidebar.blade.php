@@ -27,6 +27,12 @@
         <ul class="ashboard prod">
             <li class=""> <a href="{{ route('dashboard') }}" class="{{ Request::url() == route('dashboard') ? 'active' : '' }}">Dashboard<i
                         class="fa-solid fa-gauge"></i></a> </li>
+         @if(Auth::user()->role == 'affiliate')
+           <li class=""> <a href="{{ route('ambassador') }}" class="{{ Request::url() == route('ambassador') ? 'active' : '' }}">Ambassador<i class="fa-solid fa-gauge"></i></a> </li>
+           <li class=""> <a href="{{ route('ambassador.blog') }}" class="{{ Request::url() == route('ambassador.blog') ? 'active' : '' }}" >Blog <i class="fa-solid fa-gauge"></i></a> </li>
+
+         @endif                          
+
             <li class=""> <a href="{{ route('orders') }}" class="{{ Request::url() == route('orders') ? 'active' : '' }}">Orders<i class="fa-solid fa-bag-shopping"></i></a>
             </li>
             {{-- <li class=""> <a href="{{ route('downloads') }}">Downloads <i class="fa-solid fa-download"></i></a> </li> --}}

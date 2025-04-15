@@ -269,6 +269,13 @@
                                         </tr>
                                         @endif
 
+                                        @if($cart->shutter_point == '1')
+                                        <tr>
+                                            <th>Shutter Point:</th>
+                                            <td>-<span><span></span>{{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})</span> </td>
+                                        </tr>
+                                        @endif
+
                                         @if($shipping->status == "1" && $order_type != 1)
                                         <tr>
                                             <th>Shipping</th>
