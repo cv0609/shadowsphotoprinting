@@ -35,7 +35,7 @@ class BlogsController extends Controller
             $file->move($destinationPath, $fileName);
             $image =  $destinationPath.'/'.$fileName;
         }
-        Blog::insert(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
+        Blog::create(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
 
         return redirect()->route('blogs.index')->with('success','Blog is created successfully');
     }

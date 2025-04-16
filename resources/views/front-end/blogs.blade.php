@@ -40,7 +40,7 @@
                         
                             <span>By {{ $authorName }}</span>
                             <span class=""></span>
-                            <span>{{ date("F d,Y",$value['update_at']) }}</span>
+                            <span>{{ $value->updated_at->format('F d, Y') }}</span>
                         </div>
                     </div>
                     <div class="entry-summary">

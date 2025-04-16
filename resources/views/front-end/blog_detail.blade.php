@@ -23,7 +23,7 @@
             <div class="benefit">
                 <h3>{{$blog_details->title}}</h3>
                 <div class="kt_color_gray">
-                    <span>{{date("F d,Y",$blog_details->update_at)}}</span>
+                    <span>{{ $blog_details->updated_at->format('F d, Y') }}</span>
                     <span>by</span>
                     @php
                         $author = $blog_details->user;
