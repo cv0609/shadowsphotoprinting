@@ -7,7 +7,7 @@
 <body>
 
     <h1>{{ $blog->title }}</h1>
-    <p>{{ date("F d,Y",$blog->update_at) }}</p>
+    <p>{{ $blog->updated_at->format('F d, Y') }}</p>
     <br/>
     <br/>
 
@@ -20,7 +20,7 @@
             <div class="benefit">
                 <h3>{{ $blog->title }}</h3>
                 <div class="kt_color_gray">
-                    <span>{{ date("F d,Y",$blog->update_at) }}</span>
+                    <span>{{ $blog->updated_at->format('F d, Y') }}</span>
                     <span>by</span>
                     @php
                         $authorName = !empty($blog->user->first_name)
