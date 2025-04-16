@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdminBlogRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
+use Barryvdh\DomPDF\Facade\PDF;
+
+
 class BlogsController extends Controller
 {
     public function index()
@@ -46,7 +49,7 @@ class BlogsController extends Controller
     public function update(AdminBlogRequest $request)
     {
         $slug = Str::slug($request->title);
-        $data = ['title'=>$request->title,'description'=>$request->description,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()];
+        $data = ['title'=>$request->title,'description'=>$request->description,'slug'=>$slug,'status'=>$request->status,"added_by"=>Auth::guard('admin')->id()];
        if($request->has('image'))
         {
             $file = $request->file('image');
@@ -66,5 +69,12 @@ class BlogsController extends Controller
     {
        Blog::where('slug',$blog)->delete();
        return redirect()->route('blogs.index')->with('success','Page deleted successfully');
+    }
+
+    public function generateBlogPDF(Blog $blog)
+    {
+        $data = ['blog'=>$blog];
+        $pdf = PDF::loadView('admin.pdf.blog',$data);
+        return $pdf->download($blog->slug.'.pdf');
     }
 }

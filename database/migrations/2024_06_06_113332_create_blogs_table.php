@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('image');
             $table->longText('description');
-            $table->enum('status',['0','1'])->default('1')->comment('0 for unactive 1 for active');
+            $table->enum('status',['0','1','2','3'])->default('1')->comment('0 for unactive 1 for active 2 for review 3 for moderation');
             $table->tinyInteger('added_by');
             $table->timestamps();
         });

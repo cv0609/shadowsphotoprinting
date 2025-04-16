@@ -14,6 +14,7 @@ use App\Mail\RegisterMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Mail\ForgotPasswordMail;
+use App\Models\Affiliate;
 
 class LoginController extends Controller
 {
@@ -33,6 +34,21 @@ class LoginController extends Controller
 
         if(isset($user) && !empty($user)){
             $user = User::where(['email' =>$request->email])->first();
+
+            // Check referral session
+            if (session()->has('referral_code')) {
+                $referrer = Affiliate::where('referral_code', session('referral_code'))->first();
+                
+                if ($referrer) {
+                    // Optionally log referral or save reference
+                    $user->referred_by = $referrer->user_id; // Add 'referred_by' column in users table if needed
+                    $user->save();
+
+                    // Increase referrer's stats
+                    $referrer->increment('referral_count');
+                }
+            }
+
 
             $urls = route('email.verify', [
                 'token' => base64_encode($request->email),

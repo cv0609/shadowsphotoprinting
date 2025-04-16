@@ -24,9 +24,17 @@ class CartService
 {
     public function getCartTotal()
     {
+        $affiliate_sales = null;
+
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+
+            if(Auth::user()->role === 'affiliate'){
+                $affiliate_id = Auth::user()->affiliate->id;
+                $affiliate_sales = \App\Models\AffiliateSale::getTotalsForAffiliate($affiliate_id);
+            }
+
         } else {
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
@@ -62,7 +70,7 @@ class CartService
             }
             return $carry + ($product_price * $item->quantity);
         }, 0);
-
+        
         $shippingCharge = 0;
         // Calculate the total after applying the discount
         $shippingCharge = $this->getShippingCharges($cart);
@@ -94,6 +102,12 @@ class CartService
                 }
             }
         }
+
+        if($cart->shutter_point == '1'){
+            $totalAfterDiscount = max(0, $totalAfterDiscount - $affiliate_sales->total_commission); // Ensure total is never negative
+        }
+
+
 
         $order_type = 0;
         if(Session::has('order_type')){

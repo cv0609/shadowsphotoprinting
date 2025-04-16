@@ -23,10 +23,17 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\Order\MakeOrder;
 use App\Mail\Order\GiftCardMail;
 use App\Mail\AdminNotifyOrder;
+use App\Models\User;
 use App\Models\UserDetails;
+use App\Models\Affiliate;
+use App\Models\AffiliateSale;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+
+use App\Events\OrderPlaced;
+
 
 class PaymentController extends Controller
 {
@@ -44,10 +51,22 @@ class PaymentController extends Controller
     public function checkout()
     {
         $user_address = '';
+        $affiliate_sales = null;
+
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
             $user_address = UserDetails::where('user_id', $auth_id)->first();
+
+            if(Auth::user()->role === 'affiliate'){
+                $affiliate_id = Auth::user()->affiliate->id;
+                $affiliate_sales = \App\Models\AffiliateSale::getTotalsForAffiliate($affiliate_id);
+
+                if(Session::has('shutter_point')){
+                    $cart->update(['shutter_point'=>Session::get('shutter_point')]);
+                }
+            }
+
         } else {
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
@@ -60,7 +79,7 @@ class PaymentController extends Controller
 
         $page_content = ["meta_title" => config('constant.pages_meta.checkout.meta_title'), "meta_description" => config('constant.pages_meta.checkout.meta_description')];
 
-        return view('front-end.checkout', compact('cart', 'CartTotal', 'shipping', 'countries', 'page_content', 'user_address'));
+        return view('front-end.checkout', compact('cart','affiliate_sales', 'CartTotal', 'shipping', 'countries', 'page_content', 'user_address'));
     }
 
     public function createCustomer(Request $request)
@@ -117,8 +136,6 @@ class PaymentController extends Controller
         return response()->json(['id' => $customer_id]);
     }
     
-
-
     private function orderAddress($request, $state_name, $ship_state_name)
     {
 
@@ -141,6 +158,10 @@ class PaymentController extends Controller
             'shipping_charge' => $request->shipping_charge,
             'order_type' => $request->customer_order_type,
         ];
+
+         $data = ['fname'=>$request->fname,'lname'=>$request->lname,'username'=>$request->username,'email'=>$request->email,'password'=>$request->password];
+
+         $this->createSiteUser($data);
 
         // Check if shipping details are provided
         if (isset($request->isShippingAddress) && $request->isShippingAddress == true) {
@@ -197,15 +218,66 @@ class PaymentController extends Controller
     }
     
     
+    private function createSiteUser($data){
+        if(!Auth::check()){
+            //$password = Str::random(8);
+            $password = $data['password'];
+            $hashedPassword = Hash::make($password);
+              $user = User::create([
+                'first_name' => $data['fname'],
+                'last_name' => $data['lname'],
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'password' => $hashedPassword,
+                'is_email_verified' => '1',
+            ]);
+
+            // Check referral session
+            if (session()->has('referral_code')) {
+                $referrer = Affiliate::where('referral_code', session('referral_code'))->first();
+                
+                if ($referrer) {
+                    // Optionally log referral or save reference
+                    $user->referred_by = $referrer->user_id; // Add 'referred_by' column in users table if needed
+                    $user->save();
+
+                    // Increase referrer's stats
+                    $referrer->increment('referral_count');
+                }
+            }
+
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->first();
+            $cart->update(['user_id'=>$user->id]);
+
+            Auth::loginUsingId($user->id);
+        }
+
+    }
 
     private function createOrder($charge = null, $afterPay = null)
     {
         $cart = '';
         $orderNumber = Order::generateOrderNumber();
+        $affiliate_sales = null;
+        $shutter_point = 0;
+        $commission = 0;
 
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
             $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+
+            if(Auth::user()->role === 'affiliate' && Session::get('shutter_point') == '1'){
+                $affiliate_id = Auth::user()->affiliate->id;
+                $affiliate_sales = \App\Models\AffiliateSale::getTotalsForAffiliate($affiliate_id);
+
+                $shutter_point = $affiliate_sales->total_shutter_points;
+                $commission = $affiliate_sales->total_commission;
+            }else{
+                $shutter_point = 0;
+                $commission = 0;
+            }
+
         } else {
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
@@ -219,6 +291,8 @@ class PaymentController extends Controller
         $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
         $coupon_code = $cartTotal['coupon_code'] ?? '';
         $coupon_id = (isset($cartTotal['coupon_id']) && !empty($cartTotal['coupon_id'])) ? $cartTotal['coupon_id'] : null;
+
+
 
         $payment_method = '';
         $order_type = '';
@@ -237,6 +311,8 @@ class PaymentController extends Controller
             'coupon_id' => $coupon_id,
             'coupon_code' => $coupon_code['code'] ?? '',
             'discount' => $coupon_discount ?? 0,
+            'shutter_point' => $shutter_point ?? 0,
+            'commission' => $commission ?? 0,
             'sub_total' => $subtotal ?? 0,
             'shipping_charge' => $shipping_amount,
             'total' => $cart_total,
@@ -254,6 +330,49 @@ class PaymentController extends Controller
             'order_type' => $order_type
         ]);
 
+
+     // Alocate commission to Affiliate 
+
+
+       if (isset($coupon_code['code']) && str_starts_with($coupon_code['code'], 'REF-')) {
+
+            $affiliate = Affiliate::where('coupon_code',$coupon_code['code'])->first();
+
+            //$commission =  ($cart_total * 5)/100;
+            $commission =  3;
+
+            $commission_shutter = $commission * 100;
+
+            $affiliate->increment('commission', $commission);
+            $affiliate->increment('referral_sales_count');
+
+            AffiliateSale::create([
+                'affiliate_id'=>$affiliate->id,
+                'order_id'=>$order->id,
+                'commission'=>$commission,
+                'shutter_points'=>$commission_shutter,
+                'operation'=>'plus',
+            ]);
+       }
+
+        if (Auth::check() && Auth::user()->affiliate && $commission > 0) {
+            
+            AffiliateSale::create([
+                'affiliate_id'=>Auth::user()->affiliate->id,
+                'order_id'=>$order->id,
+                'commission'=>$commission??0,
+                'shutter_points'=>$shutter_point,
+                'operation'=>'minus',
+            ]);
+
+          Auth::user()->affiliate->decrement('commission', $commission);
+       }
+
+
+
+
+
+        
         if(!empty($coupon_code)){
 
             $g_coupon = Coupon::where('code', $coupon_code['code'])
@@ -385,13 +504,15 @@ class PaymentController extends Controller
 
         if (isset($order) && !empty($order)) {
 
+            event(new OrderPlaced($order));
+
             $orderDetail = $order->whereId($order->id)->with('orderDetails.product', 'orderBillingShippingDetails')->first();
 
             Mail::to($order_address['email'])->send(new MakeOrder($orderDetail));
             Mail::to(env('APP_MAIL'))->send(new AdminNotifyOrder($orderDetail));
         }
 
-        Session::forget(['order_address', 'coupon', 'billing_details', 'order_type']);
+        Session::forget(['order_address', 'coupon', 'billing_details', 'order_type','shutter_point']);
 
         return response()->json(['error' => false, 'message' => 'success', 'order_id' => $order->id]);
     }
@@ -401,6 +522,7 @@ class PaymentController extends Controller
         $page_content = ["meta_title" => config('constant.order.thankyou.meta_title'), "meta_description" => config('constant.order.thankyou.meta_description')];
 
         $order_number = Order::whereId($orderId)->select('order_number')->first();
+
         return view('front-end.order_thank_you', compact('order_number', 'page_content'));
     }
 
@@ -442,6 +564,10 @@ class PaymentController extends Controller
 
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
+
+        $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$formData['username'],'email'=>$formData['email'],'password'=>$formData['password']];
+
+        $this->createSiteUser($data);
 
         $address = [
             'fname' => $fname,
@@ -640,6 +766,10 @@ class PaymentController extends Controller
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
 
+        $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$formData['username'],'email'=>$formData['email'],'password'=>$formData['password']];
+
+        $this->createSiteUser($data);
+
         $address = [
             'fname' => $fname,
             'lname' => $lname,
@@ -710,7 +840,7 @@ class PaymentController extends Controller
                 
             if (isset($paymentResponse['status']) && $paymentResponse['status'] === "APPROVED") {
                 $this->createOrder($charge = null, $paymentResponse);
-                Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+                Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type','shutter_point']);
                 return redirect()->route('order.success');
             } else {
                 return redirect()->route('checkout')->with('error', 'Payment capture failed.');

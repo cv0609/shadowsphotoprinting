@@ -57,6 +57,7 @@ Route::prefix('admin')->group(function () {
         Route::get('set-index',[AuthController::class,'setIndex'])->name('admin.index');
         Route::resource('/pages',PagesController::class);
         Route::resource('/blogs',BlogsController::class);
+        Route::get('/generate-blog-pdf/{blog}',[BlogsController::class,'generateBlogPDF'])->name('generate-blog-pdf');
 
         Route::get('/product-categories',[ProductsController::class,'productCategory'])->name('product-categories-list');
         Route::get('/product-categories-add',[ProductsController::class,'productCategoryAdd'])->name('product-categories-add');
@@ -179,6 +180,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/', [BrandAmbassadorController::class, 'index'])->name('brand.index');
             Route::get('/request', [BrandAmbassadorController::class, 'request'])->name('brand.requests');
             Route::post('/{id}/approve', [BrandAmbassadorController::class, 'approve'])->name('admin.ambassador.approve');
+            Route::post('/{id}/reject', [BrandAmbassadorController::class, 'reject'])->name('admin.ambassador.reject');
 
         });
 
@@ -218,6 +220,7 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::post('/order-type', [CartController::class, 'orderType'])->name('order-type');
+Route::post('/shutter-point', [CartController::class, 'shutterPoint'])->name('shutter-point');
 
 
 /*** Photographer Brand Ambassador  */
@@ -246,6 +249,16 @@ Route::get('/promotion-detail/{slug}', [BasePagesController::class, 'promotionDe
 
 Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account', [MyAccountController::class, 'dashboard'])->name('dashboard');
+    Route::get('/my-account/ambassador', [AmbassadorController::class, 'ambassador'])->name('ambassador');
+
+    Route::get('/my-account/blog', [AmbassadorController::class, 'blog'])->name('ambassador.blog');
+    Route::get('/my-account/blog/create', [AmbassadorController::class, 'create'])->name('ambassador.blog.create');
+    Route::post('/my-account/blog/save', [AmbassadorController::class, 'save'])->name('ambassador.blog.save');
+    Route::get('/my-account/blog/{id}', [AmbassadorController::class, 'viewBlog'])->name('ambassador.blog.view');
+    Route::post('/my-account/blog/{id}', [AmbassadorController::class, 'saveBlog'])->name('ambassador.blog.update');
+    Route::post('/my-account/blog/{blog}', [AmbassadorController::class, 'saveBlog'])->name('ambassador.blog.destroy');
+
+
     Route::get('/my-account/orders', [MyAccountController::class, 'orders'])->name('orders');
     Route::get('/my-account/downloads', [MyAccountController::class, 'downloads'])->name('downloads');
     Route::get('/my-account/address', [MyAccountController::class, 'address'])->name('address');

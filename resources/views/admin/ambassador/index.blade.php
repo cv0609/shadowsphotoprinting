@@ -46,7 +46,7 @@
                                     <th>Affiliate Code</th>
                                     <th>Shutter Bucks</th>
                                     <th>Reffered Users</th>
-                                    <th>Action</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             <tbody id="main-tbody">
@@ -58,11 +58,11 @@
                                     <td data-title="order-number">{{ $ambassador->name }}</td>
 
                                     <td>{{ $ambassador->email }}</td>
-                                    <td>XXXX</td>
-                                    <td>XXXX</td>
-                                    <td>XXXX</td>
+                                    <td>{{$ambassador->user?->affiliate?->referral_code}}</td>
+                                    <td>{{($ambassador->user?->affiliate?->commission)*100}}</td>
+                                    <td>{{$ambassador->user?->affiliate?->referral_count}}</td>
 
-                                    <td>{{ $ambassador->status }}</td>
+                                    <!-- <td>{{ $ambassador->status }}</td> -->
                                 </tr>
                                 @endforeach
                             </tbody>

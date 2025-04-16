@@ -44,10 +44,10 @@ $CartService = app(App\Services\CartService::class);
                                 <tbody>
                                     @foreach ($cart->items as $item)
 
-                                    <?php
-                             $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
-                             $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
-                            ?>
+                                            <?php
+                                    $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+                                    $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+                                    ?>
                                     <tr>
                                         <td class="product-remove">
                                             <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}"
@@ -268,22 +268,57 @@ $CartService = app(App\Services\CartService::class);
                                                 </div>
                                             </td>
                                         </tr>
+
+                                        @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
+                                        <tr class="cart-shutter-point">
+                                            <th>Shutter Points</th>
+                                            <td data-title="Shutter Points" >
+                                                <span class="woocommerce-Price-amount amount"><span
+                                                        class="woocommerce-Price-currencySymbol"></span>
+                                                    {{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})                                             
+                                                </span>
+                                            </td>
+                                        </tr>   
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="rad-btns-box">
+                                                    @php
+                                                        $shutter_point = '0';
+                                                        if(Session::has('shutter_point')){
+                                                            $shutter_point = Session::get('shutter_point');
+                                                        }
+                                                    @endphp
+                                                    <div class="rad-btns">
+                                                        <input type="radio" id="point-use-no" name="shutter_point" class="shutterPoint" value="0" @if($shutter_point == '0') checked @endif>
+                                                        <label for="c-shipping">No Points</label>
+                                                    </div>
+                                                    <div class="rad-btns">
+                                                       <input type="radio" id="point-use" name="shutter_point" class="shutterPoint" value="1" @if($shutter_point == '1') checked @endif>
+                                                        <label for="c-pickup">Use Points</label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endif
+
                                         @if(Session::has('coupon'))
                                         <tr class="cart-discount coupon-eofy-discount">
                                             <th>Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
                                             <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">
                                                 -<span class="woocommerce-Price-amount amount"><span
                                                         class="woocommerce-Price-currencySymbol">$</span>
-                                                    {{-- @php
-                                                
-                                            @endphp --}}
+                                                    {{-- @php @endphp --}}
 
-                                                    {{ number_format($CartTotal['coupon_discount'],2) }}<a
-                                                        class="reset-coupon" href="{{ route('reset-coupon') }}"
-                                                        onclick="return confirm('Are you sure!')">×</a></span>
+                                                    {{ number_format($CartTotal['coupon_discount'],2) }}
+                                                    @if(!session()->has('referral_code'))
+                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
+                                                    @endif                                                
+                                                </span>
                                             </td>
                                         </tr>
                                         @endif
+
+
                                         @if($shipping->status == "1")
                                         <tr class="shipping-section">
                                             <th>Shipping</th>
@@ -460,8 +495,24 @@ $CartService = app(App\Services\CartService::class);
     $(document).ready(function () {    
     
     function updateShippingAndTotal(orderType) {
+
+        var shutterPoint = $("input[name='shutter_point']:checked").val(); // Get selected value
+
         let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Base total
         let shippingCost = parseFloat("{{ $CartTotal['shippingCharge'] }}"); // Shipping cost
+
+        @if(Auth::check() && !empty(Auth::user()) &&  Auth::user()->role == 'affiliate')
+          let commission = parseFloat("{{$affiliate_sales->total_commission}}");
+        @else
+          let commission = 0;
+        @endif  
+
+        @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
+           if($("input[name='shutter_point']:checked").val() === '1')
+           {
+            baseTotal = baseTotal - commission;
+           }
+        @endif
 
         if (orderType == 1) { 
             $(".shipping-section").hide(); // Hide shipping section
@@ -496,7 +547,35 @@ $CartService = app(App\Services\CartService::class);
             }
         });
     });
+
+    @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
+        $(".shutterPoint").change(function () {
+            let shutterPoint = $("input[name='shutter_point']:checked").val(); // Get selected value
+            
+            $.ajax({
+                url: "{{route('shutter-point')}}",  // Your Laravel route
+                type: "POST",
+                data: {
+                    shutter_point: shutterPoint,
+                    _token: "{{ csrf_token() }}", 
+                },
+                success: function (response) {
+                    updateShippingAndTotal(response.order_type);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+    @endif
+
+
+
+
+
 });
+
+
 
 </script>
 

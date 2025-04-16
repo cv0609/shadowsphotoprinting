@@ -30,6 +30,7 @@
                                     <th>Email</th>
                                     <th>Location</th>
                                     <th>Date</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -44,14 +45,27 @@
                                     <td>{{ $ambassador->email }}</td>
                                     <td>{{ $ambassador->location }}</td>
                                     <td>{{ \Carbon\Carbon::parse($ambassador->created_at)->format('d M Y') }}</td>
+                                    @php 
+                                      $status = [
+                                        'Submitted',
+                                        'Approved',
+                                        'Rejected'
+                                      ]
+                                    @endphp
+                                    <td><span class="btn btn-success">{{ $status[$ambassador->is_approved] }}</span</td>
+
                                     <td>        
-                                        @if (!$ambassador->is_approved)
+                                        @if ($ambassador->is_approved == 0)
                                             <form method="POST" action="{{ route('admin.ambassador.approve', $ambassador->id) }}" style="display: inline-flex;">
                                                 @csrf
                                                 <button type="submit" class="btn btn-success">Approve</button>
                                             </form>
+                                            <form method="POST" action="{{ route('admin.ambassador.reject', $ambassador->id) }}" style="display: inline-flex;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger">Reject</button>
+                                            </form>
                                         @else
-                                            <span class="badge bg-success">Approved</span>
+                                            {{-- <span class="badge bg-danger">Rejected</span> --}}
                                         @endif
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewModal{{ $ambassador->id }}">View</button>
 
