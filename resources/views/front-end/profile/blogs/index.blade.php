@@ -3,6 +3,11 @@
     $PageDataService = app(App\Services\PageDataService::class);
     $ProductCategories = $PageDataService->getProductCategories();
 @endphp
+@section('styles')
+<style>
+    
+</style>
+@endsection 
 @section('content')
    
 <section class="account-page">
