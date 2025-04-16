@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdminBlogRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class BlogsController extends Controller
@@ -74,7 +74,7 @@ class BlogsController extends Controller
     public function generateBlogPDF(Blog $blog)
     {
         $data = ['blog'=>$blog];
-        $pdf = PDF::loadView('admin.pdf.blog',$data);
+        $pdf = Pdf::loadView('admin.pdf.blog',$data);
         return $pdf->download($blog->slug.'.pdf');
     }
 }
