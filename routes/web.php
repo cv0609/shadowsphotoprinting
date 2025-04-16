@@ -57,6 +57,7 @@ Route::prefix('admin')->group(function () {
         Route::get('set-index',[AuthController::class,'setIndex'])->name('admin.index');
         Route::resource('/pages',PagesController::class);
         Route::resource('/blogs',BlogsController::class);
+        Route::get('/generate-blog-pdf/{blog}',[BlogsController::class,'generateBlogPDF'])->name('generate-blog-pdf');
 
         Route::get('/product-categories',[ProductsController::class,'productCategory'])->name('product-categories-list');
         Route::get('/product-categories-add',[ProductsController::class,'productCategoryAdd'])->name('product-categories-add');
@@ -179,6 +180,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/', [BrandAmbassadorController::class, 'index'])->name('brand.index');
             Route::get('/request', [BrandAmbassadorController::class, 'request'])->name('brand.requests');
             Route::post('/{id}/approve', [BrandAmbassadorController::class, 'approve'])->name('admin.ambassador.approve');
+            Route::post('/{id}/reject', [BrandAmbassadorController::class, 'reject'])->name('admin.ambassador.reject');
 
         });
 

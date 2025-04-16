@@ -8,7 +8,7 @@
                 <span class="bc-delimiter">»</span>
                 {{-- <span><a href="#">uncategorized</a></span>
                 <span class="bc-delimiter">»</span> --}}
-                <span> {{ strtoupper($blog_details['title']) }}</span>
+                <span> {{strtoupper($blog_details->title)}}</span>
             </div>
         </div>
     </div>
@@ -21,15 +21,22 @@
                 <a href="javascript:void(0)">Uncategorized</a>
             </div>
             <div class="benefit">
-                <h3>{{ $blog_details['title'] }}</h3>
+                <h3>{{$blog_details->title}}</h3>
                 <div class="kt_color_gray">
-                    <span>{{ date("F d,Y",$blog_details['update_at']) }}</span>
+                    <span>{{date("F d,Y",$blog_details->update_at)}}</span>
                     <span>by</span>
-                    <span> <a href="#">Terri Pangas</a> </span>
+                    @php
+                        $author = $blog_details->user;
+                        $authorName = $author?->first_name
+                            ? trim($author->first_name . ' ' . ($author->last_name ?? ''))
+                            : ($author->username ?? 'Terri Pangas');
+                    @endphp
+                
+                    <span> <a href="#">{{ $authorName }}</a> </span>
 
                     <div class="shadtpang">
-                        <img src="{{ asset($blog_details['image']) }}" alt="Image">
-                        {!! html_entity_decode($blog_details['description']) !!}
+                        <img src="{{asset($blog_details->image)}}" alt="Image">
+                        {!!html_entity_decode($blog_details->description)!!}
                     </div>
                 </div>
             </div>

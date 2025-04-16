@@ -19,7 +19,7 @@
                <article>
                 <a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">
                     <div class="post-thumbnail-inner">
-                        <img src="{{ $value['image'] }}" alt="Image">
+                        <img src="{{ $value->image }}" alt="Image">
                         {{-- <img src="assets/images/table.png" alt="jon-tyson"> --}}
                     </div>
                 </a>
@@ -30,9 +30,15 @@
                                 <a href="javascript:void(0)">Uncategorized</a>
                             </span>
                         </div>
-                        <h2><a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">{{ $value['title'] }}</a></h2>
+                        <h2><a href="{{ route('blog-detail',['slug'=>$value->slug]) }}">{{ $value->title }}</a></h2>
                         <div class="divider-dot">
-                            <span>By Terri Pangas</span>
+                            @php
+                            $authorName = ($value->user->first_name ?? null)
+                                ? trim($value->user->first_name . ' ' . ($value->user->last_name ?? ''))
+                                : ($value->user->username ?? 'Terri Pangas');
+                        @endphp
+                        
+                            <span>By {{ $authorName }}</span>
                             <span class=""></span>
                             <span>{{ date("F d,Y",$value['update_at']) }}</span>
                         </div>

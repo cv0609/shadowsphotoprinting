@@ -8,6 +8,8 @@ use App\Models\Ambassador;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Affiliate;
+use App\Mail\ApprovedAmbassadorNotification;
+
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -52,7 +54,7 @@ class BrandAmbassadorController extends Controller
       'other' => 'Other'
      ];
 
-      $ambassadors = Ambassador::where('is_approved',0)->paginate(10);
+      $ambassadors = Ambassador::where('is_approved', '!=', 1)->paginate(10);
 
      return view('admin.ambassador.request', compact('ambassadors','specialtyMap'));
   }
@@ -64,18 +66,34 @@ class BrandAmbassadorController extends Controller
       $ambassador->is_approved = true;
       $ambassador->save();
 
-      $this->createAffliateUser($ambassador);
+      $password = $this->createAffliateUser($ambassador);
+
+      Mail::to($ambassador->email)->send(new ApprovedAmbassadorNotification($ambassador,$password));
 
       return redirect()->route('brand.index')->with('success', 'Ambassador approved successfully!');
   }
 
+
+  public function reject($id)
+  {
+      $ambassador = Ambassador::findOrFail($id);
+      $ambassador->is_approved = 2;
+      $ambassador->save();
+
+      //$password = $this->createAffliateUser($ambassador);
+
+      //Mail::to($ambassador->email)->send(new ApprovedAmbassadorNotification($ambassador,$password));
+
+      return redirect()->route('brand.requests')->with('success', 'Ambassador rejected successfully!');
+  }
+
    
   public function createAffliateUser(Ambassador $ambassador ){
-
+    $password = null;
      $user = User::where('email',$ambassador->email)->first();
       if(!$user){
-        //$password = Str::random(8);
-        $password = "PASSWORD";
+        $password = Str::random(8);
+        //$password = "PASSWORD";
         $name = explode(' ',$ambassador->name);
 
         $hashedPassword = Hash::make($password);
@@ -112,6 +130,8 @@ class BrandAmbassadorController extends Controller
        }
 
      }
+   
+     return $password;
 
   }
 

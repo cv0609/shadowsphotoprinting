@@ -58,11 +58,12 @@
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('blogs.show', ['blog' => $blog->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
-                                    <form action="{{ route('blogs.destroy', ['blog' => $blog->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this blog?');" style="display:inline;">
+                                    <form action="{{ route('blogs.destroy', ['blog' => $blog->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this blog?');" style="display:inline-flex;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
+                                    <a href="{{ route('generate-blog-pdf', ['blog' => $blog->id]) }}" title="Download Blog"><i class="fa fa-download" ></i></a>
 
                                 </td>
                             </tr>

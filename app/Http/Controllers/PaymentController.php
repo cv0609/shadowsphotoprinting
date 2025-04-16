@@ -32,6 +32,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
+use App\Events\OrderPlaced;
+
+
 class PaymentController extends Controller
 {
     protected $stripe;
@@ -500,6 +503,8 @@ class PaymentController extends Controller
 
 
         if (isset($order) && !empty($order)) {
+
+            event(new OrderPlaced($order));
 
             $orderDetail = $order->whereId($order->id)->with('orderDetails.product', 'orderBillingShippingDetails')->first();
 
