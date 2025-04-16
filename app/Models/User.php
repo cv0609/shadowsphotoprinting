@@ -56,6 +56,11 @@ class User extends Authenticatable
       return $this->hasOne(Affiliate::class);
     }
 
+    public function ambassador()
+    {
+      return $this->hasOne(Ambassador::class);
+    }
+
     public function referrer()
     {
         return $this->belongsTo(User::class, 'referred_by');

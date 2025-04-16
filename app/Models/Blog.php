@@ -18,5 +18,11 @@ class Blog extends Model
         'user_id',
     ];
      
-    
+    /**
+     * Get the user associated with the affiliate.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

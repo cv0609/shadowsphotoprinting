@@ -3,6 +3,36 @@
     $PageDataService = app(App\Services\PageDataService::class);
     $ProductCategories = $PageDataService->getProductCategories();
 @endphp
+@section('styles')
+<style>
+.eddpoint-header-title {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.eddpoint-header-title a {
+    box-shadow: inset 0 0 0 0 transparent;
+    background-color: #16a085;
+    border: 0;
+    border-radius: 0;
+    display: block;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 26px;
+    line-height: 24px;
+    text-decoration: none;
+    text-shadow: 0-1px 0 rgba(0, 0, 0, .1);
+    transition: box-shadow .2s ease-in-out;
+}
+.eddpoint-header-title a:hover{
+    box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
+}
+</style>
+@endsection 
 @section('content')
    
 <section class="account-page">
@@ -16,11 +46,12 @@
                     @endif
                     <div class="pangas-can">
                         <div class="endpointtitle">
-
-                              <h2>Blogs List</h2>
-                              <a href="{{ route('ambassador.blog.create') }}">
-                                <button class="btn btn-info panel_toolbox">Add Blog</button>
-                              </a>
+                            <div class="eddpoint-header-title">
+                                <h2>Blogs List</h2>
+                                <a href="{{ route('ambassador.blog.create') }}">
+                                  Add Blog
+                                </a>
+                            </div>
                               <div class="clearfix"></div>
 
                             <div class="notices-wrapper">
@@ -41,7 +72,7 @@
                         @foreach ($blogs as $key => $blog)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ ucfirst($blog->title) }}</td>
+                                <td style="width: 40%;">{{ ucfirst($blog->title) }}</td>
                                 <td>{{ $status[$blog->status] }}</td>
                                 <td>
                                     <div class="x_content">

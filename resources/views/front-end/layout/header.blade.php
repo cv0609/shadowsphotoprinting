@@ -16,6 +16,7 @@ $CartCount = $cartModel::getCartCount();
                             <img src="{{asset('assets/images/logo.png')}}" alt="logo">
                         </a>
                     </div>
+
                     <div class="sidena mycel" id="mySidenav">
                         <div class="magnifying">
                             <ul class="desk-trt">
@@ -37,8 +38,8 @@ $CartCount = $cartModel::getCartCount();
                                                 <ul class="ashboard">
                                                     <li class=""> <a href="{{ route('dashboard') }}" class="active">Dashboard <i class="fa-solid fa-gauge"></i></a> </li>
                                                      @if(Auth::user()->role == 'affiliate')
-                                                     <li class=""> <a href="{{ route('ambassador') }}">Ambassador <i class="fa-solid fa-gauge"></i></a> </li>
-                                                     <li class=""> <a href="{{ route('ambassador.blog') }}">Blog <i class="fa-solid fa-gauge"></i></a> </li>
+                                                     <li class=""> <a href="{{ route('ambassador') }}">Ambassador <i class="fa-solid fa-users"></i></a> </li>
+                                                     <li class=""> <a href="{{ route('ambassador.blog') }}">Blog <i class="fa-solid fa-pencil-square-o"></i></a> </li>
                                                      @endif 
                                                     
                                                     <li class=""> <a href="{{ route('orders') }}">Orders<i class="fa-solid fa-bag-shopping"></i></a></li>

@@ -17,6 +17,7 @@ class AffiliateSale extends Model
         'commission',
         'shutter_points',
         'operation',
+        'reason',
     ];
 
     /**

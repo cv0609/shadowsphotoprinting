@@ -9,7 +9,7 @@
     margin: 5px 0 0;
 }
 .choose-file-wrap .choose-file-single figure {
-    max-width: 180px;
+    width: 100%;
 }
 .choose-file-wrap img {
     width: 100%;
@@ -30,6 +30,36 @@
     align-items: center;
     justify-content: center;
     padding: 2px;
+}
+
+.form-inner button[type="submit"] {
+    box-shadow: inset 0 0 0 0 transparent;
+    background-color: #16a085;
+    border: 0;
+    border-radius: 0;
+    display: block;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 16px;
+    line-height: 24px;
+    text-decoration: none;
+    text-shadow: 0-1px 0 rgba(0, 0, 0, .1);
+    transition: box-shadow .2s ease-in-out;
+    width: 100%;
+    max-width: 184px;
+    margin: 40px auto 0;
+}
+
+.form-inner button[type="submit"]:hover {
+    box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, .2);
+}
+
+.choose-file-single {
+    position: relative;
+    margin: 20px  0;
+    width: 100%;
+    max-width: 180px;
 }
 </style>
 
@@ -55,10 +85,10 @@
                             <form action="{{ route('ambassador.blog.update',['id'=>$detail->id]) }}" method="POST" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" novalidate="">
                     @csrf
 
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="title">Blog Title <span class="required">*</span>
+                    <div class="item form-inner">
+                        <label class="col-form-label col-md-12 label-align" for="title">Blog Title <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 ">
+                        <div class="col-md-12">
                             <input type="text" id="title" name="title" required="required" class="form-control" value="{{ $detail->title }}">
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
@@ -69,10 +99,10 @@
                         </div>
                     </div>
 
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Blog Image <span class="required">*</span>
+                    <div class="item form-inner">
+                        <label class="col-form-label col-md-12 label-align" for="image">Blog Image <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 ">
+                        <div class="col-md-12">
 
                             <div class="choose-file-wrap">
                                 <input type="file" id="image" name="image" class="form-control">
@@ -93,10 +123,10 @@
                     </div>
 
 
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="description">Blog Description <span class="required">*</span>
+                    <div class="item form-inner">
+                        <label class="col-form-label col-md-12 label-align" for="description">Blog Description <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 ">
+                        <div class="col-md-12">
                             <textarea id="description" name="description" required="required" class="form-control ">{{ $detail->description }}</textarea>
                             @if(Session::has('error'))
                               <p class="text-danger">{{ Session::get('error') }}</p>
@@ -109,8 +139,8 @@
 
                                       
                     <div class="ln_solid"></div>
-                        <div class="item form-group">
-                            <div class="col-md-6 col-sm-6 offset-md-3">
+                        <div class="item form-inner">
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </div>
