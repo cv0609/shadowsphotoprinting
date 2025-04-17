@@ -6,6 +6,9 @@
     <button id="newsletter-popup-button" data-bs-target="#newsletter-modal" data-bs-toggle="modal" class="newspopup">Subscribe to Newsletter</button>
 </div>
 
+<div class="ambassador-button-container">
+    <a href="{{route('photographer-brandAmbassador')}}" class="btn">Become an Ambassador</a>
+</div>
 
     <div class="modal fade newslatter-cls" id="newsletter-modal" aria-hidden="true"
         aria-labelledby="exampleModalToggleLabel1" tabindex="-1">

@@ -378,10 +378,10 @@
                                         Wedding/Engagement/Couples</label></li>
                                 <li><label><input type="checkbox" name="specialty[]" value="newborn"
                                             {{ is_array(old('specialty')) && in_array('newborn', old('specialty')) ? 'checked' : '' }}>
-                                        Newborn/Family</label></li>
+                                            Newborn, Maternity & Family</label></li>
                                 <li><label><input type="checkbox" name="specialty[]" value="grad"
                                             {{ is_array(old('specialty')) && in_array('grad', old('specialty')) ? 'checked' : '' }}>
-                                        Grad/Senior Photos</label></li>
+                                            School Photography (Formals, Graduation Ceremonies)</label></li>
                                 <li><label><input type="checkbox" name="specialty[]" value="landscape"
                                             {{ is_array(old('specialty')) && in_array('landscape', old('specialty')) ? 'checked' : '' }}>
                                         Landscape/Nature</label></li>

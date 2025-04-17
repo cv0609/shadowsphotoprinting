@@ -33,8 +33,8 @@ class AmbassadorController extends Controller
 
       $specialtyMap = [
         'wedding' => 'Wedding/Engagement/Couples',
-        'newborn' => 'Newborn/Family',
-        'grad' => 'Grad/Senior Photos',
+        'newborn' => 'Newborn, Maternity & Family',
+        'grad' => 'School Photography (Formals, Graduation Ceremonies)',
         'landscape' => 'Landscape/Nature',
         'portraits' => 'Portraits',
         'pets' => 'Pets',

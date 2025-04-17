@@ -52,7 +52,13 @@
                                         'Rejected'
                                       ]
                                     @endphp
-                                    <td><span class="btn btn-success">{{ $status[$ambassador->is_approved] }}</span</td>
+                                    <td>
+                                        @if ($ambassador->is_approved == 0)
+                                          <span class="btn btn-success">{{ $status[$ambassador->is_approved] }}</span>
+                                        @else
+                                        <span class="btn btn-danger">{{ $status[$ambassador->is_approved] }}</span>
+                                        @endif
+                                    </td>
 
                                     <td>        
                                         @if ($ambassador->is_approved == 0)
@@ -97,7 +103,7 @@
                                                     <p><strong>Business:</strong> {{ $ambassador->business_name }}</p>
                                                     <p><strong>Website:</strong> <a href="{{ $ambassador->website }}" target="_blank">{{ $ambassador->website }}</a></p>
                                                     <p><strong>Social Handle:</strong> {{ $ambassador->social_media_handle }}</p>
-                                                    <p><strong>Photography Specialty:</strong>{{implode(', ',$items)}}</p>
+                                                    <p><strong>Photography Specialty:</strong><br>{!!implode(',<br>',$items)!!}</p>
                                                     @if($ambassador->other_specialty)
                                                         <p><strong>Other Specialty:</strong> {{ $ambassador->other_specialty }}</p>
                                                     @endif
