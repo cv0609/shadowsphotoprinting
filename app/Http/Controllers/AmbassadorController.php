@@ -23,13 +23,13 @@ class AmbassadorController extends Controller
 
   public function applyForm()
   {
-    $page_content = ["meta_title"=>"Apply Form","meta_description"=>"Apply Form"];
+    $page_content = ["meta_title"=>"Apply to Be a Photography Brand Ambassador Today","meta_description"=>"Fill out our quick application to join the Shadows Photo Printing ambassador team. Open to passionate photographers across Australia—start your journey today."];
     return view('front-end.apply-form',compact('page_content'));
-  } 
+  }
 
   public function featuredPhotographers()
   {
-    $page_content = ["meta_title"=>"featured Photographers","meta_description"=>"featured Photographers"];
+    $page_content = ["meta_title"=>"Featured Photographers Australia – Showcasing Creative Talent","meta_description"=>"Meet professional photographers from across Australia. Discover inspiring visual artists proudly highlighted by Shadows Photo Printing for their passion and creativity."];
 
       $specialtyMap = [
         'wedding' => 'Wedding/Engagement/Couples',
@@ -47,22 +47,23 @@ class AmbassadorController extends Controller
       $ambassadors = Ambassador::where('is_approved',1)->paginate(10);
 
     return view('front-end.featured-photographers',compact('page_content','specialtyMap','ambassadors'));
-  } 
+  }
 
   public function photographerBrandAmbassador()
   {
-    $page_content = ["meta_title"=>"photographer Brand Ambassador","meta_description"=>"photographer Brand Ambassador"];
+    $page_content = ["meta_title"=>"Photographer Brand Ambassador Australia – Join the Team","meta_description"=>"Become a photographer brand ambassador in Australia with Shadows Photo Printing. Get featured, earn rewards, and grow your creative reach with our community.
+"];
     return view('front-end.photographer-brand-ambassador',compact('page_content'));
-  } 
+  }
 
 
   public function ambassador(){
 
     $page_content = ["meta_title"=>"Ambassador Details","meta_description"=>"Ambassador Details"];
-            
+
     return view('front-end.profile.ambassador',compact('page_content'));
 }
-  
+
   public function saveForm(Request $request)
   {
 
@@ -82,7 +83,7 @@ class AmbassadorController extends Controller
           'signatureData' => 'required',
           'date'=> 'required',
       ]);
-  
+
       $data = [
           'name' => $validated['name'],
           'location' => $validated['location'],
@@ -96,12 +97,12 @@ class AmbassadorController extends Controller
           'signature' => $validated['signatureData'],
           'submit_date' =>  $validated['date'],
       ];
-  
+
 
      // dd($data);
 
       $ambassador = Ambassador::create($data);
-  
+
       Mail::to(env('APP_MAIL'))->send(new NewAmbassadorAdminNotification($ambassador));
 
       //return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
@@ -125,8 +126,8 @@ class AmbassadorController extends Controller
 
      return view('front-end.profile.blogs.add',compact('page_content'));
   }
-  
-   
+
+
   public function save(AdminBlogRequest $request){
     $user_id = Auth::user()->id;
     $slug = Str::slug($request->title);
@@ -140,7 +141,7 @@ class AmbassadorController extends Controller
          $image =  $destinationPath.'/'.$fileName;
      }
     $blog = Blog::create(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,'status'=>'2',"added_by"=>1,'user_id'=>$user_id]);
-   
+
     Mail::to(env('APP_MAIL'))->send(new BlogSubmittedAdminNotification($blog));
 
      return redirect()->route('ambassador.blog')->with('success','Blog is submitted successfully');
@@ -155,7 +156,7 @@ class AmbassadorController extends Controller
   }
 
   public function saveBlog(AdminBlogRequest $request,Blog $id){
-   
+
     $blog = $id;
     $user_id = Auth::user()->id;
 
@@ -180,6 +181,6 @@ class AmbassadorController extends Controller
       $blog->delete();
      return redirect()->route('ambassador.blog')->with('success','Blog post deleted successfully');
   }
-  
+
 
 }

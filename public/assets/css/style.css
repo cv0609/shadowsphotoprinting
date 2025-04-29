@@ -353,6 +353,17 @@ section.entry-content {
     margin-bottom: 2%;
 }
 
+.widget-title h1 {
+    font-family: "Source Sans Pro";
+    line-height: 40px;
+    letter-spacing: 1.2px;
+    font-weight: 400;
+    font-style: normal;
+    color: #ffc205;
+    font-size: 36px;
+    margin-bottom: 2%;
+}
+
 .textwidget p {
     color: #fff;
     font-size: 16px;
@@ -4642,7 +4653,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         height: 120px;
         width: 100%;
     }
-    
+
     .kad-account .kad-max img {
         width: 100%;
         height: 100%;
@@ -4651,7 +4662,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .main-page {
         padding-bottom: 100px;
     }
-    
+
     footer.footer {
         position: absolute;
         bottom: 0;
@@ -4668,7 +4679,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .instock-udik {
         width: 25%;
     }
-    
+
     .details_product-crlf {
         width: 73%;
     }
@@ -4721,14 +4732,14 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         margin: 0;
         left: 50%;
     }
-        
+
     div#sailImagePopup .modal-header {
         position: absolute;
         top: -25px;
         right: -19px;
         z-index: 9;
     }
-        
+
         div#sailImagePopup .modal-header button {
         background: #d7d7d7;
         display: flex;
@@ -4863,7 +4874,7 @@ a {
 #afterpay-modal .modal-dialog {
     max-width: 774px;
     }
-    
+
     #afterpay-modal .afterpay-modal-logo {
     width: 100%;
     max-width: 275px;
@@ -4871,7 +4882,7 @@ a {
     text-align: center;
     margin: 0 auto;
     }
-    
+
     #afterpay-modal h3.afterpay-modal-headline {
         margin: 0;
         font-size: 31px;
@@ -4886,15 +4897,15 @@ a {
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     }
-    
+
     #afterpay-modal .model-svg-flex svg {width: 110px;height: 95px;}
-    
+
     #afterpay-modal .model-svg-flex svg path{
     fill: none;
     stroke: #000;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: 2px;  
+    stroke-width: 2px;
     }
     #afterpay-modal .model-svg-flex svg .c1 {
     fill: none;
@@ -4903,15 +4914,15 @@ a {
     stroke-linejoin: round;
     stroke-width: 2px;
     }
-    
+
     #afterpay-modal .model-svg-center {
     display: flex;
     flex-direction: column;
     align-items: center;
     }
-    
-    
-    
+
+
+
     #afterpay-modal .model-svg-center p {
         padding: 6% 3% 0 3%;
         font-weight: 500;
@@ -4919,14 +4930,14 @@ a {
         text-align: center;
         color: #000;
     }
-    
+
     #afterpay-modal .disclaimer {
         padding: 4% 0 22px 0;
         font-size: 12px;
         text-align: center;
         color: #000;
     }
-    
+
     #afterpay-modal .disclaimer a {
     color: #000;
     text-decoration: underline!important;
@@ -4975,7 +4986,7 @@ a {
     right: 0;
     bottom: 77px;
     z-index: 999;
-   
+
     writing-mode: vertical-lr;
 }
 
@@ -4983,13 +4994,13 @@ a {
 
 
 /* responsive */
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
 #afterpay-modal .model-svg-flex {
 grid-template-columns: repeat(2, 1fr);
 }
 }
 
-@media (max-width: 575px) { 
+@media (max-width: 575px) {
     div#sailImagePopup .modal-dialog {
         margin: 0;
         }
