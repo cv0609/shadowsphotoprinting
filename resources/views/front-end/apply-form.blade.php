@@ -463,7 +463,7 @@
                     </div>
                 </form>
                 <div class="footer">
-                    <p>Security note: Avoid submitting sensitive data. Created by Shadow's Photo Printing. <a
+                    <p>Security note: Avoid submitting sensitive data. Created by <a href="{{url('/')}}">Shadow's Photo Printing</a>. <a
                             href="{{ url('contact-us') }}">Report Issues</a></p>
                 </div>
             </div>
