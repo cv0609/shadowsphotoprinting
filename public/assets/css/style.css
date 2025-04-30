@@ -4747,7 +4747,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         align-items: center;
         border-radius: 50%;
         }
-        div#sailImagePopup .modal-dialog img {
+            div#sailImagePopup .modal-dialog img {
             width: 100%;
             height: 500px;
             object-fit: contain;
@@ -5005,7 +5005,7 @@ grid-template-columns: repeat(2, 1fr);
         margin: 0;
         }
         div#sailImagePopup .modal-dialog img {
-            height: 340px;
+            height: 100%;
         }
         #ImgViewer .modal-dialog {
         margin: 0;
