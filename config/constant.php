@@ -1,15 +1,15 @@
 <?php
-return 
+return
 [
    'default_country' => 'Australia',
    'pages_meta' => [
       'photos_for_sale' =>[
-         'meta_title' =>'Photo For Sale | Shadows Photo Printing',
-         'meta_description' => ''
+         'meta_title' =>'Professional Photos for Sale | Shadows Photo Printing',
+         'meta_description' => 'Browse original and premium photography prints for sale from Shadows Photo Printing. Ideal for home decor or meaningful, artistic gifts.  Place your order now!'
       ],
       'gift_card' =>[
-         'meta_title' =>'Gift Card | Shadows Photo Printing',
-         'meta_description' => ''
+         'meta_title' =>'Give the Perfect Gift with Shadows Photo Printing Gift Cards',
+         'meta_description' => "Give the gift of memories with a Shadows Photo Printing gift card. Perfect for birthdays, anniversaries, Mother's Day, or any special occasion. Order now!"
       ],
       'shop_detail' =>[
          'meta_title' =>'Shadows Photo Printing',
@@ -24,8 +24,8 @@ return
          'meta_description' => ''
       ],
       'hand_craft' =>[
-         'meta_title' =>'Hand Craft | Shadows Photo Printing',
-         'meta_description' => ''
+         'meta_title' =>'High-Quality Hand-Painted Products at Shadows Photo Printing',
+         'meta_description' => 'Hand-painted leather bookmarks, purses, and wall decor at Shadows Photo Printing. Unique, genuine leather pieces perfect for gifting or personal use. Shop now!'
       ]
    ],
 
@@ -80,8 +80,8 @@ return
       ],
       'forgot' => [
           'forgot_password' =>[
-            'meta_title' =>'Forgot password | Shadows Photo Printing',
-            'meta_description' => ''
+            'meta_title' =>'Recover Your Password and Shop Now at Shadows Photo Printing',
+            'meta_description' => 'Forgot your password? Retrieve it now and access exclusive deals on high-quality photo printing and handcrafted products at Shadows Photo Printing.  Shop now!'
          ],
          'reset_password' =>[
             'meta_title' =>'Reset password | Shadows Photo Printing',

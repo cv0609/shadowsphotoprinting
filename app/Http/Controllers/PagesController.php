@@ -96,7 +96,7 @@ class PagesController extends Controller
         if (empty($slug)) {
             $slug = 'home';
         }
-        
+
       $page_info = Page::where('slug','home')->with('pageSections')->first();
 
       if($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections))
@@ -217,8 +217,7 @@ class PagesController extends Controller
   public function handCraft($slug = null)
   {
     $page_content = [];
-
-    $page_content = ["meta_title"=>config('constant.pages_meta.hand_craft.meta_title'),"meta_description"=>config('constant.pages_meta.hand_craft.meta_description')];
+    $page_content = ["meta_title"=>$slug . ' | Shadows Photo Printing',"meta_description"=>config('constant.pages_meta.hand_craft.meta_description')];
 
     if($slug == null)
     {
@@ -271,14 +270,14 @@ class PagesController extends Controller
 
   public function promotions()
    {
-     $newzletter = Newzletter::where(['is_active'=>'1'])->get(); 
+     $newzletter = Newzletter::where(['is_active'=>'1'])->get();
      $page_content = ["meta_title"=>"Promotions","meta_description"=>"Promotions"];
      return view('front-end.newz_letter',compact('newzletter','page_content'));
-   } 
+   }
 
    public function promotionDetail($slug)
    {
-     $promotionDetail = Newzletter::where(['slug'=>$slug,'is_active'=>'1'])->first(); 
+     $promotionDetail = Newzletter::where(['slug'=>$slug,'is_active'=>'1'])->first();
      $previousPromotion = Newzletter::where('id', '<', $promotionDetail->id)
      ->orderBy('id', 'desc')
      ->first();
@@ -296,7 +295,7 @@ class PagesController extends Controller
 
      $page_content = ["meta_title"=>"Bulk prints","meta_description"=>"Bulk prints"];
      return view('front-end.bulkprints',compact('productCategories','page_content','products'));
-  } 
+  }
 
   public function bulkprints_details($slug){
     $related_products = [];
