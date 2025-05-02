@@ -62,7 +62,7 @@
                               @if($errors->has('email'))
                                 <p class="error-message" style="color: red;">{{ $errors->first('email') }}</p>
                               @endif
-                  
+
                               @if(Session::has('error'))
                                 {{Session::get('error')}}
                               @endif
@@ -82,5 +82,5 @@
 
 @endsection
 @section('scripts')
-  
+
 @endsection

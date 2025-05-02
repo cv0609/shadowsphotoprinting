@@ -48,7 +48,7 @@
                 <div class="col-lg-6">
                     <div class="entry-text">
                         <div class="widget-title aos-init aos-animate" data-aos="fade-left">
-                            <h1>Welcome to Shadows Photo Printing</h1>
+                            <h3>Welcome to Shadows Photo Printing</h3>
                             <div class="textwidget">
                                 <p style="margin-bottom: 10px;">Become a Shadows Photo Printing Photographer Brand Ambassador and receive rewards for contributing your art and expertise to SPP. </p>
 
