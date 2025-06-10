@@ -149,6 +149,38 @@ gap: 10px;
 width: calc(100% / 3);
 text-align: center;
 }
+#afterpay-modal h3.afterpay-modal-headline {
+color: #00193a;
+font-size: 50px;
+font-weight: 800;
+padding-top: 40px;
+}
+
+#afterpay-modal .modal-body.model-body-after .model-svg-flex .model-svg-center h4 {
+color: #00193a;
+font-size: 19px;
+font-weight: 600;
+padding-top: 9px;
+}
+
+#afterpay-modal .modal-body.model-body-after .model-svg-flex .model-svg-center p {
+padding: 0;
+color: #00193a;
+font-weight: 500;
+font-size: 15px;
+}
+
+#afterpay-modal .modal-body.model-body-after .model-svg-flex {
+margin-top: 29px;
+}
+
+#afterpay-modal .disclaimer {
+color: #00193a!important;
+}
+#afterpay-modal .modal-content {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+}
 @media (max-width: 991.98px) {
 
 #afterpay-modal .modal-body.model-body-after .model-svg-flex {
@@ -172,7 +204,43 @@ flex-direction: column;
 }
 
  }
+@media (max-width: 767px) {
+#afterpay-modal h3.afterpay-modal-headline span {
+display: block;
+}
+#afterpay-modal h3.afterpay-modal-headline {
+    text-align: center!important;
+    max-width: 415px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#afterpay-modal .disclaimer {
+text-align: center!important;
+}
+#afterpay-modal .afterpay-modal-logo {
+margin: 0 auto!important;
+}
 
+#afterpay-modal .modal-body.model-body-after .model-svg-flex .model-svg-center {
+gap: 0;
+}
+
+#afterpay-modal .modal-body.model-body-after .model-svg-flex .model-svg-center p {
+max-width: 100px;
+}
+}
+@media (max-width: 575px) {
+#afterpay-modal h3.afterpay-modal-headline {
+    font-size: 40px;
+    padding-top: 11px;
+}
+}
+@media (max-width: 420px) {
+#afterpay-modal h3.afterpay-modal-headline {
+    font-size: 34px;
+    padding-top: 22px;
+}
+}
     </style>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -194,7 +262,7 @@ flex-direction: column;
 </svg>
 </div>
                </div>
-               <h3 class="afterpay-modal-headline">BUY NOW.<span>PAY IT IN 4</span><div>INTEREST-FREE INSTALMENTS when you pay it in 4.</div></h3>
+               <h3 class="afterpay-modal-headline">BUY NOW.<span>PAY IT IN 4</span><div>INTEREST-FREE INSTALMENTS</div></h3>
                <div class="model-svg-flex">
 
                   <div class="model-svg-center">
