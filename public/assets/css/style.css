@@ -33,6 +33,10 @@ a {
     text-decoration: none;
 }
 
+.blog-new .kadence-posts-content .entry-summary h3 {
+color: #ffc205;
+}
+
 ul {
     list-style: none;
     margin: 0;
