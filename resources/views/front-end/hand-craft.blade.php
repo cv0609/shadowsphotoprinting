@@ -113,7 +113,7 @@
                         <div class="instock-udik">
                             <a href="{{ route('hand-craft-details',['slug'=>$product->slug]) }}">
                                      @foreach (explode(',',$product->product_image) as $key => $product_image)
-                                       <img src="{{ asset($product_image) }}" alt="">
+                                       <img src="{{ asset($product_image) }}" alt="{{ ucfirst($product->product_title) }}">
                                      @endforeach
                             </a>
                         </div>

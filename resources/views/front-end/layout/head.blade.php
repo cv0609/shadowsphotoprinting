@@ -7,7 +7,7 @@
 <meta name='robots' content='{{$index=='1' ? config('constant.dashboard_index.on') : config('constant.dashboard_index.off')}}' />
 <meta name="google-site-verification" content="QscuU-oHKOGqK2i0FisB3Hzy7Teuqry8iBl2TaWjFyM" />
 {{-- <title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title> --}}
-<title>{{ html_entity_decode(ucfirst($page_content['meta_title']) ?? 'Default Title') }}</title>
+<title>{{ html_entity_decode(ucfirst($page_content['meta_title'] ?? '') ?? 'Default Title') }}</title>
 <meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
 <link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
 
