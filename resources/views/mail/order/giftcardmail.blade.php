@@ -52,7 +52,7 @@ body {
 
 table,
 tr,
-/td {
+td {
   vertical-align: top;
   border-collapse: collapse;
 }
