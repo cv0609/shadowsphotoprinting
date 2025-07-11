@@ -25,7 +25,7 @@
                         <div class="col-lg-3 col-md-6 ">
                             <div class="product-categories">
                                 <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($productCategory->name)))}}">
-                                    <img src="{{(isset($productCategory['image']) && !empty($productCategory['image'])) ? asset($productCategory['image'])  : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image">
+                                    <img src="{{(isset($productCategory['image']) && !empty($productCategory['image'])) ? asset($productCategory['image'])  : asset('assets/admin/images/dummy-image.jpg') }}" alt="{{ ucfirst($productCategory['name']) }}">
                                     <span>{{ ucfirst($productCategory['name']) }}</span>
                                 </a>
                             </div>

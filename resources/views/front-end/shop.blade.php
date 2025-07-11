@@ -119,7 +119,7 @@
                     <div class="product-category">
                         <a href="javascript:void(0)">
                             <div class="cat-intrinsic">
-                                <img src="assets/images/cart-page.jpg " alt="">
+                                <img src="assets/images/cart-page.jpg" alt="photos">
                             </div>
                             <div class="product-cat-title">
                                 <h3>product-cat-title-area</h3>
@@ -132,7 +132,7 @@
                     <div class="product-category">
                         <a href="{{ url('our-products/bulkprints') }}">
                             <div class="cat-intrinsic">
-                                <img src="{{ asset('assets/images/bulk-print-img.jpg') }}" alt="">
+                                <img src="{{ asset('assets/images/bulk-print-img.jpg') }}" alt="Bulk Prints">
                             </div>
                             <div class="product-cat-title">
                                 <h3>Bulkprints <small class="count">({{ $productCount['productCount'] }})</small></h3>
@@ -145,7 +145,7 @@
                     <div class="product-category">
                         <a href="{{ url('our-products/gift-card') }}">
                             <div class="cat-intrinsic">
-                                <img src="{{ asset('assets/images/giftcard-shoppage.png') }}" alt="">
+                                <img src="{{ asset('assets/images/giftcard-shoppage.png') }}" alt="photo prints online australia">
                             </div>
                             <div class="product-cat-title">
                                 <h3>Gift Card <small class="count">({{ $productCount['giftcardCount'] }})</small></h3>
@@ -158,7 +158,7 @@
                     <div class="product-category">
                         <a href="{{ url('our-products/hand-craft') }}">
                             <div class="cat-intrinsic">
-                                <img src="{{ asset('assets/images/handcreaft-shop-page.png') }}" alt="">
+                                <img src="{{ asset('assets/images/handcreaft-shop-page.png') }}" alt="Handcrafted Canvas Prints">
                             </div>
                             <div class="product-cat-title">
                                 <h3>Hand Craft<small class="count">({{ $productCount['handCraftCount'] }})</small></h3>
@@ -171,7 +171,7 @@
                     <div class="product-category">
                         <a href="{{ url('our-products/photos-for-sale') }}">
                             <div class="cat-intrinsic">
-                                <img src="{{ asset('assets/images/photo-for-sale-shop.png') }}" alt="">
+                                <img src="{{ asset('assets/images/photo-for-sale-shop.png') }}" alt="Professional Online Photo Prints">
                             </div>
                             <div class="product-cat-title">
                                 <h3>Image <small class="count">({{ $productCount['photoSaleCount'] }})</small></h3>
