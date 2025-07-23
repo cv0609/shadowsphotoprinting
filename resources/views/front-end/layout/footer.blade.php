@@ -17,7 +17,7 @@
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
+
                 <div class="modal-body">
                     <iframe width="540" height="454" src="https://9b41dcb9.sibforms.com/serve/MUIFACxvmkzwHkfGewsdaZwbjQk9ADo7q-xiQlZiFN0-FV9Hb6M1etx9lKlwijle_Q7CEEUq7aT8nf38jhc-HmtAaBN2DLPeoUc3Cpk6Rb94lN1PIqkwCqcyFbl6cT9lXfEIQHZvHk8Gz8ad-oQsUnGDveoSqTU5oDnPskA_o4x1xGAUdxaIuP2Jc7NLXdbttxx4rjnEv6w1j5-T" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
                 </div>
@@ -33,6 +33,11 @@
             <div class="footercredits">
                 <p>© 2025 Shadows Photo Printing</p>
             </div>
+        </div>
+        <div class="footerbase">
+         <div class="footercredits">
+            <a href="{{ route('faq') }}">FAQ</a>
+        </div>
         </div>
     </div>
 </footer>
@@ -122,7 +127,7 @@
                                                 this website, to manage access to your account, and for other
                                                 purposes described in our privacy
                                                 policy.</p>
-                                                
+
                                         </div>
                                         <span class="privacy-text">privacy
                                                     policy</span> --}}
