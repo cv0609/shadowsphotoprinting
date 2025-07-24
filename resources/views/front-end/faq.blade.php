@@ -8,25 +8,50 @@
         </div>
     </div>
 </section>
- @foreach($items as $group)
+@php
+    $globalIndex = 0; // Global index to track first item overall
+@endphp
+
+@php
+    $globalIndex = 0; // Global index to track first item overall
+@endphp
+
 <div class="container mt-5 mb-5">
-    <div class="faq-section-title">{{ $group['main_heading'] }}</div>
-    <div class="accordion" id="accordionExample">
-        @foreach($group['faqs'] as $index => $item)
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading{{ $index }}">
-                <button class="accordion-button {{ $index != 0 ? 'collapsed' : '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="{{ $index == 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $index }}">
-                    {{ $item['title'] }}
-                </button>
-            </h2>
-            <div id="collapse{{ $index }}" class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}" aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    {{ $item['content'] }}
+    <div class="accordion" id="mainAccordion"> <!-- Unified parent accordion -->
+        @foreach($items as $groupIndex => $group)
+            <div class="faq-section-title mt-4">{{ $group['main_heading'] }}</div>
+
+            @foreach($group['faqs'] as $index => $item)
+                @php
+                    $isFirst = $globalIndex === 0;
+                @endphp
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ $globalIndex }}">
+                        <button class="accordion-button {{ !$isFirst ? 'collapsed' : '' }}"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ $globalIndex }}"
+                                aria-expanded="{{ $isFirst ? 'true' : 'false' }}"
+                                aria-controls="collapse{{ $globalIndex }}">
+                            {{ $item['title'] }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ $globalIndex }}"
+                         class="accordion-collapse collapse {{ $isFirst ? 'show' : '' }}"
+                         aria-labelledby="heading{{ $globalIndex }}"
+                         data-bs-parent="#mainAccordion">
+                        <div class="accordion-body">
+                            {{ $item['content'] }}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+                @php
+                    $globalIndex++;
+                @endphp
+            @endforeach
         @endforeach
     </div>
 </div>
- @endforeach
+
+
 @endsection
