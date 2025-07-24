@@ -1116,6 +1116,75 @@ a#uploadfiles {
 section.kad_product_wrapper {
     padding-top: 50px;
 }
+/* faq */
+section.faq-banner {
+        background:  url(../images/faq-banner.jpg) no-repeat center center;
+        background-size: cover;
+        background-blend-mode: multiply;
+        background-color: rgba(0,0,0,0.5);
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+    .faq-section-title h2 {
+        color: #ffc205;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 1px 1px 8px rgba(0,0,0,0.3);
+        letter-spacing: 2px;
+    }
+    .faq-section-title {
+        color: #16a085;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        margin-top: 2rem;
+        text-align: center;
+    }
+    .accordion {
+        --bs-accordion-bg: #fff;
+        --bs-accordion-border-color: #16a085;
+        --bs-accordion-btn-bg: #f8f9fa;
+        --bs-accordion-btn-color: #16a085;
+        --bs-accordion-active-bg: #16a085;
+        --bs-accordion-active-color: #fff;
+        --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(22,162,133,0.25);
+        border-radius: 8px;
+        box-shadow: 0 2px 16px 0 rgba(22,162,133,0.08);
+    }
+    .accordion-button {
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: #f8f9fa;
+        color: #16a085;
+        border-radius: 8px 8px 0 0;
+        transition: background 0.2s, color 0.2s;
+    }
+    .accordion-button:not(.collapsed) {
+        background: #16a085;
+        color: #fff;
+    }
+    .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba(22,162,133,0.25);
+    }
+    .accordion-item {
+        border: 1px solid #16a085;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+    .accordion-body {
+        background: #fff;
+        color: #222;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    @media (max-width: 767px) {
+        section.faq-banner { height: 180px; }
+        .faq-section-title { font-size: 1.3rem; }
+    }
 
 /*  */
 section.get-a-quote {

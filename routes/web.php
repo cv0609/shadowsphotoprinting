@@ -207,6 +207,7 @@ Route::get('/our-products/gift-card',[BasePagesController::class,'giftCard'])->n
 Route::get('/our-products/gift-card-detail/{slug}',[BasePagesController::class,'giftCard_detail'])->name('gift-card-detail');
 Route::get('/our-products/bulkprints',[BasePagesController::class,'bulkprints'])->name('bulkprints');
 Route::get('bulkprints-product/{slug}',[BasePagesController::class,'bulkprints_details'])->name('bulkprints-product');
+Route::get('/faq',[BasePagesController::class,'accordion'])->name('faq');
 
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');

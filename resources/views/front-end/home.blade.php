@@ -76,6 +76,29 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     </div>
 </section>
 <!-- Welcome to Shadows Photo Printing -->
+<section class="entry-content">
+            <div class="container">
+                <div class="entry-content-wrapper"> <!-- Corrected class name -->
+                    <div class="row"> <!-- Add row here -->
+                        <div class="col-lg-12">
+                            <div class="entry-text">
+                                <div class="widget-title" data-aos="fade-left">
+                                    <h3>Printed In-House with Pride – Australian Made</h3>
+                                    <div class="textwidget">
+                                        {{-- {!! $page_content['description'] !!} --}}
+                                        <p>At Shadows Photo Printing, we feel your memories should receive the best possible attention - and that begins with how we create each and every print. That is why all of our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.
+                                        </p>
+                                        <p>
+                                            From the time your order is received until the final packing process, each step is done by our small family within one location in Glenreagh N.S.W. This controls quality, reduces turnaround, and provides personal care your prints require. Each photo and canvas is cared for with the same skill and craftsmanship as if it were ours. We do not outsource your prints abroad or to external printing firms. Our promise is straightforward: local printing, professional care, and quality you can count on—every time.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
 
 <!--  -->
 

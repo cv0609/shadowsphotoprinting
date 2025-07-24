@@ -14,6 +14,8 @@
 <link rel="canonical" href="{{ request()->url() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}" />
 
 <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" >
+
 <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/fonts/stylesheet.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/slick-theme.css') }}">
@@ -29,7 +31,7 @@
    window.dataLayer = window.dataLayer || [];
    function gtag(){dataLayer.push(arguments);}
    gtag('js', new Date());
- 
+
    gtag('config', 'G-27QW0FL5D9');
  </script>
 
@@ -54,7 +56,6 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TC2ZRBMT"
    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <!-- End Google Tag Manager (noscript) -->
-   
-   
 
- 
+
+
