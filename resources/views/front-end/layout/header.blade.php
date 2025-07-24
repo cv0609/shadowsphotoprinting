@@ -40,8 +40,8 @@ $CartCount = $cartModel::getCartCount();
                                                      @if(Auth::user()->role == 'affiliate')
                                                      <li class=""> <a href="{{ route('ambassador') }}">Ambassador <i class="fa-solid fa-users"></i></a> </li>
                                                      <li class=""> <a href="{{ route('ambassador.blog') }}">Blog <i class="fa-solid fa-pencil-square-o"></i></a> </li>
-                                                     @endif 
-                                                    
+                                                     @endif
+
                                                     <li class=""> <a href="{{ route('orders') }}">Orders<i class="fa-solid fa-bag-shopping"></i></a></li>
                                                     {{-- <li class=""> <a href="{{ route('downloads') }}">Downloads <i class="fa-solid fa-download"></i></a></li> --}}
                                                     <li class=""> <a href="{{ route('address') }}">Addresses <i class="fa-solid fa-house"></i></a></li>
@@ -121,6 +121,7 @@ $CartCount = $cartModel::getCartCount();
                             </li>
                             <li><a href="{{ url('get-a-quote') }}">Get a Quote</a></li>
                             <li><a href="{{ url('contact-us') }}">Contact Us</a></li>
+                            <li><a href="{{ url('faq') }}">FAQ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -267,9 +268,9 @@ max-width: 100px;
 
                   <div class="model-svg-center">
                      <span>
-                        
+
                     <img src="{{ asset('afterpay-1.png') }}" alt="">
-                    
+
                     </span>
                     <h4>CHOOSE AFTERPAY </h4>
                      <p>At checkout.</p>
@@ -277,9 +278,9 @@ max-width: 100px;
 
                   <div class="model-svg-center">
                     <span>
-                        
+
                    <img src="{{ asset('afterpay-2.png') }}" alt="">
-                
+
                 </span>
                 <h4>LOGIN OR SIGN UP </h4>
                     <p>Free and simple to apply.</p>
@@ -287,15 +288,15 @@ max-width: 100px;
 
                  <div class="model-svg-center">
                     <span>
-                        
+
                   <img src="{{ asset('afterpay.png') }}" alt="">
-                
+
                 </span>
                 <h4> PAY IT IN 4</h4>
                     <p>Approx every 2 weeks.</p>
                  </div>
 
-                
+
 
                </div>
 

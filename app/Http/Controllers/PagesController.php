@@ -302,28 +302,83 @@ class PagesController extends Controller
     }
     public function accordion()
     {
-
-     $items = [
-    'main_heading' => 'Printing Process & Quality',
-    'faqs' => [
-        [
-            'title' => 'Do you get your printing done from other companies?',
-            'content' => 'No, never. All of our photo and canvas prints at Shadows Photo Printing are printed in-house in Australia. We never outsource any stage of the printing process. This guarantees consistent quality, professional handling, and quick turnaround times.'
+    $items = [
+    [
+        'main_heading' => 'Printing Process & Quality',
+        'faqs' => [
+            [
+                'title' => 'Do you get your printing done from other companies?',
+                'content' => 'No, never. All of our photo and canvas prints at Shadows Photo Printing are printed in-house in Australia. We never outsource any stage of the printing process. This guarantees consistent quality, professional handling, and quick turnaround times.'
+            ],
+            [
+                'title' => 'Are your photo prints printed in Australia?',
+                'content' => 'Yes, all of our prints are proudly made in Australia at our small family-run printing & gift shop in Glenreagh, NSW. Each order is printed and packed by our local family with love and care.'
+            ],
+            [
+                'title' => 'Do you have professional photo printing services available?',
+                'content' => 'Yes, we have professional photo printing with high-quality materials, high colour accuracy, and various sizing options—sent throughout Australia.'
+            ],
+        ]
         ],
-        [
-            'title' => 'Are your photo prints printed in Australia?',
-            'content' => 'Yes, all of our prints are proudly made in Australia at our small family-run printing & gift shop in Glenreagh, NSW. Each order is printed and packed by our local family with love and care.'
-        ],
-          [
-            'title' => 'Are your photo prints printed in Australia?',
-            'content' => 'Yes, all of our prints are proudly made in Australia at our small family-run printing & gift shop in Glenreagh, NSW. Each order is printed and packed by our local family with love and care.'
-        ],
-          [
-            'title' => 'Do you have professional photo printing services available?',
-            'content' => 'Yes, we have professional photo printing with high-quality materials, highColour accuracy, and various sizing options—sent throughout Australia.'
-        ],
+       [
+        'main_heading' => 'Products & Custom Orders',
+        'faqs' => [
+            [
+                'title' => 'Do you print scrapbook pages in Glenreagh NSW?',
+                'content' => 'Yes! We provide premium scrapbook page printing in Glenreagh NSW in a range of sizes and finishes ideal for memory keeping.'
+            ],
+            [
+                'title' => 'What do I get to order online?',
+                'content' => "You can order online photo prints, canvas prints, and wall art from our website. Select your size, upload your photo, and we'll do the rest."
+            ],
+            [
+                'title' => 'Can I have a bulk or custom-sized order?',
+                'content' => 'Yes. We do accept bulk orders and the best part is the more you order the better the discount. Yes, we accept print custom sizes. Contact us directly via our website for further information or a custom quote.'
+            ]
+        ]
+    ],
+    [
+        'main_heading' => 'Shipping & Delivery',
+        'faqs' => [
+            [
+                'title' => 'How long will it take to get my order?',
+                'content' => 'We normally print and send orders within 2–5 business days. Delivery times can vary based on your location within Australia.'
+            ],
+            [
+                'title' => 'Do you ship photo prints throughout Australia?',
+                'content' => 'Yes, we do ship Australia-wide. Regardless of where you are, your prints will be properly packaged and shipped straight to your doorstep.'
+            ],
+            [
+                'title' => 'Is shipping free?',
+                'content' => 'We don’t offer free shipping, but we do have a simple flat-rate shipping fee Australia-wide.
+                             If you’d prefer, in-house pick-up is completely free for all online orders.'
+            ]
+        ]
+    ],
+    [
+        'main_heading' => 'Customer Reviews & Trust',
+        'faqs' => [
+            [
+                'title' => 'Where do I find customer reviews?',
+                'content' => "You can also read genuine customer feedback on our social media and Google Business Profile. We adore hearing about how our prints brighten up people's living spaces!"
+            ],
+            [
+                'title' => 'How do I know your service is reliable?',
+                'content' => "We have many of satisfied customers and 5-star ratings, so we're dedicated to providing great products and service each and every time as if we stuff up – we pay for it!"
+            ],
+        ]
+    ],
+    [
+        'main_heading' => 'Care Instructions',
+        'faqs' => [
+            [
+                'title' => 'How should I care for my canvas print?',
+                'content' => 'Place your canvas outside of direct sunlight and humid environments. You can lightly dust it with a dry cloth to maintain its freshness.'
+            ],
+        ]
     ]
 ];
+
         return view('front-end.faq', compact('items'));
     }
 }

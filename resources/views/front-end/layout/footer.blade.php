@@ -34,11 +34,6 @@
                 <p>© 2025 Shadows Photo Printing</p>
             </div>
         </div>
-        <div class="footerbase">
-         <div class="footercredits">
-            <a href="{{ route('faq') }}">FAQ</a>
-        </div>
-        </div>
     </div>
 </footer>
 
