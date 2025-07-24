@@ -121,7 +121,7 @@ $CartCount = $cartModel::getCartCount();
                             </li>
                             <li><a href="{{ url('get-a-quote') }}">Get a Quote</a></li>
                             <li><a href="{{ url('contact-us') }}">Contact Us</a></li>
-                            <li><a href="{{ url('faq') }}">FAQ</a></li>
+                            {{-- <li><a href="{{ url('faq') }}">FAQ</a></li> --}}
                         </ul>
                     </div>
                 </div>
