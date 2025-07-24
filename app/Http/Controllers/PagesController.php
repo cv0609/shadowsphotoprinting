@@ -35,7 +35,6 @@ class PagesController extends Controller
     {
         // Get the full path
         $path = $request->path();
-
         // Extract the last segment
         $segments = explode('/', $path);
         if (in_array('our-products', $segments) && end($segments) != 'our-products') {
