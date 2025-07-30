@@ -1,6 +1,27 @@
 @extends('front-end.layout.main')
 @php
-    $CartService = app(App\Services\CartService::class);           
+    $CartService = app(App\Services\CartService::class);       
+    
+    $status = '';
+    if($orders->order_status == "0") {
+        $status = "Processing";
+    }elseif($orders->order_status == "1"){
+        $status = "Completed";
+    }elseif($orders->order_status == "2"){
+        $status = "Cancelled";
+    }elseif($orders->order_status == "3"){
+        $status = "Refunded";
+    }elseif($orders->order_status == "4"){
+        $status = "On Hold";
+    }
+
+    $statusClass = match(strtolower($status)) {
+        'processing' => 'badge-processing',
+        'completed' => 'badge-completed',
+        'cancelled' => 'badge-cancelled',
+        default => 'badge-default',
+    };
+                        
 @endphp
 @section('content')
    
@@ -16,6 +37,10 @@
                             <div class="notices-wrap">
                                 <p>Order #{{$orders->order_number ?? ''}} was placed on {{date('F j, Y',strtotime($orders->created_at ?? ''))}} and is currently
                                     Processing.</p>
+                                <p>
+                                    Order status:
+                                    <span class="order-status-badge {{ $statusClass }}">{{ $status }}</span>
+                                </p>
                             </div>
                             <div class="order-details">
                                 <div class="order-box">

@@ -1224,6 +1224,20 @@ section.get-quote {
     padding: 15px 0;
 }
 
+
+.order-status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+}
+
+.badge-processing { background-color: #f0ad4e; }  /* Orange */
+.badge-completed  { background-color: #5cb85c; }  /* Green */
+.badge-cancelled  { background-color: #d9534f; }  /* Red */
+.badge-default    { background-color: #6c757d; }  /* Grey */
+
 .form-inner input,
 .form-inner textarea#message {
     border: 1px solid #fff;
