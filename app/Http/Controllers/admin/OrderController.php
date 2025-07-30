@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Order\CancelOrder;
 use App\Mail\Order\RefundOrder;
+use App\Mail\Order\OnHoldOrder;
 use App\Mail\Order\CompleteOrder;
 
 use ZipArchive;
@@ -229,6 +230,9 @@ class OrderController extends Controller
         } elseif ($request->order_status == "3") {
             $status = "Refunded";
             Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new RefundOrder($orderDetail));
+        }elseif ($request->order_status == "4") {
+            $status = "On Hold";
+            Mail::to($orderDetail->orderBillingShippingDetails->email)->send(new OnHoldOrder($orderDetail));
         }
         Session::flash('success', 'Order ' . $status . ' successfully');
     }
