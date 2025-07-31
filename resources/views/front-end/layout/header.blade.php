@@ -7,8 +7,8 @@ $CartCount = $cartModel::getCartCount();
 @endphp
 <header class="header">
     <!-- August Promotion Banner - Show for all users, but popup only for logged-in users -->
-    <div class="august-promotion-banner" style="background: #000; color: white; text-align: center; padding: 10px 0; cursor: pointer; border-bottom: 1px solid #ffd700;" onclick="openAugustPromotion()">
-        <span style="font-size: 16px; font-weight: 600;">
+   <div class="august-promotion-banner" style="background: #16a085;color: white;text-align: center;padding: 10px 0;cursor: pointer;/* border-bottom: 1px solid #ffd700; */" onclick="openAugustPromotion()">
+        <span style="font-size: 16px;font-weight: 600;">
             New Here? Get 10% OFF Your First Order – Limited August Offer! 
             <span style="color: #ffd700; text-decoration: underline; font-weight: bold;">Click here</span> 🎁
         </span>
