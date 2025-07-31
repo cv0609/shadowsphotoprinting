@@ -54,7 +54,7 @@ public function augustPromotionEmail(Request $request)
     if (!auth()->check()) {
         return response()->json([
             'success' => false,
-            'message' => 'Please login to receive your coupon code.'
+            'message' => 'Please Login/SignUp to receive your coupon code.'
         ], 401);
     }
 
