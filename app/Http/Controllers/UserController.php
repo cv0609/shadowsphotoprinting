@@ -66,7 +66,7 @@ public function augustPromotionEmail(Request $request)
         ], 400);
     }
 
-    $coupon_code = "10%FreeAugust2025" . strtoupper(Str::random(6));
+    $coupon_code = "10%FreeAugust2025";
     $email = $user->email;
 
     $data = [

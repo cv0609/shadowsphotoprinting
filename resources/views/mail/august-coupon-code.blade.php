@@ -66,7 +66,7 @@
             </div>
 
             <!-- Terms & Conditions -->
-            <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 8px; margin: 25px 0;">
+            {{-- <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 8px; margin: 25px 0;">
                 <h4 style="color: #856404; margin-bottom: 15px; font-size: 18px;">📜 Terms & Conditions:</h4>
                 <ul style="color: #856404; font-size: 14px; line-height: 1.6; margin: 0; padding-left: 20px;">
                     <li style="margin-bottom: 6px;">Valid only for first-time customers</li>
@@ -76,7 +76,7 @@
                     <li style="margin-bottom: 6px;">Cannot be combined with other offers</li>
                     <li style="margin-bottom: 6px;">Valid on all products except gift cards</li>
                 </ul>
-            </div>
+            </div> --}}
 
             <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 15px;">
                 If you have any questions, please don't hesitate to contact our customer support team.
