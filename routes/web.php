@@ -234,6 +234,9 @@ Route::get('/photographer-brand-ambassador', [AmbassadorController::class, 'phot
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
 
+// August 2025 Promotion Email Route
+Route::post('/august-promotion/send-email', [UserController::class, 'augustPromotionEmail'])->name('august.promotion.email');
+
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');

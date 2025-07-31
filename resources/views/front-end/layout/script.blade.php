@@ -148,6 +148,68 @@ $(document).ready(function () {
         $("#close-sail-modal").click(function () {
             $("#afterpay-modal").modal("hide");
         });
+
+
+
+        // August Promotion Form Submission
+        $('#augustPromotionForm').on('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted'); // Debug log
+            
+            var email = $('#promotionEmail').val();
+            var submitBtn = $(this).find('button[type="submit"]');
+            var originalText = submitBtn.html();
+            
+            // Show loading state
+            submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Sending...').prop('disabled', true);
+            
+            $.ajax({
+                url: '{{ route("august.promotion.email") }}',
+                method: 'POST',
+                data: {
+                    email: email,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Success:', response); // Debug log
+                    if (response.success) {
+                        $('#successMessage').show();
+                        $('#errorMessage').hide();
+                        
+                        // Reset button
+                        submitBtn.html(originalText).prop('disabled', false);
+                        
+                        // Close popup after 3 seconds
+                        setTimeout(function() {
+                            $('#augustPromotionPopup').modal('hide');
+                        }, 3000);
+                    } else {
+                        $('#errorText').text(response.message || 'An error occurred');
+                        $('#errorMessage').show();
+                        $('#successMessage').hide();
+                        
+                        // Reset button
+                        submitBtn.html(originalText).prop('disabled', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', xhr.responseText); // Debug log
+                    var message = 'An error occurred. Please try again.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    $('#errorText').text(message);
+                    $('#errorMessage').show();
+                    $('#successMessage').hide();
+                    
+                    // Reset button
+                    submitBtn.html(originalText).prop('disabled', false);
+                }
+            });
+            
+            return false; // Prevent form submission
+        });
     });
 </script>
 

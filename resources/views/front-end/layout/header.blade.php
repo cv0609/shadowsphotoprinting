@@ -6,6 +6,14 @@ $CartCount = $cartModel::getCartCount();
 
 @endphp
 <header class="header">
+    <!-- August Promotion Banner - Show for all users, but popup only for logged-in users -->
+    <div class="august-promotion-banner" style="background: #000; color: white; text-align: center; padding: 10px 0; cursor: pointer; border-bottom: 1px solid #ffd700;" onclick="openAugustPromotion()">
+        <span style="font-size: 16px; font-weight: 600;">
+            New Here? Get 10% OFF Your First Order – Limited August Offer! 
+            <span style="color: #ffd700; text-decoration: underline; font-weight: bold;">Click here</span> 🎁
+        </span>
+    </div>
+    
     <!-- main header -->
     <div class="navigation page-header">
         <div class="container">
@@ -129,6 +137,151 @@ $CartCount = $cartModel::getCartCount();
         </div>
     </div>
     <!-- HEADER BOTTOM -->
+
+    <!-- August Promotion Popup - Only show for logged-in users who haven't received coupon -->
+    @auth
+        @if(auth()->user()->is_august_coupon != 1)
+            <div id="augustPromotionPopup" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: #000; color: white; border-bottom: 2px solid #ffd700; padding: 15px 20px;">
+                            <h5 class="modal-title mb-0">
+                                <i class="fas fa-gift"></i> August 2025 Special Promotion!
+                            </h5>
+                            <button type="button" class="close close-august-popup" data-dismiss="modal" aria-label="Close" style="color: white;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 20px;">
+                            <div class="text-center mb-3">
+                                <h4 style="color: #ffd700; margin-bottom: 10px; font-size: 18px;">🎉 Welcome to Shadows Photo Printing! 🎉</h4>
+                                <p style="font-size: 14px; color: #fff; margin-bottom: 15px;">
+                                    Get <strong>10% OFF</strong> your first order!
+                                </p>
+                            </div>
+                            
+                            <!-- Promotion Image -->
+                            <div class="text-center mb-3">
+                                <img src="{{ asset('august-new-order.jpg') }}" alt="August Promotion" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+                            </div>
+
+                            <div class="email-form">
+                                <h6 style="color: #fff; margin-bottom: 10px;">
+                                    <i class="fas fa-envelope"></i> Get Your Coupon Code
+                                </h6>
+                                <p style="color: #fff; margin-bottom: 15px; font-size: 13px;">
+                                    Enter your email address below and we'll send you your exclusive coupon code instantly!
+                                </p>
+                                
+                                <form id="augustPromotionForm">
+                                    <div class="form-group mb-3">
+                                        <input type="email" 
+                                               class="form-control" 
+                                               id="promotionEmail" 
+                                               placeholder="Enter your email address"
+                                               required
+                                               style="padding: 10px; border-radius: 6px; border: 2px solid #e9ecef; font-size: 14px;">
+                                    </div>
+                                    
+                                    <div class="text-center">
+                                        <button type="submit" 
+                                                class="btn btn-primary" 
+                                                style="background: #20c997; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold; color: white; font-size: 14px;">
+                                            <i class="fas fa-paper-plane"></i> Send Me My Coupon!
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="successMessage" style="display: none; background: #d4edda; color: #155724; padding: 10px; border-radius: 6px; margin-top: 15px; font-size: 13px;">
+                                <i class="fas fa-check-circle"></i> 
+                                <strong>Success!</strong> Your coupon code has been sent to your email address.
+                            </div>
+
+                            <div id="errorMessage" style="display: none; background: #f8d7da; color: #721c24; padding: 10px; border-radius: 6px; margin-top: 15px; font-size: 13px;">
+                                <i class="fas fa-exclamation-circle"></i> 
+                                <strong>Error!</strong> <span id="errorText"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer" style="background: #f8f9fa; border-top: 1px solid #e9ecef; padding: 10px 20px;">
+                            <small style="color: #6c757d; font-size: 11px;">
+                                <i class="fas fa-info-circle"></i> 
+                                Valid for first-time customers only. August 1-31, 2025.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endauth
+
+    <style>
+    #augustPromotionPopup .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    #augustPromotionPopup .modal-header {
+        border-radius: 15px 15px 0 0;
+    }
+
+    #augustPromotionPopup .close {
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
+
+    #augustPromotionPopup .close:hover {
+        opacity: 1;
+    }
+
+    #augustPromotionPopup .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    #augustPromotionPopup .form-control:focus {
+        border-color: #20c997;
+        box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
+    }
+
+    .promotion-details ul li {
+        padding: 5px 0;
+    }
+
+    .promotion-details ul li i {
+        margin-right: 10px;
+        width: 20px;
+    }
+
+    .august-promotion-banner:hover {
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+    }
+    </style>
+
+    <script>
+    function openAugustPromotion() {
+        // Check if user is logged in
+        @auth
+            // Check if user already received the coupon
+            @if(auth()->user()->is_august_coupon != 1)
+                $('#augustPromotionPopup').modal('show');
+            @else
+                alert('You have already received your August promotion coupon!');
+            @endif
+        @else
+            // User is not logged in, show login prompt
+            alert('Please login to receive your 10% discount coupon!');
+        @endauth
+    }
+
+    // Close August promotion popup
+    $('.close-august-popup').on('click', function() {
+        $('#augustPromotionPopup').modal('hide');
+    });
+    </script>
 
 </header>
 
