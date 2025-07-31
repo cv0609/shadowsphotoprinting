@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendAugustCouponCode;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -41,6 +44,45 @@ class UserController extends Controller
     });
 
     return response()->json(['message' => 'Users imported successfully']);
+}
+
+public function augustPromotionEmail(Request $request)
+{
+    // Check if user is logged in
+    if (!auth()->check()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please login to receive your coupon code.'
+        ], 401);
+    }
+
+    $user = auth()->user();
+    
+    // Check if user already received the coupon
+    if ($user->is_august_coupon == 1) {
+        return response()->json([
+            'success' => false,
+            'message' => 'You have already received your August promotion coupon.'
+        ], 400);
+    }
+
+    $coupon_code = "10%FreeAugust2025" . strtoupper(Str::random(6));
+    $email = $user->email;
+
+    $data = [
+        'coupon_code' => $coupon_code
+    ];
+
+    // Send email
+    Mail::to($email)->send(new SendAugustCouponCode($data));
+
+    // Update user record to mark coupon as sent
+    User::where('id', $user->id)->update(['is_august_coupon' => 1]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Coupon code has been sent to your email!'
+    ]);
 }
 
 }

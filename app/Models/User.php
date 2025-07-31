@@ -27,6 +27,7 @@ class User extends Authenticatable
         'status',
         'is_email_verified',
         'referred_by',
+        'is_august_coupon',
     ];
 
     /**
