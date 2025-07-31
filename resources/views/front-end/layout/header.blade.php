@@ -273,7 +273,7 @@ $CartCount = $cartModel::getCartCount();
             @endif
         @else
             // User is not logged in, show login prompt
-            alert('Please login to receive your 10% discount coupon!');
+            alert('Please Login/SignUp to receive your 10% discount coupon!');
         @endauth
     }
 
