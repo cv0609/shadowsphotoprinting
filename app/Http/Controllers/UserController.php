@@ -84,7 +84,7 @@ public function augustPromotionEmail(Request $request)
     User::where('id', $user->id)->update(['is_august_coupon' => 1]);
 
     Coupon::create([
-        'code' => $generateGiftCardCoupon,
+        'code' => $coupon_code,
         'type' => '1',
         'amount' => '10',
         'minimum_spend' => 0.00,
