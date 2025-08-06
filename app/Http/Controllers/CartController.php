@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
 use App\Models\TestPrint;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 
@@ -276,6 +277,9 @@ class CartController extends Controller
 
         $this->applyReferralCouponIfNeeded();
 
+        // Recalculate shipping after adding items to cart
+        $this->recalculateShippingAfterCartUpdate();
+
         return response()->json(['error' => false, 'message' => 'Cart updated', 'count' => $cartCount]);
     }
 
@@ -402,6 +406,9 @@ class CartController extends Controller
         if ($cart->items->isEmpty()) {
             Session::forget('coupon');
         }
+
+        // Recalculate shipping after item removal
+        $this->recalculateShippingAfterCartUpdate();
 
         return redirect()->route('cart')->with('success', 'Item removed from cart');
     }
@@ -641,6 +648,9 @@ class CartController extends Controller
         }
         // }
 
+        // Recalculate shipping after cart update
+        $this->recalculateShippingAfterCartUpdate();
+        
         session()->flash('success', 'Cart updated successfully.');
     }
 
@@ -665,5 +675,94 @@ class CartController extends Controller
         }
 
         return $itemCount;
+    }
+
+    /**
+     * Recalculate shipping after cart updates
+     */
+    private function recalculateShippingAfterCartUpdate()
+    {
+        try {
+            $auth_id = Auth::check() && !empty(Auth::user()) ? Auth::user()->id : null;
+            $session_id = $auth_id ? null : Session::getId();
+
+            if ($auth_id && !empty($auth_id)) {
+                $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            } else {
+                $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+            }
+
+            if ($cart && !$cart->items->isEmpty()) {
+                // Prepare cart items for shipping calculation
+                $cartItems = [];
+                foreach ($cart->items as $item) {
+                    $cartItems[] = [
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'product_type' => $item->product_type,
+                        'is_test_print' => $item->is_test_print // Ensure this is passed
+                    ];
+                }
+
+                // Calculate shipping and update session
+                $shippingService = new \App\Services\CartShippingService();
+                $shippingOptions = $shippingService->calculateShipping($cartItems);
+
+                if (!empty($shippingOptions)) {
+                    // Auto-select the best shipping option
+                    $selectedShipping = $this->autoSelectShippingOption($shippingOptions);
+                    
+                    if ($selectedShipping) {
+                        // Save to session
+                        session([
+                            'selected_shipping' => [
+                                'carrier' => $selectedShipping['carrier'],
+                                'service' => $selectedShipping['service'],
+                                'price' => (float) $selectedShipping['price']
+                            ]
+                        ]);
+                    }
+                } else {
+                    // Clear session shipping if no options are available
+                    session()->forget('selected_shipping');
+                    Log::info('No shipping options available, cleared session shipping in cart update');
+                }
+            } else {
+                // Clear shipping if cart is empty
+                session()->forget('selected_shipping');
+            }
+        } catch (\Exception $e) {
+            // Log error but don't break the cart update
+            Log::error('Error recalculating shipping after cart update: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Auto-select the best shipping option
+     */
+    private function autoSelectShippingOption($shippingOptions)
+    {
+        // Check if there's already a session shipping selection
+        $existingShipping = session('selected_shipping');
+        
+        if ($existingShipping) {
+            // Try to find the existing selection in current options
+            foreach ($shippingOptions as $option) {
+                if ($option['carrier'] === $existingShipping['carrier'] && 
+                    $option['service'] === $existingShipping['service']) {
+                    return $option;
+                }
+            }
+        }
+        
+        // Auto-selection logic: prioritize Australia Post snail_mail
+        foreach ($shippingOptions as $option) {
+            if ($option['carrier'] === 'auspost' && $option['service'] === 'snail_mail') {
+                return $option;
+            }
+        }
+        
+        // Fallback to first option
+        return $shippingOptions[0] ?? null;
     }
 }

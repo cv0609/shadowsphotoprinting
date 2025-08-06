@@ -25,6 +25,8 @@ use App\Http\Controllers\admin\NewsletterController;
 use App\Http\Controllers\admin\SalePopupController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmbassadorController;
+use App\Http\Controllers\ShippingController as FrontendShippingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -286,6 +288,16 @@ Route::prefix('afterpay')->group(function () {
     Route::get('/success', [PaymentController::class, 'afterpaySuccess'])->name('checkout.success');
     Route::get('/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
     Route::get('/order/success', [PaymentController::class, 'orderSuccess'])->name('order.success');
+});
+
+// Cart Shipping Routes (Re-added)
+Route::prefix('cart-shipping')->group(function () {
+    Route::post('/calculate', [FrontendShippingController::class, 'calculateShipping'])->name('cart-shipping.calculate');
+    Route::post('/quantity-options', [FrontendShippingController::class, 'getShippingForQuantity'])->name('cart-shipping.quantity-options');
+    Route::get('/tiers', [FrontendShippingController::class, 'getShippingTiers'])->name('cart-shipping.tiers');
+    Route::post('/update-selection', [FrontendShippingController::class, 'updateShippingSelection'])->name('cart-shipping.update-selection');
+    Route::post('/clear-selection', [FrontendShippingController::class, 'clearShippingSelection'])->name('cart-shipping.clear-selection');
+    Route::get('/get-session-shipping', [FrontendShippingController::class, 'getSessionShipping'])->name('cart-shipping.get-session');
 });
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
