@@ -300,5 +300,7 @@ Route::prefix('cart-shipping')->group(function () {
     Route::get('/get-session-shipping', [FrontendShippingController::class, 'getSessionShipping'])->name('cart-shipping.get-session');
 });
 
+Route::get('/more-info', [BasePagesController::class, 'moreInfo'])->name('more-info');
+
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

@@ -120,6 +120,7 @@
             <div class="woocommerce-tabs">
                 {{-- <h2>Description</h2> --}}
                <p class="woocommerce-tabs-desc">{{ $productDetails->product_description ?? '' }}</p>
+               <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p>
             </div>
         </div>
     </div>
