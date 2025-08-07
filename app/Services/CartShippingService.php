@@ -152,13 +152,13 @@ class CartShippingService
                             break;
                         case 18: // Poster Prints
                             $postersItems[] = $item;
-                            break;
-                        default:
-                            $otherItems[] = $item;
-                            break;
-                    }
-                } else {
-                    $otherItems[] = $item;
+                        break;
+                    default:
+                        $otherItems[] = $item;
+                        break;
+                }
+            } else {
+                $otherItems[] = $item;
                 }
             }
         }
@@ -198,6 +198,179 @@ class CartShippingService
         ]);
         
         return $shippingOptions;
+    }
+    
+    /**
+     * Calculate shipping options per category for cart items
+     */
+    public function calculateShippingPerCategory($cartItems)
+    {
+        $categoryShippingOptions = [];
+        
+        // Group items by category
+        $scrapbookItems = [];
+        $canvasItems = [];
+        $photoEnlargementItems = [];
+        $photoPrintsItems = [];
+        $postersItems = [];
+        $handCraftItems = [];
+        $photosForSaleItems = [];
+        $giftCardItems = [];
+        $testPrintItems = [];
+        $otherItems = [];
+        
+        foreach ($cartItems as $item) {
+            // Check if this is a special product type
+            if (isset($item['product_type'])) {
+                switch ($item['product_type']) {
+                    case 'hand_craft':
+                        $handCraftItems[] = $item;
+                        break;
+                    case 'photo_for_sale':
+                        $photosForSaleItems[] = $item;
+                        break;
+                    case 'gift_card':
+                        $giftCardItems[] = $item;
+                        break;
+                    default:
+                        // Try to find in products table
+                $product = Product::find($item['product_id']);
+                if ($product) {
+                            switch ($product->category_id) {
+                                case 1: // Scrapbook page printing
+                                    if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
+                                        $testPrintItems[] = $item;
+                                    } else {
+                                        $scrapbookItems[] = $item;
+                                    }
+                                    break;
+                                case 2: // Canvas prints
+                                    $canvasItems[] = $item;
+                                    break;
+                                case 3: // Photo Enlargements
+                                    $photoEnlargementItems[] = $item;
+                                    break;
+                                case 4: // Photo Prints
+                                    if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
+                                        $testPrintItems[] = $item;
+                                    } else {
+                                        $photoPrintsItems[] = $item;
+                                    }
+                                    break;
+                                case 5: // Photos for sale
+                                    $photosForSaleItems[] = $item;
+                                    break;
+                                case 6: // Gift card
+                                    $giftCardItems[] = $item;
+                                    break;
+                                case 14: // Hand Craft
+                                    $handCraftItems[] = $item;
+                                    break;
+                                case 18: // Posters
+                                    $postersItems[] = $item;
+                                    break;
+                                default:
+                                    $otherItems[] = $item;
+                                    break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        
+        // Calculate shipping options for each category
+        if (!empty($scrapbookItems)) {
+            $quantity = array_sum(array_column($scrapbookItems, 'quantity'));
+            $categoryShippingOptions['scrapbook_page_printing'] = $this->calculateTierBasedShipping($quantity, 'scrapbook_page_printing');
+        }
+        
+        if (!empty($photoPrintsItems)) {
+            $quantity = array_sum(array_column($photoPrintsItems, 'quantity'));
+            $categoryShippingOptions['photo_prints'] = $this->calculateTierBasedShipping($quantity, 'photo_prints');
+        }
+        
+        if (!empty($canvasItems)) {
+            $categoryShippingOptions['canvas'] = $this->getFixedShippingForCategory('canvas');
+        }
+        
+        if (!empty($photoEnlargementItems)) {
+            $categoryShippingOptions['photo_enlargements'] = $this->getFixedShippingForCategory('photo_enlargements');
+        }
+        
+        if (!empty($postersItems)) {
+            $categoryShippingOptions['posters'] = $this->getFixedShippingForCategory('posters');
+        }
+        
+        if (!empty($handCraftItems)) {
+            $categoryShippingOptions['hand_craft'] = $this->getFixedShippingForCategory('hand_craft');
+        }
+        
+        if (!empty($photosForSaleItems)) {
+            $categoryShippingOptions['photos_for_sale'] = $this->getFixedShippingForCategory('photos_for_sale');
+        }
+        
+        if (!empty($giftCardItems)) {
+            $categoryShippingOptions['gift_card'] = $this->getFixedShippingForCategory('gift_card');
+        }
+        
+        if (!empty($testPrintItems)) {
+            $quantity = array_sum(array_column($testPrintItems, 'quantity'));
+            $testPrintShippingRecord = \App\Models\Shipping::where('is_test_print', '1')->first();
+            if ($testPrintShippingRecord) {
+                // Calculate quantity-based shipping but cap at $2.00 total
+                $calculatedShipping = $testPrintShippingRecord->amount * $quantity;
+                $testPrintShipping = min($calculatedShipping, 2.00); // Cap at $2.00
+                
+                $categoryShippingOptions['test_prints'] = [
+                    [
+                        'service' => 'snail_mail',
+                        'price' => $testPrintShipping,
+                        'delivery_time' => '5-10 business days',
+                        'carrier' => 'Australia Post',
+                        'note' => "Test prints: {$quantity} items × $" . number_format($testPrintShippingRecord->amount, 2) . " = $" . number_format($calculatedShipping, 2) . " (capped at $2.00)"
+                    ],
+                    [
+                        'service' => 'express',
+                        'price' => $testPrintShipping,
+                        'delivery_time' => '1-2 business days',
+                        'carrier' => 'Australia Post',
+                        'note' => "Test prints: {$quantity} items × $" . number_format($testPrintShippingRecord->amount, 2) . " = $" . number_format($calculatedShipping, 2) . " (capped at $2.00)"
+                    ]
+                ];
+            }
+        }
+        
+        // Log the category shipping options for debugging
+        Log::info('Category shipping options calculated:', [
+            'category_shipping_options' => $categoryShippingOptions
+        ]);
+        
+        return $categoryShippingOptions;
+    }
+
+    /**
+     * Calculate total shipping cost based on category-wise selections
+     */
+    public function calculateTotalShippingFromSelections($categorySelections)
+    {
+        $totalSnailMail = 0;
+        $totalExpress = 0;
+        
+        foreach ($categorySelections as $category => $selection) {
+            if (isset($selection['service']) && isset($selection['price'])) {
+                if ($selection['service'] === 'snail_mail') {
+                    $totalSnailMail += $selection['price'];
+                } elseif ($selection['service'] === 'express') {
+                    $totalExpress += $selection['price'];
+                }
+            }
+        }
+        
+        return [
+            'snail_mail' => $totalSnailMail,
+            'express' => $totalExpress
+        ];
     }
     
     /**
@@ -616,7 +789,7 @@ class CartShippingService
         
         return $shippingOptions;
     }
-
+    
     /**
      * Calculate Photo Prints tier-based shipping using database rules
      */
@@ -659,7 +832,7 @@ class CartShippingService
         
         if (!$shippingCategory) {
             Log::warning('Shipping category not found:', ['category_name' => $categoryName]);
-            return ['snail_mail' => 0, 'express' => 0];
+            return [];
         }
         
         Log::info('Shipping category found:', [
@@ -679,22 +852,25 @@ class CartShippingService
             'rules' => $shippingRules->toArray()
         ]);
         
-        $pricing = ['snail_mail' => 0, 'express' => 0];
+        $shippingOptions = [];
         
         foreach ($shippingRules as $rule) {
-            if ($rule->service === 'snail_mail') {
-                $pricing['snail_mail'] = $rule->price;
-            } elseif ($rule->service === 'express') {
-                $pricing['express'] = $rule->price;
-            }
+            $shippingOptions[] = [
+                'carrier' => $rule->carrier,
+                'service' => $rule->service,
+                'price' => $rule->price,
+                'delivery_time' => $rule->delivery_time,
+                'weight' => null,
+                'note' => 'Fixed pricing'
+            ];
         }
         
-        Log::info('Final pricing for category:', [
+        Log::info('Final shipping options for category:', [
             'category_name' => $categoryName,
-            'pricing' => $pricing
+            'options' => $shippingOptions
         ]);
         
-        return $pricing;
+        return $shippingOptions;
     }
     
     /**
@@ -747,6 +923,6 @@ class CartShippingService
             ];
         }
         
-                return null;
+        return null;
     }
 } 
