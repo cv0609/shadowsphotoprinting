@@ -295,6 +295,17 @@
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['shippingCharge'],2) }}</strong></td>
             </tr>
 
+            @if($orderDetail->shipping_service)
+                <tr>
+                    <td style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666;">
+                        Service: {{ ucwords(str_replace('_', ' ', $orderDetail->shipping_service)) }}
+                    </td>
+                    <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
+                        <strong>{{ ucwords($orderDetail->shipping_carrier ?? 'Australia Post') }}</strong>
+                    </td>
+                </tr>
+            @endif
+
             @if($orderDetail->shipping_breakdown && !empty($orderDetail->shipping_breakdown))
                 @foreach($orderDetail->shipping_breakdown as $category => $details)
                     @if($details['shipping'] > 0)

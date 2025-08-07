@@ -556,6 +556,9 @@ class PaymentController extends Controller
 
         Session::forget(['order_address', 'coupon', 'billing_details', 'order_type','shutter_point']);
 
+         // Clear shipping session after order is created
+        session()->forget('selected_shipping');
+        
         return response()->json(['error' => false, 'message' => 'success', 'order_id' => $order->id]);
     }
 
