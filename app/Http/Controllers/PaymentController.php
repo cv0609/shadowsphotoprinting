@@ -305,6 +305,34 @@ class PaymentController extends Controller
             $order_type = $order_address['order_type'];
         }
 
+        // Get shipping breakdown from session
+        $selectedShipping = session('selected_shipping');
+        $shippingBreakdown = null;
+        $shippingService = null;
+        $shippingCarrier = null;
+        
+        if ($selectedShipping) {
+            $shippingService = $selectedShipping['service'];
+            $shippingCarrier = $selectedShipping['carrier'];
+            
+            // Calculate shipping breakdown for admin display
+            if ($cart && !$cart->items->isEmpty()) {
+                $cartItems = [];
+                foreach ($cart->items as $item) {
+                    $cartItems[] = [
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'product_type' => $item->product_type,
+                        'is_test_print' => $item->is_test_print
+                    ];
+                }
+                
+                // Get shipping breakdown from CartShippingService
+                $shippingServiceInstance = new \App\Services\CartShippingService();
+                $shippingBreakdown = $shippingServiceInstance->getShippingBreakdown($cartItems, $selectedShipping);
+            }
+        }
+
         $order = Order::create([
             'user_id' => isset(Auth::user()->id) ? Auth::user()->id : null,
             'user_session_id' => isset(Auth::user()->id) ? null : $session_id,
@@ -316,6 +344,9 @@ class PaymentController extends Controller
             'commission' => $commission ?? 0,
             'sub_total' => $subtotal ?? 0,
             'shipping_charge' => $shipping_amount,
+            'shipping_breakdown' => $shippingBreakdown,
+            'shipping_service' => $shippingService,
+            'shipping_carrier' => $shippingCarrier,
             'total' => $cart_total,
             'payment_id' => ($payment_method === 'stripe')
                 ? ($charge->id ?? "")
