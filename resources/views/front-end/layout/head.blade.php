@@ -3,17 +3,20 @@
    $index = $PageDataService->dashboard_index();
 @endphp
 <meta charset="utf-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name='robots' content='{{$index=='1' ? config('constant.dashboard_index.on') : config('constant.dashboard_index.off')}}' />
 <meta name="google-site-verification" content="QscuU-oHKOGqK2i0FisB3Hzy7Teuqry8iBl2TaWjFyM" />
 {{-- <title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title> --}}
-<title>{{ html_entity_decode(ucfirst($page_content['meta_title']) ?? 'Default Title') }}</title>
+<title>{{ html_entity_decode(ucfirst($page_content['meta_title'] ?? '') ?? 'Default Title') }}</title>
 <meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
 <link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
 
 <link rel="canonical" href="{{ request()->url() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}" />
 
 <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" >
+
 <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/fonts/stylesheet.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/slick-theme.css') }}">
@@ -29,7 +32,7 @@
    window.dataLayer = window.dataLayer || [];
    function gtag(){dataLayer.push(arguments);}
    gtag('js', new Date());
- 
+
    gtag('config', 'G-27QW0FL5D9');
  </script>
 
@@ -54,7 +57,6 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TC2ZRBMT"
    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <!-- End Google Tag Manager (noscript) -->
-   
-   
 
- 
+
+

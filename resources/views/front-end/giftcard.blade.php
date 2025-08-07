@@ -93,8 +93,7 @@
                     <div class="instock-oant">
                         <div class="instock-udik">
                             <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
-                                <img
-                                    src="{{ asset($blog['product_image']) }}">
+                                <img src="{{ asset($blog['product_image']) }}" alt="{{ $blog->product_title }}">
                             </a>
                         </div>
 

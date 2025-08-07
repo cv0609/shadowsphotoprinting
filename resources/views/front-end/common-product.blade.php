@@ -1,10 +1,10 @@
 @extends('front-end.layout.main')
 @section('content')
 @php
-   $PageDataService = app(App\Services\PageDataService::class);
-   $products = $PageDataService->getProductBySlug($page_content['slug']);
-   $CartService = app(App\Services\CartService::class);
-//   dd($page_content['header_banner'][0]);
+$PageDataService = app(App\Services\PageDataService::class);
+$products = $PageDataService->getProductBySlug($page_content['slug']);
+$CartService = app(App\Services\CartService::class);
+// dd($page_content['header_banner'][0]);
 // dd($page_content);
 @endphp
 
@@ -12,23 +12,23 @@
 {{-- <section class="poster-bnr">
     <div class="banner-img">
 
-          <img src="{{ asset($page_content['header_banner'][0]) }}" alt="{{ pathinfo($page_content['header_banner'][0], PATHINFO_FILENAME) }}">
+          <img src="{{ asset($page_content['header_banner'][0] ?? '') }}" alt="{{ pathinfo($page_content['header_banner'][0], PATHINFO_FILENAME) }}">
+</div>
+<div class="container">
+    <div class="contact-bnr-text">
+        <h2>{{ $page_content['header_title'] }}</h2>
     </div>
-    <div class="container">
-        <div class="contact-bnr-text">
-            <h2>{{ $page_content['header_title'] }}</h2>
-        </div>
-    </div>
+</div>
 </section> --}}
 
 
-<section class="poster-bnr" style="background: url('{{ asset($page_content['header_banner'][0]) }}') no-repeat; background-position: center; background-size: cover;">
+<section class="poster-bnr" style="background: url('{{ asset($page_content['header_banner'][0] ?? '') }}') no-repeat; background-position: center; background-size: cover;">
     <div class="banner-img">
-        <img src="{{ asset($page_content['header_banner'][0]) }}" alt="{{ pathinfo($page_content['header_banner'][0], PATHINFO_FILENAME) }}">
+        <img src="{{ asset($page_content['header_banner'][0] ?? '') }}" alt="{{ pathinfo($page_content['header_banner'][0] ?? '', PATHINFO_FILENAME) }}">
     </div>
     <div class="container">
         <div class="contact-bnr-text">
-            <h2>{{  $page_content['header_title'] }}</h2>
+            <h2>{{ $page_content['header_title'] ?? '' }}</h2>
         </div>
     </div>
 </section>
@@ -39,7 +39,7 @@
             <ul class="product-list">
                 @foreach ($products as $product)
                 @php
-                  $product_sale_price =  $CartService->getProductSalePrice($product['id']);
+                $product_sale_price = $CartService->getProductSalePrice($product['id']);
                 @endphp
                 <li class="product-sect">
                     <div class="Product-box">
@@ -54,30 +54,30 @@
                             <h3>{{ $product['product_title'] }} </h3>
                             {{-- <div class="cart_price">
                                 <span class="price">Price: ${{ $product['product_price'] }} </span>
-                            </div> --}}
+                        </div> --}}
 
-                            <div class="cart_price">
+                        <div class="cart_price">
 
-                                @if(isset($product_sale_price) && !empty($product_sale_price))
-                                    <span class="price">Price: ${{ $product_sale_price }}</span>
-                                    <p class="discounted_price">Price : <span>${{$product['product_price']}}</span></p>
+                            @if(isset($product_sale_price) && !empty($product_sale_price))
+                            <span class="price">Price: ${{ $product_sale_price }}</span>
+                            <p class="discounted_price">Price : <span>${{$product['product_price']}}</span></p>
 
-                                @else
-                                    <span class="price">Price: ${{ $product['product_price'] }}</span>
-                                @endif
+                            @else
+                            <span class="price">Price: ${{ $product['product_price'] }}</span>
+                            @endif
 
-                            </div>
-
-
-                            <div class="print_paper_type">Type of Paper Use: <select>
-                                    <option>{{ $product['type_of_paper_use'] }}</option>
-                                </select></div>
-                            <p>{!! html_entity_decode($product['product_description']) !!} </p>
                         </div>
+
+
+                        <div class="print_paper_type">Type of Paper Use: <select>
+                                <option>{{ $product['type_of_paper_use'] }}</option>
+                            </select></div>
+                        <p>{!! html_entity_decode($product['product_description']) !!} </p>
                     </div>
-                </li>
-                @endforeach
-                {{-- <li class="product-sect">
+        </div>
+        </li>
+        @endforeach
+        {{-- <li class="product-sect">
                     <div class="Product-box">
                         <div class="Product_image">
                             <img src="assets/images/dup17.png" alt="scrap6">
@@ -101,20 +101,20 @@
                         </div>
                     </div>
                 </li> --}}
-            </ul>
-        </div>
+        </ul>
+    </div>
     </div>
 </section>
 @endsection
 @section('scripts')
-    <script>
-        $('.fade-slider').slick({
-            autoplay: true,
-            dots: true,
-            infinite: true,
-            speed: 500,
-            fade: true,
-            cssEase: 'linear'
-        });
-    </script>
+<script>
+    $('.fade-slider').slick({
+        autoplay: true,
+        dots: true,
+        infinite: true,
+        speed: 500,
+        fade: true,
+        cssEase: 'linear'
+    });
+</script>
 @endsection

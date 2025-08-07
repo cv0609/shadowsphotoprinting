@@ -22,6 +22,7 @@ use App\Models\OrderBillingDetails;
 use Illuminate\Support\Facades\Session;
 use App\Mail\Order\MakeOrder;
 use App\Mail\Order\GiftCardMail;
+use App\Mail\Order\GiftCardPurchasedMail;
 use App\Mail\AdminNotifyOrder;
 use App\Models\User;
 use App\Models\UserDetails;
@@ -424,16 +425,25 @@ class PaymentController extends Controller
                 // Decode JSON into an associative array
                 $giftcardDesc = json_decode($item->product_desc, true);
 
+                \Log::info($giftcardDesc);
+
                 // Check if 'reciept_email' exists and retrieve it
                 $recieptEmail = $giftcardDesc['reciept_email'] ?? null;
+                $giftcard_msg = $giftcardDesc['giftcard_msg'] ?? null;
+                
 
                 $giftcardData = [
                    'reciept_email' => $recieptEmail ?? '',
                    'code' => $generateGiftCardCoupon ?? '',
-                   'image' => $item->selected_images ?? ''
+                   'image' => $item->selected_images ?? '',
+                   'message' => $giftcard_msg ?? ''
                 ];
 
+                \Log::info($giftcardData);
+                \Log::info('Test log');
+
                 Mail::to($recieptEmail)->send(new GiftCardMail($giftcardData));
+                Mail::to($recieptEmail)->send(new GiftCardPurchasedMail($giftcardData));
             }
 
             $sale_price = null;
@@ -444,6 +454,7 @@ class PaymentController extends Controller
                 $item_price = $item->quantity * $product_price;
                 $sale_on = 0;
                 $sale_price = null;
+
             } else {
                 $product_sale_price = $this->CartService->getProductSalePrice($item->product_id);
                 $product_details =  $this->CartService->getProductDetailsByType($item->product_id, $item->product_type);

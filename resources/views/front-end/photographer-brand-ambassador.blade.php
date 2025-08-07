@@ -41,7 +41,7 @@
                 <div class="col-lg-6">
                     <div class="entry-img">
                         <figure data-aos="fade-right" class="aos-init aos-animate">
-                            <img src="{{asset('assets/images/SPBAs2.jpg')}}" alt="Side Image">
+                            <img src="{{asset('assets/images/SPBAs2.jpg')}}" alt="Shadows Photo Printing Photographer Brand Ambassador">
                         </figure>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
 
 
 								<p style="margin-bottom: 10px;"><a href="{{route('featured-photographers')}}">Meet our talented professional photographers</a></p>
-                                
+
 								<!-- <p><small>*Currently only open to US applicants 18 and older*</small></p> -->
                             </div>
                         </div>

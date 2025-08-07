@@ -17,6 +17,9 @@
             background: #000;
             text-align: center;
         }
+        .textwidget a{
+            color: #ffc205;
+        }
         .apply-btn a {
             background: #16A085;
             color: #ffffff;
@@ -160,18 +163,18 @@
 
         <div class="row">
                 <!-- Add row here -->
-               
+
                 <div class="col-lg-6">
                     <div class="entry-text">
                         <div class="widget-title aos-init aos-animate" data-aos="fade-left">
                             <h3>Meet the Professionals Behind Our Incredible Imagery</h3>
                             <div class="textwidget">
-                                <p style="margin-bottom: 10px;">At <strong>Shadows Photo Printing</strong>, we’re proud to collaborate with a talented community of professional photographers whose stunning work brings our products to life. Their images, captured with passion and precision, are showcased on our uniquely handcrafted, ready-to-hang canvas and photo prints—made right here in Australia. </p>
+                                <p style="margin-bottom: 10px;">At <strong><a href="{{url('/')}}">Shadows Photo Printing</a></strong>, we’re proud to collaborate with a talented community of professional photographers whose stunning work brings our products to life. Their images, captured with passion and precision, are showcased on our uniquely handcrafted, ready-to-hang canvas and photo prints—made right here in Australia. </p>
 
                                 <p style="margin-bottom: 10px;">If you’ve fallen in love with the photos featured on our products, there’s a good chance you’re admiring the work of one of the amazing photographers listed below. </p>
 
                                 <p style="margin-bottom: 10px;">A heartfelt <strong>thank you</strong> to our incredible pros—we couldn’t do it without you! </p>
-                              
+
                             </div>
                         </div>
                     </div>
@@ -179,7 +182,7 @@
 				 <div class="col-lg-6">
                     <div class="entry-img-n">
                         <figure data-aos="fade-right" class="aos-init aos-animate">
-                            <img src="{{asset('assets/images/onemeet.jpg')}}" alt="Side Image">
+                            <img src="{{asset('assets/images/onemeet.jpg')}}" alt="Shadows Photo Printing Photographers">
                         </figure>
                     </div>
                 </div>
@@ -208,7 +211,7 @@
                             $specialty =  is_string($ambassador->specialty) ? explode(',', $ambassador->specialty) : [];
                             $items = [];
                             foreach ($specialty ?? [] as $item){
-                                $items[] = $specialtyMap[$item]; 
+                                $items[] = $specialtyMap[$item];
                             }
                         @endphp
 						<td>

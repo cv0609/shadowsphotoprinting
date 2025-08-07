@@ -40,6 +40,8 @@
                               $status = "Cancelled";
                             }elseif($orderDetail->order_status == "3"){
                               $status = "Refunded";
+                            }elseif($orderDetail->order_status == "4"){
+                              $status = "On Hold";
                             }
                           @endphp
                         <h3>Order #{{$orderDetail->order_number}} details</h3>
@@ -81,6 +83,7 @@
                       <option value="1" {{ ($orderDetail->order_status == "1") ? 'selected' : ''}}>Completed</option>
                       <option value="2"{{ ($orderDetail->order_status == "2") ? 'selected' : ''}}>Cancelled</option>
                       <option value="3"{{ ($orderDetail->order_status == "3") ? 'selected' : ''}}>Refunded</option>
+                      <option value="4"{{ ($orderDetail->order_status == "4") ? 'selected' : ''}}>On Hold</option>
                     </select>
                   </div>
                 </div>
@@ -408,6 +411,7 @@
            console.log(data);
            location.reload();
         });
+        // location.reload();
      })
 
      $("#print").on('click',function(){

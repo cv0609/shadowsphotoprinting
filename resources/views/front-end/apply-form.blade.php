@@ -296,7 +296,7 @@
     <section class="banner-sec-new">
         <div class="container">
             <div class="div-wrap-head">
-                <h1>Apply to Be a SPP Photographer Brand Ambassador</h1>
+                <h3>Apply to Be a SPP Photographer Brand Ambassador</h3>
                 <p>We're proud to work with talented professional photographers across Australia - and you can be one of
                     them! Selected photographers receive exclusive discounts, opportunities to be showcased on our blog and
                     social media opportunities, and much more...</p>
@@ -463,7 +463,7 @@
                     </div>
                 </form>
                 <div class="footer">
-                    <p>Security note: Avoid submitting sensitive data. Created by Shadow's Photo Printing. <a
+                    <p>Security note: Avoid submitting sensitive data. Created by <a href="{{url('/')}}">Shadow's Photo Printing</a>. <a
                             href="{{ url('contact-us') }}">Report Issues</a></p>
                 </div>
             </div>

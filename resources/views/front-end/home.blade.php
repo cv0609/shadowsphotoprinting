@@ -76,6 +76,29 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     </div>
 </section>
 <!-- Welcome to Shadows Photo Printing -->
+<section class="entry-content">
+            <div class="container">
+                <div class="entry-content-wrapper"> <!-- Corrected class name -->
+                    <div class="row"> <!-- Add row here -->
+                        <div class="col-lg-12">
+                            <div class="entry-text">
+                                <div class="widget-title" data-aos="fade-left">
+                                    <h3>Printed In-House with Pride – Australian Made</h3>
+                                    <div class="textwidget">
+                                        {{-- {!! $page_content['description'] !!} --}}
+                                        <p>At Shadows Photo Printing, we feel your memories should receive the best possible attention - and that begins with how we create each and every print. That is why all of our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.
+                                        </p>
+                                        <p>
+                                            From the time your order is received until the final packing process, each step is done by our small family within one location in Glenreagh N.S.W. This controls quality, reduces turnaround, and provides personal care your prints require. Each photo and canvas is cared for with the same skill and craftsmanship as if it were ours. We do not outsource your prints abroad or to external printing firms. Our promise is straightforward: local printing, professional care, and quality you can count on—every time.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
 
 <!--  -->
 
@@ -105,7 +128,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <div class="col-lg-3 col-md-6">
                     <div class="product-categories dfdf">
                         <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">
-                            <img src="{{ (isset($ProductCategory->image) && !empty($ProductCategory->image)) ? asset($ProductCategory->image) : asset('assets/admin/images/dummy-image.jpg')}}" alt="">
+                            <img src="{{ (isset($ProductCategory->image) && !empty($ProductCategory->image)) ? asset($ProductCategory->image) : asset('assets/admin/images/dummy-image.jpg')}}" alt="{{ ucfirst($ProductCategory->name) }}">
                             <span>{{ ucfirst($ProductCategory->name) }}</span>
                         </a>
                     </div>
@@ -134,20 +157,20 @@ $sale_popup = getSalePopup();
             </div>
             <div class="modal-body sail-modal-body">
                 @php
-                    // Get file extension to check if it's a video
-                    $fileExtension = pathinfo($sale_popup->image, PATHINFO_EXTENSION);
-                    $videoExtensions = ['mp4', 'webm', 'ogg'];
+                // Get file extension to check if it's a video
+                $fileExtension = pathinfo($sale_popup->image, PATHINFO_EXTENSION);
+                $videoExtensions = ['mp4', 'webm', 'ogg'];
                 @endphp
 
                 @if(in_array($fileExtension, $videoExtensions))
-                    <!-- Show video if the type is video -->
-                    <video id="saleVideo" width="100%" height="auto" autoplay muted playsinline loop style="height: 500px;">
-                        <source src="{{ asset($sale_popup->image) }}" type="video/{{ $fileExtension }}">
-                        Your browser does not support the video tag.
-                    </video>
+                <!-- Show video if the type is video -->
+                <video id="saleVideo" width="100%" height="auto" autoplay muted playsinline loop style="height: 500px;">
+                    <source src="{{ asset($sale_popup->image) }}" type="video/{{ $fileExtension }}">
+                    Your browser does not support the video tag.
+                </video>
                 @else
-                    <!-- Show image if the type is not video -->
-                    <img src="{{ asset($sale_popup->image) }}" alt="image" width="100%">
+                <!-- Show image if the type is not video -->
+                <img src="{{ asset($sale_popup->image) }}" alt="image" width="100%">
                 @endif
             </div>
         </div>
@@ -218,34 +241,33 @@ $sale_popup = getSalePopup();
 @section('scripts')
 <script>
     AOS.init({
-        duration: 1200
-    , })
-
+        duration: 1200,
+    })
 </script>
 <script>
     var is_popup = @json($sale_popup);
-    
+
     $('.fade-slider').slick({
-        autoplay: true
-        , dots: true
-        , infinite: true
-        , speed: 500
-        , fade: true
-        , cssEase: 'linear'
+        autoplay: true,
+        dots: true,
+        infinite: true,
+        speed: 500,
+        fade: true,
+        cssEase: 'linear'
     });
 
     $(document).ready(function() {
 
         $('.textwidget p').css('margin-bottom', '10px')
 
-        if(is_popup){
+        if (is_popup) {
 
             if (!getCookie("sailpopupcokies")) {
                 setTimeout(function() {
                     $('#sailImagePopup').modal('show');
-                }, 2000); 
+                }, 2000);
             }
-    
+
             $('.close-popup').on('click', function() {
                 $('#sailImagePopup').modal('hide');
                 setCookie("sailpopupcokies", "closed", 1);

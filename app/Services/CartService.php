@@ -15,6 +15,7 @@ use App\Models\UserDetails;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -120,39 +121,110 @@ class CartService
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
 
         $data = ['subtotal' => $subtotal, 'total' => $totalAfterShipping, 'coupon_discount' => $discount, "coupon_code" => $coupon_code, 'coupon_id' => $coupon_id, "shippingCharge" => $shippingCharge];
+        \Log::info('$data',$data);
         return $data;
     }
 
     public function getShippingCharges($cart){
-        $shipping_with_test_print = 0;
-        $hasTestPrint = false;
-        $hasRegularPrint = false;
+        // Check if user has selected shipping from session
+        $selectedShipping = session('selected_shipping');
 
-        $shipping = $this->getShippingCharge();
-        $testPrintShipping = $this->getTestPrintShippingCharge()->amount;
-
-        foreach ($cart->items as $items) {
-            if ($items->is_test_print == '1') {
-                $hasTestPrint = true;
-            }
-
-            if ($items->is_test_print == '0') {
-                $hasRegularPrint = true;
-            }
-
-            if ($hasTestPrint && $hasRegularPrint) {
-                break;
-            }
+        
+        if ($selectedShipping) {
+            // Return the selected shipping price from session
+            return (float) $selectedShipping['price'];
         }
+        
+        // Check for test print items first
+        // $hasTestPrint = false;
+        // $hasRegularPrint = false;
 
-        if ($hasTestPrint && $hasRegularPrint) {
-            $shipping_with_test_print += $testPrintShipping + $shipping->amount;
-        } elseif ($hasTestPrint) {
-            $shipping_with_test_print += $testPrintShipping;
-        } elseif ($hasRegularPrint) {
-            $shipping_with_test_print += $shipping->amount;
+        // foreach ($cart->items as $items) {
+        //     if ($items->is_test_print == '1') {
+        //         $hasTestPrint = true;
+        //     }
+
+        //     if ($items->is_test_print == '0') {
+        //         $hasRegularPrint = true;
+        //     }
+
+        //     if ($hasTestPrint && $hasRegularPrint) {
+        //         break;
+        //     }
+        // }
+
+        // // If there are test print items, use the old test print shipping logic
+        // if ($hasTestPrint) {
+        //     $shipping_with_test_print = 0;
+        //     $testPrintShipping = $this->getTestPrintShippingCharge()->amount;
+
+        //     if ($hasTestPrint && $hasRegularPrint) {
+        //         $shipping_with_test_print += $testPrintShipping + $this->getShippingCharge()->amount;
+        //     } elseif ($hasTestPrint) {
+        //         $shipping_with_test_print += $testPrintShipping;
+        //     } elseif ($hasRegularPrint) {
+        //         $shipping_with_test_print += $this->getShippingCharge()->amount;
+        //     }
+        //     return $shipping_with_test_print;
+        // }
+
+        // If no test print items, use the new dynamic shipping calculation
+        $cartShippingService = new CartShippingService();
+        
+        // Convert cart items to the format expected by CartShippingService
+        $cartItems = [];
+        foreach ($cart->items as $item) {
+            $cartItems[] = [
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'product_type' => $item->product_type,
+                'is_test_print' => $item->is_test_print // Add this field
+            ];
         }
-        return $shipping_with_test_print;
+        
+        // Log cart items being sent to CartShippingService
+        Log::info('Cart items being sent to CartShippingService:', [
+            'cart_items' => $cartItems
+        ]);
+        
+        // Get shipping options from CartShippingService
+        $shippingOptions = $cartShippingService->calculateShipping($cartItems);
+        
+        // Log shipping options for debugging
+        Log::info('Shipping options from CartShippingService:', [
+            'shipping_options' => $shippingOptions,
+            'cart_items_count' => count($cartItems)
+        ]);
+        
+        // Auto-select the appropriate shipping option
+        $selectedShipping = null;
+        
+        // Auto-select Australia Post snail_mail if available
+        $auspostSnailOption = collect($shippingOptions)->first(function($option) {
+            return $option['carrier'] === 'auspost' && $option['service'] === 'snail_mail';
+        });
+        
+        if ($auspostSnailOption) {
+            $selectedShipping = $auspostSnailOption;
+        } else {
+            // Fallback: Select first option
+            $selectedShipping = $shippingOptions[0] ?? null;
+        }
+        
+        // Store the auto-selected shipping in session
+        if ($selectedShipping) {
+            session([
+                'selected_shipping' => [
+                    'carrier' => $selectedShipping['carrier'],
+                    'service' => $selectedShipping['service'],
+                    'price' => (float) $selectedShipping['price']
+                ]
+            ]);
+            return (float) $selectedShipping['price'];
+        }
+        
+        // Return 0 if no shipping options are available
+        return 0;
     }
 
     public function getProductDetailsByType($product_id, $product_type)
@@ -381,7 +453,16 @@ class CartService
 
         // Download the image
         $imagePath = $testPrintPath . $fileName;
-        file_put_contents($imagePath, file_get_contents($url));
+        
+        // Create stream context to disable SSL verification (for development)
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ],
+        ]);
+        
+        file_put_contents($imagePath, file_get_contents($url, false, $context));
 
         // Load the image with Intervention Image
         $img = Image::make($imagePath);

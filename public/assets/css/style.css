@@ -33,6 +33,10 @@ a {
     text-decoration: none;
 }
 
+.blog-new .kadence-posts-content .entry-summary h3 {
+color: #ffc205;
+}
+
 ul {
     list-style: none;
     margin: 0;
@@ -73,6 +77,10 @@ ul {
 span.closebtn {
     display: none;
 
+}
+
+.div-wrap-head h3{
+    font-size: 2.5rem;
 }
 
 .navigation div#mySidenav ul li a {
@@ -343,6 +351,17 @@ section.entry-content {
 }
 
 .widget-title h3 {
+    font-family: "Source Sans Pro";
+    line-height: 40px;
+    letter-spacing: 1.2px;
+    font-weight: 400;
+    font-style: normal;
+    color: #ffc205;
+    font-size: 36px;
+    margin-bottom: 2%;
+}
+
+.widget-title h1 {
     font-family: "Source Sans Pro";
     line-height: 40px;
     letter-spacing: 1.2px;
@@ -1097,6 +1116,75 @@ a#uploadfiles {
 section.kad_product_wrapper {
     padding-top: 50px;
 }
+/* faq */
+section.faq-banner {
+        background:  url(../images/faq-banner.jpg) no-repeat center center;
+        background-size: cover;
+        background-blend-mode: multiply;
+        background-color: rgba(0,0,0,0.5);
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+    .faq-section-title h2 {
+        color: #ffc205;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 1px 1px 8px rgba(0,0,0,0.3);
+        letter-spacing: 2px;
+    }
+    .faq-section-title {
+        color: #ffc205;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        margin-top: 2rem;
+        text-align: center;
+    }
+    .accordion {
+        --bs-accordion-bg: #fff;
+        --bs-accordion-border-color: #16a085;
+        --bs-accordion-btn-bg: #f8f9fa;
+        --bs-accordion-btn-color: #16a085;
+        --bs-accordion-active-bg: #16a085;
+        --bs-accordion-active-color: #fff;
+        --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(22,162,133,0.25);
+        border-radius: 8px;
+        box-shadow: 0 2px 16px 0 rgba(22,162,133,0.08);
+    }
+    .accordion-button {
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: #f8f9fa;
+        color: #16a085;
+        border-radius: 8px 8px 0 0;
+        transition: background 0.2s, color 0.2s;
+    }
+    .accordion-button:not(.collapsed) {
+        background: #16a085;
+        color: #fff;
+    }
+    .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba(22,162,133,0.25);
+    }
+    .accordion-item {
+        border: 1px solid #16a085;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+    .accordion-body {
+        background: #fff;
+        color: #222;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    @media (max-width: 767px) {
+        section.faq-banner { height: 180px; }
+        .faq-section-title { font-size: 1.3rem; }
+    }
 
 /*  */
 section.get-a-quote {
@@ -1135,6 +1223,20 @@ section.get-quote {
 .wrapper-latest {
     padding: 15px 0;
 }
+
+
+.order-status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+}
+
+.badge-processing { background-color: #f0ad4e; }  /* Orange */
+.badge-completed  { background-color: #5cb85c; }  /* Green */
+.badge-cancelled  { background-color: #d9534f; }  /* Red */
+.badge-default    { background-color: #6c757d; }  /* Grey */
 
 .form-inner input,
 .form-inner textarea#message {
@@ -4642,7 +4744,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         height: 120px;
         width: 100%;
     }
-    
+
     .kad-account .kad-max img {
         width: 100%;
         height: 100%;
@@ -4651,7 +4753,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .main-page {
         padding-bottom: 100px;
     }
-    
+
     footer.footer {
         position: absolute;
         bottom: 0;
@@ -4668,7 +4770,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
     .instock-udik {
         width: 25%;
     }
-    
+
     .details_product-crlf {
         width: 73%;
     }
@@ -4721,14 +4823,14 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         margin: 0;
         left: 50%;
     }
-        
+
     div#sailImagePopup .modal-header {
         position: absolute;
         top: -25px;
         right: -19px;
         z-index: 9;
     }
-        
+
         div#sailImagePopup .modal-header button {
         background: #d7d7d7;
         display: flex;
@@ -4736,7 +4838,7 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         align-items: center;
         border-radius: 50%;
         }
-        div#sailImagePopup .modal-dialog img {
+            div#sailImagePopup .modal-dialog img {
             width: 100%;
             height: 500px;
             object-fit: contain;
@@ -4863,7 +4965,7 @@ a {
 #afterpay-modal .modal-dialog {
     max-width: 774px;
     }
-    
+
     #afterpay-modal .afterpay-modal-logo {
     width: 100%;
     max-width: 275px;
@@ -4871,7 +4973,7 @@ a {
     text-align: center;
     margin: 0 auto;
     }
-    
+
     #afterpay-modal h3.afterpay-modal-headline {
         margin: 0;
         font-size: 31px;
@@ -4886,15 +4988,15 @@ a {
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     }
-    
+
     #afterpay-modal .model-svg-flex svg {width: 110px;height: 95px;}
-    
+
     #afterpay-modal .model-svg-flex svg path{
     fill: none;
     stroke: #000;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: 2px;  
+    stroke-width: 2px;
     }
     #afterpay-modal .model-svg-flex svg .c1 {
     fill: none;
@@ -4903,15 +5005,15 @@ a {
     stroke-linejoin: round;
     stroke-width: 2px;
     }
-    
+
     #afterpay-modal .model-svg-center {
     display: flex;
     flex-direction: column;
     align-items: center;
     }
-    
-    
-    
+
+
+
     #afterpay-modal .model-svg-center p {
         padding: 6% 3% 0 3%;
         font-weight: 500;
@@ -4919,14 +5021,14 @@ a {
         text-align: center;
         color: #000;
     }
-    
+
     #afterpay-modal .disclaimer {
         padding: 4% 0 22px 0;
         font-size: 12px;
         text-align: center;
         color: #000;
     }
-    
+
     #afterpay-modal .disclaimer a {
     color: #000;
     text-decoration: underline!important;
@@ -4975,7 +5077,7 @@ a {
     right: 0;
     bottom: 77px;
     z-index: 999;
-   
+
     writing-mode: vertical-lr;
 }
 
@@ -4983,18 +5085,18 @@ a {
 
 
 /* responsive */
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
 #afterpay-modal .model-svg-flex {
 grid-template-columns: repeat(2, 1fr);
 }
 }
 
-@media (max-width: 575px) { 
+@media (max-width: 575px) {
     div#sailImagePopup .modal-dialog {
         margin: 0;
         }
         div#sailImagePopup .modal-dialog img {
-            height: 340px;
+            height: 100%;
         }
         #ImgViewer .modal-dialog {
         margin: 0;

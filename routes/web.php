@@ -25,6 +25,8 @@ use App\Http\Controllers\admin\NewsletterController;
 use App\Http\Controllers\admin\SalePopupController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmbassadorController;
+use App\Http\Controllers\ShippingController as FrontendShippingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -207,6 +209,7 @@ Route::get('/our-products/gift-card',[BasePagesController::class,'giftCard'])->n
 Route::get('/our-products/gift-card-detail/{slug}',[BasePagesController::class,'giftCard_detail'])->name('gift-card-detail');
 Route::get('/our-products/bulkprints',[BasePagesController::class,'bulkprints'])->name('bulkprints');
 Route::get('bulkprints-product/{slug}',[BasePagesController::class,'bulkprints_details'])->name('bulkprints-product');
+Route::get('/faq',[BasePagesController::class,'accordion'])->name('faq');
 
 Route::post('/user-register',[LoginController::class,'registerUser'])->name('user-register');
 Route::post('/user-login',[LoginController::class,'login'])->name('user-login');
@@ -232,6 +235,9 @@ Route::get('/photographer-brand-ambassador', [AmbassadorController::class, 'phot
 
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
+
+// August 2025 Promotion Email Route
+Route::post('/august-promotion/send-email', [UserController::class, 'augustPromotionEmail'])->name('august.promotion.email');
 
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
@@ -282,6 +288,16 @@ Route::prefix('afterpay')->group(function () {
     Route::get('/success', [PaymentController::class, 'afterpaySuccess'])->name('checkout.success');
     Route::get('/cancel', [PaymentController::class, 'afterpayCancel'])->name('checkout.cancel');
     Route::get('/order/success', [PaymentController::class, 'orderSuccess'])->name('order.success');
+});
+
+// Cart Shipping Routes (Re-added)
+Route::prefix('cart-shipping')->group(function () {
+    Route::post('/calculate', [FrontendShippingController::class, 'calculateShipping'])->name('cart-shipping.calculate');
+    Route::post('/quantity-options', [FrontendShippingController::class, 'getShippingForQuantity'])->name('cart-shipping.quantity-options');
+    Route::get('/tiers', [FrontendShippingController::class, 'getShippingTiers'])->name('cart-shipping.tiers');
+    Route::post('/update-selection', [FrontendShippingController::class, 'updateShippingSelection'])->name('cart-shipping.update-selection');
+    Route::post('/clear-selection', [FrontendShippingController::class, 'clearShippingSelection'])->name('cart-shipping.clear-selection');
+    Route::get('/get-session-shipping', [FrontendShippingController::class, 'getSessionShipping'])->name('cart-shipping.get-session');
 });
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
