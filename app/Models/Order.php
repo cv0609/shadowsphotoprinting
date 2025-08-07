@@ -21,6 +21,9 @@ class Order extends Model
         'commission',
         'sub_total',
         'shipping_charge',
+        'shipping_breakdown',
+        'shipping_service',
+        'shipping_carrier',
         'total',
         'payment_id',
         'is_paid',
@@ -28,6 +31,10 @@ class Order extends Model
         'payment_status',
         'payment_method',
         'order_type'
+    ];
+
+    protected $casts = [
+        'shipping_breakdown' => 'array',
     ];
 
     public function user()

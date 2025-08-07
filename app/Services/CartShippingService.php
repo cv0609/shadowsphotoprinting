@@ -385,6 +385,186 @@ class CartShippingService
             return 'Standard shipping';
         }
     }
+
+    /**
+     * Get shipping breakdown for admin display
+     */
+    public function getShippingBreakdown($cartItems, $selectedShipping)
+    {
+        // Categorize items
+        $scrapbookItems = [];
+        $canvasItems = [];
+        $photoEnlargementItems = [];
+        $photoPrintsItems = [];
+        $postersItems = [];
+        $handCraftItems = [];
+        $photosForSaleItems = [];
+        $giftCardItems = [];
+        $testPrintItems = [];
+        $otherItems = [];
+
+        foreach ($cartItems as $item) {
+            // Priority check for test print items
+            if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
+                $testPrintItems[] = $item;
+                continue;
+            }
+
+            // Get product details
+            $product = null;
+            if (isset($item['product_type']) && in_array($item['product_type'], ['gift_card', 'photo_for_sale', 'hand_craft'])) {
+                // Handle special product types
+                switch ($item['product_type']) {
+                    case 'gift_card':
+                        $product = \App\Models\GiftCardCategory::find($item['product_id']);
+                        break;
+                    case 'photo_for_sale':
+                        $product = \App\Models\PhotoForSaleProduct::find($item['product_id']);
+                        break;
+                    case 'hand_craft':
+                        $product = \App\Models\HandCraftProduct::find($item['product_id']);
+                        break;
+                }
+            } else {
+                $product = \App\Models\Product::find($item['product_id']);
+            }
+
+            if ($product) {
+                switch ($product->category_id) {
+                    case 1: // Scrapbook page printing
+                        $scrapbookItems[] = $item;
+                        break;
+                    case 2: // Canvas prints
+                        $canvasItems[] = $item;
+                        break;
+                    case 3: // Photo Enlargements
+                        $photoEnlargementItems[] = $item;
+                        break;
+                    case 4: // Photo Prints
+                        $photoPrintsItems[] = $item;
+                        break;
+                    case 5: // Photos for sale
+                        $photosForSaleItems[] = $item;
+                        break;
+                    case 6: // Gift card
+                        $giftCardItems[] = $item;
+                        break;
+                    case 14: // Hand Craft
+                        $handCraftItems[] = $item;
+                        break;
+                    case 18: // Poster Prints
+                        $postersItems[] = $item;
+                        break;
+                    default:
+                        $otherItems[] = $item;
+                        break;
+                }
+            } else {
+                $otherItems[] = $item;
+            }
+        }
+
+        // Calculate breakdown
+        $breakdown = [];
+
+        // Scrapbook items
+        if (!empty($scrapbookItems)) {
+            $quantity = array_sum(array_column($scrapbookItems, 'quantity'));
+            $shipping = $this->calculateTierBasedShipping($quantity, 'scrapbook_page_printing');
+            if (!empty($shipping)) {
+                $breakdown['scrapbook_page_printing'] = [
+                    'quantity' => $quantity,
+                    'shipping' => $shipping[0]['price'] ?? 0,
+                    'service' => $shipping[0]['service'] ?? 'snail_mail'
+                ];
+            }
+        }
+
+        // Photo Prints items
+        if (!empty($photoPrintsItems)) {
+            $quantity = array_sum(array_column($photoPrintsItems, 'quantity'));
+            $shipping = $this->calculateTierBasedShipping($quantity, 'photo_prints');
+            if (!empty($shipping)) {
+                $breakdown['photo_prints'] = [
+                    'quantity' => $quantity,
+                    'shipping' => $shipping[0]['price'] ?? 0,
+                    'service' => $shipping[0]['service'] ?? 'snail_mail'
+                ];
+            }
+        }
+
+        // Canvas items
+        if (!empty($canvasItems)) {
+            $shipping = $this->getFixedShippingForCategory('canvas');
+            $breakdown['canvas'] = [
+                'quantity' => array_sum(array_column($canvasItems, 'quantity')),
+                'shipping' => $shipping['snail_mail'] ?? 0,
+                'service' => 'snail_mail'
+            ];
+        }
+
+        // Photo Enlargements
+        if (!empty($photoEnlargementItems)) {
+            $shipping = $this->getFixedShippingForCategory('photo_enlargements');
+            $breakdown['photo_enlargements'] = [
+                'quantity' => array_sum(array_column($photoEnlargementItems, 'quantity')),
+                'shipping' => $shipping['snail_mail'] ?? 0,
+                'service' => 'snail_mail'
+            ];
+        }
+
+        // Posters
+        if (!empty($postersItems)) {
+            $shipping = $this->getFixedShippingForCategory('posters');
+            $breakdown['posters'] = [
+                'quantity' => array_sum(array_column($postersItems, 'quantity')),
+                'shipping' => $shipping['snail_mail'] ?? 0,
+                'service' => 'snail_mail'
+            ];
+        }
+
+        // Hand Craft
+        if (!empty($handCraftItems)) {
+            $shipping = $this->getFixedShippingForCategory('hand_craft');
+            $breakdown['hand_craft'] = [
+                'quantity' => array_sum(array_column($handCraftItems, 'quantity')),
+                'shipping' => $shipping['snail_mail'] ?? 0,
+                'service' => 'snail_mail'
+            ];
+        }
+
+        // Photos for Sale
+        if (!empty($photosForSaleItems)) {
+            $shipping = $this->getFixedShippingForCategory('photos_for_sale');
+            $breakdown['photos_for_sale'] = [
+                'quantity' => array_sum(array_column($photosForSaleItems, 'quantity')),
+                'shipping' => $shipping['snail_mail'] ?? 0,
+                'service' => 'snail_mail'
+            ];
+        }
+
+        // Test Print items
+        if (!empty($testPrintItems)) {
+            $quantity = array_sum(array_column($testPrintItems, 'quantity'));
+            $testPrintShipping = \App\Models\Shipping::where('is_test_print', '1')->first();
+            $breakdown['test_print'] = [
+                'quantity' => $quantity,
+                'shipping' => ($testPrintShipping ? $testPrintShipping->amount * $quantity : 0),
+                'service' => 'snail_mail'
+            ];
+        }
+
+        // Gift Cards (no shipping)
+        if (!empty($giftCardItems)) {
+            $breakdown['gift_card'] = [
+                'quantity' => array_sum(array_column($giftCardItems, 'quantity')),
+                'shipping' => 0,
+                'service' => 'none'
+            ];
+        }
+
+        return $breakdown;
+    }
     
     /**
      * Calculate tier-based shipping for prints using database rules

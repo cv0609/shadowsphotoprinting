@@ -295,6 +295,21 @@
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['shippingCharge'],2) }}</strong></td>
             </tr>
 
+            @if($orderDetail->shipping_breakdown && !empty($orderDetail->shipping_breakdown))
+                @foreach($orderDetail->shipping_breakdown as $category => $details)
+                    @if($details['shipping'] > 0)
+                        <tr>
+                            <td style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666;">
+                                • {{ ucwords(str_replace('_', ' ', $category)) }} ({{ $details['quantity'] }} items):
+                            </td>
+                            <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
+                                <strong>${{ number_format($details['shipping'], 2) }}</strong>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            @endif
+
             @else
 
             <tr>
