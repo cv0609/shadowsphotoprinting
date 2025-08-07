@@ -391,6 +391,9 @@ class CartShippingService
      */
     public function getShippingBreakdown($cartItems, $selectedShipping)
     {
+        // Get the selected shipping service from the user's choice
+        $selectedService = $selectedShipping['service'] ?? 'snail_mail';
+        
         // Categorize items
         $scrapbookItems = [];
         $canvasItems = [];
@@ -472,10 +475,15 @@ class CartShippingService
             $quantity = array_sum(array_column($scrapbookItems, 'quantity'));
             $shipping = $this->calculateTierBasedShipping($quantity, 'scrapbook_page_printing');
             if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
                 $breakdown['scrapbook_page_printing'] = [
                     'quantity' => $quantity,
-                    'shipping' => $shipping[0]['price'] ?? 0,
-                    'service' => $shipping[0]['service'] ?? 'snail_mail'
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
                 ];
             }
         }
@@ -485,10 +493,15 @@ class CartShippingService
             $quantity = array_sum(array_column($photoPrintsItems, 'quantity'));
             $shipping = $this->calculateTierBasedShipping($quantity, 'photo_prints');
             if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
                 $breakdown['photo_prints'] = [
                     'quantity' => $quantity,
-                    'shipping' => $shipping[0]['price'] ?? 0,
-                    'service' => $shipping[0]['service'] ?? 'snail_mail'
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
                 ];
             }
         }
@@ -498,8 +511,8 @@ class CartShippingService
             $shipping = $this->getFixedShippingForCategory('canvas');
             $breakdown['canvas'] = [
                 'quantity' => array_sum(array_column($canvasItems, 'quantity')),
-                'shipping' => $shipping['snail_mail'] ?? 0,
-                'service' => 'snail_mail'
+                'shipping' => $shipping[$selectedService] ?? 0,
+                'service' => $selectedService
             ];
         }
 
@@ -508,8 +521,8 @@ class CartShippingService
             $shipping = $this->getFixedShippingForCategory('photo_enlargements');
             $breakdown['photo_enlargements'] = [
                 'quantity' => array_sum(array_column($photoEnlargementItems, 'quantity')),
-                'shipping' => $shipping['snail_mail'] ?? 0,
-                'service' => 'snail_mail'
+                'shipping' => $shipping[$selectedService] ?? 0,
+                'service' => $selectedService
             ];
         }
 
@@ -518,8 +531,8 @@ class CartShippingService
             $shipping = $this->getFixedShippingForCategory('posters');
             $breakdown['posters'] = [
                 'quantity' => array_sum(array_column($postersItems, 'quantity')),
-                'shipping' => $shipping['snail_mail'] ?? 0,
-                'service' => 'snail_mail'
+                'shipping' => $shipping[$selectedService] ?? 0,
+                'service' => $selectedService
             ];
         }
 
@@ -528,8 +541,8 @@ class CartShippingService
             $shipping = $this->getFixedShippingForCategory('hand_craft');
             $breakdown['hand_craft'] = [
                 'quantity' => array_sum(array_column($handCraftItems, 'quantity')),
-                'shipping' => $shipping['snail_mail'] ?? 0,
-                'service' => 'snail_mail'
+                'shipping' => $shipping[$selectedService] ?? 0,
+                'service' => $selectedService
             ];
         }
 
@@ -538,8 +551,8 @@ class CartShippingService
             $shipping = $this->getFixedShippingForCategory('photos_for_sale');
             $breakdown['photos_for_sale'] = [
                 'quantity' => array_sum(array_column($photosForSaleItems, 'quantity')),
-                'shipping' => $shipping['snail_mail'] ?? 0,
-                'service' => 'snail_mail'
+                'shipping' => $shipping[$selectedService] ?? 0,
+                'service' => $selectedService
             ];
         }
 
@@ -550,7 +563,7 @@ class CartShippingService
             $breakdown['test_print'] = [
                 'quantity' => $quantity,
                 'shipping' => ($testPrintShipping ? $testPrintShipping->amount * $quantity : 0),
-                'service' => 'snail_mail'
+                'service' => $selectedService
             ];
         }
 
