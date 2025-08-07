@@ -163,6 +163,8 @@
                     @endforeach
                 </p>
 
+                <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p>
+
             </div>
             
         </div>

@@ -380,4 +380,15 @@ class PagesController extends Controller
 
         return view('front-end.faq', compact('items'));
     }
+
+    public function moreInfo()
+    {
+        $page_content = [
+            'meta_title' => 'More Info - Shadows Photo Printing & Gift Shop',
+            'meta_description' => 'Learn more about our professional photography services, high-quality prints, and commitment to preserving your precious memories.',
+            'slug' => 'more-info'
+        ];
+
+        return view('front-end.more-info', compact('page_content'));
+    }
 }
