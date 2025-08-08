@@ -310,10 +310,16 @@ class PaymentController extends Controller
         $shippingBreakdown = null;
         $shippingService = null;
         $shippingCarrier = null;
+        $categorySelections = null;
         
         if ($selectedShipping) {
             $shippingService = $selectedShipping['service'];
             $shippingCarrier = $selectedShipping['carrier'];
+            
+            // Get category-specific shipping selections if available
+            if (isset($selectedShipping['category_selections'])) {
+                $categorySelections = $selectedShipping['category_selections'];
+            }
             
             // Calculate shipping breakdown for admin display
             if ($cart && !$cart->items->isEmpty()) {
@@ -333,6 +339,15 @@ class PaymentController extends Controller
             }
         }
 
+        // Enhanced shipping breakdown with category selections
+        $enhancedShippingBreakdown = [
+            'breakdown' => $shippingBreakdown,
+            'category_selections' => $categorySelections,
+            'total_shipping' => $shipping_amount,
+            'service' => $shippingService,
+            'carrier' => $shippingCarrier
+        ];
+
         $order = Order::create([
             'user_id' => isset(Auth::user()->id) ? Auth::user()->id : null,
             'user_session_id' => isset(Auth::user()->id) ? null : $session_id,
@@ -344,7 +359,7 @@ class PaymentController extends Controller
             'commission' => $commission ?? 0,
             'sub_total' => $subtotal ?? 0,
             'shipping_charge' => $shipping_amount,
-            'shipping_breakdown' => $shippingBreakdown,
+            'shipping_breakdown' => $enhancedShippingBreakdown,
             'shipping_service' => $shippingService,
             'shipping_carrier' => $shippingCarrier,
             'total' => $cart_total,
@@ -862,6 +877,8 @@ class PaymentController extends Controller
             $orderResponse = $this->createOrder($charge = null, $paymentResponse);
             $orderData = json_decode($orderResponse->getContent(), true); // Decode JSON response
             Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+            // Clear shipping session after order is created
+            session()->forget('selected_shipping');
             // return response()->json(['error' => false, 'data' => route('thankyou')]);
             return response()->json([
                 'error' => false, 
@@ -886,6 +903,8 @@ class PaymentController extends Controller
             if (isset($paymentResponse['status']) && $paymentResponse['status'] === "APPROVED") {
                 $this->createOrder($charge = null, $paymentResponse);
                 Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type','shutter_point']);
+                // Clear shipping session after order is created
+                session()->forget('selected_shipping');
                 return redirect()->route('order.success');
             } else {
                 return redirect()->route('checkout')->with('error', 'Payment capture failed.');
@@ -897,6 +916,8 @@ class PaymentController extends Controller
     public function afterpayCancel()
     {
         Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+        // Clear shipping session when payment is cancelled
+        session()->forget('selected_shipping');
         return redirect()->route('checkout')->with('error', 'Payment was cancelled. Please try again.');
     }
 

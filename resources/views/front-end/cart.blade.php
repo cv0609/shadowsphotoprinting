@@ -525,7 +525,7 @@ $CartService = app(App\Services\CartService::class);
         var shutterPoint = $("input[name='shutter_point']:checked").val(); // Get selected value
 
         let baseSubtotal = parseFloat("{{ $CartTotal['subtotal'] }}"); // Base subtotal without shipping
-        let currentShippingCost = parseFloat($('#total-shipping-amount').text().replace('$', '') || 0);
+        let currentShippingCost = parseFloat($('#shipping-cost').text().replace('$', '') || 0);
 
         console.log('=== UPDATE SHIPPING AND TOTAL ===');
         console.log('baseSubtotal', baseSubtotal);
