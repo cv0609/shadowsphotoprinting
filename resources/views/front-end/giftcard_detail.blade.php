@@ -102,7 +102,7 @@
                                     Category: <a href="{{route('gift-card')}}">Gift Card</a>
                                 </span>
                             </div>
-                            <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p>
+                            {{-- <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p> --}}
 
                         </div>
                     </div>
