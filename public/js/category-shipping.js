@@ -387,6 +387,9 @@ class CategoryShippingCalculator {
         if (autoCalculate && Object.keys(this.categorySelections).length === 0 && !this.hasSessionData) {
             this.autoSelectShippingOptions();
         }
+        
+        // Update test total shipping display after options are displayed
+        this.updateTestTotalShipping();
     }
 
     createShippingOptionHtml(category, option) {
@@ -507,6 +510,9 @@ class CategoryShippingCalculator {
             }
         });
         
+        // Update the test total shipping display after all selections are made
+        this.updateTestTotalShipping();
+        
         console.log('Final category selections for session update:', this.categorySelections);
         console.log('=== END AUTO SELECT ALL SNAIL MAIL ===');
     }
@@ -578,6 +584,9 @@ class CategoryShippingCalculator {
                     
                     // Ensure session consistency
                     this.ensureSessionConsistency();
+                    
+                    // Update test total shipping display
+                    this.updateTestTotalShipping();
                     
                     // Mark initial load as complete
                     this.isInitialLoad = false;
@@ -783,6 +792,9 @@ class CategoryShippingCalculator {
         
         $('#total-shipping-amount').text('$' + totalAmount.toFixed(2));
         $('#total-shipping-cost').show();
+        
+        // Update the test total shipping display as well
+        this.updateTestTotalShipping();
         
         // Store in session for checkout
         console.log('Updating Laravel session with shipping data...');
@@ -1033,10 +1045,16 @@ class CategoryShippingCalculator {
         });
         
         console.log('Calculated test total shipping:', totalShipping);
+        console.log('Category selections used:', this.categorySelections);
         
         // Update the test total display
-        $('.test-total-amount').text('$' + totalShipping.toFixed(2));
+        const $testTotalElement = $('.test-total-amount');
+        console.log('Test total element found:', $testTotalElement.length);
+        console.log('Test total element text before update:', $testTotalElement.text());
         
+        $testTotalElement.text('$' + totalShipping.toFixed(2));
+        
+        console.log('Test total element text after update:', $testTotalElement.text());
         console.log('=== END UPDATE TEST TOTAL SHIPPING ===');
     }
 

@@ -39,26 +39,11 @@ class ShippingTier extends Model
             })
             ->orderBy('min_quantity', 'desc');
             
-        // Debug logging
-        Log::info('Shipping tier query', [
-            'category' => $category,
-            'quantity' => $quantity,
-            'sql' => $query->toSql(),
-            'bindings' => $query->getBindings()
-        ]);
+
         
         $result = $query->first();
         
-        Log::info('Shipping tier result', [
-            'found' => $result ? true : false,
-            'tier' => $result ? [
-                'id' => $result->id,
-                'min_quantity' => $result->min_quantity,
-                'max_quantity' => $result->max_quantity,
-                'snail_mail_price' => $result->snail_mail_price,
-                'express_price' => $result->express_price
-            ] : null
-        ]);
+
         
         return $result;
     }

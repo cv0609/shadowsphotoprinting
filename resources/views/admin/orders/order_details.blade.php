@@ -307,18 +307,84 @@
             @endif
 
             @if($orderDetail->shipping_breakdown && !empty($orderDetail->shipping_breakdown))
-                @foreach($orderDetail->shipping_breakdown as $category => $details)
-                    @if($details['shipping'] > 0)
+                @php
+                    $shippingBreakdown = $orderDetail->shipping_breakdown;
+                    $categorySelections = $shippingBreakdown['category_selections'] ?? null;
+                    $breakdown = $shippingBreakdown['breakdown'] ?? $shippingBreakdown;
+                    
+                    // Calculate shipping summary
+                    $shippingSummary = [];
+                    if ($categorySelections) {
+                        foreach ($categorySelections as $category => $selection) {
+                            $service = $selection['service'] ?? 'unknown';
+                            $price = $selection['price'] ?? 0;
+                            if ($price > 0) {
+                                if (!isset($shippingSummary[$service])) {
+                                    $shippingSummary[$service] = 0;
+                                }
+                                $shippingSummary[$service] += $price;
+                            }
+                        }
+                    }
+                @endphp
+                
+                @if(!empty($shippingSummary))
+                    <tr>
+                        <td colspan="2" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee;">
+                            <strong>Shipping Summary:</strong>
+                        </td>
+                    </tr>
+                    @foreach($shippingSummary as $service => $total)
                         <tr>
-                            <td style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666;">
-                                • {{ ucwords(str_replace('_', ' ', $category)) }} ({{ $details['quantity'] }} items):
+                            <td style="padding: 5px; padding-left: 30px; font-size: 11px; color: #888;">
+                                • {{ $orderDetail->getServiceDisplayName($service) }} Total:
                             </td>
-                            <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
-                                <strong>${{ number_format($details['shipping'], 2) }}</strong>
+                            <td style="text-align: right; padding: 5px; font-size: 11px; color: #888;">
+                                <strong>${{ number_format($total, 2) }}</strong>
                             </td>
                         </tr>
-                    @endif
-                @endforeach
+                    @endforeach
+                @endif
+                
+                @if($categorySelections)
+                    <tr>
+                        <td colspan="2" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee;">
+                            <strong>Category Shipping Details:</strong>
+                        </td>
+                    </tr>
+                    @foreach($categorySelections as $category => $selection)
+                        @php
+                            $categoryName = $orderDetail->getCategoryDisplayName($category);
+                            $serviceName = $orderDetail->getServiceDisplayName($selection['service']);
+                            $price = $selection['price'] ?? 0;
+                        @endphp
+                        @if($price > 0)
+                            <tr>
+                                <td style="padding: 5px; padding-left: 30px; font-size: 11px; color: #888;">
+                                    • {{ $categoryName }}: {{ $serviceName }}
+                                </td>
+                                <td style="text-align: right; padding: 5px; font-size: 11px; color: #888;">
+                                    <strong>${{ number_format($price, 2) }}</strong>
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
+
+                @if($breakdown && is_array($breakdown))
+                    @foreach($breakdown as $category => $details)
+                        @if($details['shipping'] > 0)
+                            <tr>
+                                <td style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666;">
+                                    • {{ $orderDetail->getCategoryDisplayName($category) }} ({{ $details['quantity'] }} items):
+                                </td>
+                                <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
+                                    <strong>${{ number_format($details['shipping'], 2) }}</strong>
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
             @endif
 
             @else

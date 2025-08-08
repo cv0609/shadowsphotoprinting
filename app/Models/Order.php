@@ -60,4 +60,37 @@ class Order extends Model
     {
         return $this->hasOne(OrderBillingDetails::class,'order_id','id');
     }
+
+    /**
+     * Get category display name for shipping breakdown
+     */
+    public function getCategoryDisplayName($category)
+    {
+        $names = [
+            'scrapbook_page_printing' => 'Scrapbook Page Printing',
+            'photo_prints' => 'Photo Prints',
+            'canvas' => 'Canvas Prints',
+            'photo_enlargements' => 'Photo Enlargements',
+            'posters' => 'Posters',
+            'hand_craft' => 'Hand Craft',
+            'photos_for_sale' => 'Photos for Sale',
+            'gift_card' => 'Gift Card',
+            'test_prints' => 'Test Prints'
+        ];
+        
+        return $names[$category] ?? ucwords(str_replace('_', ' ', $category));
+    }
+
+    /**
+     * Get service display name for shipping breakdown
+     */
+    public function getServiceDisplayName($service)
+    {
+        $names = [
+            'snail_mail' => 'Snail Mail',
+            'express' => 'Express'
+        ];
+        
+        return $names[$service] ?? ucwords(str_replace('_', ' ', $service));
+    }
 }
