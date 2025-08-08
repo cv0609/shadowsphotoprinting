@@ -15,10 +15,7 @@ class CartShippingService
     {
         $shippingOptions = [];
         
-        // Debug logging for cart items
-        Log::info('Cart shipping calculation started', [
-            'cart_items' => $cartItems
-        ]);
+
         
         // Group items by category
         $scrapbookItems = [];
@@ -33,13 +30,6 @@ class CartShippingService
         $otherItems = [];
         
         foreach ($cartItems as $item) {
-            // Log each cart item for debugging
-            Log::info('Processing cart item:', [
-                'product_id' => $item['product_id'] ?? 'not set',
-                'product_type' => $item['product_type'] ?? 'not set',
-                'quantity' => $item['quantity'] ?? 'not set',
-                'item_data' => $item
-            ]);
 
             // if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
             //     $testPrintItems[] = $item;
@@ -50,15 +40,12 @@ class CartShippingService
                 switch ($item['product_type']) {
                     case 'hand_craft':
                         $handCraftItems[] = $item;
-                        Log::info('Item assigned to hand_craft category');
                         break;
                     case 'photo_for_sale':
                         $photosForSaleItems[] = $item;
-                        Log::info('Item assigned to photo_for_sale category');
                         break;
                     case 'gift_card':
                         $giftCardItems[] = $item;
-                        Log::info('Item assigned to gift_card category');
                         break;
                     default:
                         // Try to find in products table
@@ -69,7 +56,6 @@ class CartShippingService
                                    
                                     if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                         $testPrintItems[] = $item;
-                                        Log::info('Test print item found in case 4, assigned to test_print category2');
                                     } else {
                                         $scrapbookItems[] = $item;
                                     }
@@ -85,7 +71,6 @@ class CartShippingService
                                     // Check if this is a test print item - if so, don't categorize as Photo Prints
                                     if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                         $testPrintItems[] = $item;
-                                        Log::info('Test print item found in case 4, assigned to test_print category2');
                                     } else {
                                         $photoPrintsItems[] = $item;
                                     }
@@ -120,7 +105,6 @@ class CartShippingService
 
                             if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                 $testPrintItems[] = $item;
-                                Log::info('Test print item found in case 4, assigned to test_print category3');
                             } else {
                                 $scrapbookItems[] = $item;
                             }
@@ -136,7 +120,6 @@ class CartShippingService
                             // Check if this is a test print item - if so, don't categorize as Photo Prints
                             if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                 $testPrintItems[] = $item;
-                                Log::info('Test print item found in case 4, assigned to test_print category3');
                             } else {
                                 $photoPrintsItems[] = $item;
                             }
@@ -163,39 +146,15 @@ class CartShippingService
             }
         }
         
-        Log::info('Item categorization', [
-            'scrapbook_items_count' => count($scrapbookItems),
-            'canvas_items_count' => count($canvasItems),
-            'photo_enlargement_items_count' => count($photoEnlargementItems),
-            'photo_prints_items_count' => count($photoPrintsItems),
-            'posters_items_count' => count($postersItems),
-            'hand_craft_items_count' => count($handCraftItems),
-            'photos_for_sale_items_count' => count($photosForSaleItems),
-            'gift_card_items_count' => count($giftCardItems),
-            'other_items_count' => count($otherItems),
-            'test_print_items_count' => count($testPrintItems)
-        ]);
+
         
-        // Log detailed information about each category
-        if (!empty($handCraftItems)) {
-            Log::info('Hand Craft items found:', $handCraftItems);
-        }
-        if (!empty($photosForSaleItems)) {
-            Log::info('Photos for Sale items found:', $photosForSaleItems);
-        }
-        if (!empty($giftCardItems)) {
-            Log::info('Gift Card items found:', $giftCardItems);
-        }
+
         
         // Calculate Australia Post mixed shipping
         $shippingOptions = $this->calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems,$testPrintItems);
         
         // Remove duplicates and ensure only first snail_mail and express options per category
         $shippingOptions = $this->filterShippingOptions($shippingOptions);
-        
-        Log::info('Final shipping options for mixed categories', [
-            'shipping_options' => $shippingOptions
-        ]);
         
         return $shippingOptions;
     }
@@ -341,10 +300,7 @@ class CartShippingService
             }
         }
         
-        // Log the category shipping options for debugging
-        Log::info('Category shipping options calculated:', [
-            'category_shipping_options' => $categoryShippingOptions
-        ]);
+
         
         return $categoryShippingOptions;
     }
@@ -413,30 +369,16 @@ class CartShippingService
         
         // Hand Craft fixed pricing
         if (!empty($handCraftItems)) {
-            Log::info('Processing Hand Craft items for shipping');
             $handCraftShipping = $this->getFixedShippingForCategory('hand_craft');
             $fixedShippingSnailMail += $handCraftShipping['snail_mail'] ?? 0;
             $fixedShippingExpress += $handCraftShipping['express'] ?? 0;
-            Log::info('Hand Craft shipping added:', [
-                'snail_mail' => $handCraftShipping['snail_mail'] ?? 0,
-                'express' => $handCraftShipping['express'] ?? 0,
-                'total_snail_mail' => $fixedShippingSnailMail,
-                'total_express' => $fixedShippingExpress
-            ]);
         }
         
         // Photos for Sale fixed pricing
         if (!empty($photosForSaleItems)) {
-            Log::info('Processing Photos for Sale items for shipping');
             $photosForSaleShipping = $this->getFixedShippingForCategory('photos_for_sale');
             $fixedShippingSnailMail += $photosForSaleShipping['snail_mail'] ?? 0;
             $fixedShippingExpress += $photosForSaleShipping['express'] ?? 0;
-            Log::info('Photos for Sale shipping added:', [
-                'snail_mail' => $photosForSaleShipping['snail_mail'] ?? 0,
-                'express' => $photosForSaleShipping['express'] ?? 0,
-                'total_snail_mail' => $fixedShippingSnailMail,
-                'total_express' => $fixedShippingExpress
-            ]);
         }
         
         // Photo Prints fixed pricing (calculate tier-based pricing for Photo Prints and add as fixed)
@@ -473,12 +415,6 @@ class CartShippingService
             $testPrintShippingRecord = \App\Models\Shipping::where('is_test_print', '1')->first();
             if ($testPrintShippingRecord) {
                 $testPrintShipping = (float) $testPrintShippingRecord->amount * $testPrintQuantity;
-                Log::info('Test print shipping calculated:', [
-                    'per_item_amount' => $testPrintShippingRecord->amount,
-                    'total_quantity' => $testPrintQuantity,
-                    'total_amount' => $testPrintShipping,
-                    'shipping_record' => $testPrintShippingRecord->toArray()
-                ]);
             }
         }
         
@@ -531,14 +467,7 @@ class CartShippingService
             }
         }
 
-        Log::info('Final shipping options created:', [
-            'shipping_options' => $shippingOptions,
-            'test_print_shipping' => $testPrintShipping,
-            'test_print_quantity' => $testPrintQuantity,
-            'has_test_print' => $hasTestPrint,
-            'fixed_shipping_snail_mail' => $fixedShippingSnailMail,
-            'fixed_shipping_express' => $fixedShippingExpress
-        ]);
+
         
         return $shippingOptions;
     }
@@ -566,6 +495,8 @@ class CartShippingService
     {
         // Get the selected shipping service from the user's choice
         $selectedService = $selectedShipping['service'] ?? 'snail_mail';
+        
+
         
         // Categorize items
         $scrapbookItems = [];
@@ -647,11 +578,16 @@ class CartShippingService
         if (!empty($scrapbookItems)) {
             $quantity = array_sum(array_column($scrapbookItems, 'quantity'));
             $shipping = $this->calculateTierBasedShipping($quantity, 'scrapbook_page_printing');
+            
+
+            
             if (!empty($shipping)) {
                 // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
+                
+
                 
                 $breakdown['scrapbook_page_printing'] = [
                     'quantity' => $quantity,
@@ -665,11 +601,16 @@ class CartShippingService
         if (!empty($photoPrintsItems)) {
             $quantity = array_sum(array_column($photoPrintsItems, 'quantity'));
             $shipping = $this->calculateTierBasedShipping($quantity, 'photo_prints');
+            
+
+            
             if (!empty($shipping)) {
                 // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
+                
+
                 
                 $breakdown['photo_prints'] = [
                     'quantity' => $quantity,
@@ -682,60 +623,95 @@ class CartShippingService
         // Canvas items
         if (!empty($canvasItems)) {
             $shipping = $this->getFixedShippingForCategory('canvas');
-            $breakdown['canvas'] = [
-                'quantity' => array_sum(array_column($canvasItems, 'quantity')),
-                'shipping' => $shipping[$selectedService] ?? 0,
-                'service' => $selectedService
-            ];
+            if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
+                $breakdown['canvas'] = [
+                    'quantity' => array_sum(array_column($canvasItems, 'quantity')),
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
+                ];
+            }
         }
 
         // Photo Enlargements
         if (!empty($photoEnlargementItems)) {
             $shipping = $this->getFixedShippingForCategory('photo_enlargements');
-            $breakdown['photo_enlargements'] = [
-                'quantity' => array_sum(array_column($photoEnlargementItems, 'quantity')),
-                'shipping' => $shipping[$selectedService] ?? 0,
-                'service' => $selectedService
-            ];
+            if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
+                $breakdown['photo_enlargements'] = [
+                    'quantity' => array_sum(array_column($photoEnlargementItems, 'quantity')),
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
+                ];
+            }
         }
 
         // Posters
         if (!empty($postersItems)) {
             $shipping = $this->getFixedShippingForCategory('posters');
-            $breakdown['posters'] = [
-                'quantity' => array_sum(array_column($postersItems, 'quantity')),
-                'shipping' => $shipping[$selectedService] ?? 0,
-                'service' => $selectedService
-            ];
+            if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
+                $breakdown['posters'] = [
+                    'quantity' => array_sum(array_column($postersItems, 'quantity')),
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
+                ];
+            }
         }
 
         // Hand Craft
         if (!empty($handCraftItems)) {
             $shipping = $this->getFixedShippingForCategory('hand_craft');
-            $breakdown['hand_craft'] = [
-                'quantity' => array_sum(array_column($handCraftItems, 'quantity')),
-                'shipping' => $shipping[$selectedService] ?? 0,
-                'service' => $selectedService
-            ];
+            if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
+                $breakdown['hand_craft'] = [
+                    'quantity' => array_sum(array_column($handCraftItems, 'quantity')),
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
+                ];
+            }
         }
 
         // Photos for Sale
         if (!empty($photosForSaleItems)) {
             $shipping = $this->getFixedShippingForCategory('photos_for_sale');
-            $breakdown['photos_for_sale'] = [
-                'quantity' => array_sum(array_column($photosForSaleItems, 'quantity')),
-                'shipping' => $shipping[$selectedService] ?? 0,
-                'service' => $selectedService
-            ];
+            if (!empty($shipping)) {
+                // Find the correct shipping option based on selected service
+                $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
+                $breakdown['photos_for_sale'] = [
+                    'quantity' => array_sum(array_column($photosForSaleItems, 'quantity')),
+                    'shipping' => $selectedShippingOption['price'] ?? 0,
+                    'service' => $selectedService
+                ];
+            }
         }
 
         // Test Print items
         if (!empty($testPrintItems)) {
             $quantity = array_sum(array_column($testPrintItems, 'quantity'));
-            $testPrintShipping = \App\Models\Shipping::where('is_test_print', '1')->first();
+            // Test print shipping is always $2 per item
             $breakdown['test_print'] = [
                 'quantity' => $quantity,
-                'shipping' => ($testPrintShipping ? $testPrintShipping->amount * $quantity : 0),
+                'shipping' => 2.00,
                 'service' => $selectedService
             ];
         }
@@ -749,6 +725,8 @@ class CartShippingService
             ];
         }
 
+
+        
         return $breakdown;
     }
     
@@ -826,31 +804,22 @@ class CartShippingService
      */
     protected function getFixedShippingForCategory($categoryName)
     {
-        Log::info('Getting fixed shipping for category:', ['category_name' => $categoryName]);
+
         
         $shippingCategory = \App\Models\ShippingCategory::where('name', $categoryName)->first();
         
         if (!$shippingCategory) {
-            Log::warning('Shipping category not found:', ['category_name' => $categoryName]);
             return [];
         }
         
-        Log::info('Shipping category found:', [
-            'category_id' => $shippingCategory->id,
-            'category_name' => $shippingCategory->name,
-            'pricing_type' => $shippingCategory->pricing_type
-        ]);
+
         
         $shippingRules = \App\Models\ShippingRule::where('shipping_category_id', $shippingCategory->id)
             ->where('condition', 'fixed')
             ->orderBy('priority')
             ->get();
         
-        Log::info('Shipping rules found:', [
-            'category_name' => $categoryName,
-            'rules_count' => $shippingRules->count(),
-            'rules' => $shippingRules->toArray()
-        ]);
+
         
         $shippingOptions = [];
         
@@ -865,10 +834,7 @@ class CartShippingService
             ];
         }
         
-        Log::info('Final shipping options for category:', [
-            'category_name' => $categoryName,
-            'options' => $shippingOptions
-        ]);
+
         
         return $shippingOptions;
     }

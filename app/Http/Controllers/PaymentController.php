@@ -312,6 +312,8 @@ class PaymentController extends Controller
         $shippingCarrier = null;
         $categorySelections = null;
         
+
+        
         if ($selectedShipping) {
             $shippingService = $selectedShipping['service'];
             $shippingCarrier = $selectedShipping['carrier'];
@@ -347,6 +349,8 @@ class PaymentController extends Controller
             'service' => $shippingService,
             'carrier' => $shippingCarrier
         ];
+        
+
 
         $order = Order::create([
             'user_id' => isset(Auth::user()->id) ? Auth::user()->id : null,

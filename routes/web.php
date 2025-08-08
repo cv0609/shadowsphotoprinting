@@ -333,3 +333,5 @@ Route::get('/more-info', [BasePagesController::class, 'moreInfo'])->name('more-i
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
+
+
