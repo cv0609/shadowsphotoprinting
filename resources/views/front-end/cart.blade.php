@@ -32,14 +32,12 @@ $CartService = app(App\Services\CartService::class);
                             </div>
                             <table cellspacing="0">
                                 <thead>
-                                    <th>
-                                        <tr>
-                                            <th colspan="3" class="product-name">Product</th>
-                                            <th class="product-price">Price</th>
-                                            <th class="product-quantity">Quantity</th>
-                                            <th class="product-subtotal">Subtotal</th>
-                                        </tr>
-                                    </th>
+                                    <tr>
+                                        <th colspan="3" class="product-name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Subtotal</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cart->items as $item)
@@ -48,7 +46,9 @@ $CartService = app(App\Services\CartService::class);
                                     $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
                                     $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
                                     ?>
-                                    <tr>
+                                    <tr data-product-id="{{ $item->product_id }}" 
+                                        data-product-type="{{ $item->product_type }}" 
+                                        data-is-test-print="{{ $item->is_test_print ?? '0' }}">
                                         <td class="product-remove">
                                             <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}"
                                                 onclick="return confirm('Are you sure!')">×</a>
@@ -321,12 +321,17 @@ $CartService = app(App\Services\CartService::class);
 
                                         @if($shipping->status == "1")
                                         <tr class="shipping-section">
-                                            <th>Shipping</th>
+                                            {{-- <th></th> --}}
                                             <td>
-                                                <!-- New Shipping Calculator -->
-                                                <div id="shipping-options">
+                                                <!-- Category-wise Shipping Calculator -->
+                                                <div id="category-shipping-options">
                                                     <div class="shipping-loading">Calculating shipping options...</div>
                                                 </div>
+                                                
+                                                <!-- Total Shipping Cost -->
+                                                {{-- <div id="total-shipping-cost" style="display: none;">
+                                                    <strong>Total Shipping: <span id="total-shipping-amount">${{ number_format($CartTotal['shippingCharge'],2) }}</span></strong>
+                                                </div> --}}
 
                                                 {{-- Commented out old flat rate shipping
                                                 @if(Session::has('billing_details'))
@@ -432,7 +437,7 @@ $CartService = app(App\Services\CartService::class);
                                             <th>Total</th>
                                             <td data-title="Total">
                                                 
-                                                <strong><span class="cart-total" id="cart-total" data-subtotal="{{ $CartTotal['total'] }}"><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
+                                                <strong><span class="cart-total" id="cart-total" data-subtotal="{{ $CartTotal['subtotal'] }}"><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small> --}}
@@ -510,70 +515,21 @@ $CartService = app(App\Services\CartService::class);
     })
 </script>
 
-<!-- Include shipping calculator script -->
-<script src="{{ asset('js/cart-shipping.js') }}"></script>
+<!-- Include category-wise shipping calculator script -->
+<script src="{{ asset('js/category-shipping.js') }}"></script>
 
 <script>
-    $(document).ready(function () {    
-    
-    // Initialize shipping calculator
-    const calculator = window.cartShippingCalculator;
-    
-    // Function to get cart items for shipping calculation
-    function getCartItemsForShipping() {
-        const cartItems = [];
-        @foreach ($cart->items as $item)
-            cartItems.push({
-                product_id: {{ $item->product_id }},
-                quantity: {{ $item->quantity }},
-                product_type: '{{ $item->product_type }}',
-                is_test_print: '{{ $item->is_test_print }}'
-            });
-        @endforeach
-        return cartItems;
-    }
-    
-    // Calculate shipping when page loads
-    function calculateShipping() {
-        const cartItems = getCartItemsForShipping();
-        console.log('Cart items for shipping:', cartItems);
-        if (cartItems.length > 0) {
-            calculator.calculateShipping(cartItems);
-        } else {
-            console.log('No cart items found for shipping calculation');
-        }
-    }
-    
-    // Calculate shipping on quantity change
-    $(document).on('change', '.quantity-input', function() {
-        // Clear shipping session when cart items change
-        if (window.cartShippingCalculator) {
-            window.cartShippingCalculator.clearShippingSelection();
-        }
-        setTimeout(calculateShipping, 100);
-    });
-    
-    // Calculate shipping on item removal
-    $(document).on('click', '.product-remove a', function() {
-        // Clear shipping session when cart items change
-        if (window.cartShippingCalculator) {
-            window.cartShippingCalculator.clearShippingSelection();
-        }
-        setTimeout(calculateShipping, 100);
-    });
-    
-    // Initial shipping calculation
-    calculateShipping();
+    $(document).ready(function () {
     
     function updateShippingAndTotal(orderType) {
-
         var shutterPoint = $("input[name='shutter_point']:checked").val(); // Get selected value
 
-        let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Base total
-        let shippingCost = parseFloat("{{ $CartTotal['shippingCharge'] }}"); // Shipping cost
+        let baseSubtotal = parseFloat("{{ $CartTotal['subtotal'] }}"); // Base subtotal without shipping
+        let currentShippingCost = parseFloat($('#total-shipping-amount').text().replace('$', '') || 0);
 
-        console.log('baseTotal',baseTotal);
-        console.log('shippingCost',shippingCost);
+        console.log('=== UPDATE SHIPPING AND TOTAL ===');
+        console.log('baseSubtotal', baseSubtotal);
+        console.log('currentShippingCost', currentShippingCost);
 
         @if(Auth::check() && !empty(Auth::user()) &&  Auth::user()->role == 'affiliate')
           let commission = parseFloat("{{$affiliate_sales->total_commission}}");
@@ -584,19 +540,36 @@ $CartService = app(App\Services\CartService::class);
         @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
            if($("input[name='shutter_point']:checked").val() === '1')
            {
-            baseTotal = baseTotal - commission;
+            baseSubtotal = baseSubtotal - commission;
            }
         @endif
 
         if (orderType == 1) { 
             $(".shipping-section").hide(); // Hide shipping section
-            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal - shippingCost).toFixed(2)}</bdi>`);
-            console.log('orderType1',baseTotal - shippingCost);
+            $(".cart-total").html(`<bdi><span>$</span>${(baseSubtotal).toFixed(2)}</bdi>`);
+            console.log('Pickup selected - total without shipping:', baseSubtotal);
+            
+            // Sync category shipping calculator with the new total
+            if (window.categoryShippingCalculator) {
+                window.categoryShippingCalculator.syncWithExternalTotal();
+            }
         } else {
             $(".shipping-section").show(); // Show shipping section
-            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal).toFixed(2)}</bdi>`);
-            console.log('orderType2',baseTotal);
+            // Use the category shipping calculator's total if available
+            if (window.categoryShippingCalculator && window.categoryShippingCalculator.currentTotal) {
+                $(".cart-total").html(`<bdi><span>$</span>${window.categoryShippingCalculator.currentTotal.toFixed(2)}</bdi>`);
+                console.log('Shipping selected - using category shipping total:', window.categoryShippingCalculator.currentTotal);
+            } else {
+                $(".cart-total").html(`<bdi><span>$</span>${(baseSubtotal + currentShippingCost).toFixed(2)}</bdi>`);
+                console.log('Shipping selected - fallback total with shipping:', baseSubtotal + currentShippingCost);
+            }
+            
+            // Sync category shipping calculator with the new total
+            if (window.categoryShippingCalculator) {
+                window.categoryShippingCalculator.syncWithExternalTotal();
+            }
         }
+        console.log('=== END UPDATE SHIPPING AND TOTAL ===');
     }
 
     let orderType = {{$order_type}}; 
@@ -617,17 +590,19 @@ $CartService = app(App\Services\CartService::class);
                 // If pickup is selected, clear shipping selection
                 if (orderType == 1) {
                     // Clear shipping selection from server
-                    if (window.cartShippingCalculator) {
-                        window.cartShippingCalculator.clearShippingSelection();
+                    if (window.categoryShippingCalculator) {
+                        // Clear shipping session
+                        $.ajax({
+                            url: '/cart-shipping/clear-shipping-selection',
+                            method: 'POST',
+                            data: {
+                                '_token': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
                     }
                 }
                 
                 updateShippingAndTotal(response.order_type);
-                
-                // Reload page to update cart totals with new shipping calculation
-                setTimeout(function() {
-                    location.reload();
-                }, 500);
             },
             error: function (xhr, status, error) {
                 console.error("Error:", error);

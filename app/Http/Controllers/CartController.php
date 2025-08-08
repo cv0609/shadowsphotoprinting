@@ -765,4 +765,35 @@ class CartController extends Controller
         // Fallback to first option
         return $shippingOptions[0] ?? null;
     }
+
+    /**
+     * Get updated cart total from session
+     */
+    public function getUpdatedTotal()
+    {
+        try {
+            // Get the current cart total with shipping from session
+            $cartTotal = $this->CartService->getCartTotal();
+            
+            Log::info('Updated cart total requested:', [
+                'total' => $cartTotal['total'],
+                'subtotal' => $cartTotal['subtotal'],
+                'shipping_charge' => $cartTotal['shippingCharge'],
+                'session_shipping' => session('selected_shipping')
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'total' => $cartTotal['total'],
+                'subtotal' => $cartTotal['subtotal'],
+                'shipping_charge' => $cartTotal['shippingCharge']
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error getting updated cart total: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error getting updated cart total'
+            ]);
+        }
+    }
 }
