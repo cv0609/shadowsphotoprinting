@@ -73,7 +73,7 @@ $CartService = app(App\Services\CartService::class);
                                 <option>{{ $product['type_of_paper_use'] }}</option>
                             </select></div>
                         <p>{!! html_entity_decode($product['product_description']) !!} </p>
-                        <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p>
+                        
                     </div>
         </div>
         </li>
