@@ -21,6 +21,12 @@
                     @endif
 
                     <div class="col-lg-6">
+                        @if(Session::has('referral_code'))
+                            <div class="alert alert-info text-center mb-3" style="background-color: #e3f2fd; border-color: #2196f3; color: #0d47a1;">
+                                <strong>🎉 Referral Order!</strong> You're ordering with a referral code. 
+                                Please use a unique email address that hasn't been used before.
+                            </div>
+                        @endif
                         <div class="woocommerce-billing-fields">
                             <h3>Billing details</h3>
                             <div class="fields__field-wrapper">
@@ -100,6 +106,10 @@
                                     <label> Email address *
                                     </label>
                                     <input type="email" name="email" id="email" value="{{ isset($user_address) && !empty($user_address->email) ? $user_address->email : '' }}">
+                                    <div id="email-error" class="error-message" style="color: red; display: none;"></div>
+                                    @if(Session::has('referral_code'))
+                                        <small class="text-info" style="color: #1976d2 !important; font-weight: 500;">⚠️ Since you're using a referral code, please use a new email address that hasn't been registered before.</small>
+                                    @endif
                                 </p>
                                 @if(!Auth::check())
                                     <p class="form-row">
@@ -478,6 +488,8 @@
     }
     
 
+
+
     var form = document.getElementById('payment-form');
 
     form.addEventListener('submit', function(event) {
@@ -579,6 +591,8 @@
             formData.order_comments = order_comments;
             formData.isShippingAddress = isShippingAddress;
         }
+
+
 
         if(order_cart_total > 0){
             if ($('#stripeId').is(':checked')) {
