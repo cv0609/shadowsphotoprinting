@@ -348,7 +348,7 @@ class CategoryShippingCalculator {
         // Check if this is a combined order
         if (this.categoryShippingOptions.combined_order) {
             // Combined order - show single shipping option with same design layout
-            html += '<h4 style="font-size:14px;">Choose your preferred shipping method:</h4>';
+            html += '<h4 style="font-size:14px;" class="choose-prefered-option-heading">Choose your preferred shipping method:</h4>';
             
             const combinedOptions = this.categoryShippingOptions.combined_order;
             
@@ -384,7 +384,7 @@ class CategoryShippingCalculator {
         } else {
             // Separate order - show category-wise shipping options
             html += '<h3>Shipping Options</h3>';
-            html += '<p>Choose your preferred shipping method:</p>';
+            html += '<p class="choose-prefered-option-heading" style="font-size:14px;">Choose your preferred shipping method:</p>';
             
             Object.keys(this.categoryShippingOptions).forEach(category => {
                 const options = this.categoryShippingOptions[category];

@@ -92,6 +92,15 @@ class ShippingController extends Controller
                     'message' => 'No cart items provided'
                 ]);
             }
+
+               // Check if cart has test print items and add $2 extra
+            $testPrintExtra = 0;
+            foreach ($cartItems as $item) {
+                if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
+                    $testPrintExtra = 2.00; // Add $2 for test print items
+                    break;
+                }
+            }
             
             $shippingService = new CartShippingService();
             
@@ -100,7 +109,9 @@ class ShippingController extends Controller
             
             if ($isCombinedOrder) {
                 // Combined order - use fixed pricing for all categories
-                $categoryShippingOptions = $this->getCombinedOrderCategoryShipping();
+                $categoryShippingOptions = $this->getCombinedOrderCategoryShipping($testPrintExtra);
+                // \Log::info('$categoryShippingOptions');
+                // \Log::info($categoryShippingOptions);
             } else {
                 // Separate order - check if it's Photo Print/Scrapbook only
                 $hasPhotoPrints = $this->hasCategory($cartItems, 4); // Photo Prints
@@ -109,7 +120,7 @@ class ShippingController extends Controller
                 
                 if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
                     // Photo Print/Scrapbook only order - use tier-based pricing
-                    $categoryShippingOptions = $this->getTierBasedCategoryShipping($cartItems);
+                    $categoryShippingOptions = $this->getTierBasedCategoryShipping($cartItems,$testPrintExtra);
                 } else {
                     // Other category orders - use existing logic
                     $categoryShippingOptions = $shippingService->calculateShippingPerCategory($cartItems);
@@ -224,7 +235,7 @@ class ShippingController extends Controller
     /**
      * Get combined order category shipping (fixed pricing for all categories)
      */
-    private function getCombinedOrderCategoryShipping()
+    private function getCombinedOrderCategoryShipping($testPrintExtra)
     {
         // Get fixed pricing from database for combined orders
         $fixedPricingCategory = \App\Models\ShippingCategory::where('pricing_type', 'fixed')->first();
@@ -238,7 +249,7 @@ class ShippingController extends Controller
             
             foreach ($fixedRules as $rule) {
                 $combinedOrderShipping['combined_order'][$rule->service] = [
-                    'price' => $rule->price,
+                    'price' => $rule->price + $testPrintExtra,
                     'delivery_time' => $rule->delivery_time,
                     'note' => 'Combined order - Fixed pricing'
                 ];
@@ -259,7 +270,7 @@ class ShippingController extends Controller
             
             foreach ($fixedRules as $rule) {
                 $combinedOrderShipping['combined_order'][$rule->service] = [
-                    'price' => $rule->price,
+                    'price' => $rule->price + $testPrintExtra,
                     'delivery_time' => $rule->delivery_time,
                     'note' => 'Combined order - Fixed pricing'
                 ];
@@ -272,12 +283,12 @@ class ShippingController extends Controller
         return [
             'combined_order' => [
                 'snail_mail' => [
-                    'price' => 22.60,
+                    'price' => 22.60 + $testPrintExtra,
                     'delivery_time' => '5-10 business days',
                     'note' => 'Combined order - Fixed pricing (fallback)'
                 ],
                 'express' => [
-                    'price' => 31.21,
+                    'price' => 31.21 + $testPrintExtra,
                     'delivery_time' => '1-2 business days',
                     'note' => 'Combined order - Fixed pricing (fallback)'
                 ]
@@ -288,7 +299,7 @@ class ShippingController extends Controller
     /**
      * Get tier-based category shipping for Photo Print/Scrapbook only orders
      */
-    private function getTierBasedCategoryShipping($cartItems)
+    private function getTierBasedCategoryShipping($cartItems,$testPrintExtra)
     {
         // Calculate total quantity for Photo Print and Scrapbook
         $totalQuantity = 0;
@@ -306,6 +317,8 @@ class ShippingController extends Controller
         
         if ($photoPrintCategory && $scrapbookCategory) {
             // Get rules from either category (they should have same tier pricing)
+
+            
             $tierRules = $photoPrintCategory->rules()
                 ->where('is_active', true)
                 ->where('rule_type', 'quantity_based')
@@ -397,13 +410,13 @@ class ShippingController extends Controller
             'photo_print_scrapbook_combined' => [
                 [
                     'service' => 'snail_mail',
-                    'price' => $snailPrice,
+                    'price' => $snailPrice + $testPrintExtra,
                     'delivery_time' => '5-10 business days',
                     'note' => $tierNote . ' (Combined Photo Print + Scrapbook: ' . $totalQuantity . ' items)'
                 ],
                 [
                     'service' => 'express',
-                    'price' => $expressPrice,
+                    'price' => $expressPrice + $testPrintExtra,
                     'delivery_time' => '1-2 business days',
                     'note' => $tierNote . ' (Combined Photo Print + Scrapbook: ' . $totalQuantity . ' items)'
                 ]

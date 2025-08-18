@@ -400,7 +400,10 @@
 
 .test-total-label,
 .test-total-amount {
-    color: #000 !important;
+    color: #FFC205 !important;
+}
+.choose-prefered-option-heading{
+    color: #FFC205 !important;
 }
 
 #total-shipping-cost strong {
