@@ -57,7 +57,20 @@ class CategoryShippingCalculator {
             const price = parseFloat($(e.target).data('price') || 0);
             
             console.log(`User changed shipping for ${category}: ${service} $${price}`);
+            console.log('Radio button details:', {
+                name: $(e.target).attr('name'),
+                value: $(e.target).val(),
+                checked: $(e.target).prop('checked'),
+                category: category,
+                service: service,
+                price: price
+            });
+            
+            // Update the category selection
             this.updateCategorySelection(category, service, price);
+            
+            // Ensure the radio button stays checked for this category
+            this.ensureRadioButtonChecked(category, service);
             
             // Always update session immediately when user makes a selection
             this.updateSessionWithCurrentSelections();
@@ -331,41 +344,97 @@ class CategoryShippingCalculator {
         }
 
         let html = '<div class="category-shipping-container">';
-        html += '<h3>Shipping Options</h3>';
-        html += '<p>Choose your preferred shipping method for each category:</p>';
         
-        Object.keys(this.categoryShippingOptions).forEach(category => {
-            const options = this.categoryShippingOptions[category];
-            const categoryName = this.getCategoryDisplayName(category);
+        // Check if this is a combined order
+        if (this.categoryShippingOptions.combined_order) {
+            // Combined order - show single shipping option with same design layout
+            html += '<h4 style="font-size:14px;">Choose your preferred shipping method:</h4>';
             
-            console.log(`Processing category: ${category}`, options);
+            const combinedOptions = this.categoryShippingOptions.combined_order;
             
-            html += `<div class="category-shipping-group" data-category="${category}">`;
-            html += `<h4>${categoryName}</h4>`;
-            html += '<div class="shipping-options">';
+            html += '<div class="category-shipping-category">';
+            // html += '<h5>Combined Order Shipping</h5>';
+            html += '<div class="shipping-options text-center">';
             
-            if (Array.isArray(options)) {
-                // All categories now return arrays of options
-                console.log(`Category ${category} has array options:`, options);
-                options.forEach(option => {
-                    console.log(`Processing option:`, option);
-                    html += this.createShippingOptionHtml(category, option);
-                });
-            } else {
-                // Fallback for old format (should not happen anymore)
-                console.log(`Category ${category} has object options (fallback):`, options);
-                if (options.snail_mail) {
-                    console.log(`Processing snail_mail option:`, options.snail_mail);
-                    html += this.createShippingOptionHtml(category, options.snail_mail);
-                }
-                if (options.express) {
-                    console.log(`Processing express option:`, options.express);
-                    html += this.createShippingOptionHtml(category, options.express);
-                }
+            // Snail Mail option
+            if (combinedOptions.snail_mail) {
+                html += '<div class="shipping-option">';
+                html += '<input type="radio" name="shipping_combined" class="category-shipping-option" data-category="combined_order" data-service="snail_mail" data-price="' + combinedOptions.snail_mail.price + '" value="snail_mail" checked>';
+                html += '<label>';
+                html += '<span class="service-name">snail</span>';
+                html += '<span class="service-price">$' + parseFloat(combinedOptions.snail_mail.price).toFixed(2) + '</span>';
+                html += '</label>';
+                html += '</div>';
             }
             
-            html += '</div></div>';
-        });
+            // Express option
+            if (combinedOptions.express) {
+                html += '<div class="shipping-option">';
+                html += '<input type="radio" name="shipping_combined" class="category-shipping-option" data-category="combined_order" data-service="express" data-price="' + combinedOptions.express.price + '" value="express">';
+                html += '<label>';
+                html += '<span class="service-name">express</span>';
+                html += '<span class="service-price">$' + parseFloat(combinedOptions.express.price).toFixed(2) + '</span>';
+                html += '</label>';
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            html += '</div>';
+            
+        } else {
+            // Separate order - show category-wise shipping options
+            html += '<h3>Shipping Options</h3>';
+            html += '<p>Choose your preferred shipping method:</p>';
+            
+            Object.keys(this.categoryShippingOptions).forEach(category => {
+                const options = this.categoryShippingOptions[category];
+                const categoryName = this.getCategoryDisplayName(category);
+                
+                console.log(`Processing category: ${category}`, options);
+                
+                // Special handling for photo_print_scrapbook_combined - no outer wrapper
+                if (category === 'photo_print_scrapbook_combined') {
+                    html += '<div class="shipping-options text-center">';
+                    
+                    if (Array.isArray(options)) {
+                        console.log(`Category ${category} has array options:`, options);
+                        options.forEach(option => {
+                            console.log(`Processing option:`, option);
+                            html += this.createShippingOptionHtml(category, option);
+                        });
+                    }
+                    
+                    html += '</div>';
+                } else {
+                    // Regular categories with wrapper
+                    html += `<div class="category-shipping-group" data-category="${category}">`;
+                    // html += `<h4>${categoryName}</h4>`;
+                    html += '<div class="shipping-options text-center">';
+                    
+                    if (Array.isArray(options)) {
+                        // All categories now return arrays of options
+                        console.log(`Category ${category} has array options:`, options);
+                        options.forEach(option => {
+                            console.log(`Processing option:`, option);
+                            html += this.createShippingOptionHtml(category, option);
+                        });
+                    } else {
+                        // Fallback for old format (should not happen anymore)
+                        console.log(`Category ${category} has object options (fallback):`, options);
+                        if (options.snail_mail) {
+                            console.log(`Processing snail_mail option:`, options.snail_mail);
+                            html += this.createShippingOptionHtml(category, options.snail_mail);
+                        }
+                        if (options.express) {
+                            console.log(`Processing express option:`, options.express);
+                            html += this.createShippingOptionHtml(category, options.express);
+                        }
+                    }
+                    
+                    html += '</div></div>';
+                }
+            });
+        }
         
         html += '</div>';
         
@@ -384,8 +453,14 @@ class CategoryShippingCalculator {
         this.checkRadioButtonsFromSession();
         
         // Only auto-select if autoCalculate is true and no session data exists
+        // AND if user hasn't already made selections
         if (autoCalculate && Object.keys(this.categorySelections).length === 0 && !this.hasSessionData) {
+            console.log('No user selections found, running auto-selection...');
             this.autoSelectShippingOptions();
+        } else {
+            console.log('Skipping auto-selection - user has selections or session data exists');
+            console.log('Current selections:', this.categorySelections);
+            console.log('Has session data:', this.hasSessionData);
         }
         
         // Update test total shipping display after options are displayed
@@ -418,6 +493,7 @@ class CategoryShippingCalculator {
         const names = {
             'scrapbook_page_printing': 'Scrapbook Page Printing',
             'photo_prints': 'Photo Prints',
+            'photo_print_scrapbook_combined': 'Photo Print & Scrapbook Combined',
             'canvas': 'Canvas Prints',
             'photo_enlargements': 'Photo Enlargements',
             'posters': 'Posters',
@@ -437,35 +513,60 @@ class CategoryShippingCalculator {
         console.log('=== AUTO SELECT SHIPPING OPTIONS ===');
         console.log('Available categories:', Object.keys(this.categoryShippingOptions));
         
-        Object.keys(this.categoryShippingOptions).forEach(category => {
-            const options = this.categoryShippingOptions[category];
-            let snailMailOption = null;
+        // Check if this is a combined order
+        if (this.categoryShippingOptions.combined_order) {
+            console.log('Combined order detected, auto-selecting snail mail option');
+            const combinedOptions = this.categoryShippingOptions.combined_order;
             
-            console.log(`Processing category: ${category}`, options);
+            if (combinedOptions.snail_mail) {
+                this.updateCategorySelection('combined_order', 'snail_mail', combinedOptions.snail_mail.price);
+                $('input[name="shipping_combined"][value="snail_mail"]').prop('checked', true);
+            }
+        } else if (this.categoryShippingOptions.photo_print_scrapbook_combined) {
+            // Photo Print + Scrapbook combined order - use tier-based pricing
+            console.log('Photo Print + Scrapbook combined order detected, auto-selecting snail mail option');
+            const combinedOptions = this.categoryShippingOptions.photo_print_scrapbook_combined;
             
-            if (Array.isArray(options) && options.length > 0) {
-                // Find snail mail option
-                snailMailOption = options.find(option => option.service === 'snail_mail');
-                console.log(`Found snail mail option for ${category}:`, snailMailOption);
-                // If no snail mail found, use first option as fallback
-                if (!snailMailOption && options.length > 0) {
-                    snailMailOption = options[0];
-                    console.log(`Using fallback option for ${category}:`, snailMailOption);
+            if (Array.isArray(combinedOptions) && combinedOptions.length > 0) {
+                const snailMailOption = combinedOptions.find(option => option.service === 'snail_mail');
+                if (snailMailOption) {
+                    this.updateCategorySelection('photo_print_scrapbook_combined', 'snail_mail', snailMailOption.price);
+                    $('input[name="shipping_photo_print_scrapbook_combined"][value="snail_mail"]').prop('checked', true);
                 }
-            } else if (options && typeof options === 'object') {
-                // Fallback for old format
-                snailMailOption = options.snail_mail || options.express;
-                console.log(`Using old format option for ${category}:`, snailMailOption);
             }
-            
-            if (snailMailOption && !this.categorySelections[category]) {
-                console.log(`Auto-selecting for ${category}:`, snailMailOption);
-                this.updateCategorySelection(category, snailMailOption.service, snailMailOption.price);
-                $(`input[name="shipping_${category}"][value="${snailMailOption.service}"]`).prop('checked', true);
-            } else {
-                console.log(`Skipping ${category} - already selected or no option available`);
-            }
-        });
+        } else {
+            // Separate order - process each category
+            Object.keys(this.categoryShippingOptions).forEach(category => {
+                const options = this.categoryShippingOptions[category];
+                let snailMailOption = null;
+                
+                console.log(`Processing category: ${category}`, options);
+                
+                if (Array.isArray(options) && options.length > 0) {
+                    // Find snail mail option
+                    snailMailOption = options.find(option => option.service === 'snail_mail');
+                    console.log(`Found snail mail option for ${category}:`, snailMailOption);
+                    // If no snail mail found, use first option as fallback
+                    if (!snailMailOption && options.length > 0) {
+                        snailMailOption = options[0];
+                        console.log(`Using fallback option for ${category}:`, snailMailOption);
+                    }
+                } else if (options && typeof options === 'object') {
+                    // Fallback for old format
+                    snailMailOption = options.snail_mail || options.express;
+                    console.log(`Using old format option for ${category}:`, snailMailOption);
+                }
+                
+                if (snailMailOption && !this.categorySelections[category]) {
+                    console.log(`Auto-selecting for ${category}:`, snailMailOption);
+                    this.updateCategorySelection(category, snailMailOption.service, snailMailOption.price);
+                    // Use the ensureRadioButtonChecked method to avoid conflicts
+                    this.ensureRadioButtonChecked(category, snailMailOption.service);
+                } else {
+                    console.log(`Skipping ${category} - already selected or no option available`);
+                }
+            });
+        }
         
         console.log('Final category selections before calculateTotalShipping:', this.categorySelections);
         console.log('=== END AUTO SELECT SHIPPING OPTIONS ===');
@@ -760,6 +861,21 @@ class CategoryShippingCalculator {
         
         // Update test total shipping in real-time
         this.updateTestTotalShipping();
+    }
+    
+    ensureRadioButtonChecked(category, service) {
+        // Uncheck all radio buttons for this category first
+        $(`input[name="shipping_${category}"]`).prop('checked', false);
+        
+        // Check only the selected radio button for this category
+        $(`input[name="shipping_${category}"][value="${service}"]`).prop('checked', true);
+        
+        console.log(`Ensured ${category} has ${service} selected`);
+        
+        // Debug: Log all radio button states for this category
+        $(`input[name="shipping_${category}"]`).each(function() {
+            console.log(`Radio button ${category}: name="${$(this).attr('name')}", value="${$(this).val()}", checked=${$(this).prop('checked')}`);
+        });
     }
 
     calculateTotalShipping() {
