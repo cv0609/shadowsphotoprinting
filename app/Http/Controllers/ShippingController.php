@@ -108,11 +108,13 @@ class ShippingController extends Controller
             $isCombinedOrder = $this->isCombinedOrder($cartItems);
             
             if ($isCombinedOrder) {
+                \Log::info('this is isCombinedOrder');
                 // Combined order - use fixed pricing for all categories
                 $categoryShippingOptions = $this->getCombinedOrderCategoryShipping($testPrintExtra);
                 // \Log::info('$categoryShippingOptions');
                 // \Log::info($categoryShippingOptions);
             } else {
+                \Log::info('this is Separate order');
                 // Separate order - check if it's Photo Print/Scrapbook only
                 $hasPhotoPrints = $this->hasCategory($cartItems, 4); // Photo Prints
                 $hasScrapbook = $this->hasCategory($cartItems, 1);  // Scrapbook
@@ -301,10 +303,45 @@ class ShippingController extends Controller
      */
     private function getTierBasedCategoryShipping($cartItems,$testPrintExtra)
     {
-        // Calculate total quantity for Photo Print and Scrapbook
-        $totalQuantity = 0;
+        // Check if cart contains ONLY test print items
+        $onlyTestPrint = true;
+        $testPrintItems = [];
+        $otherCategoryItems = [];
         
         foreach ($cartItems as $item) {
+            if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
+                $testPrintItems[] = $item;
+            } else {
+                $onlyTestPrint = false;
+                $otherCategoryItems[] = $item;
+            }
+        }
+        
+        // If ONLY test print items, return $2 shipping for both services
+        if ($onlyTestPrint && !empty($testPrintItems)) {
+            $testPrintQuantity = array_sum(array_column($testPrintItems, 'quantity'));
+            return [
+                'photo_print_scrapbook_combined' => [
+                    [
+                        'service' => 'snail_mail',
+                        'price' => number_format(2.00, 2),
+                        'delivery_time' => '5-10 business days',
+                        'note' => 'Test Print Only - $2.00 per item (Total: ' . $testPrintQuantity . ' items)'
+                    ],
+                    [
+                        'service' => 'express',
+                        'price' => number_format(2.00, 2),
+                        'delivery_time' => '1-2 business days',
+                        'note' => 'Test Print Only - $2.00 per item (Total: ' . $testPrintQuantity . ' items)'
+                    ]
+                ]
+            ];
+        }
+        
+        // If mixed categories (test print + other categories), calculate normal shipping + test print extra
+        $totalQuantity = 0;
+        
+        foreach ($otherCategoryItems as $item) {
             $categoryId = $this->getItemCategoryId($item);
             if ($categoryId == 1 || $categoryId == 4) { // Scrapbook or Photo Prints
                 $totalQuantity += $item['quantity'];
