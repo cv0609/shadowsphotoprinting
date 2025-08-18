@@ -201,4 +201,64 @@ input[type="number"] {
     cursor: pointer;
 }
 
+/* Shipping Service Badges */
+.badge {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.badge-light {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+}
+
+/* Shipping Service Section in Order Details */
+.order-shipping-service {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.order-shipping-service h4 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.shipping-info p {
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.shipping-info ul {
+    margin-top: 10px;
+}
+
+.shipping-info li {
+    margin-bottom: 5px;
+    color: #6c757d;
+    font-size: 14px;
+}
+
 

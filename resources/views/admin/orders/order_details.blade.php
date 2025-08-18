@@ -306,87 +306,6 @@
                 </tr>
             @endif
 
-            @if($orderDetail->shipping_breakdown && !empty($orderDetail->shipping_breakdown))
-                @php
-                    $shippingBreakdown = $orderDetail->shipping_breakdown;
-                    $categorySelections = $shippingBreakdown['category_selections'] ?? null;
-                    $breakdown = $shippingBreakdown['breakdown'] ?? $shippingBreakdown;
-                    
-                    // Calculate shipping summary
-                    $shippingSummary = [];
-                    if ($categorySelections) {
-                        foreach ($categorySelections as $category => $selection) {
-                            $service = $selection['service'] ?? 'unknown';
-                            $price = $selection['price'] ?? 0;
-                            if ($price > 0) {
-                                if (!isset($shippingSummary[$service])) {
-                                    $shippingSummary[$service] = 0;
-                                }
-                                $shippingSummary[$service] += $price;
-                            }
-                        }
-                    }
-                @endphp
-                
-                @if(!empty($shippingSummary))
-                    <tr>
-                        <td colspan="2" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee;">
-                            <strong>Shipping Summary:</strong>
-                        </td>
-                    </tr>
-                    @foreach($shippingSummary as $service => $total)
-                        <tr>
-                            <td style="padding: 5px; padding-left: 30px; font-size: 11px; color: #888;">
-                                • {{ $orderDetail->getServiceDisplayName($service) }} Total:
-                            </td>
-                            <td style="text-align: right; padding: 5px; font-size: 11px; color: #888;">
-                                <strong>${{ number_format($total, 2) }}</strong>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-                
-                @if($categorySelections)
-                    <tr>
-                        <td colspan="2" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee;">
-                            <strong>Category Shipping Details:</strong>
-                        </td>
-                    </tr>
-                    @foreach($categorySelections as $category => $selection)
-                        @php
-                            $categoryName = $orderDetail->getCategoryDisplayName($category);
-                            $serviceName = $orderDetail->getServiceDisplayName($selection['service']);
-                            $price = $selection['price'] ?? 0;
-                        @endphp
-                        @if($price > 0)
-                            <tr>
-                                <td style="padding: 5px; padding-left: 30px; font-size: 11px; color: #888;">
-                                    • {{ $categoryName }}: {{ $serviceName }}
-                                </td>
-                                <td style="text-align: right; padding: 5px; font-size: 11px; color: #888;">
-                                    <strong>${{ number_format($price, 2) }}</strong>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                @endif
-
-                @if($breakdown && is_array($breakdown))
-                    @foreach($breakdown as $category => $details)
-                        @if($details['shipping'] > 0)
-                            <tr>
-                                <td style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666;">
-                                    • {{ $orderDetail->getCategoryDisplayName($category) }} ({{ $details['quantity'] }} items):
-                                </td>
-                                <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
-                                    <strong>${{ number_format($details['shipping'], 2) }}</strong>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                @endif
-            @endif
-
             @else
 
             <tr>
@@ -399,6 +318,58 @@
                 <td style="padding: 5px;">Order Total:</td>
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->total,2) }}</strong></td>
             </tr>
+            
+            <!-- Shipping Service Information -->
+            @if($orderDetail->shipping_service)
+                <tr>
+                    <td colspan="2" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee;">
+                        <strong>Shipping Service:</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px; padding-left: 30px; font-size: 12px; color: #666;">
+                        @if($orderDetail->hasExpressShipping())
+                            🚀 <strong>Express Shipping</strong>
+                        @elseif($orderDetail->hasSnailMailShipping())
+                            🐌 <strong>Snail Mail</strong>
+                        @else
+                            📦 <strong>{{ ucwords(str_replace('_', ' ', $orderDetail->shipping_service)) }}</strong>
+                        @endif
+                    </td>
+                    <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
+                        @if($orderDetail->shipping_carrier)
+                            <strong>{{ $orderDetail->shipping_carrier }}</strong>
+                        @else
+                            <strong>Australia Post</strong>
+                        @endif
+                    </td>
+                </tr>
+                
+                @if($orderDetail->shipping_breakdown && is_array($orderDetail->shipping_breakdown))
+                    @php
+                        $shippingInfo = $orderDetail->getShippingServiceInfo();
+                    @endphp
+                    
+                    @if(isset($shippingInfo['breakdown']) && !empty($shippingInfo['breakdown']))
+                        <tr>
+                            <td colspan="2" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee;">
+                                <strong>Shipping Breakdown:</strong>
+                            </td>
+                        </tr>
+                        @foreach($shippingInfo['breakdown'] as $breakdown)
+                            <tr>
+                                <td style="padding: 5px; padding-left: 30px; font-size: 11px; color: #888;">
+                                    • {{ $breakdown['category'] }} - {{ $breakdown['service'] }}
+                                </td>
+                                <td style="text-align: right; padding: 5px; font-size: 11px; color: #888;">
+                                    <strong>${{ $breakdown['price'] }}</strong>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                @endif
+            @endif
+            
             <tr>
                 <td colspan="2" style="border-bottom: 1px solid #ccc; padding: 5px;"></td>
             </tr>

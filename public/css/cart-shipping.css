@@ -266,37 +266,66 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    justify-content: center;
+    margin: 6px 0;
+    padding: 6px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 11px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.shipping-options.text-center {
+    justify-content: center;
 }
 
 .shipping-option {
     display: flex;
     align-items: center;
-    padding: 0;
-    background: transparent;
-    border: none;
-    border-radius: 0;
+    padding: 6px 8px;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
     margin: 0;
-    min-height: 18px;
+    min-height: 28px;
+    user-select: none;
 }
 
 .shipping-option:hover {
-    background: transparent;
-    transform: none;
-    box-shadow: none;
+    border-color: #16a085;
+    background: #f8fffe;
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.1);
 }
 
 .shipping-option input[type="radio"] {
-    margin-right: 3px;
+    margin-right: 6px;
     accent-color: #16a085;
-    transform: scale(0.8);
+    transform: scale(0.9);
+    cursor: pointer;
 }
 
 .shipping-option input[type="radio"]:checked + label {
     color: #16a085;
     font-weight: 600;
+}
+
+.shipping-option input[type="radio"]:checked {
+    ~ .shipping-option {
+        border-color: #16a085;
+        background: #e8f5f2;
+        box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+    }
+}
+
+.shipping-option.selected {
+    border-color: #16a085;
+    background: #e8f5f2;
+    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
 }
 
 .shipping-option label {
@@ -305,25 +334,26 @@
     width: auto;
     cursor: pointer;
     margin: 0;
-    font-size: 10px;
+    font-size: 11px;
     padding: 0;
-    color: #666;
-    line-height: 1.1;
+    color: #333;
+    line-height: 1.2;
+    gap: 4px;
 }
 
 .service-name {
     font-weight: 500;
-    color: #666;
+    color: #333;
     text-transform: none;
     letter-spacing: 0;
     margin-right: 4px;
-    font-size: 9px;
+    font-size: 11px;
 }
 
 .service-price {
     font-weight: 700;
     color: #16a085;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .delivery-time {
@@ -332,8 +362,23 @@
 
 /* Compact shipping options container */
 #category-shipping-options {
-    margin: 0;
-    padding: 0;
+    margin: 8px 0;
+    padding: 8px;
+    /* background: #fafafa; */
+    border-radius: 6px;
+}
+
+#category-shipping-options h3 {
+    margin: 0 0 8px 0;
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#category-shipping-options p {
+    margin: 0 0 12px 0;
+    color: #000;
+    font-size: 12px;
 }
 
 /* Compact total shipping cost */
@@ -345,6 +390,20 @@
     border-radius: 2px;
     text-align: center;
     font-size: 10px;
+    color: #000;
+}
+
+/* Total shipping text styling */
+.test-total-display {
+    color: #000 !important;
+}
+
+.test-total-label,
+.test-total-amount {
+    color: #FFC205 !important;
+}
+.choose-prefered-option-heading{
+    color: #FFC205 !important;
 }
 
 #total-shipping-cost strong {

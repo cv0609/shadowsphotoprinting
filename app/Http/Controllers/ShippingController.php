@@ -75,6 +75,7 @@ class ShippingController extends Controller
 
     /**
      * Calculate shipping options per category for cart
+     * Updated to use new combined vs separate order logic
      */
     public function calculateShippingPerCategory(Request $request)
     {
@@ -91,17 +92,50 @@ class ShippingController extends Controller
                     'message' => 'No cart items provided'
                 ]);
             }
+
+               // Check if cart has test print items and add $2 extra
+            $testPrintExtra = 0;
+            foreach ($cartItems as $item) {
+                if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
+                    $testPrintExtra = 2.00; // Add $2 for test print items
+                    break;
+                }
+            }
             
             $shippingService = new CartShippingService();
-            $categoryShippingOptions = $shippingService->calculateShippingPerCategory($cartItems);
+            
+            // Check if this is a combined order or separate order
+            $isCombinedOrder = $this->isCombinedOrder($cartItems);
+            
+            if ($isCombinedOrder) {
+                // Combined order - use fixed pricing for all categories
+                $categoryShippingOptions = $this->getCombinedOrderCategoryShipping($testPrintExtra);
+                // \Log::info('$categoryShippingOptions');
+                // \Log::info($categoryShippingOptions);
+            } else {
+                // Separate order - check if it's Photo Print/Scrapbook only
+                $hasPhotoPrints = $this->hasCategory($cartItems, 4); // Photo Prints
+                $hasScrapbook = $this->hasCategory($cartItems, 1);  // Scrapbook
+                $hasOtherCategories = $this->hasOtherCategories($cartItems);
+                
+                if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
+                    // Photo Print/Scrapbook only order - use tier-based pricing
+                    $categoryShippingOptions = $this->getTierBasedCategoryShipping($cartItems,$testPrintExtra);
+                } else {
+                    // Other category orders - use existing logic
+                    $categoryShippingOptions = $shippingService->calculateShippingPerCategory($cartItems);
+                }
+            }
             
             Log::info('Sending category shipping options to frontend:', [
-                'category_shipping_options' => $categoryShippingOptions
+                'category_shipping_options' => $categoryShippingOptions,
+                'is_combined_order' => $isCombinedOrder
             ]);
             
             return response()->json([
                 'success' => true,
-                'category_shipping_options' => $categoryShippingOptions
+                'category_shipping_options' => $categoryShippingOptions,
+                'is_combined_order' => $isCombinedOrder
             ]);
             
         } catch (\Exception $e) {
@@ -111,6 +145,283 @@ class ShippingController extends Controller
                 'message' => 'Error calculating shipping options'
             ]);
         }
+    }
+    
+    /**
+     * Check if this is a combined order (has items from multiple categories)
+     */
+    private function isCombinedOrder($cartItems)
+    {
+        $hasPhotoPrints = $this->hasCategory($cartItems, 4); // Photo Prints
+        $hasScrapbook = $this->hasCategory($cartItems, 1);   // Scrapbook
+        $hasOtherCategories = $this->hasOtherCategories($cartItems);
+        
+        // If we have Photo Print and/or Scrapbook AND any other categories, it's a combined order
+        if (($hasPhotoPrints || $hasScrapbook) && $hasOtherCategories) {
+            return true;
+        }
+        
+        // If we have Photo Print and/or Scrapbook ONLY (no other categories), it's NOT a combined order
+        // It will use tier-based pricing instead
+        if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
+            return false;
+        }
+        
+        // For all other cases, count categories normally
+        $categories = [];
+        foreach ($cartItems as $item) {
+            $categoryId = $this->getItemCategoryId($item);
+            if ($categoryId && !in_array($categoryId, $categories)) {
+                $categories[] = $categoryId;
+            }
+        }
+        
+        return count($categories) > 1;
+    }
+    
+    /**
+     * Check if cart has items from a specific category
+     */
+    private function hasCategory($cartItems, $categoryId)
+    {
+        foreach ($cartItems as $item) {
+            if ($this->getItemCategoryId($item) == $categoryId) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Check if cart has items from other categories (not Photo Print or Scrapbook)
+     */
+    private function hasOtherCategories($cartItems)
+    {
+        foreach ($cartItems as $item) {
+            $categoryId = $this->getItemCategoryId($item);
+            if ($categoryId && $categoryId != 1 && $categoryId != 4) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Get category ID for a cart item
+     */
+    private function getItemCategoryId($item)
+    {
+        if (isset($item['product_type']) && in_array($item['product_type'], ['gift_card', 'photo_for_sale', 'hand_craft'])) {
+            // Handle special product types
+            switch ($item['product_type']) {
+                case 'gift_card':
+                    $product = \App\Models\GiftCardCategory::find($item['product_id']);
+                    return $product ? 8 : null; // Gift Card category
+                case 'photo_for_sale':
+                    $product = \App\Models\PhotoForSaleProduct::find($item['product_id']);
+                    return $product ? 7 : null; // Photos for Sale category
+                case 'hand_craft':
+                    $product = \App\Models\HandCraftProduct::find($item['product_id']);
+                    return $product ? 6 : null; // Hand Craft category
+            }
+        } else {
+            $product = \App\Models\Product::find($item['product_id']);
+            return $product ? $product->category_id : null;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get combined order category shipping (fixed pricing for all categories)
+     */
+    private function getCombinedOrderCategoryShipping($testPrintExtra)
+    {
+        // Get fixed pricing from database for combined orders
+        $fixedPricingCategory = \App\Models\ShippingCategory::where('pricing_type', 'fixed')->first();
+        
+        if ($fixedPricingCategory) {
+            $fixedRules = $fixedPricingCategory->rules()->where('is_active', true)->get();
+            
+            $combinedOrderShipping = [
+                'combined_order' => []
+            ];
+            
+            foreach ($fixedRules as $rule) {
+                $combinedOrderShipping['combined_order'][$rule->service] = [
+                    'price' => $rule->price + $testPrintExtra,
+                    'delivery_time' => $rule->delivery_time,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            return $combinedOrderShipping;
+        }
+        
+        // Fallback if no database records found
+        $anyFixedCategory = \App\Models\ShippingCategory::where('pricing_type', 'fixed')->first();
+        
+        if ($anyFixedCategory) {
+            $fixedRules = $anyFixedCategory->rules()->where('is_active', true)->get();
+            
+            $combinedOrderShipping = [
+                'combined_order' => []
+            ];
+            
+            foreach ($fixedRules as $rule) {
+                $combinedOrderShipping['combined_order'][$rule->service] = [
+                    'price' => $rule->price + $testPrintExtra,
+                    'delivery_time' => $rule->delivery_time,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            return $combinedOrderShipping;
+        }
+        
+        // Ultimate fallback if no database records exist at all
+        return [
+            'combined_order' => [
+                'snail_mail' => [
+                    'price' => 22.60 + $testPrintExtra,
+                    'delivery_time' => '5-10 business days',
+                    'note' => 'Combined order - Fixed pricing (fallback)'
+                ],
+                'express' => [
+                    'price' => 31.21 + $testPrintExtra,
+                    'delivery_time' => '1-2 business days',
+                    'note' => 'Combined order - Fixed pricing (fallback)'
+                ]
+            ]
+        ];
+    }
+    
+    /**
+     * Get tier-based category shipping for Photo Print/Scrapbook only orders
+     */
+    private function getTierBasedCategoryShipping($cartItems,$testPrintExtra)
+    {
+        // Calculate total quantity for Photo Print and Scrapbook
+        $totalQuantity = 0;
+        
+        foreach ($cartItems as $item) {
+            $categoryId = $this->getItemCategoryId($item);
+            if ($categoryId == 1 || $categoryId == 4) { // Scrapbook or Photo Prints
+                $totalQuantity += $item['quantity'];
+            }
+        }
+        
+        // Get tier pricing from database for Photo Print and Scrapbook categories
+        $photoPrintCategory = \App\Models\ShippingCategory::where('name', 'photo_prints')->first();
+        $scrapbookCategory = \App\Models\ShippingCategory::where('name', 'scrapbook_page_printing')->first();
+        
+        if ($photoPrintCategory && $scrapbookCategory) {
+            // Get rules from either category (they should have same tier pricing)
+
+            
+            $tierRules = $photoPrintCategory->rules()
+                ->where('is_active', true)
+                ->where('rule_type', 'quantity_based')
+                ->orderBy('priority')
+                ->get();
+            
+            // Determine which tier to use based on quantity
+            $selectedRule = null;
+            $tierNote = '';
+            
+            foreach ($tierRules as $rule) {
+                $condition = $rule->condition;
+                
+                if (strpos($condition, '-') !== false) {
+                    // Range condition like "1-60"
+                    [$min, $max] = explode('-', $condition);
+                    if ($totalQuantity >= (int)$min && $totalQuantity <= (int)$max) {
+                        $selectedRule = $rule;
+                        break;
+                    }
+                } elseif (strpos($condition, '+') !== false) {
+                    // Open-ended condition like "101+"
+                    $min = (int)str_replace('+', '', $condition);
+                    if ($totalQuantity >= $min) {
+                        $selectedRule = $rule;
+                        break;
+                    }
+                }
+            }
+            
+            if ($selectedRule) {
+                $tierNote = $selectedRule->condition . ' prints tier';
+                
+                // Get prices for the selected tier
+                $tierRulesForCondition = $tierRules->where('condition', $selectedRule->condition);
+                
+                $snailRule = $tierRulesForCondition->where('service', 'snail_mail')->first();
+                $expressRule = $tierRulesForCondition->where('service', 'express')->first();
+                
+                $snailPrice = $snailRule ? $snailRule->price : 0;
+                $expressPrice = $expressRule ? $expressRule->price : 0;
+            } else {
+                // Fallback values - try to get from any available tier-based category
+                $anyTierCategory = \App\Models\ShippingCategory::where('pricing_type', 'tier')->first();
+                if ($anyTierCategory) {
+                    $fallbackRules = $anyTierCategory->rules()
+                        ->where('is_active', true)
+                        ->where('rule_type', 'quantity_based')
+                        ->where('condition', '1-60')
+                        ->get();
+                    
+                    $fallbackSnail = $fallbackRules->where('service', 'snail_mail')->first();
+                    $fallbackExpress = $fallbackRules->where('service', 'express')->first();
+                    
+                    $tierNote = '1-60 prints tier (fallback)';
+                    $snailPrice = $fallbackSnail ? $fallbackSnail->price : 15.00;
+                    $expressPrice = $fallbackExpress ? $fallbackExpress->price : 20.00;
+                } else {
+                    $tierNote = '1-60 prints tier (fallback)';
+                    $snailPrice = 15.00;
+                    $expressPrice = 20.00;
+                }
+            }
+        } else {
+            // Fallback values if no database records found - try to get from any available tier-based category
+            $anyTierCategory = \App\Models\ShippingCategory::where('pricing_type', 'tier')->first();
+            if ($anyTierCategory) {
+                $fallbackRules = $anyTierCategory->rules()
+                    ->where('is_active', true)
+                    ->where('rule_type', 'quantity_based')
+                    ->where('condition', '1-60')
+                    ->get();
+                
+                $fallbackSnail = $fallbackRules->where('service', 'snail_mail')->first();
+                $fallbackExpress = $fallbackRules->where('service', 'express')->first();
+                
+                $tierNote = '1-60 prints tier (fallback)';
+                $snailPrice = $fallbackSnail ? $fallbackSnail->price : 15.00;
+                $expressPrice = $fallbackExpress ? $fallbackExpress->price : 20.00;
+            } else {
+                $tierNote = '1-60 prints tier (fallback)';
+                $snailPrice = 15.00;
+                $expressPrice = 20.00;
+            }
+        }
+        
+        // Return as a single combined category instead of separate categories
+        return [
+            'photo_print_scrapbook_combined' => [
+                [
+                    'service' => 'snail_mail',
+                    'price' => $snailPrice + $testPrintExtra,
+                    'delivery_time' => '5-10 business days',
+                    'note' => $tierNote . ' (Combined Photo Print + Scrapbook: ' . $totalQuantity . ' items)'
+                ],
+                [
+                    'service' => 'express',
+                    'price' => $expressPrice + $testPrintExtra,
+                    'delivery_time' => '1-2 business days',
+                    'note' => $tierNote . ' (Combined Photo Print + Scrapbook: ' . $totalQuantity . ' items)'
+                ]
+            ]
+        ];
     }
 
     /**

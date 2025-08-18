@@ -15,8 +15,6 @@ class CartShippingService
     {
         $shippingOptions = [];
         
-
-        
         // Group items by category
         $scrapbookItems = [];
         $canvasItems = [];
@@ -30,11 +28,6 @@ class CartShippingService
         $otherItems = [];
         
         foreach ($cartItems as $item) {
-
-            // if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
-            //     $testPrintItems[] = $item;
-            // }
-            
             // Check if this is a special product type (hand_craft, photo_for_sale, gift_card)
             if (isset($item['product_type'])) {
                 switch ($item['product_type']) {
@@ -53,13 +46,11 @@ class CartShippingService
                         if ($product) {
                             switch ($product->category_id) {
                                 case 1: // Scrapbook page printing
-                                   
                                     if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                         $testPrintItems[] = $item;
                                     } else {
                                         $scrapbookItems[] = $item;
                                     }
-
                                     break;
                                 case 2: // Canvas prints
                                     $canvasItems[] = $item;
@@ -68,7 +59,6 @@ class CartShippingService
                                     $photoEnlargementItems[] = $item;
                                     break;
                                 case 4: // Photo Prints
-                                    // Check if this is a test print item - if so, don't categorize as Photo Prints
                                     if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                         $testPrintItems[] = $item;
                                     } else {
@@ -102,13 +92,11 @@ class CartShippingService
                 if ($product) {
                     switch ($product->category_id) {
                         case 1: // Scrapbook page printing
-
                             if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                 $testPrintItems[] = $item;
                             } else {
                                 $scrapbookItems[] = $item;
                             }
-
                             break;
                         case 2: // Canvas prints
                             $canvasItems[] = $item;
@@ -117,7 +105,6 @@ class CartShippingService
                             $photoEnlargementItems[] = $item;
                             break;
                         case 4: // Photo Prints
-                            // Check if this is a test print item - if so, don't categorize as Photo Prints
                             if (isset($item['is_test_print']) && $item['is_test_print'] == '1') {
                                 $testPrintItems[] = $item;
                             } else {
@@ -146,15 +133,207 @@ class CartShippingService
             }
         }
         
-
+        // NEW LOGIC: Check if this is a combined order or separate order
+        $isCombinedOrder = $this->isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems);
         
-
-        
-        // Calculate Australia Post mixed shipping
-        $shippingOptions = $this->calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems,$testPrintItems);
+        if ($isCombinedOrder) {
+            // Combined order: Always use fixed pricing
+            $shippingOptions = $this->calculateCombinedOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems);
+        } else {
+            // Separate order: Use tier-based pricing for Photo Print and Scrapbook Print
+            $shippingOptions = $this->calculateSeparateOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems);
+        }
         
         // Remove duplicates and ensure only first snail_mail and express options per category
         $shippingOptions = $this->filterShippingOptions($shippingOptions);
+        
+        return $shippingOptions;
+    }
+    
+    /**
+     * Check if this is a combined order (has items from multiple categories)
+     */
+    protected function isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems)
+    {
+        // Check if we have Photo Print and/or Scrapbook items
+        $hasPhotoPrints = !empty($photoPrintsItems);
+        $hasScrapbook = !empty($scrapbookItems);
+        
+        // Check if we have any OTHER categories (not Photo Print or Scrapbook)
+        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($otherItems);
+        
+        // If we have Photo Print and/or Scrapbook AND any other categories, it's a combined order
+        if (($hasPhotoPrints || $hasScrapbook) && $hasOtherCategories) {
+            return true;
+        }
+        
+        // If we have Photo Print and/or Scrapbook ONLY (no other categories), it's NOT a combined order
+        // It will use tier-based pricing instead
+        if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
+            return false;
+        }
+        
+        // For all other cases, count categories normally
+        $categoriesWithItems = 0;
+        if (!empty($scrapbookItems)) $categoriesWithItems++;
+        if (!empty($canvasItems)) $categoriesWithItems++;
+        if (!empty($photoEnlargementItems)) $categoriesWithItems++;
+        if (!empty($photoPrintsItems)) $categoriesWithItems++;
+        if (!empty($postersItems)) $categoriesWithItems++;
+        if (!empty($handCraftItems)) $categoriesWithItems++;
+        if (!empty($photosForSaleItems)) $categoriesWithItems++;
+        if (!empty($giftCardItems)) $categoriesWithItems++;
+        if (!empty($otherItems)) $categoriesWithItems++;
+        
+        // If more than 1 category has items, it's a combined order
+        return $categoriesWithItems > 1;
+    }
+    
+    /**
+     * Calculate shipping for combined orders (always fixed pricing)
+     */
+    protected function calculateCombinedOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems)
+    {
+        $shippingOptions = [];
+        
+        // Get fixed pricing from database for combined orders
+        $fixedPricingCategory = \App\Models\ShippingCategory::where('pricing_type', 'fixed')->first();
+        
+        if ($fixedPricingCategory) {
+            $fixedRules = $fixedPricingCategory->rules()->where('is_active', true)->get();
+            
+            // Add test print shipping if applicable
+            $testPrintShipping = 0;
+            if (!empty($testPrintItems)) {
+                $testPrintQuantity = array_sum(array_column($testPrintItems, 'quantity'));
+                // Get test print shipping from database - use $2 per item
+                $testPrintShipping = 2.00 * $testPrintQuantity;
+            }
+            
+            // Generate shipping options from database
+            foreach ($fixedRules as $rule) {
+                $shippingOptions[] = [
+                    'carrier' => $rule->carrier,
+                    'service' => $rule->service,
+                    'price' => $rule->price + $testPrintShipping,
+                    'delivery_time' => $rule->delivery_time,
+                    'note' => 'Combined order - Fixed pricing' . ($testPrintShipping > 0 ? ' + Test Print' : '')
+                ];
+            }
+        }
+        
+        return $shippingOptions;
+    }
+    
+    /**
+     * Calculate shipping for separate orders (tier-based for Photo Print and Scrapbook Print)
+     */
+    protected function calculateSeparateOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems)
+    {
+        $shippingOptions = [];
+        
+        // Check if this is a Photo Print or Scrapbook Print only order
+        $hasPhotoPrints = !empty($photoPrintsItems);
+        $hasScrapbook = !empty($scrapbookItems);
+        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($otherItems);
+        
+        if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
+            // Photo Print and/or Scrapbook Print only order - use tier-based pricing
+            $totalQuantity = 0;
+            
+            if ($hasPhotoPrints) {
+                $totalQuantity += array_sum(array_column($photoPrintsItems, 'quantity'));
+            }
+            
+            if ($hasScrapbook) {
+                $totalQuantity += array_sum(array_column($scrapbookItems, 'quantity'));
+            }
+            
+            // Calculate tier-based shipping based on combined quantity
+            $tierShipping = $this->calculateCombinedTierShipping($totalQuantity);
+            
+            // Add test print shipping if applicable
+            $testPrintShipping = 0;
+            if (!empty($testPrintItems)) {
+                $testPrintQuantity = array_sum(array_column($testPrintItems, 'quantity'));
+                // Get test print shipping from database - use $2 per item
+                $testPrintShipping = 2.00 * $testPrintQuantity;
+            }
+            
+            foreach ($tierShipping as $option) {
+                $shippingOptions[] = [
+                    'carrier' => $option['carrier'],
+                    'service' => $option['service'],
+                    'price' => $option['price'] + $testPrintShipping,
+                    'delivery_time' => $option['delivery_time'],
+                    'note' => $option['note'] . ' (Combined Photo Print + Scrapbook: ' . $totalQuantity . ' items)' . ($testPrintShipping > 0 ? ' + Test Print' : '')
+                ];
+            }
+        } else {
+            // Other category orders - use fixed pricing
+            $shippingOptions = $this->calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems);
+        }
+        
+        return $shippingOptions;
+    }
+    
+    /**
+     * Calculate combined tier-based shipping for Photo Print and Scrapbook Print
+     */
+    protected function calculateCombinedTierShipping($totalQuantity)
+    {
+        $shippingOptions = [];
+        
+        // Get tier pricing from database for Photo Print and Scrapbook categories
+        $photoPrintCategory = \App\Models\ShippingCategory::where('name', 'photo_prints')->first();
+        $scrapbookCategory = \App\Models\ShippingCategory::where('name', 'scrapbook_page_printing')->first();
+        
+        if ($photoPrintCategory && $scrapbookCategory) {
+            // Get rules from either category (they should have same tier pricing)
+            $tierRules = $photoPrintCategory->rules()
+                ->where('is_active', true)
+                ->where('rule_type', 'quantity_based')
+                ->orderBy('priority')
+                ->get();
+            
+            // Determine which tier to use based on quantity
+            $selectedRule = null;
+            
+            foreach ($tierRules as $rule) {
+                $condition = $rule->condition;
+                
+                if (strpos($condition, '-') !== false) {
+                    // Range condition like "1-60"
+                    [$min, $max] = explode('-', $condition);
+                    if ($totalQuantity >= (int)$min && $totalQuantity <= (int)$max) {
+                        $selectedRule = $rule;
+                        break;
+                    }
+                } elseif (strpos($condition, '+') !== false) {
+                    // Open-ended condition like "101+"
+                    $min = (int)str_replace('+', '', $condition);
+                    if ($totalQuantity >= $min) {
+                        $selectedRule = $rule;
+                        break;
+                    }
+                }
+            }
+            
+            if ($selectedRule) {
+                // Get all rules for the selected tier
+                $tierRules = $tierRules->where('condition', $selectedRule->condition);
+                
+                foreach ($tierRules as $rule) {
+                    $shippingOptions[] = [
+                        'carrier' => $rule->carrier,
+                        'service' => $rule->service,
+                        'price' => $rule->price,
+                        'delivery_time' => $rule->delivery_time,
+                        'note' => $rule->condition . ' prints tier'
+                    ];
+                }
+            }
+        }
         
         return $shippingOptions;
     }
@@ -401,21 +580,12 @@ class CartShippingService
             }
         }
         
-        // Test Print shipping (get from shipping table where is_test_print = 1)
+        // Add test print shipping if applicable
         $testPrintShipping = 0;
-        $hasTestPrint = !empty($testPrintItems);
-        
-        // Count total test print quantity
-        $testPrintQuantity = 0;
-        foreach ($testPrintItems as $item) {
-            $testPrintQuantity += $item['quantity'];
-        }
-        
-        if ($hasTestPrint) {
-            $testPrintShippingRecord = \App\Models\Shipping::where('is_test_print', '1')->first();
-            if ($testPrintShippingRecord) {
-                $testPrintShipping = (float) $testPrintShippingRecord->amount * $testPrintQuantity;
-            }
+        if (!empty($testPrintItems)) {
+            $testPrintQuantity = array_sum(array_column($testPrintItems, 'quantity'));
+            // Get test print shipping from database - use $2 per item
+            $testPrintShipping = 2.00 * $testPrintQuantity;
         }
         
         // Gift Cards have zero shipping (no additional cost)
@@ -424,9 +594,18 @@ class CartShippingService
         // Calculate tier-based shipping for Scrapbook only
         $tierShipping = $this->calculateTierBasedShipping($tierBasedQuantity);
         
-        // Combine tier-based shipping with fixed pricing and test print shipping
+        // Calculate test print shipping
+        $testPrintShipping = 0;
+        if (!empty($testPrintItems)) {
+            $testPrintQuantity = array_sum(array_column($testPrintItems, 'quantity'));
+            // Get test print shipping from database - use $2 per item
+            $testPrintShipping = 2.00 * $testPrintQuantity;
+        }
+        
+        // If we have tier-based items, show tier pricing + fixed pricing + test print shipping
         if (!empty($tierShipping)) {
             foreach ($tierShipping as $option) {
+                // Determine additional shipping for fixed categories
                 $additionalShipping = 0;
                 if ($option['service'] === 'snail_mail') {
                     $additionalShipping = $fixedShippingSnailMail;
@@ -571,23 +750,142 @@ class CartShippingService
             }
         }
 
+        // Check if this is a combined order
+        $isCombinedOrder = $this->isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems);
+
         // Calculate breakdown
         $breakdown = [];
 
+        if ($isCombinedOrder) {
+            // Combined order - use fixed pricing from database
+            $fixedPricingCategory = \App\Models\ShippingCategory::where('pricing_type', 'fixed')->first();
+            
+            if ($fixedPricingCategory) {
+                $fixedRules = $fixedPricingCategory->rules()->where('is_active', true)->get();
+                $selectedRule = $fixedRules->where('service', $selectedService)->first();
+                $selectedPrice = $selectedRule ? $selectedRule->price : 0;
+            } else {
+                // Fallback if no database records found
+                $selectedPrice = ($selectedService === 'snail_mail') ? 22.60 : 31.21;
+            }
+            
+            // Add all categories with their quantities and the fixed shipping price
+            if (!empty($scrapbookItems)) {
+                $breakdown['scrapbook_page_printing'] = [
+                    'quantity' => array_sum(array_column($scrapbookItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            if (!empty($photoPrintsItems)) {
+                $breakdown['photo_prints'] = [
+                    'quantity' => array_sum(array_column($photoPrintsItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            if (!empty($canvasItems)) {
+                $breakdown['canvas'] = [
+                    'quantity' => array_sum(array_column($canvasItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            if (!empty($photoEnlargementItems)) {
+                $breakdown['photo_enlargements'] = [
+                    'quantity' => array_sum(array_column($photoEnlargementItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            if (!empty($postersItems)) {
+                $breakdown['posters'] = [
+                    'quantity' => array_sum(array_column($postersItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            if (!empty($handCraftItems)) {
+                $breakdown['hand_craft'] = [
+                    'quantity' => array_sum(array_column($handCraftItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+            
+            if (!empty($photosForSaleItems)) {
+                $breakdown['photos_for_sale'] = [
+                    'quantity' => array_sum(array_column($photosForSaleItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
+        } else {
+            // Separate order - use tier-based pricing for Photo Print and Scrapbook Print
+            $hasPhotoPrints = !empty($photoPrintsItems);
+            $hasScrapbook = !empty($scrapbookItems);
+            $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($otherItems);
+            
+            if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
+                // Photo Print and/or Scrapbook Print only order - use tier-based pricing
+                $totalQuantity = 0;
+                
+                if ($hasPhotoPrints) {
+                    $totalQuantity += array_sum(array_column($photoPrintsItems, 'quantity'));
+                }
+                
+                if ($hasScrapbook) {
+                    $totalQuantity += array_sum(array_column($scrapbookItems, 'quantity'));
+                }
+                
+                // Calculate tier-based shipping based on combined quantity
+                $tierShipping = $this->calculateCombinedTierShipping($totalQuantity);
+                $selectedShippingOption = collect($tierShipping)->first(function($option) use ($selectedService) {
+                    return $option['service'] === $selectedService;
+                });
+                
+                $selectedPrice = $selectedShippingOption['price'] ?? 0;
+                
+                if ($hasPhotoPrints) {
+                    $breakdown['photo_prints'] = [
+                        'quantity' => array_sum(array_column($photoPrintsItems, 'quantity')),
+                        'shipping' => $selectedPrice,
+                        'service' => $selectedService,
+                        'note' => 'Tier-based pricing (Combined: ' . $totalQuantity . ' items)'
+                    ];
+                }
+                
+                if ($hasScrapbook) {
+                    $breakdown['scrapbook_page_printing'] = [
+                        'quantity' => array_sum(array_column($scrapbookItems, 'quantity')),
+                        'shipping' => $selectedPrice,
+                        'service' => $selectedService,
+                        'note' => 'Tier-based pricing (Combined: ' . $totalQuantity . ' items)'
+                    ];
+                }
+            } else {
+                // Other category orders - use existing logic
         // Scrapbook items
         if (!empty($scrapbookItems)) {
             $quantity = array_sum(array_column($scrapbookItems, 'quantity'));
             $shipping = $this->calculateTierBasedShipping($quantity, 'scrapbook_page_printing');
             
-
-            
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
-                
-
                 
                 $breakdown['scrapbook_page_printing'] = [
                     'quantity' => $quantity,
@@ -602,15 +900,10 @@ class CartShippingService
             $quantity = array_sum(array_column($photoPrintsItems, 'quantity'));
             $shipping = $this->calculateTierBasedShipping($quantity, 'photo_prints');
             
-
-            
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
-                
-
                 
                 $breakdown['photo_prints'] = [
                     'quantity' => $quantity,
@@ -624,7 +917,6 @@ class CartShippingService
         if (!empty($canvasItems)) {
             $shipping = $this->getFixedShippingForCategory('canvas');
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
@@ -641,7 +933,6 @@ class CartShippingService
         if (!empty($photoEnlargementItems)) {
             $shipping = $this->getFixedShippingForCategory('photo_enlargements');
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
@@ -658,7 +949,6 @@ class CartShippingService
         if (!empty($postersItems)) {
             $shipping = $this->getFixedShippingForCategory('posters');
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
@@ -675,7 +965,6 @@ class CartShippingService
         if (!empty($handCraftItems)) {
             $shipping = $this->getFixedShippingForCategory('hand_craft');
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
@@ -692,7 +981,6 @@ class CartShippingService
         if (!empty($photosForSaleItems)) {
             $shipping = $this->getFixedShippingForCategory('photos_for_sale');
             if (!empty($shipping)) {
-                // Find the correct shipping option based on selected service
                 $selectedShippingOption = collect($shipping)->first(function($option) use ($selectedService) {
                     return $option['service'] === $selectedService;
                 });
@@ -702,6 +990,8 @@ class CartShippingService
                     'shipping' => $selectedShippingOption['price'] ?? 0,
                     'service' => $selectedService
                 ];
+                    }
+                }
             }
         }
 

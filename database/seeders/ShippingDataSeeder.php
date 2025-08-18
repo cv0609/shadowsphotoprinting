@@ -16,7 +16,7 @@ class ShippingDataSeeder extends Seeder
         ProductShippingMapping::truncate();
         ShippingCategory::truncate();
 
-        // 1. Scrapbook Page Printing (Tier-based)
+        // 1. Scrapbook Page Printing (Tier-based for separate orders)
         $scrapbookCategory = ShippingCategory::create([
             'name' => 'scrapbook_page_printing',
             'display_name' => 'Scrapbook Page Printing',
@@ -25,13 +25,13 @@ class ShippingDataSeeder extends Seeder
             'is_active' => true
         ]);
 
-        // Scrapbook rules (tier-based)
+        // Scrapbook rules (tier-based) - Updated pricing
         $scrapbookRules = [
             ['condition' => '1-60', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 15.00, 'delivery_time' => '5-10 business days', 'priority' => 1],
             ['condition' => '1-60', 'carrier' => 'auspost', 'service' => 'express', 'price' => 20.00, 'delivery_time' => '1-2 business days', 'priority' => 2],
             ['condition' => '61-100', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 18.40, 'delivery_time' => '5-10 business days', 'priority' => 3],
             ['condition' => '61-100', 'carrier' => 'auspost', 'service' => 'express', 'price' => 22.65, 'delivery_time' => '1-2 business days', 'priority' => 4],
-            ['condition' => '101+', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.15, 'delivery_time' => '5-10 business days', 'priority' => 5],
+            ['condition' => '101+', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.60, 'delivery_time' => '5-10 business days', 'priority' => 5],
             ['condition' => '101+', 'carrier' => 'auspost', 'service' => 'express', 'price' => 30.21, 'delivery_time' => '1-2 business days', 'priority' => 6],
         ];
 
@@ -42,7 +42,7 @@ class ShippingDataSeeder extends Seeder
             ]));
         }
 
-        // 2. Photo Prints (Tier-based) - NEW CATEGORY
+        // 2. Photo Prints (Tier-based for separate orders) - Updated pricing
         $photoPrintsCategory = ShippingCategory::create([
             'name' => 'photo_prints',
             'display_name' => 'Photo Prints',
@@ -51,13 +51,13 @@ class ShippingDataSeeder extends Seeder
             'is_active' => true
         ]);
 
-        // Photo Prints rules (tier-based) - AU Post only
+        // Photo Prints rules (tier-based) - Updated pricing
         $photoPrintsRules = [
             ['condition' => '1-60', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 15.00, 'delivery_time' => '5-10 business days', 'priority' => 1],
             ['condition' => '1-60', 'carrier' => 'auspost', 'service' => 'express', 'price' => 20.00, 'delivery_time' => '1-2 business days', 'priority' => 2],
             ['condition' => '61-100', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 18.40, 'delivery_time' => '5-10 business days', 'priority' => 3],
             ['condition' => '61-100', 'carrier' => 'auspost', 'service' => 'express', 'price' => 22.65, 'delivery_time' => '1-2 business days', 'priority' => 4],
-            ['condition' => '101+', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.15, 'delivery_time' => '5-10 business days', 'priority' => 5],
+            ['condition' => '101+', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.60, 'delivery_time' => '5-10 business days', 'priority' => 5],
             ['condition' => '101+', 'carrier' => 'auspost', 'service' => 'express', 'price' => 30.21, 'delivery_time' => '1-2 business days', 'priority' => 6],
         ];
 
@@ -101,8 +101,8 @@ class ShippingDataSeeder extends Seeder
 
         // Photo Enlargement rules (fixed pricing)
         $photoEnlargementRules = [
-            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 20.00, 'delivery_time' => '5-10 business days', 'priority' => 1],
-            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 50.00, 'delivery_time' => '1-2 business days', 'priority' => 2],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.60, 'delivery_time' => '5-10 business days', 'priority' => 1],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 31.21, 'delivery_time' => '1-2 business days', 'priority' => 2],
         ];
 
         foreach ($photoEnlargementRules as $rule) {
@@ -112,7 +112,7 @@ class ShippingDataSeeder extends Seeder
             ]));
         }
 
-        // 5. Posters (Fixed pricing) - NEW CATEGORY
+        // 5. Posters (Fixed pricing)
         $postersCategory = ShippingCategory::create([
             'name' => 'posters',
             'display_name' => 'Posters',
@@ -123,8 +123,8 @@ class ShippingDataSeeder extends Seeder
 
         // Posters rules (fixed pricing)
         $postersRules = [
-            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 20.00, 'delivery_time' => '5-10 business days', 'priority' => 1],
-            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 50.00, 'delivery_time' => '1-2 business days', 'priority' => 2],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.60, 'delivery_time' => '5-10 business days', 'priority' => 1],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 31.21, 'delivery_time' => '1-2 business days', 'priority' => 2],
         ];
 
         foreach ($postersRules as $rule) {
@@ -134,7 +134,7 @@ class ShippingDataSeeder extends Seeder
             ]));
         }
 
-        // 6. Hand Craft (Fixed pricing) - NEW CATEGORY
+        // 6. Hand Craft (Fixed pricing)
         $handCraftCategory = ShippingCategory::create([
             'name' => 'hand_craft',
             'display_name' => 'Hand Craft',
@@ -145,8 +145,8 @@ class ShippingDataSeeder extends Seeder
 
         // Hand Craft rules (fixed pricing)
         $handCraftRules = [
-            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 15.00, 'delivery_time' => '5-10 business days', 'priority' => 1],
-            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 22.60, 'delivery_time' => '1-2 business days', 'priority' => 2],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.60, 'delivery_time' => '5-10 business days', 'priority' => 1],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 31.21, 'delivery_time' => '1-2 business days', 'priority' => 2],
         ];
 
         foreach ($handCraftRules as $rule) {
@@ -156,7 +156,7 @@ class ShippingDataSeeder extends Seeder
             ]));
         }
 
-        // 7. Photos for Sale (Fixed pricing) - NEW CATEGORY
+        // 7. Photos for Sale (Fixed pricing)
         $photosForSaleCategory = ShippingCategory::create([
             'name' => 'photos_for_sale',
             'display_name' => 'Photos for Sale',
@@ -178,7 +178,7 @@ class ShippingDataSeeder extends Seeder
             ]));
         }
 
-        // 8. Gift Card (Zero shipping) - NEW CATEGORY
+        // 8. Gift Card (Zero shipping)
         $giftCardCategory = ShippingCategory::create([
             'name' => 'gift_card',
             'display_name' => 'Gift Card',
@@ -209,7 +209,7 @@ class ShippingDataSeeder extends Seeder
             ['product_category_id' => 5, 'shipping_category_id' => $postersCategory->id], // Posters
             ['product_category_id' => 6, 'shipping_category_id' => $handCraftCategory->id], // Hand Craft
             ['product_category_id' => 7, 'shipping_category_id' => $photosForSaleCategory->id], // Photos for Sale
-            ['product_category_id' => 8, 'shipping_category_id' => $giftCardCategory->id], // Gift Card - NEW MAPPING
+            ['product_category_id' => 8, 'shipping_category_id' => $giftCardCategory->id], // Gift Card
         ];
 
         foreach ($mappings as $mapping) {
@@ -217,7 +217,12 @@ class ShippingDataSeeder extends Seeder
         }
 
         $this->command->info('Shipping data seeded successfully!');
+        $this->command->info('Updated pricing structure:');
+        $this->command->info('- Combined orders: Fixed pricing ($22.60 snail mail, $31.21 express)');
+        $this->command->info('- Separate Photo Print/Scrapbook orders: Tier-based pricing based on combined quantity');
+        $this->command->info('  * 1-60 prints: $15.00 snail mail, $20.00 express');
+        $this->command->info('  * 61-100 prints: $18.40 snail mail, $22.65 express');
+        $this->command->info('  * 101+ prints: $22.60 snail mail, $30.21 express');
         $this->command->info('Created shipping categories: Scrapbook Page Printing, Photo Prints, Canvas, Photo Enlargements, Posters, Hand Craft, Photos for Sale, Gift Card');
-        $this->command->info('Created rules for each category with appropriate pricing and carriers');
     }
 } 
