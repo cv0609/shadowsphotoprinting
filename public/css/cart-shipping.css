@@ -1,0 +1,465 @@
+/* Cart Shipping Styles - Modern Compact Design */
+
+/* Compact shipping section table row */
+.shipping-section {
+    border: none !important;
+}
+
+.shipping-section th,
+.shipping-section td {
+    padding: 2px 6px !important;
+    vertical-align: top;
+    border: none !important;
+}
+
+.shipping-section th {
+    width: 1px;
+    padding-left: 0 !important;
+}
+
+.shipping-section td {
+    padding-left: 0 !important;
+}
+
+.shipping-options {
+    margin: 6px 0;
+    padding: 6px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 11px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.shipping-title {
+    margin: 0 0 4px 0;
+    color: #333;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 3px;
+}
+
+.shipping-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 6px;
+    margin-bottom: 2px;
+    border: 1px solid #f0f0f0;
+    border-radius: 3px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 10px;
+    min-height: 24px;
+}
+
+.shipping-option:last-child {
+    margin-bottom: 0;
+}
+
+.shipping-option:hover {
+    border-color: #16a085;
+    background: #f8fffe;
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.1);
+}
+
+.shipping-option.selected {
+    border-color: #16a085;
+    background: #e8f5f2;
+    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+}
+
+.shipping-option-content {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.shipping-option input[type="radio"] {
+    margin: 0;
+    cursor: pointer;
+    transform: scale(0.7);
+    accent-color: #16a085;
+}
+
+.shipping-name {
+    color: #333;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.shipping-price {
+    font-weight: 700;
+    color: #16a085;
+    font-size: 11px;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* Cart totals with shipping - Compact */
+.cart-totals {
+    margin-top: 10px;
+    padding: 8px;
+    background: #fafafa;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* Override main CSS cart totals styles for compact design */
+.cart_totals h2 {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    padding: 6px 4px !important;
+    margin-bottom: 8px !important;
+}
+
+.cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 11px;
+}
+
+.cart-total-row:last-child {
+    border-bottom: none;
+    font-weight: 600;
+    font-size: 13px;
+    color: #16a085;
+}
+
+/* Compact cart design */
+.cart-summary h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.cart-collaterals h2 {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.cart_totals table {
+    font-size: 12px;
+}
+
+.cart_totals th {
+    font-weight: 600;
+    padding: 4px 0;
+    font-size: 11px;
+}
+
+.cart_totals td {
+    padding: 4px 0;
+    text-align: right;
+    font-size: 11px;
+}
+
+.shipping-address {
+    font-size: 11px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.change-address {
+    font-size: 11px;
+    color: #16a085;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.calculate-shipping {
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+.calculate-shipping select,
+.calculate-shipping input {
+    font-size: 11px;
+    padding: 4px 6px;
+    margin: 2px 0;
+}
+
+.update-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin-top: 5px;
+}
+
+/* Loading state */
+.shipping-loading {
+    text-align: center;
+    padding: 12px;
+    color: #666;
+    font-size: 10px;
+}
+
+.shipping-loading::after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    border-top-color: #16a085;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 6px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.shipping-error {
+    padding: 8px;
+    background: #ffe6e6;
+    border: 1px solid #ff9999;
+    border-radius: 3px;
+    color: #cc0000;
+    margin: 3px 0;
+    font-size: 9px;
+}
+
+/* Category-wise Shipping Styles */
+.category-shipping-container {
+    margin-top: 5px;
+}
+
+.category-shipping-container h3 {
+    display: none; /* Remove the "Choose Shipping Options by Category:" text */
+}
+
+.category-shipping-group {
+    margin-bottom: 3px;
+    padding: 3px 6px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 24px;
+}
+
+.category-shipping-group h4 {
+    margin: 0;
+    color: #333;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    border: none;
+    padding: 0;
+    flex: 1;
+    line-height: 1.2;
+}
+
+.shipping-options {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin: 6px 0;
+    padding: 6px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 11px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.shipping-options.text-center {
+    justify-content: center;
+}
+
+.shipping-option {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    margin: 0;
+    min-height: 28px;
+    user-select: none;
+}
+
+.shipping-option:hover {
+    border-color: #16a085;
+    background: #f8fffe;
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.1);
+}
+
+.shipping-option input[type="radio"] {
+    margin-right: 6px;
+    accent-color: #16a085;
+    transform: scale(0.9);
+    cursor: pointer;
+}
+
+.shipping-option input[type="radio"]:checked + label {
+    color: #16a085;
+    font-weight: 600;
+}
+
+.shipping-option input[type="radio"]:checked {
+    ~ .shipping-option {
+        border-color: #16a085;
+        background: #e8f5f2;
+        box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+    }
+}
+
+.shipping-option.selected {
+    border-color: #16a085;
+    background: #e8f5f2;
+    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+}
+
+.shipping-option label {
+    display: flex;
+    align-items: center;
+    width: auto;
+    cursor: pointer;
+    margin: 0;
+    font-size: 11px;
+    padding: 0;
+    color: #333;
+    line-height: 1.2;
+    gap: 4px;
+}
+
+.service-name {
+    font-weight: 500;
+    color: #333;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-right: 4px;
+    font-size: 11px;
+}
+
+.service-price {
+    font-weight: 700;
+    color: #16a085;
+    font-size: 12px;
+}
+
+.delivery-time {
+    display: none;
+}
+
+/* Compact shipping options container */
+#category-shipping-options {
+    margin: 8px 0;
+    padding: 8px;
+    /* background: #fafafa; */
+    border-radius: 6px;
+}
+
+#category-shipping-options h3 {
+    margin: 0 0 8px 0;
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#category-shipping-options p {
+    margin: 0 0 12px 0;
+    color: #000;
+    font-size: 12px;
+}
+
+/* Compact total shipping cost */
+#total-shipping-cost {
+    margin-top: 4px;
+    padding: 3px 6px;
+    background: #e8f5f3;
+    border: 1px solid #16a085;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 10px;
+    color: #000;
+}
+
+/* Total shipping text styling */
+.test-total-display {
+    color: #000 !important;
+}
+
+.test-total-label,
+.test-total-amount {
+    color: #FFC205 !important;
+}
+.choose-prefered-option-heading{
+    color: #FFC205 !important;
+}
+
+#total-shipping-cost strong {
+    color: #16a085;
+    font-size: 11px;
+}
+
+.shipping-loading {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 2px;
+    font-size: 9px;
+}
+
+.shipping-error {
+    text-align: center;
+    color: #d9534f;
+    font-weight: 500;
+    padding: 2px;
+    font-size: 9px;
+}
+
+.no-shipping {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 2px;
+    font-size: 9px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .shipping-option {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 6px;
+    }
+    
+    .shipping-option-content {
+        width: 100%;
+    }
+    
+    .shipping-price {
+        align-self: flex-end;
+        margin-top: 2px;
+    }
+
+    .shipping-option label {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .service-price {
+        align-self: flex-end;
+    }
+} 

@@ -278,12 +278,12 @@
 
                                         @if($shipping->status == "1" && $order_type != 1)
                                         <tr>
-                                            <th>Shipping</th>
+                                            <th>Shipping Charge</th>
                                             <td>
                                                 <ul>
                                                     <li>
                                                         <input type="hidden" data-index="0">
-                                                        <label>Flat rate:
+                                                        <label>
                                                             <span><bdi><span>$</span>{{ number_format($CartTotal['shippingCharge'],2) }}</bdi></span>
                                                         </label>
                                                        

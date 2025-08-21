@@ -25,6 +25,8 @@ use App\Http\Controllers\admin\NewsletterController;
 use App\Http\Controllers\admin\SalePopupController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmbassadorController;
+use App\Http\Controllers\ShippingController as FrontendShippingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -288,5 +290,48 @@ Route::prefix('afterpay')->group(function () {
     Route::get('/order/success', [PaymentController::class, 'orderSuccess'])->name('order.success');
 });
 
+// Cart Shipping Routes (Re-added)
+Route::prefix('cart-shipping')->group(function () {
+    Route::post('/calculate', [FrontendShippingController::class, 'calculateShipping'])->name('cart-shipping.calculate');
+Route::post('/calculate-per-category', [FrontendShippingController::class, 'calculateShippingPerCategory'])->name('cart-shipping.calculate-per-category');
+Route::post('/calculate-total-shipping', [FrontendShippingController::class, 'calculateTotalShipping'])->name('cart-shipping.calculate-total');
+Route::post('/save-shipping-session', [FrontendShippingController::class, 'saveShippingSession'])->name('cart-shipping.save-session');
+Route::post('/clear-shipping-session', [FrontendShippingController::class, 'clearShippingSession'])->name('cart-shipping.clear-session');
+    Route::post('/quantity-options', [FrontendShippingController::class, 'getShippingForQuantity'])->name('cart-shipping.quantity-options');
+    Route::get('/tiers', [FrontendShippingController::class, 'getShippingTiers'])->name('cart-shipping.tiers');
+    Route::post('/update-selection', [FrontendShippingController::class, 'updateShippingSelection'])->name('cart-shipping.update-selection');
+    Route::post('/clear-selection', [FrontendShippingController::class, 'clearShippingSelection'])->name('cart-shipping.clear-selection');
+    Route::get('/get-session-shipping', [FrontendShippingController::class, 'getSessionShipping'])->name('cart-shipping.get-session');
+    Route::get('/get-cart-items', [FrontendShippingController::class, 'getCartItems'])->name('cart-shipping.get-cart-items');
+});
+
+// Cart total route
+Route::get('/cart/get-updated-total', [CartController::class, 'getUpdatedTotal'])->name('cart.get-updated-total');
+
+Route::get('/test-cart', function() {
+    if (\Illuminate\Support\Facades\Auth::check()) {
+        $cart = \App\Models\Cart::where('user_id', \Illuminate\Support\Facades\Auth::user()->id)->with('items.product')->first();
+    } else {
+        $cart = \App\Models\Cart::where('session_id', \Illuminate\Support\Facades\Session::getId())->with('items.product')->first();
+    }
+    
+    return response()->json([
+        'cart_exists' => !empty($cart),
+        'items_count' => $cart ? $cart->items->count() : 0,
+        'items' => $cart ? $cart->items->map(function($item) {
+            return [
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'product_type' => $item->product_type,
+                'is_test_print' => $item->is_test_print
+            ];
+        }) : []
+    ]);
+});
+
+Route::get('/more-info', [BasePagesController::class, 'moreInfo'])->name('more-info');
+
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
+
+

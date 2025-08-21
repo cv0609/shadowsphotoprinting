@@ -32,14 +32,12 @@ $CartService = app(App\Services\CartService::class);
                             </div>
                             <table cellspacing="0">
                                 <thead>
-                                    <th>
-                                        <tr>
-                                            <th colspan="3" class="product-name">Product</th>
-                                            <th class="product-price">Price</th>
-                                            <th class="product-quantity">Quantity</th>
-                                            <th class="product-subtotal">Subtotal</th>
-                                        </tr>
-                                    </th>
+                                    <tr>
+                                        <th colspan="3" class="product-name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Subtotal</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cart->items as $item)
@@ -48,7 +46,9 @@ $CartService = app(App\Services\CartService::class);
                                     $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
                                     $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
                                     ?>
-                                    <tr>
+                                    <tr data-product-id="{{ $item->product_id }}" 
+                                        data-product-type="{{ $item->product_type }}" 
+                                        data-is-test-print="{{ $item->is_test_print ?? '0' }}">
                                         <td class="product-remove">
                                             <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}"
                                                 onclick="return confirm('Are you sure!')">×</a>
@@ -321,9 +321,19 @@ $CartService = app(App\Services\CartService::class);
 
                                         @if($shipping->status == "1")
                                         <tr class="shipping-section">
-                                            <th>Shipping</th>
+                                            {{-- <th></th> --}}
                                             <td>
+                                                <!-- Category-wise Shipping Calculator -->
+                                                <div id="category-shipping-options">
+                                                    <div class="shipping-loading">Calculating shipping options...</div>
+                                                </div>
+                                                
+                                                <!-- Total Shipping Cost -->
+                                                {{-- <div id="total-shipping-cost" style="display: none;">
+                                                    <strong>Total Shipping: <span id="total-shipping-amount">${{ number_format($CartTotal['shippingCharge'],2) }}</span></strong>
+                                                </div> --}}
 
+                                                {{-- Commented out old flat rate shipping
                                                 @if(Session::has('billing_details'))
                                                 <span class="flat-rate"> Flat rate:
                                                     ${{ number_format($CartTotal['shippingCharge'],2) }}</span>
@@ -333,17 +343,23 @@ $CartService = app(App\Services\CartService::class);
                                                         <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>.
                                                     </p>
                                                 </p>
+                                                @endif
+                                                --}}
+
+                                                {{-- @if(Session::has('billing_details'))
+                                                <p class="shipping-address">
+                                                    Shipping to
+                                                    <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>
+                                                </p>
 
                                                 <form action="{{ route('billing-details') }}"
                                                     class="change-calculate-form" method="POST">
                                                     @csrf
                                                     <a class="change-address calculat-shipping"
-                                                        id="change-address">Change
-                                                        address</a>
+                                                        id="change-address">Change address</a>
                                                     <div class="calculate-shipping">
                                                         <select class="form-control" id="country" name="country">
                                                             <option selected>{{ $countries->name }}</option>
-
                                                         </select>
 
                                                         <select class="form-control" id="state" name="state" required>
@@ -353,7 +369,6 @@ $CartService = app(App\Services\CartService::class);
                                                                 <?= ($state->id ==  Session::get('billing_details')['state_id'] ) ? 'selected' : '' ?>>
                                                                 {{ $state->name }}</option>
                                                             @endforeach
-
                                                         </select>
                                                         <p class="form-row">
                                                             <input type="text" name="city" placeholder="city"
@@ -370,11 +385,10 @@ $CartService = app(App\Services\CartService::class);
                                                             <button type="submit" class="update-btn">Update</button>
                                                         </p>
                                                     </div>
-
                                                 </form>
-                                                @endif
+                                                @endif --}}
 
-                                                @if(!Session::has('billing_details'))
+                                                {{-- @if(!Session::has('billing_details'))
                                                 <p class="woocommerce-shipping-destination">
                                                     Shipping options will be updated during checkout. </p>
 
@@ -387,15 +401,12 @@ $CartService = app(App\Services\CartService::class);
                                                         <select class="form-control" id="country" name="country">
                                                             <option value="{{ $countries->id }}" selected>
                                                                 {{ $countries->name }}</option>
-
                                                         </select>
                                                         <select class="form-control" id="state" name="state" required>
                                                             <option value="">State</option>
                                                             @foreach ($countries->states as $state)
                                                             <option value="{{ $state->id }}">{{ $state->name }}</option>
-
                                                             @endforeach
-
                                                         </select>
                                                         <p class="form-row">
                                                             <input type="text" name="city" placeholder="city" required>
@@ -409,14 +420,24 @@ $CartService = app(App\Services\CartService::class);
                                                         </p>
                                                     </div>
                                                 </form>
-                                                @endif
+                                                @endif --}}
                                             </td>
                                         </tr>
                                         @endif
+                                        
+                                        <!-- Shipping Cost Row -->
+                                        <tr class="shipping-cost-row" id="shipping-cost-row" style="display: none;">
+                                            <th>Shipping</th>
+                                            <td data-title="Shipping">
+                                                <span id="shipping-cost">$0.00</span>
+                                            </td>
+                                        </tr>
+                                        
                                         <tr class="order-total">
                                             <th>Total</th>
                                             <td data-title="Total">
-                                                <strong><span class="cart-total"><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
+                                                
+                                                <strong><span class="cart-total" id="cart-total" data-subtotal="{{ $CartTotal['subtotal'] }}"><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
                                                 {{-- <small class="includes_tax">(includes
                                             <span><span>$</span>0.03</span>
                                             GST)</small> --}}
@@ -465,6 +486,9 @@ $CartService = app(App\Services\CartService::class);
 @endsection
 
 @section('scripts')
+<!-- Include shipping calculator styles -->
+<link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}">
+
 <script>
     $("#apply_coupon").on('click', function () {
         $("#coupon_code").removeClass('validator');
@@ -491,15 +515,21 @@ $CartService = app(App\Services\CartService::class);
     })
 </script>
 
+<!-- Include category-wise shipping calculator script -->
+<script src="{{ asset('js/category-shipping.js') }}"></script>
+
 <script>
-    $(document).ready(function () {    
+    $(document).ready(function () {
     
     function updateShippingAndTotal(orderType) {
-
         var shutterPoint = $("input[name='shutter_point']:checked").val(); // Get selected value
 
-        let baseTotal = parseFloat("{{ $CartTotal['total'] }}"); // Base total
-        let shippingCost = parseFloat("{{ $CartTotal['shippingCharge'] }}"); // Shipping cost
+        let baseSubtotal = parseFloat("{{ $CartTotal['subtotal'] }}"); // Base subtotal without shipping
+        let currentShippingCost = parseFloat($('#shipping-cost').text().replace('$', '') || 0);
+
+        console.log('=== UPDATE SHIPPING AND TOTAL ===');
+        console.log('baseSubtotal', baseSubtotal);
+        console.log('currentShippingCost', currentShippingCost);
 
         @if(Auth::check() && !empty(Auth::user()) &&  Auth::user()->role == 'affiliate')
           let commission = parseFloat("{{$affiliate_sales->total_commission}}");
@@ -510,19 +540,36 @@ $CartService = app(App\Services\CartService::class);
         @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
            if($("input[name='shutter_point']:checked").val() === '1')
            {
-            baseTotal = baseTotal - commission;
+            baseSubtotal = baseSubtotal - commission;
            }
         @endif
 
         if (orderType == 1) { 
             $(".shipping-section").hide(); // Hide shipping section
-            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal - shippingCost).toFixed(2)}</bdi>`);
-            console.log(baseTotal - shippingCost,'baseTotal');
+            $(".cart-total").html(`<bdi><span>$</span>${(baseSubtotal).toFixed(2)}</bdi>`);
+            console.log('Pickup selected - total without shipping:', baseSubtotal);
+            
+            // Sync category shipping calculator with the new total
+            if (window.categoryShippingCalculator) {
+                window.categoryShippingCalculator.syncWithExternalTotal();
+            }
         } else {
             $(".shipping-section").show(); // Show shipping section
-            $(".cart-total").html(`<bdi><span>$</span>${(baseTotal).toFixed(2)}</bdi>`);
-            console.log(baseTotal+shippingCost,'baseTotalss');
+            // Use the category shipping calculator's total if available
+            if (window.categoryShippingCalculator && window.categoryShippingCalculator.currentTotal) {
+                $(".cart-total").html(`<bdi><span>$</span>${window.categoryShippingCalculator.currentTotal.toFixed(2)}</bdi>`);
+                console.log('Shipping selected - using category shipping total:', window.categoryShippingCalculator.currentTotal);
+            } else {
+                $(".cart-total").html(`<bdi><span>$</span>${(baseSubtotal + currentShippingCost).toFixed(2)}</bdi>`);
+                console.log('Shipping selected - fallback total with shipping:', baseSubtotal + currentShippingCost);
+            }
+            
+            // Sync category shipping calculator with the new total
+            if (window.categoryShippingCalculator) {
+                window.categoryShippingCalculator.syncWithExternalTotal();
+            }
         }
+        console.log('=== END UPDATE SHIPPING AND TOTAL ===');
     }
 
     let orderType = {{$order_type}}; 
@@ -540,6 +587,21 @@ $CartService = app(App\Services\CartService::class);
                 _token: "{{ csrf_token() }}", 
             },
             success: function (response) {
+                // If pickup is selected, clear shipping selection
+                if (orderType == 1) {
+                    // Clear shipping selection from server
+                    if (window.categoryShippingCalculator) {
+                        // Clear shipping session
+                        $.ajax({
+                            url: '/cart-shipping/clear-shipping-selection',
+                            method: 'POST',
+                            data: {
+                                '_token': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                    }
+                }
+                
                 updateShippingAndTotal(response.order_type);
             },
             error: function (xhr, status, error) {
@@ -603,52 +665,53 @@ $CartService = app(App\Services\CartService::class);
 </script>
 
 <script>
-    $("#update_cart").on('click', function () {
-        $('#qty-validation').addClass('d-none');
-        var data = [];
-        $("input[name='product_quantity[]']").each(function (i, v) {
-            if ($(v).val() > 0) {
-                data.push({
-                    'quantity': $(v).val(),
-                    'rowId': $(v).data('row'),
-                    'product_type': $(v).data('product_type'),
-                    'product_id': $(v).data('product_id'),
-                    'is_test_print': $(v).data('is_test_print')
-                })
+    $(document).ready(function () {
+        $("#update_cart").on('click', function () {
+            $('#qty-validation').addClass('d-none');
+            var data = [];
+            $("input[name='product_quantity[]']").each(function (i, v) {
+                if ($(v).val() > 0) {
+                    data.push({
+                        'quantity': $(v).val(),
+                        'rowId': $(v).data('row'),
+                        'product_type': $(v).data('product_type'),
+                        'product_id': $(v).data('product_id'),
+                        'is_test_print': $(v).data('is_test_print')
+                    })
 
-            } else {
-                $(this).addClass('validator');
-                $('#qty-validation').removeClass('d-none');
-                $('#qty-validation p').text('Please enter quantity equal to or more then 1.');
-                return false;
-            }
-
-        });
-        $.post("{{ route('update-cart') }}", {
-                data: data,
-                "_token": "{{ csrf_token() }}"
-            },
-            function (data, status) {
-                if (data.error == true) {
-                    console.log(data.message);
-                    $('#qty-validation').removeClass('d-none');
-                    $('#qty-validation p').text(data.message);
-                    return false;
                 } else {
-                    location.reload();
+                    $(this).addClass('validator');
+                    $('#qty-validation').removeClass('d-none');
+                    $('#qty-validation p').text('Please enter quantity equal to or more then 1.');
+                    return false;
                 }
+
             });
-    })
+            $.post("{{ route('update-cart') }}", {
+                    data: data,
+                    "_token": "{{ csrf_token() }}"
+                },
+                function (data, status) {
+                    if (data.error == true) {
+                        console.log(data.message);
+                        $('#qty-validation').removeClass('d-none');
+                        $('#qty-validation p').text(data.message);
+                        return false;
+                    } else {
+                        location.reload();
+                    }
+                });
+        })
 
-    $(".product-img").on('click', function () {
-        $("#modal-img").attr('src', $(this).children('img').attr('data-src'));
-        $("#ImgViewer").modal('show');
+        $(".product-img").on('click', function () {
+            $("#modal-img").attr('src', $(this).children('img').attr('data-src'));
+            $("#ImgViewer").modal('show');
+        });
+
+        $("#modal-close").on('click', function () {
+            $("#ImgViewer").modal('hide');
+        })
     });
-
-    $("#modal-close").on('click', function () {
-        $("#ImgViewer").modal('hide');
-    })
-
 </script>
 
 @endsection
