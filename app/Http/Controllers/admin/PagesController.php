@@ -79,7 +79,7 @@ class PagesController extends Controller
             $page = Page::where(['id' => $page_id])->first();
 
             $page_fields_data = read_json(strtolower($page->slug) . '.json');
-
+            
             $sections = ($page_fields_data->sections);
             $this->flie_upload_path = config($page_fields_data->upload_pointer);
 
