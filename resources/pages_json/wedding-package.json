@@ -1,0 +1,43 @@
+{
+    "title": "wedding-package",
+    "name": "wedding-package",
+    "upload_pointer": "file-upload-paths.weddingPage",
+    "sections": [
+        {
+            "title": "meta_data",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "meta_title",
+					"type": "text",
+					"required": false,
+					"name": "meta_title"
+				},
+				{
+					"title": "meta_description",
+					"type": "text",
+					"required": false,
+					"name": "meta_description"
+				}
+            ]
+        },
+        {
+            "title": "wedding_banner",
+            "layout_type": "row",
+            "fields": [
+                {
+                    "title": "wedding_banner",
+                    "type": "images",
+                    "required": true,
+                    "name": "header_banner"
+                },
+                {
+                    "title": "wedding_banner_title",
+                    "type": "text",
+                    "required": true,
+                    "name": "header_title"
+                }
+            ]
+        }
+    ]
+}
