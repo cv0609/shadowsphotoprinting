@@ -386,7 +386,7 @@ class CartService
             if ($coupon->use_limit === null || $coupon->used < $coupon->use_limit) {
                 // \Log::info($coupon->used);    
                 // \Log::info($coupon->use_limit);    
-                $coupon->used++;
+                // $coupon->used++;
                 $coupon->save();
 
                 // Store coupon details in the session
