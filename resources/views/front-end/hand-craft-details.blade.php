@@ -142,7 +142,7 @@
 
                                 @if($productDetails->sold == 1)
                                     <div class="sold-message">
-                                        <h3 class="text-danger">This item is SOLD</h3>
+                                        <h3 class="text-danger">This item is SOLD OUT</h3>
                                         <p>This product is no longer available for purchase.</p>
                                     </div>
                                 @else
@@ -207,7 +207,7 @@
                                 @endforeach
                                 @if($item->sold == 1)
                                 <div class="sold-overlay">
-                                    <span class="sold-label">SOLD</span>
+                                    <span class="sold-label">SOLD OUT</span>
                                 </div>
                                 @endif
                                 <div class="onsale">
