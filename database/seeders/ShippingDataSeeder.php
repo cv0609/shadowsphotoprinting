@@ -200,6 +200,28 @@ class ShippingDataSeeder extends Seeder
             ]));
         }
 
+        // 9. Wedding Package (Fixed pricing)
+        $weddingPackageCategory = ShippingCategory::create([
+            'name' => 'wedding_package',
+            'display_name' => 'Wedding Package',
+            'pricing_type' => 'fixed',
+            'carriers' => ['auspost'],
+            'is_active' => true
+        ]);
+
+        // Wedding Package rules (fixed pricing)
+        $weddingPackageRules = [
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'snail_mail', 'price' => 22.60, 'delivery_time' => '5-10 business days', 'priority' => 1],
+            ['condition' => 'fixed', 'carrier' => 'auspost', 'service' => 'express', 'price' => 31.21, 'delivery_time' => '1-2 business days', 'priority' => 2],
+        ];
+
+        foreach ($weddingPackageRules as $rule) {
+            ShippingRule::create(array_merge($rule, [
+                'shipping_category_id' => $weddingPackageCategory->id,
+                'rule_type' => 'fixed'
+            ]));
+        }
+
         // Product Category Mappings
         $mappings = [
             ['product_category_id' => 1, 'shipping_category_id' => $scrapbookCategory->id], // Scrapbook
@@ -210,6 +232,7 @@ class ShippingDataSeeder extends Seeder
             ['product_category_id' => 6, 'shipping_category_id' => $handCraftCategory->id], // Hand Craft
             ['product_category_id' => 7, 'shipping_category_id' => $photosForSaleCategory->id], // Photos for Sale
             ['product_category_id' => 8, 'shipping_category_id' => $giftCardCategory->id], // Gift Card
+            ['product_category_id' => 20, 'shipping_category_id' => $weddingPackageCategory->id], // Wedding Package
         ];
 
         foreach ($mappings as $mapping) {
@@ -223,6 +246,6 @@ class ShippingDataSeeder extends Seeder
         $this->command->info('  * 1-60 prints: $15.00 snail mail, $20.00 express');
         $this->command->info('  * 61-100 prints: $18.40 snail mail, $22.65 express');
         $this->command->info('  * 101+ prints: $22.60 snail mail, $30.21 express');
-        $this->command->info('Created shipping categories: Scrapbook Page Printing, Photo Prints, Canvas, Photo Enlargements, Posters, Hand Craft, Photos for Sale, Gift Card');
+        $this->command->info('Created shipping categories: Scrapbook Page Printing, Photo Prints, Canvas, Photo Enlargements, Posters, Hand Craft, Photos for Sale, Gift Card, Wedding Package');
     }
 } 

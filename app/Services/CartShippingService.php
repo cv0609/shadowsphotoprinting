@@ -24,6 +24,7 @@ class CartShippingService
         $handCraftItems = [];
         $photosForSaleItems = [];
         $giftCardItems = [];
+        $weddingPackageItems = [];
         $testPrintItems = [];
         $otherItems = [];
         
@@ -71,6 +72,9 @@ class CartShippingService
                                 case 6: // Gift card
                                     $giftCardItems[] = $item;
                                     break;
+                                case 20: // Wedding Package
+                                    $weddingPackageItems[] = $item;
+                                    break;
                                 case 14: // Hand Craft
                                     $handCraftItems[] = $item;
                                     break;
@@ -117,6 +121,9 @@ class CartShippingService
                         case 6: // Gift card
                             $giftCardItems[] = $item;
                             break;
+                        case 20: // Wedding Package
+                            $weddingPackageItems[] = $item;
+                            break;
                         case 14: // Hand Craft
                             $handCraftItems[] = $item;
                             break;
@@ -134,14 +141,14 @@ class CartShippingService
         }
         
         // NEW LOGIC: Check if this is a combined order or separate order
-        $isCombinedOrder = $this->isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems);
+        $isCombinedOrder = $this->isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems);
         
         if ($isCombinedOrder) {
             // Combined order: Always use fixed pricing
-            $shippingOptions = $this->calculateCombinedOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems);
+            $shippingOptions = $this->calculateCombinedOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems, $testPrintItems);
         } else {
             // Separate order: Use tier-based pricing for Photo Print and Scrapbook Print
-            $shippingOptions = $this->calculateSeparateOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems);
+            $shippingOptions = $this->calculateSeparateOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems, $testPrintItems);
         }
         
         // Remove duplicates and ensure only first snail_mail and express options per category
@@ -153,14 +160,14 @@ class CartShippingService
     /**
      * Check if this is a combined order (has items from multiple categories)
      */
-    protected function isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems)
+    protected function isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems)
     {
         // Check if we have Photo Print and/or Scrapbook items
         $hasPhotoPrints = !empty($photoPrintsItems);
         $hasScrapbook = !empty($scrapbookItems);
         
         // Check if we have any OTHER categories (not Photo Print or Scrapbook)
-        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($otherItems);
+        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($weddingPackageItems) || !empty($otherItems);
         
         // If we have Photo Print and/or Scrapbook AND any other categories, it's a combined order
         if (($hasPhotoPrints || $hasScrapbook) && $hasOtherCategories) {
@@ -183,6 +190,7 @@ class CartShippingService
         if (!empty($handCraftItems)) $categoriesWithItems++;
         if (!empty($photosForSaleItems)) $categoriesWithItems++;
         if (!empty($giftCardItems)) $categoriesWithItems++;
+        if (!empty($weddingPackageItems)) $categoriesWithItems++;
         if (!empty($otherItems)) $categoriesWithItems++;
         
         // If more than 1 category has items, it's a combined order
@@ -192,7 +200,7 @@ class CartShippingService
     /**
      * Calculate shipping for combined orders (always fixed pricing)
      */
-    protected function calculateCombinedOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems)
+    protected function calculateCombinedOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems, $testPrintItems)
     {
         $shippingOptions = [];
         
@@ -228,14 +236,14 @@ class CartShippingService
     /**
      * Calculate shipping for separate orders (tier-based for Photo Print and Scrapbook Print)
      */
-    protected function calculateSeparateOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems)
+    protected function calculateSeparateOrderShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems, $testPrintItems)
     {
         $shippingOptions = [];
         
         // Check if this is a Photo Print or Scrapbook Print only order
         $hasPhotoPrints = !empty($photoPrintsItems);
         $hasScrapbook = !empty($scrapbookItems);
-        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($otherItems);
+        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($weddingPackageItems) || !empty($otherItems);
         
         if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
             // Photo Print and/or Scrapbook Print only order - use tier-based pricing
@@ -271,7 +279,7 @@ class CartShippingService
             }
         } else {
             // Other category orders - use fixed pricing
-            $shippingOptions = $this->calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems, $testPrintItems);
+            $shippingOptions = $this->calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems, $testPrintItems);
         }
         
         return $shippingOptions;
@@ -354,6 +362,7 @@ class CartShippingService
         $handCraftItems = [];
         $photosForSaleItems = [];
         $giftCardItems = [];
+        $weddingPackageItems = [];
         $testPrintItems = [];
         $otherItems = [];
         
@@ -407,6 +416,9 @@ class CartShippingService
                                 case 18: // Posters
                                     $postersItems[] = $item;
                                     break;
+                                case 20: // Wedding Package
+                                    $weddingPackageItems[] = $item;
+                                    break;
                                 default:
                                     $otherItems[] = $item;
                                     break;
@@ -450,6 +462,10 @@ class CartShippingService
         
         if (!empty($giftCardItems)) {
             $categoryShippingOptions['gift_card'] = $this->getFixedShippingForCategory('gift_card');
+        }
+        
+        if (!empty($weddingPackageItems)) {
+            $categoryShippingOptions['wedding_package'] = $this->getFixedShippingForCategory('wedding_package');
         }
         
         if (!empty($testPrintItems)) {
@@ -511,7 +527,7 @@ class CartShippingService
     /**
      * Calculate Australia Post mixed shipping
      */
-    protected function calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems,$testPrintItems)
+    protected function calculateAustraliaPostMixedShipping($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems,$testPrintItems)
     {
         $shippingOptions = [];
         
@@ -558,6 +574,13 @@ class CartShippingService
             $photosForSaleShipping = $this->getFixedShippingForCategory('photos_for_sale');
             $fixedShippingSnailMail += $photosForSaleShipping['snail_mail'] ?? 0;
             $fixedShippingExpress += $photosForSaleShipping['express'] ?? 0;
+        }
+        
+        // Wedding Package fixed pricing
+        if (!empty($weddingPackageItems)) {
+            $weddingPackageShipping = $this->getFixedShippingForCategory('wedding_package');
+            $fixedShippingSnailMail += $weddingPackageShipping['snail_mail'] ?? 0;
+            $fixedShippingExpress += $weddingPackageShipping['express'] ?? 0;
         }
         
         // Photo Prints fixed pricing (calculate tier-based pricing for Photo Prints and add as fixed)
@@ -735,6 +758,9 @@ class CartShippingService
                     case 6: // Gift card
                         $giftCardItems[] = $item;
                         break;
+                    case 20: // Wedding Package
+                        $weddingPackageItems[] = $item;
+                        break;
                     case 14: // Hand Craft
                         $handCraftItems[] = $item;
                         break;
@@ -751,7 +777,7 @@ class CartShippingService
         }
 
         // Check if this is a combined order
-        $isCombinedOrder = $this->isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $otherItems);
+        $isCombinedOrder = $this->isCombinedOrder($scrapbookItems, $canvasItems, $photoEnlargementItems, $photoPrintsItems, $postersItems, $handCraftItems, $photosForSaleItems, $giftCardItems, $weddingPackageItems, $otherItems);
 
         // Calculate breakdown
         $breakdown = [];
@@ -832,11 +858,20 @@ class CartShippingService
                     'note' => 'Combined order - Fixed pricing'
                 ];
             }
+            
+            if (!empty($weddingPackageItems)) {
+                $breakdown['wedding_package'] = [
+                    'quantity' => array_sum(array_column($weddingPackageItems, 'quantity')),
+                    'shipping' => $selectedPrice,
+                    'service' => $selectedService,
+                    'note' => 'Combined order - Fixed pricing'
+                ];
+            }
         } else {
             // Separate order - use tier-based pricing for Photo Print and Scrapbook Print
             $hasPhotoPrints = !empty($photoPrintsItems);
             $hasScrapbook = !empty($scrapbookItems);
-            $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($otherItems);
+            $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($weddingPackageItems) || !empty($otherItems);
             
             if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
                 // Photo Print and/or Scrapbook Print only order - use tier-based pricing
