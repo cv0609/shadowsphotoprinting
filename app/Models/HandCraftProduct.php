@@ -16,6 +16,7 @@ class HandCraftProduct extends Model
         'price',
         'product_description',
         'product_image',
+        'sold',
     ];
 
     public function product_category()
