@@ -101,7 +101,7 @@
                                  </div>
                                  @if($product->sold == 1)
                                  <div class="sold-overlay">
-                                     <span class="sold-label">SOLD</span>
+                                     <span class="sold-label">SOLD OUT</span>
                                  </div>
                                  @endif
                                </div>
@@ -157,7 +157,7 @@
                                      @endforeach
                                  @if($product->sold == 1)
                                  <div class="sold-overlay">
-                                     <span class="sold-label">SOLD</span>
+                                     <span class="sold-label">SOLD OUT</span>
                                  </div>
                                  @endif
                             </a>
