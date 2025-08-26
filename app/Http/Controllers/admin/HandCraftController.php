@@ -21,6 +21,7 @@ use App\Models\PhotoForSaleSizePrices;
 use App\Models\ProductCategory;
 use App\Services\PageDataService;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class HandCraftController extends Controller
 {
@@ -44,7 +45,7 @@ class HandCraftController extends Controller
 
     public function productCategorySave(HandCraftCategoryRequest $request)
     {
-        $slug = \Str::slug($request->name);
+        $slug = Str::slug($request->name);
         $image = "";
         if($request->has('image'))
          {
@@ -66,7 +67,7 @@ class HandCraftController extends Controller
 
     public function productCategoryUpdate(HandCraftCategoryUpdateRequest $request)
     {
-        $slug = \Str::slug($request->name);
+        $slug = Str::slug($request->name);
         $data = ["name"=>$request->name,'slug'=>$slug];
         if($request->has('image'))
         {
@@ -107,10 +108,16 @@ class HandCraftController extends Controller
 
     public function productSave(HandCraftProductRequest $request)
     {
-        $slug = \Str::slug($request->product_title);
+        $slug = Str::slug($request->product_title);
 
-
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s,.\?]/', ' ', $request->product_title),"product_description"=>$request->product_description,"price"=>$request->price,'slug'=>$slug];
+        $data = [
+            "category_id" => $request->category_id,
+            "product_title" => preg_replace('/[^\w\s,.\?]/', ' ', $request->product_title),
+            "product_description" => $request->product_description,
+            "price" => $request->price,
+            'slug' => $slug,
+            'sold' => $request->sold ?? 0
+        ];
 
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $key => $image) {
@@ -144,9 +151,16 @@ class HandCraftController extends Controller
 
     public function productUpdate(HandCraftProductUpdateRequest $request)
     {
-        $slug = \Str::slug($request->product_title);
+        $slug = Str::slug($request->product_title);
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>preg_replace('/[^\w\s,.\?]/', ' ', $request->product_title),"product_description"=>$request->product_description,"price"=>$request->price,'slug'=>$slug];
+        $data = [
+            "category_id" => $request->category_id,
+            "product_title" => preg_replace('/[^\w\s,.\?]/', ' ', $request->product_title),
+            "product_description" => $request->product_description,
+            "price" => $request->price,
+            'slug' => $slug,
+            'sold' => $request->sold ?? 0
+        ];
 
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $key => $image) {

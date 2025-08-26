@@ -1,4 +1,55 @@
 @extends('front-end.layout.main')
+@section('styles')
+<style>
+.sold-message {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border: 2px solid #dc3545;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.sold-message h3 {
+    margin-bottom: 10px;
+    color: #dc3545;
+}
+
+.sold-message p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 16px;
+}
+
+.sold-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.sold-label {
+    background: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.products-img {
+    position: relative;
+}
+</style>
+@endsection
 @section('content')
 
 <div class="kt-bc-nomargin">
@@ -89,6 +140,12 @@
                                 <input type="hidden" id="product_image" value="{{$image1 ?? ''}}">
                                 <input type="hidden" id="product_id" value="{{$productDetails->id}}">
 
+                                @if($productDetails->sold == 1)
+                                    <div class="sold-message">
+                                        <h3 class="text-danger">This item is SOLD</h3>
+                                        <p>This product is no longer available for purchase.</p>
+                                    </div>
+                                @else
                                 <div class="quanti add">
                                     <span><input type="number" id="product_qty" placeholder="0"></span>
                                     <button type="button" id="addToCartBtn">Add to cart</button>
@@ -96,6 +153,7 @@
                                 <h6>
                                     <span class="error-message" id="product_qty_error"></span>
                                 </h6>
+                                @endif
                         </form>
                             <div class="product_meta">
                                 <span>SKU: N/A</span>
@@ -147,6 +205,11 @@
                                 @foreach($imageArray as $arrImg)
                                     <img src="{{ asset($arrImg) ?? ''}}" alt="">
                                 @endforeach
+                                @if($item->sold == 1)
+                                <div class="sold-overlay">
+                                    <span class="sold-label">SOLD</span>
+                                </div>
+                                @endif
                                 <div class="onsale">
                                     <span>Sale!</span>
                                 </div>

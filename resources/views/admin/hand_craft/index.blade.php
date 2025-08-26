@@ -48,6 +48,7 @@
                             <th>#</th>
                             <th>Products Name</th>
                             <th>Products Category</th>
+                            <th>Sold Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -57,6 +58,13 @@
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ ucfirst($product->product_title) }}</td>
                                 <td>{{ ucfirst($product->product_category['name']) }}</td>
+                                <td>
+                                    @if($product->sold == 1)
+                                        <span class="badge badge-danger">Sold Out</span>
+                                    @else
+                                        <span class="badge badge-success">Available</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="x_content">
                                     <a href="{{ route('hand-craft-product-show', ['slug' => $product->slug]) }}"><button type="button" class="btn btn-primary">Edit</button></a>

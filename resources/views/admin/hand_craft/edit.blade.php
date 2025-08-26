@@ -99,6 +99,18 @@
                     </div>
 
                     <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="sold">
+                            Sold Status
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                            <select class="form-control" name="sold" id="sold">
+                                <option value="0" {{ $product->sold == 0 ? 'selected' : '' }}>Available</option>
+                                <option value="1" {{ $product->sold == 1 ? 'selected' : '' }}>Sold Out</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_qty">
                             Product Qty(stock) <span class="required">*</span>
                         </label>

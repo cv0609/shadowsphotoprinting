@@ -1,4 +1,39 @@
 @extends('front-end.layout.main')
+@section('styles')
+<style>
+.sold-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.sold-label {
+    background: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.type-product .noflipper {
+    position: relative;
+}
+
+.instock-udik {
+    position: relative;
+}
+</style>
+@endsection
 @section('content')
 
 <div class="kt-bc-nomargin">
@@ -64,6 +99,11 @@
                                        <img src="{{ asset($product_image) }}" alt="">
                                      @endforeach
                                  </div>
+                                 @if($product->sold == 1)
+                                 <div class="sold-overlay">
+                                     <span class="sold-label">SOLD</span>
+                                 </div>
+                                 @endif
                                </div>
                             </a>
 
@@ -115,6 +155,11 @@
                                      @foreach (explode(',',$product->product_image) as $key => $product_image)
                                        <img src="{{ asset($product_image) }}" alt="{{ ucfirst($product->product_title) }}">
                                      @endforeach
+                                 @if($product->sold == 1)
+                                 <div class="sold-overlay">
+                                     <span class="sold-label">SOLD</span>
+                                 </div>
+                                 @endif
                             </a>
                         </div>
 
