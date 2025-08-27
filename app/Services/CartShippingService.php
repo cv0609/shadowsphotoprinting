@@ -709,6 +709,7 @@ class CartShippingService
         $handCraftItems = [];
         $photosForSaleItems = [];
         $giftCardItems = [];
+        $weddingPackageItems = [];
         $testPrintItems = [];
         $otherItems = [];
 
