@@ -306,7 +306,7 @@ class CategoryShippingCalculator {
 
     calculateCategoryShippingWithItems(cartItems, autoCalculate = true) {
         $('#category-shipping-options').html('<div class="shipping-loading">Calculating shipping options...</div>');
-
+        
         $.ajax({
             url: '/cart-shipping/calculate-per-category',
             method: 'POST',
@@ -500,6 +500,7 @@ class CategoryShippingCalculator {
             'hand_craft': 'Hand Craft',
             'photos_for_sale': 'Photos for Sale',
             'gift_card': 'Gift Card',
+            'wedding_package': 'Wedding Package',
             'test_prints': 'Test Prints'
         };
         return names[category] || category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
