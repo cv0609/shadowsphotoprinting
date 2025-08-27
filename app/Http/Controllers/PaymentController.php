@@ -160,9 +160,13 @@ class PaymentController extends Controller
             'order_type' => $request->customer_order_type,
         ];
 
-         $data = ['fname'=>$request->fname,'lname'=>$request->lname,'username'=>$request->username,'email'=>$request->email,'password'=>$request->password];
+         if (!Auth::check()) {
+            
+            $data = ['fname'=>$request->fname,'lname'=>$request->lname,'username'=>$request->username,'email'=>$request->email,'password'=>$request->password];
 
-         $this->createSiteUser($data);
+            $this->createSiteUser($data);
+        }
+
 
         // Check if shipping details are provided
         if (isset($request->isShippingAddress) && $request->isShippingAddress == true) {
@@ -629,9 +633,14 @@ class PaymentController extends Controller
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
 
-        $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$formData['username'],'email'=>$formData['email'],'password'=>$formData['password']];
-
-        $this->createSiteUser($data);
+        // Generate username if not provided
+        $username = $formData['username'] ?? $formData['email'];
+        
+        // Only create user if not already logged in
+        if (!Auth::check()) {
+            $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$username,'email'=>$formData['email'],'password'=>$formData['password'] ?? ''];
+            $this->createSiteUser($data);
+        }
 
         $address = [
             'fname' => $fname,
@@ -830,9 +839,14 @@ class PaymentController extends Controller
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
 
-        $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$formData['username'],'email'=>$formData['email'],'password'=>$formData['password']];
-
-        $this->createSiteUser($data);
+        // Generate username if not provided
+        $username = $formData['username'] ?? $formData['email'];
+        
+        // Only create user if not already logged in
+        if (!Auth::check()) {
+            $data = ['fname'=>$formData['fname'],'lname'=>$formData['lname'],'username'=>$username,'email'=>$formData['email'],'password'=>$formData['password'] ?? ''];
+            $this->createSiteUser($data);
+        }
 
         $address = [
             'fname' => $fname,

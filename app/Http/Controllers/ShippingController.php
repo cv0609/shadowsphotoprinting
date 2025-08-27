@@ -108,7 +108,6 @@ class ShippingController extends Controller
             $isCombinedOrder = $this->isCombinedOrder($cartItems);
             
             if ($isCombinedOrder) {
-                \Log::info('this is isCombinedOrder');
                 // Combined order - use fixed pricing for all categories
                 $categoryShippingOptions = $this->getCombinedOrderCategoryShipping($testPrintExtra);
                 // \Log::info('$categoryShippingOptions');
@@ -227,8 +226,11 @@ class ShippingController extends Controller
                     return $product ? 6 : null; // Hand Craft category
             }
         } else {
+            // Handle regular products (including wedding package with category_id = 20)
             $product = \App\Models\Product::find($item['product_id']);
-            return $product ? $product->category_id : null;
+            if ($product) {
+                return $product->category_id;
+            }
         }
         
         return null;
