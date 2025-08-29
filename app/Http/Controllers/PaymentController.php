@@ -125,10 +125,18 @@ class PaymentController extends Controller
     
             // Attach the new token to the existing customer
             try {
-                \Stripe\Customer::createSource(
+               $newSource = \Stripe\Customer::createSource(
                     $customer_id,
                     ['source' => $source]
                 );
+
+                \Stripe\Customer::update(
+                    $customer_id,
+                    [
+                        'default_source' => $newSource->id
+                    ]
+                );
+
             } catch (\Exception $e) {
                 return response()->json(['error' => true, 'message' => 'Failed to attach payment method', 'data' => $e->getMessage()]);
             }
@@ -192,15 +200,17 @@ class PaymentController extends Controller
     {
         $customerId = $request->input('customer_id');
         $amount = $request->input('amount');
-    
+        $stripeToken = $request->input('stripeToken');
+
         try {
             $customer = \Stripe\Customer::retrieve($customerId);
     
-            if (!$customer || empty($customer->default_source)) {
-                return response()->json(['error' => true, 'message' => 'Customer does not have a default payment method']);
+            if (!$customer || empty($stripeToken)) {
+                return response()->json(['error' => true, 'message' => 'Customer does not have a payment method']);
             }
     
             $source = $customer->default_source;
+            //$source = $stripeToken;
     
             $charge = \Stripe\Charge::create([
                 'customer' => $customerId,
