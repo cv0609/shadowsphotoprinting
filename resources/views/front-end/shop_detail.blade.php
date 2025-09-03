@@ -101,6 +101,14 @@
                                 @endforeach
                             </select>
                         </div>
+                        
+                        <!-- Wedding Package Dropdown (Hidden by default) -->
+                        <div class="fw-products-cats wedding-package-dropdown" id="wedding-package-dropdown" style="display: none;">
+                            <select name="wedding_package" id="wedding-package-select">
+                                <option value="">Select Wedding Package</option>
+                                <!-- Wedding packages will be loaded here via AJAX -->
+                            </select>
+                        </div>
                         <div class="fw-products-box">
                             <table>
                                 <thead>
@@ -366,12 +374,22 @@ function updateCartTotals() {
 
 
  $("#category").on('change',function(){
+    var selectedCategory = $(this).val();
     var total = 0;
     var totalQuantity = 0;
 
+    // Show/hide wedding package dropdown based on category selection
+    if (selectedCategory === 'wedding-package') {
+        $('#wedding-package-dropdown').show();
+        loadWeddingPackages();
+    } else {
+        $('#wedding-package-dropdown').hide();
+        $('#wedding-package-select').val('');
+    }
+
     $.post("{{ route('products-by-category') }}",
     {
-        slug: $(this).val(),
+        slug: selectedCategory,
         '_token': "{{ csrf_token() }}"
     },
     function(res){
@@ -404,6 +422,104 @@ function updateCartTotals() {
             });
         });
     });
+
+    // Function to load wedding packages
+    function loadWeddingPackages() {
+        $.get("{{ route('wedding-packages-list') }}", function(data) {
+            var options = '<option value="">Select Wedding Package</option>';
+            data.forEach(function(package) {
+                options += '<option value="' + package.slug + '">' + package.name + ' - $' + package.price + '</option>';
+            });
+            $('#wedding-package-select').html(options);
+        });
+    }
+
+    // Wedding package dropdown change event
+    $("#wedding-package-select").on('change', function() {
+        var selectedPackage = $(this).val();
+        if (selectedPackage) {
+            // Load the specific wedding package frames
+            loadWeddingPackageFrames(selectedPackage);
+        } else {
+            // Clear the products table
+            $("#products-main").html('<tr><td colspan="4" style="text-align: center; padding: 20px;">Please select a wedding package</td></tr>');
+        }
+    });
+
+    // Function to load wedding package frames
+    function loadWeddingPackageFrames(packageSlug) {
+        $.post("{{ route('wedding-package-frames') }}", {
+            package_slug: packageSlug,
+            '_token': "{{ csrf_token() }}"
+        }, function(res) {
+            $("#products-main").html(res);
+        });
+    }
 </script>
+
+<style>
+/* Wedding Package Dropdown Styling */
+.wedding-package-dropdown {
+    margin-top: 10px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.wedding-package-dropdown select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wedding-package-dropdown select:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+}
+
+.wedding-package-dropdown select:hover {
+    border-color: #c0392b;
+}
+
+/* Animation for dropdown appearance */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure consistent styling with main dropdown */
+.fw-products-cats select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.fw-products-cats select:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+}
+
+.fw-products-cats select:hover {
+    border-color: #c0392b;
+}
+</style>
 
 @endsection

@@ -1,0 +1,200 @@
+{
+  "packages": [
+    {
+      "name": "Sweet Memories Package Starter",
+      "slug": "sweet-memories-package-starter",
+      "price": 86.40,
+      "frames": [
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6x4 prints",
+          "slug": "6-x-4-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints     With 4mm White Border",
+          "slug": "6-x-4-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "12   x12    Canvas  (30.5cm x 30.5cm )",
+          "slug": "12-x12-canvas-305cm-x-305cm"
+        }
+      ]
+    },
+    {
+      "name": "Cherished Moments Package Classic",
+      "slug": "cherished-moments-package-classic",
+      "price": 143.50,
+      "frames": [
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints",
+          "slug": "6-x-4-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints     With 4mm White Border",
+          "slug": "6-x-4-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "5   x 7    Prints",
+          "slug": "5-x-7-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "5   x 7    Prints     With 4mm White Border",
+          "slug": "5-x-7-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "16   x20    Canvas  (40.5cm x 51cm)",
+          "slug": "16-x20-canvas-405cm-x-51cm"
+        }
+      ]
+    },
+    {
+      "name": "Forever Always Package Premium",
+      "slug": "forever-always-package-premium",
+      "price": 304.95,
+      "frames": [
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints",
+          "slug": "6-x-4-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints     With 4mm White Border",
+          "slug": "6-x-4-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "5   x 7    Prints",
+          "slug": "5-x-7-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "5   x 7    Prints     With 4mm White Border",
+          "slug": "5-x-7-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "8   x 10    Prints",
+          "slug": "8-x-10-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "8   x 10    Prints     With 4mm White Border",
+          "slug": "8-x-10-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "20   x20    Canvas  (50cm x 50cm)",
+          "slug": "20-x20-canvas-50cm-x-50cm"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "20   x30    Canvas  (50cm x 76cm)",
+          "slug": "20-x30-canvas-50cm-x-76cm"
+        }
+      ]
+    },
+    {
+      "name": "Grand Celebration Package Deluxe",
+      "slug": "grand-celebration-package-deluxe",
+      "price": 840.50,
+      "frames": [
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints",
+          "slug": "6-x-4-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "6   x 4    Prints     With 4mm White Border",
+          "slug": "6-x-4-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "5   x 7    Prints",
+          "slug": "5-x-7-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "5   x 7    Prints     With 4mm White Border",
+          "slug": "5-x-7-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "8   x 10    Prints",
+          "slug": "8-x-10-prints"
+        },
+        {
+          "type": "Photo Prints",
+          "category_id" : "4",
+          "frame_item_title": "8   x 10    Prints     With 4mm White Border",
+          "slug": "8-x-10-prints-with-4mm-white-border"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "30   x40    Canvas  (76cm x101.5cm)",
+          "slug": "30-x40-canvas-76cm-x1015cm"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "30   x40    Canvas  (76cm x101.5cm)",
+          "slug": "30-x40-canvas-76cm-x1015cm"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "30   x60    Canvas  (76cm x 152.5cm)",
+          "slug": "30-x60-canvas-76cm-x-1525cm"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "40   x30    Canvas  (101.5cm x 75cm )",
+          "slug": "40-x30-canvas-1015cm-x-75cm"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "40   x40    Canvas  (101.5cm x 101.5cm )",
+          "slug": "40-x40-canvas-1015cm-x-1015cm"
+        },
+        {
+          "type": "Canvas Prints",
+          "category_id" : "2",
+          "frame_item_title": "40   x60    Canvas  (101.5cm x 152.5cm )",
+          "slug": "40-x60-canvas-1015cm-x-1525cm"
+        }
+      ]
+    }
+  ]
+}

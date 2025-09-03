@@ -85,6 +85,14 @@ class ShopController extends Controller
   {
     $categorySlug = $request->slug;
     $products = [];
+    
+    // Handle wedding package category specially
+    if($categorySlug == 'wedding-package') {
+        // Don't load any products, just show a message to select a wedding package
+        echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">Please select a wedding package from the dropdown above to view available products.</td></tr>';
+        return;
+    }
+    
     if($categorySlug == "all")
     {
       $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
@@ -119,4 +127,86 @@ class ShopController extends Controller
     }
     echo view('front-end/shop_details_product_ajax', compact('products'));
   }
+
+  public function getWeddingPackagesList()
+  {
+    // Get wedding package products from database (category ID 20)
+    $category = ProductCategory::where('id', 20)->first();
+    if($category) {
+        $products = $category->products()->orderBy('position', 'asc')->get();
+        
+        // Format products for dropdown
+        $packages = $products->map(function($product) {
+            return [
+                'name' => $product->product_title,
+                'slug' => $product->slug,
+                'price' => $product->product_price
+            ];
+        });
+        return response()->json($packages);
+    }
+
+    
+    return response()->json([]);
+  }
+
+  public function getWeddingPackageFrames(Request $request)
+  {
+    $packageSlug = $request->input('package_slug');
+    
+    // Load wedding package data from JSON
+    $jsonPath = resource_path('pages_json/wedding_packages.json');
+    if(!file_exists($jsonPath)) {
+        echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">Wedding package data not found</td></tr>';
+        return;
+    }
+    
+    $weddingPackageData = json_decode(file_get_contents($jsonPath), true);
+    
+    // Find the selected package in JSON
+    $selectedPackage = null;
+    foreach($weddingPackageData['packages'] as $package) {
+        if($package['slug'] === $packageSlug) {
+            $selectedPackage = $package;
+            break;
+        }
+    }
+    
+    if(!$selectedPackage) {
+        echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">Package not found</td></tr>';
+        return;
+    }
+    
+    $matchingProducts = collect();
+    
+    // For each frame in the JSON package, find matching products by category_id and slug
+    foreach($selectedPackage['frames'] as $frame) {
+        $categoryId = $frame['category_id'];
+        $frameSlug = $frame['slug'];
+        
+        // Get the category from database
+        $category = ProductCategory::where('id', $categoryId)->first();
+        if(!$category) {
+            continue; // Skip if category not found
+        }
+        
+        // Find products that match the slug in the specific category
+        $matchingFrameProducts = $category->products()
+            ->where('slug', $frameSlug)
+            ->orderBy('position', 'asc')
+            ->get();
+        
+        // Add matching products to the collection
+        foreach($matchingFrameProducts as $product) {
+            // Add frame data to the product for display
+            $product->frame_data = $frame;
+            $matchingProducts->push($product);
+        }
+    }
+    
+    // Use the same view as regular products
+    $products = $matchingProducts;
+    echo view('front-end/shop_details_product_ajax', compact('products'));
+  }
+
 }
