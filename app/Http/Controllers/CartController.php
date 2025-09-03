@@ -163,16 +163,8 @@ class CartController extends Controller
                 $package_price = isset($cart_item['package_price']) ? $cart_item['package_price'] : null;
                 $package_product_id = isset($cart_item['package_product_id']) ? $cart_item['package_product_id'] : null;
                 
-                // Check if this package is already in the cart
-                $packageAlreadyInCart = false;
-                if ($is_package && $package_product_id) {
-                    $packageAlreadyInCart = CartData::where('cart_id', $cartId)
-                        ->where('package_product_id', $package_product_id)
-                        ->exists();
-                }
-                
-
                 $testPrint = '0';
+                $packageItemCount = 0; // Track how many package items we've added for this package
 
                 foreach ($request->selectedImages as $selectedImage) {
 
@@ -196,12 +188,25 @@ class CartController extends Controller
                         $wtrelativeImagePath = $this->CartService->addWaterMark($ImagePath);
                     }
                     
-                    // For package products, only charge package price if this is the first item from this package
-                    if ($is_package && $package_price && !$packageAlreadyInCart) {
-                        $package_price = $package_price;
-                    } elseif ($is_package && $packageAlreadyInCart) {
-                        // If package already exists, use individual product price (usually 0 or minimal)
-                        $package_price = 0; // or get individual product price
+                    // For package products, check if this package already exists in cart
+                    $packageAlreadyInCart = false;
+                    if ($is_package && $package_product_id) {
+                        $packageAlreadyInCart = CartData::where('cart_id', $cartId)
+                            ->where('package_product_id', $package_product_id)
+                            ->exists();
+                    }
+                    
+                    // For package products, only set package_price for the first item from this package
+                    $finalPackagePrice = $package_price;
+                    if ($is_package && $package_price) {
+                        if (!$packageAlreadyInCart && $packageItemCount == 0) {
+                            // First item of this package gets the package price
+                            $finalPackagePrice = $package_price;
+                            $packageItemCount++;
+                        } else {
+                            // Subsequent items get null package price
+                            $finalPackagePrice = null;
+                        }
                     }
 
                     $insertData = [
@@ -217,7 +222,7 @@ class CartController extends Controller
                         "watermark_image" => isset($testPrintQty) && !empty($testPrintQty) ? $wtrelativeImagePath  : '',
                         "test_print_cat" => isset($testPrintQty) && !empty($testPrintQty) ? $testPrintCatId : '',
                         "is_package" => $is_package,
-                        "package_price" => $package_price,
+                        "package_price" => $finalPackagePrice,
                         "package_product_id" => $package_product_id
                     ];
 
@@ -327,7 +332,11 @@ class CartController extends Controller
 
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
-            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            $cart = Cart::where('user_id', $auth_id)->with(['items' => function($query) {
+                // Order items so package items come first, then regular items
+                // Within package items, order by package_product_id, then by creation time
+                $query->orderByRaw('CASE WHEN is_package = 1 THEN 0 ELSE 1 END, package_product_id ASC, created_at ASC');
+            }, 'items.product'])->first();
             
             if(Auth::user()->role === 'affiliate'){
                 $affiliate_id = Auth::user()->affiliate->id;
@@ -340,7 +349,11 @@ class CartController extends Controller
 
         } else {
             $session_id = Session::getId();
-            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+            $cart = Cart::where('session_id', $session_id)->with(['items' => function($query) {
+                // Order items so package items come first, then regular items
+                // Within package items, order by package_product_id, then by creation time
+                $query->orderByRaw('CASE WHEN is_package = 1 THEN 0 ELSE 1 END, package_product_id ASC, created_at ASC');
+            }, 'items.product'])->first();
         }
 
         $session_id = Session::getId();

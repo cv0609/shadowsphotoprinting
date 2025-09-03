@@ -30,25 +30,77 @@ $CartService = app(App\Services\CartService::class);
                             <div class="cart-summary">
                                 <h2>Cart Summary</h2>
                             </div>
+                            @php
+                                // Check if there are any non-package items in the cart
+                                $has_non_package_items = $cart->items->where('is_package', '!=', 1)->count() > 0;
+                                $has_package_items = $cart->items->where('is_package', 1)->count() > 0;
+                            @endphp
                             <table cellspacing="0">
                                 <thead>
-                                    <tr>
+                                    <tr @if($has_package_items)style="text-align: center;" @endif>
                                         <th colspan="3" class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">Subtotal</th>
+                                        <th class="product-price">Price @if($has_package_items) / Package Info @endif </th>
+                                        @if($has_non_package_items)
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-subtotal">Subtotal</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $displayed_packages = [];
+                                        $previous_package_id = null;
+                                    @endphp
                                     @foreach ($cart->items as $item)
 
                                             <?php
                                     $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
                                     $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+
+
+                                    $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
+
+                                    $package_product_price = 0;
+                                    $package_name = '';
+                                    $is_first_package_item = false;
+                                    $show_package_separator = false;
+
+                                    if($is_package == 1){
+                                        $package_product_id = $item->package_product_id;
+                                        $package = $CartService->getPackageProductDetails($package_product_id);
+
+                                        $package_product_price = $package->product_price;
+                                        $package_name = $package->product_title;
+                                        
+                                        // Check if this is the first item of this package
+                                        if(!in_array($package_product_id, $displayed_packages)){
+                                            $is_first_package_item = true;
+                                            $displayed_packages[] = $package_product_id;
+                                        }
+                                        
+                                        // Check if we need to show separator (different package than previous)
+                                        if($previous_package_id && $previous_package_id != $package_product_id){
+                                            $show_package_separator = true;
+                                        }
+                                        
+                                        $previous_package_id = $package_product_id;
+                                    } else {
+                                        $previous_package_id = null; // Reset when we hit non-package item
+                                    }
+
                                     ?>
+                                    
+                                    {{-- Package Separator --}}
+                                    @if($show_package_separator)
+                                        <tr class="package-separator">
+                                            <td colspan="6" style="height: 20px; background: #f8f9fa; border-top: 2px solid #e74c3c;"></td>
+                                        </tr>
+                                    @endif
+                                    
                                     <tr data-product-id="{{ $item->product_id }}" 
                                         data-product-type="{{ $item->product_type }}" 
-                                        data-is-test-print="{{ $item->is_test_print ?? '0' }}">
+                                        data-is-test-print="{{ $item->is_test_print ?? '0' }}"
+                                        @if($is_package == 1) class="package-item" @endif>
                                         <td class="product-remove">
                                             <a href="{{ route('remove-from-cart',['product_id'=>$item->id]) }}"
                                                 onclick="return confirm('Are you sure!')">×</a>
@@ -160,6 +212,9 @@ $CartService = app(App\Services\CartService::class);
                                         </td>
                                         <td class="product-price">
                                             <span class="">
+
+                                            @if($is_package != 1)   
+
                                                 <bdi>
                                                     <span>$</span>
                                                     @if($item->product_type == "gift_card" || $item->product_type ==
@@ -178,44 +233,61 @@ $CartService = app(App\Services\CartService::class);
 
                                                     @endif
                                                 </bdi>
+                                            @else
+                                                @if($is_first_package_item)
+                                                    <div class="package-info">
+                                                        <bdi>
+                                                            <div class="package-name">{{$package_name}}</div>
+                                                            <div class="package-price">${{number_format($package_product_price, 2)}}</div>
+                                                        </bdi>
+                                                    </div>
+                                                @else
+                                                    <div class="package-item-label">
+                                                        <span class="package-item-text">Package Item</span>
+                                                    </div>
+                                                @endif
+                                            @endif
                                             </span>
                                         </td>
-                                        <td class="product-quantity">
+                                        @if($has_non_package_items)
+                                            <td class="product-quantity">
+                                                @if($is_package != 1)  
+                                                    <input type="number" name="product_quantity[]" id="product_quantity"
+                                                    placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
+                                                    data-product_type="{{ $item->product_type }}"
+                                                    data-product_id="{{ $item->product_id }}"
+                                                    data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}">
+                                                @endif    
+                                            </td>
 
-                                            <input type="number" name="product_quantity[]" id="product_quantity"
-                                                placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
-                                                data-product_type="{{ $item->product_type }}"
-                                                data-product_id="{{ $item->product_id }}"
-                                                data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}">
-                                        </td>
-                                        <td class="product-subtotal">
-                                            <span>
-                                                <bdi>
-                                                    <span>$</span>
-                                                    @if($item->product_type == "gift_card" || $item->product_type ==
-                                                    "photo_for_sale" || $item->product_type == "hand_craft")
-                                                    {{ number_format($item->quantity * $item->product_price, 2) }}
-                                                    @else
-
-
-                                                    @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                    {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
-                                                    @else
-                                                    {{ isset($product_sale_price) && !empty($product_sale_price) 
-                                                        ? number_format($item->quantity * $product_sale_price, 2) 
-                                                        : number_format($item->quantity * $product_detail->product_price, 2)
-                                                    }}
-                                                    @endif
-
-                                                    @endif
-                                                </bdi>
-                                            </span>
-                                        </td>
+                                            <td class="product-subtotal">
+                                                @if($is_package != 1)  
+                                                    <span>
+                                                        <bdi>
+                                                            <span>$</span>
+                                                            @if($item->product_type == "gift_card" || $item->product_type ==
+                                                            "photo_for_sale" || $item->product_type == "hand_craft")
+                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+                                                            @else
+                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                            {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
+                                                            @else
+                                                            {{ isset($product_sale_price) && !empty($product_sale_price) 
+                                                                ? number_format($item->quantity * $product_sale_price, 2) 
+                                                                : number_format($item->quantity * $product_detail->product_price, 2)
+                                                            }}
+                                                            @endif
+                                                            @endif
+                                                        </bdi>
+                                                    </span>
+                                                @endif
+                                            </td>
+                                        @endif
                                     </tr>
                                     @endforeach
 
                                     <tr>
-                                        <td colspan="6" class="actions">
+                                        <td colspan="{{ $has_non_package_items ? '6' : '4' }}" class="actions">
 
                                             @if(!Session::has('coupon'))
                                             <div class="coupon-icons">
@@ -711,7 +783,9 @@ $CartService = app(App\Services\CartService::class);
         $("#modal-close").on('click', function () {
             $("#ImgViewer").modal('hide');
         })
-    });
-</script>
+         });
+ </script>
+
+<link rel="stylesheet" href="{{ asset('css/package-cart.css') }}">
 
 @endsection
