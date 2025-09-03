@@ -232,6 +232,10 @@ $(document).ready(function() {
                 let testPrintPrice = $(this).data('test_print_price');
                 let testPrintQty = $(this).data('test_print_qty');
                 let testPrintCategory_id = $(this).data('category_id');
+                let is_package = $(this).data('is_package') || 0;
+                let package_price = $(this).data('package_price') || null;
+                let package_product_id = $(this).data('package_product_id') || null;
+                
                 let totalPrice = quantity * price;
                 total += totalPrice;
                 cartItems.push({
@@ -241,7 +245,10 @@ $(document).ready(function() {
                     testPrint: testPrint,
                     testPrintPrice: testPrintPrice,
                     testPrintQty: testPrintQty,
-                    testPrintCategory_id: testPrintCategory_id
+                    testPrintCategory_id: testPrintCategory_id,
+                    is_package: is_package,
+                    package_price: package_price,
+                    package_product_id: package_product_id
                 });
             }
         });

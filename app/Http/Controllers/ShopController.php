@@ -153,6 +153,8 @@ class ShopController extends Controller
   public function getWeddingPackageFrames(Request $request)
   {
     $packageSlug = $request->input('package_slug');
+
+    $package_product = Product::where('slug',$packageSlug)->first();
     
     // Load wedding package data from JSON
     $jsonPath = resource_path('pages_json/wedding_packages.json');
@@ -194,15 +196,21 @@ class ShopController extends Controller
         $matchingFrameProducts = $category->products()
             ->where('slug', $frameSlug)
             ->orderBy('position', 'asc')
-            ->get();
+            ->get();  
         
         // Add matching products to the collection
         foreach($matchingFrameProducts as $product) {
             // Add frame data to the product for display
-            $product->frame_data = $frame;
+            // $product->frame_data = $frame;
+            $product->is_package = 1;
+            $product->package_price = $package_product->product_price;
+            $product->package_product_id = $package_product->id;
             $matchingProducts->push($product);
         }
     }
+
+    // \Log::info('$matchingProducts');
+    // \Log::info($matchingProducts);
     
     // Use the same view as regular products
     $products = $matchingProducts;

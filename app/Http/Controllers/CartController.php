@@ -159,6 +159,19 @@ class CartController extends Controller
                 $product_id = $cart_item['product_id'];
                 $quantity = $cart_item['quantity'];
 
+                $is_package = isset($cart_item['is_package']) ? $cart_item['is_package'] : 0;
+                $package_price = isset($cart_item['package_price']) ? $cart_item['package_price'] : null;
+                $package_product_id = isset($cart_item['package_product_id']) ? $cart_item['package_product_id'] : null;
+                
+                // Check if this package is already in the cart
+                $packageAlreadyInCart = false;
+                if ($is_package && $package_product_id) {
+                    $packageAlreadyInCart = CartData::where('cart_id', $cartId)
+                        ->where('package_product_id', $package_product_id)
+                        ->exists();
+                }
+                
+
                 $testPrint = '0';
 
                 foreach ($request->selectedImages as $selectedImage) {
@@ -182,6 +195,14 @@ class CartController extends Controller
                         }
                         $wtrelativeImagePath = $this->CartService->addWaterMark($ImagePath);
                     }
+                    
+                    // For package products, only charge package price if this is the first item from this package
+                    if ($is_package && $package_price && !$packageAlreadyInCart) {
+                        $package_price = $package_price;
+                    } elseif ($is_package && $packageAlreadyInCart) {
+                        // If package already exists, use individual product price (usually 0 or minimal)
+                        $package_price = 0; // or get individual product price
+                    }
 
                     $insertData = [
                         "cart_id" => $cartId,
@@ -195,6 +216,9 @@ class CartController extends Controller
                         "test_print_qty" => isset($testPrintQty) && !empty($testPrintQty) ? $testPrintQty  : '',
                         "watermark_image" => isset($testPrintQty) && !empty($testPrintQty) ? $wtrelativeImagePath  : '',
                         "test_print_cat" => isset($testPrintQty) && !empty($testPrintQty) ? $testPrintCatId : '',
+                        "is_package" => $is_package,
+                        "package_price" => $package_price,
+                        "package_product_id" => $package_product_id
                     ];
 
                     if ($itemType == 'gift_card') {

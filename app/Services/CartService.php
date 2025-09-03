@@ -65,7 +65,11 @@ class CartService
                     if (isset($sale_price) && !empty($sale_price)) {
                         $product_price = $sale_price->sale_price;
                     } else {
-                        $product_price = $item->product->product_price;
+                        if(isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)){
+                            $product_price = $item->package_price;
+                        }else{
+                            $product_price = $item->product->product_price;
+                        }
                     }
                 }
             }
