@@ -196,6 +196,13 @@
                     <div class="col-lg-6">
                         <div class="woocommerce-billing-fields">
                             <h3>Your order</h3>
+
+                            @php
+                                // Check if there are any non-package items in the cart
+                                $has_non_package_items = $cart->items->where('is_package', '!=', 1)->count() > 0;
+                                $has_package_items = $cart->items->where('is_package', 1)->count() > 0;
+                            @endphp
+
                             <div class="order_review">
                                 <table class="shop_table ">
                                     <thead>
@@ -210,6 +217,21 @@
                                         
                                         $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
                                         $productSalePrice =  $CartService->getProductSalePrice($item->product_id);
+
+                                        $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
+
+                                        $package_product_price = 0;
+                                        $package_name = '';
+                                        $is_first_package_item = false;
+                                        $show_package_separator = false;
+
+                                        if($is_package == 1){
+                                            $package_product_id = $item->package_product_id;
+                                            $package = $CartService->getPackageProductDetails($package_product_id);
+
+                                            $package_product_price = $package->product_price;
+                                            $package_name = $package->product_title;
+                                        }
                                         
                                         ?>
 
