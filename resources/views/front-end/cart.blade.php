@@ -8,6 +8,34 @@ $CartService = app(App\Services\CartService::class);
 // return $str;
 // }
 @endphp
+
+<!-- Package Restriction Modal -->
+<div class="modal fade" id="packageRestrictionModal" tabindex="-1" role="dialog" aria-labelledby="packageRestrictionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 0;">
+            <div class="modal-header" style="background-color: #f8f9fa; border-radius: 0;">
+                <h5 class="modal-title text-dark" id="packageRestrictionModalLabel">
+                    <i class="fas fa-exclamation-triangle text-danger"></i> Package Restriction Violation
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #dc3545; font-size: 1.5rem;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background-color: #ffffff; padding: 20px;">
+                <div class="alert alert-info" style="border-radius: 0; border-left: 4px solid #17a2b8;">
+                    <i class="fas fa-info-circle"></i> You cannot update these quantities because they exceed the package restrictions.
+                </div>
+                <div id="restriction-message"></div>
+            </div>
+            <div class="modal-footer" style="background-color: #f8f9fa; border-radius: 0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="border-radius: 0; padding: 8px 20px;">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <section class="coupon-main">
     <div class="container">
         <div class="coupon-inner">
@@ -62,6 +90,7 @@ $CartService = app(App\Services\CartService::class);
 
                                     $package_product_price = 0;
                                     $package_name = '';
+                                    $package_slug = '';
                                     $is_first_package_item = false;
                                     $show_package_separator = false;
 
@@ -71,6 +100,7 @@ $CartService = app(App\Services\CartService::class);
 
                                         $package_product_price = $package->product_price;
                                         $package_name = $package->product_title;
+                                        $package_slug = $package->slug;
                                         
                                         // Check if this is the first item of this package
                                         if(!in_array($package_product_id, $displayed_packages)){
@@ -256,7 +286,12 @@ $CartService = app(App\Services\CartService::class);
                                                     placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
                                                     data-product_type="{{ $item->product_type }}"
                                                     data-product_id="{{ $item->product_id }}"
-                                                    data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}">
+                                                    data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}"
+                                                    data-is_package="{{ $is_package }}"
+                                                    data-package_product_id="{{ $is_package == 1 ? $item->package_product_id : '' }}"
+                                                    data-category_id="{{ $product_detail->category_id ?? '' }}"
+                                                    data-package_slug="{{ $package_slug ?? '' }}"
+                                                    >
                                                 {{-- @endif     --}}
                                             </td>
 
@@ -737,42 +772,225 @@ $CartService = app(App\Services\CartService::class);
 </script>
 
 <script>
+function checkPackageValidationForCart(callback){
+    // Use cart data that's already available on the page
+    @php
+        $cartItemsData = [];
+        if($cart && $cart->items) {
+            foreach($cart->items as $item) {
+                $cartItemsData[] = [
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'is_package' => $item->is_package ?? 0,
+                    'package_product_id' => $item->package_product_id ?? null,
+                    'category_id' => $item->product->category_id ?? null,
+                    'product_type' => $item->product_type ?? null
+                ];
+            }
+        }
+    @endphp
+    var currentCartItems = @json($cartItemsData);
+    
+    // Load wedding packages JSON
+    $.get("{{ route('wedding-packages-json') }}", function(packages) {
+        // Get items being updated in cart
+        let updatedCartItems = [];
+        let hasPackageItems = false;
+        let packageSlug = '';
+        
+        $("input[name='product_quantity[]']").each(function() {
+            let quantity = $(this).val();
+            if (quantity > 0) {
+                let is_package = $(this).data('is_package') || 0;
+                let package_product_id = $(this).data('package_product_id') || null;
+                let category_id = $(this).data('category_id') || null;
+                let package_slug = $(this).data('package_slug') || '';
+                
+                console.log('Input data:', {
+                    product_id: $(this).data('product_id'),
+                    quantity: quantity,
+                    is_package: is_package,
+                    package_product_id: package_product_id,
+                    category_id: category_id,
+                    package_slug: package_slug
+                });
+                
+                if (is_package == 1) {
+                    hasPackageItems = true;
+                    packageSlug = package_slug;
+                }
+                
+                updatedCartItems.push({
+                    product_id: $(this).data('product_id'),
+                    quantity: parseFloat(quantity),
+                    is_package: is_package,
+                    package_product_id: package_product_id,
+                    category_id: category_id,
+                    package_slug: package_slug
+                });
+            }
+        });
+
+        console.log('updatedCartItems',updatedCartItems);
+        console.log('hasPackageItems',hasPackageItems);
+        console.log('packageSlug',packageSlug);
+
+        
+        if (hasPackageItems) {
+            // Group items by package_slug
+            var packageGroups = {};
+            
+            updatedCartItems.forEach(function(item) {
+                if (item.is_package == 1 && item.package_slug) {
+                    if (!packageGroups[item.package_slug]) {
+                        packageGroups[item.package_slug] = {
+                            package_slug: item.package_slug,
+                            photoPrintCount: 0,
+                            canvasPrintCount: 0
+                        };
+                    }
+                    
+                    // Count by category_id: 4 = Photo Prints, 2 = Canvas Prints
+                    if (item.category_id == 4) {
+                        packageGroups[item.package_slug].photoPrintCount += parseInt(item.quantity);
+                    } else if (item.category_id == 2) {
+                        packageGroups[item.package_slug].canvasPrintCount += parseInt(item.quantity);
+                    }
+                }
+            });
+            
+            console.log('packageGroups', packageGroups);
+            
+            // Validate each package separately
+            var allViolations = [];
+            
+            for (var currentPackageSlug in packageGroups) {
+                var packageGroup = packageGroups[currentPackageSlug];
+                console.log('Validating package:', currentPackageSlug, packageGroup);
+                
+                // Find package by slug
+                var package = packages.packages.find(p => p.slug === currentPackageSlug);
+                console.log('Found package:', package);
+                
+                if (package && package.restrictions) {
+                    var restrictions = package.restrictions;
+                    var violations = [];
+                    
+                    console.log('Restrictions:', restrictions);
+                    console.log('Photo count:', packageGroup.photoPrintCount, 'Limit:', restrictions.photo_prints.total_limit);
+                    console.log('Canvas count:', packageGroup.canvasPrintCount, 'Limit:', restrictions.canvas_prints.total_limit);
+                    
+                    if (packageGroup.photoPrintCount > restrictions.photo_prints.total_limit) {
+                        var violation = `Photo prints limit exceeded. You are trying to set ${packageGroup.photoPrintCount} photo prints, but the limit is ${restrictions.photo_prints.total_limit}.`;
+                        violations.push(violation);
+                    }
+                    
+                    if (packageGroup.canvasPrintCount > restrictions.canvas_prints.total_limit) {
+                        var violation = `Canvas prints limit exceeded. You are trying to set ${packageGroup.canvasPrintCount} canvas prints, but the limit is ${restrictions.canvas_prints.total_limit}.`;
+                        violations.push(violation);
+                    }
+                    
+                    if (violations.length > 0) {
+                        allViolations.push({
+                            packageName: package.name,
+                            violations: violations
+                        });
+                    }
+                }
+            }
+            
+            if (allViolations.length > 0) {
+                var message = '';
+                
+                allViolations.forEach(function(packageViolation) {
+                    message += `
+                        <div class="package-violation" style="background-color: #f8f9fa; padding: 15px; border-radius: 0; margin-bottom: 15px;">
+                            <h6 class="text-danger mb-3" style="font-weight: bold;">
+                                <i class="fas fa-gift"></i> ${packageViolation.packageName}
+                            </h6>
+                            <div class="violations-list">
+                                <ul class="list-unstyled mb-0">
+                    `;
+                    
+                    packageViolation.violations.forEach(function(violation) {
+                        message += `<li class="mb-2" style="color: #6c757d; font-size: 14px;"><i class="fas fa-times-circle text-danger"></i> ${violation}</li>`;
+                    });
+                    
+                    message += `
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Show modal with violation message
+                $('#restriction-message').html(message);
+                $('#packageRestrictionModal').modal('show');
+                
+                // Ensure close button works
+                $('#packageRestrictionModal .close, #packageRestrictionModal [data-dismiss="modal"]').off('click').on('click', function() {
+                    $('#packageRestrictionModal').modal('hide');
+                });
+                
+                callback(false); // Prevent updating cart
+                return;
+            } else {
+                callback(true); // Allow updating cart
+                return;
+            }
+        }
+        
+        callback(true); // No package items or no restrictions, allow
+    }).fail(function() {
+        callback(true); // Allow if JSON fails to load
+    });
+}
+
     $(document).ready(function () {
         $("#update_cart").on('click', function () {
             $('#qty-validation').addClass('d-none');
-            var data = [];
-            $("input[name='product_quantity[]']").each(function (i, v) {
-                if ($(v).val() > 0) {
-                    data.push({
-                        'quantity': $(v).val(),
-                        'rowId': $(v).data('row'),
-                        'product_type': $(v).data('product_type'),
-                        'product_id': $(v).data('product_id'),
-                        'is_test_print': $(v).data('is_test_print')
-                    })
-
-                } else {
-                    $(this).addClass('validator');
-                    $('#qty-validation').removeClass('d-none');
-                    $('#qty-validation p').text('Please enter quantity equal to or more then 1.');
-                    return false;
+            
+            // Check package validation first
+            checkPackageValidationForCart(function(isValid) {
+                if (!isValid) {
+                    return false; // Stop if validation fails
                 }
+                
+                // Proceed with cart update
+                var data = [];
+                $("input[name='product_quantity[]']").each(function (i, v) {
+                    if ($(v).val() > 0) {
+                        data.push({
+                            'quantity': $(v).val(),
+                            'rowId': $(v).data('row'),
+                            'product_type': $(v).data('product_type'),
+                            'product_id': $(v).data('product_id'),
+                            'is_test_print': $(v).data('is_test_print')
+                        })
 
-            });
-            $.post("{{ route('update-cart') }}", {
-                    data: data,
-                    "_token": "{{ csrf_token() }}"
-                },
-                function (data, status) {
-                    if (data.error == true) {
-                        console.log(data.message);
-                        $('#qty-validation').removeClass('d-none');
-                        $('#qty-validation p').text(data.message);
-                        return false;
                     } else {
-                        location.reload();
+                        $(this).addClass('validator');
+                        $('#qty-validation').removeClass('d-none');
+                        $('#qty-validation p').text('Please enter quantity equal to or more then 1.');
+                        return false;
                     }
+
                 });
+                $.post("{{ route('update-cart') }}", {
+                        data: data,
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    function (data, status) {
+                        if (data.error == true) {
+                            console.log(data.message);
+                            $('#qty-validation').removeClass('d-none');
+                            $('#qty-validation p').text(data.message);
+                            return false;
+                        } else {
+                            location.reload();
+                        }
+                    });
+            });
         })
 
         $(".product-img").on('click', function () {
