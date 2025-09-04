@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Shop;
+use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -78,7 +80,17 @@ class ShopController extends Controller
         "meta_description" => config('constant.pages_meta.shop_detail.meta_description')
     ];
 
-    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content'));
+    if (Auth::check() && !empty(Auth::user())) {
+      $user = Auth::user();
+      $auth_id = $user->id;
+      $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+    } else {
+        // Guest user logic with referral_code already in session
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+    }
+
+    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content','cart'));
   }  
 
   public function getProductsBycategory(Request $request)
@@ -203,9 +215,10 @@ class ShopController extends Controller
             // Add frame data to the product for display
             // $product->frame_data = $frame;
             $product->is_package = 1;
-            $product->package_price = $package_product->product_price;
-            $product->package_product_id = $package_product->id;
-            $matchingProducts->push($product);
+                          $product->package_price = $package_product->product_price;
+              $product->package_product_id = $package_product->id;
+              $product->package_slug = $packageSlug; // Add package slug
+              $matchingProducts->push($product);
         }
     }
 
@@ -215,6 +228,24 @@ class ShopController extends Controller
     // Use the same view as regular products
     $products = $matchingProducts;
     echo view('front-end/shop_details_product_ajax', compact('products'));
+  }
+
+  public function getWeddingPackagesJson()
+  {
+    $jsonPath = resource_path('pages_json/wedding_packages.json');
+    
+    if (!file_exists($jsonPath)) {
+      return response()->json(['error' => 'Wedding packages file not found'], 404);
+    }
+    
+    $jsonContent = file_get_contents($jsonPath);
+    $data = json_decode($jsonContent, true);
+    
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      return response()->json(['error' => 'Invalid JSON format'], 500);
+    }
+    
+    return response()->json($data);
   }
 
 }

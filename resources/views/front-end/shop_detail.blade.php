@@ -74,6 +74,33 @@
             </div>
         </div>
 
+        <!-- Package Restriction Modal -->
+        <div class="modal fade" id="packageRestrictionModal" tabindex="-1" role="dialog" aria-labelledby="packageRestrictionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="border-radius: 0;">
+                    <div class="modal-header" style="background-color: #f8f9fa; border-radius: 0;">
+                        <h5 class="modal-title text-dark" id="packageRestrictionModalLabel">
+                            <i class="fas fa-exclamation-triangle text-danger"></i> Package Restriction Violation
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #dc3545; font-size: 1.5rem;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #ffffff; padding: 20px;">
+                        <div class="alert alert-info" style="border-radius: 0; border-left: 4px solid #17a2b8;">
+                            <i class="fas fa-info-circle"></i> You cannot add these items to your cart because they exceed the package restrictions.
+                        </div>
+                        <div id="restriction-message"></div>
+                    </div>
+                    <div class="modal-footer" style="background-color: #f8f9fa; border-radius: 0;">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="border-radius: 0; padding: 8px 20px;">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="fw-area">
             <div class="container">
                 <div class="fw-area-wrap">
@@ -219,6 +246,20 @@ $(document).ready(function() {
     $("#add-to-cart").on('click', function(event) {
         event.preventDefault(); // Prevent default action
 
+        // Check package validation first
+        checkPackageValidation(function(isValid) {
+            if (!isValid) {
+                return false; // Stop if validation fails
+            }
+            
+            // Proceed with adding to cart
+
+            console.log('cart added');
+            addItemsToCart();
+        });
+    });
+    
+    function addItemsToCart() {
         let cartItems = [];
         let total = 0;
         let selectedImages = [];
@@ -235,6 +276,7 @@ $(document).ready(function() {
                 let is_package = $(this).data('is_package') || 0;
                 let package_price = $(this).data('package_price') || null;
                 let package_product_id = $(this).data('package_product_id') || null;
+                let category_id = $(this).data('category_id') || null;
                 
                 let totalPrice = quantity * price;
                 total += totalPrice;
@@ -248,7 +290,8 @@ $(document).ready(function() {
                     testPrintCategory_id: testPrintCategory_id,
                     is_package: is_package,
                     package_price: package_price,
-                    package_product_id: package_product_id
+                    package_product_id: package_product_id,
+                    category_id: category_id
                 });
             }
         });
@@ -306,13 +349,189 @@ $(document).ready(function() {
         } else {
             alert('No items to add to cart!');
         }
-    });
+    }
 
     // Function to update the cart totals
     
     // Initial update of cart totals on page load
     updateCartTotals();
 });
+
+
+function checkPackageValidation(callback){
+    // Use cart data that's already available on the page
+    @php
+        $cartItemsData = [];
+        if($cart && $cart->items) {
+            foreach($cart->items as $item) {
+                $cartItemsData[] = [
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'is_package' => $item->is_package ?? 0,
+                    'package_product_id' => $item->package_product_id ?? null,
+                    'category_id' => $item->product->category_id ?? null,
+                    'product_type' => $item->product_type ?? null
+                ];
+            }
+        }
+    @endphp
+    var currentCartItems = @json($cartItemsData);
+    
+    // Load wedding packages JSON
+    $.get("{{ route('wedding-packages-json') }}", function(packages) {
+        // Get items being added to cart
+        let newCartItems = [];
+        let hasPackageItems = false;
+        let packageSlug = '';
+        
+        // Get selected images count
+        let selectedImagesCount = 0;
+        $("input[name='selected-image[]']").each(function() {
+            if ($(this).val() == "1") {
+                selectedImagesCount++;
+            }
+        });
+        
+        $("input[name=quantity]").each(function() {
+            let quantity = $(this).val();
+            if (quantity > 0) {
+                let is_package = $(this).data('is_package') || 0;
+                let package_product_id = $(this).data('package_product_id') || null;
+                let category_id = $(this).data('category_id') || null;
+                let package_slug = $(this).data('package_slug') || '';
+                
+                if (is_package == 1) {
+                    hasPackageItems = true;
+                    packageSlug = package_slug;
+                    
+                    // Calculate total quantity: product quantity × selected images count
+                    let totalQuantity = parseFloat(quantity) * selectedImagesCount;
+                    
+                    newCartItems.push({
+                        product_id: $(this).data('productid'),
+                        quantity: totalQuantity, // This is now the total quantity for all images
+                        is_package: is_package,
+                        package_product_id: package_product_id,
+                        category_id: category_id
+                    });
+                } else {
+                    // For non-package items, use original quantity
+                    newCartItems.push({
+                        product_id: $(this).data('productid'),
+                        quantity: parseFloat(quantity),
+                        is_package: is_package,
+                        package_product_id: package_product_id,
+                        category_id: category_id
+                    });
+                }
+            }
+        });
+        
+        if (hasPackageItems && packageSlug) {
+            // Find the package in JSON
+            var package = packages.packages.find(p => p.slug === packageSlug);
+            
+            if (package && package.restrictions) {
+                var restrictions = package.restrictions;
+                
+                // Count existing items in cart by package and type
+                var existingPhotoPrintCount = 0;
+                var existingCanvasPrintCount = 0;
+                var packageProductId = null;
+                
+                // Get package product ID from new items
+                if (newCartItems.length > 0 && newCartItems[0].package_product_id) {
+                    packageProductId = newCartItems[0].package_product_id;
+                }
+                
+                // Count existing cart items for this package
+                if (currentCartItems && currentCartItems.length > 0 && packageProductId) {
+                    currentCartItems.forEach(function(item) {
+                        if (item.is_package == 1 && item.package_product_id == packageProductId) {
+                            // Check by category_id: 4 = Photo Prints, 2 = Canvas Prints
+                            if (item.category_id == 4) {
+                                existingPhotoPrintCount += parseInt(item.quantity);
+                            } else if (item.category_id == 2) {
+                                existingCanvasPrintCount += parseInt(item.quantity);
+                            }
+                        }
+                    });
+                }
+                
+                // Count new items being added
+                var newPhotoPrintCount = 0;
+                var newCanvasPrintCount = 0;
+                
+                newCartItems.forEach(function(item) {
+                    if (item.is_package == 1) {
+                        if (item.category_id == 4) {
+                            newPhotoPrintCount += parseInt(item.quantity);
+                        } else if (item.category_id == 2) {
+                            newCanvasPrintCount += parseInt(item.quantity);
+                        }
+                    }
+                });
+                
+                // Calculate total counts
+                var totalPhotoPrintCount = existingPhotoPrintCount + newPhotoPrintCount;
+                var totalCanvasPrintCount = existingCanvasPrintCount + newCanvasPrintCount;
+                
+                // Check restrictions
+                var violations = [];
+                
+                if (totalPhotoPrintCount > restrictions.photo_prints.total_limit) {
+                    var violation = `Photo prints limit exceeded. You have ${existingPhotoPrintCount} in cart and trying to add ${newPhotoPrintCount} more, but the limit is ${restrictions.photo_prints.total_limit}.`;
+                    violations.push(violation);
+                }
+                
+                if (totalCanvasPrintCount > restrictions.canvas_prints.total_limit) {
+                    var violation = `Canvas prints limit exceeded. You have ${existingCanvasPrintCount} in cart and trying to add ${newCanvasPrintCount} more, but the limit is ${restrictions.canvas_prints.total_limit}.`;
+                    violations.push(violation);
+                }
+                
+                if (violations.length > 0) {
+                    var message = `
+                        <div class="package-violation" style="background-color: #f8f9fa; padding: 15px; border-radius: 0;">
+                            <h6 class="text-danger mb-3" style="font-weight: bold;">
+                                <i class="fas fa-gift"></i> ${package.name}
+                            </h6>
+                            <div class="violations-list">
+                                <ul class="list-unstyled mb-0">
+                    `;
+                    
+                    violations.forEach(function(violation) {
+                        message += `<li class="mb-2" style="color: #6c757d; font-size: 14px;"><i class="fas fa-times-circle text-danger"></i> ${violation}</li>`;
+                    });
+                    
+                    message += `
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Show modal with violation message
+                    $('#restriction-message').html(message);
+                    $('#packageRestrictionModal').modal('show');
+                    
+                    // Ensure close button works
+                    $('#packageRestrictionModal .close, #packageRestrictionModal [data-dismiss="modal"]').off('click').on('click', function() {
+                        $('#packageRestrictionModal').modal('hide');
+                    });
+                    
+                    callback(false); // Prevent adding to cart
+                    return;
+                } else {
+                    callback(true); // Allow adding to cart
+                    return;
+                }
+            }
+        }
+        
+        callback(true); // No package items or no restrictions, allow
+    }).fail(function() {
+        callback(true); // Allow if JSON fails to load
+    });
+}
 
 
 function updateCartTotals() {

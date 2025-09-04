@@ -4,6 +4,16 @@
       "name": "Sweet Memories Package Starter",
       "slug": "sweet-memories-package-starter",
       "price": 86.40,
+      "restrictions": {
+        "photo_prints": {
+          "total_limit": 20,
+          "allowed_sizes": ["6x4"]
+        },
+        "canvas_prints": {
+          "total_limit": 1,
+          "allowed_sizes": ["12x12"]
+        }
+      },
       "frames": [
         {
           "type": "Photo Prints",
@@ -29,6 +39,16 @@
       "name": "Cherished Moments Package Classic",
       "slug": "cherished-moments-package-classic",
       "price": 143.50,
+      "restrictions": {
+        "photo_prints": {
+          "total_limit": 40,
+          "allowed_sizes": ["6x4", "5x7"]
+        },
+        "canvas_prints": {
+          "total_limit": 2,
+          "allowed_sizes": ["16x20"]
+        }
+      },
       "frames": [
         {
           "type": "Photo Prints",
@@ -66,6 +86,16 @@
       "name": "Forever Always Package Premium",
       "slug": "forever-always-package-premium",
       "price": 304.95,
+      "restrictions": {
+        "photo_prints": {
+          "total_limit": 75,
+          "allowed_sizes": ["6x4", "5x7", "8x10"]
+        },
+        "canvas_prints": {
+          "total_limit": 3,
+          "allowed_sizes": ["20x20", "20x30"]
+        }
+      },
       "frames": [
         {
           "type": "Photo Prints",
@@ -121,6 +151,16 @@
       "name": "Grand Celebration Package Deluxe",
       "slug": "grand-celebration-package-deluxe",
       "price": 840.50,
+      "restrictions": {
+        "photo_prints": {
+          "total_limit": 100,
+          "allowed_sizes": ["6x4", "5x7", "8x10"]
+        },
+        "canvas_prints": {
+          "total_limit": 5,
+          "allowed_sizes": ["30x40", "30x60", "40x30", "40x40", "40x60"]
+        }
+      },
       "frames": [
         {
           "type": "Photo Prints",

@@ -220,6 +220,7 @@ Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-deta
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::get('/wedding-packages-list',[ShopController::class,'getWeddingPackagesList'])->name('wedding-packages-list');
 Route::post('/wedding-package-frames',[ShopController::class,'getWeddingPackageFrames'])->name('wedding-package-frames');
+Route::get('/wedding-packages-json',[ShopController::class,'getWeddingPackagesJson'])->name('wedding-packages-json');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('checkout');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
