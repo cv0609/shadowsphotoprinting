@@ -389,9 +389,16 @@ function updateCartTotals() {
     if (selectedCategory === 'wedding-package') {
         $('#wedding-package-dropdown').show();
         loadWeddingPackages();
+        // Hide cart totals when wedding package is selected
+        $('.cart-totals').hide();
     } else {
         $('#wedding-package-dropdown').hide();
         $('#wedding-package-select').val('');
+        // Show cart totals for other categories
+        $('.cart-totals').show();
+        // Show price and total columns for non-wedding package categories
+        $('th:nth-child(3), th:nth-child(4)').show();
+        $('td:nth-child(3), td:nth-child(4)').show();
     }
 
     $.post("{{ route('products-by-category') }}",
@@ -447,9 +454,15 @@ function updateCartTotals() {
         if (selectedPackage) {
             // Load the specific wedding package frames
             loadWeddingPackageFrames(selectedPackage);
+            // Hide price and total columns for wedding package items
+            $('th:nth-child(3), th:nth-child(4)').hide();
+            $('td:nth-child(3), td:nth-child(4)').hide();
         } else {
             // Clear the products table
             $("#products-main").html('<tr><td colspan="4" style="text-align: center; padding: 20px;">Please select a wedding package</td></tr>');
+            // Show price and total columns when no package is selected
+            $('th:nth-child(3), th:nth-child(4)').show();
+            $('td:nth-child(3), td:nth-child(4)').show();
         }
     });
 
@@ -460,6 +473,9 @@ function updateCartTotals() {
             '_token': "{{ csrf_token() }}"
         }, function(res) {
             $("#products-main").html(res);
+            // Hide price and total columns after loading wedding package frames
+            $('th:nth-child(3), th:nth-child(4)').hide();
+            $('td:nth-child(3), td:nth-child(4)').hide();
         });
     }
 </script>
