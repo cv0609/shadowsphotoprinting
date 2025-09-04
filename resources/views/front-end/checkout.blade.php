@@ -208,75 +208,121 @@
                                     <thead>
                                         <tr>
                                             <th>Product</th>
-                                            <th>Subtotal</th>
+                                            <th>
+                                                @if($has_package_items && !$has_non_package_items)
+                                                    Items
+                                                @elseif($has_package_items && $has_non_package_items)
+                                                    Subtotal
+                                                @else
+                                                    Subtotal
+                                                @endif
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($cart->items as $item)
-                                        <?php 
-                                        
-                                        $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
-                                        $productSalePrice =  $CartService->getProductSalePrice($item->product_id);
+                                        @php
+                                            // Group items by package
+                                            $package_groups = [];
+                                            $normal_items = [];
+                                            
+                                            foreach ($cart->items as $item) {
+                                                $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
+                                                
+                                                if($is_package == 1) {
+                                                    $package_product_id = $item->package_product_id;
+                                                    if(!isset($package_groups[$package_product_id])) {
+                                                        $package_groups[$package_product_id] = [
+                                                            'package' => $CartService->getPackageProductDetails($package_product_id),
+                                                            'items' => []
+                                                        ];
+                                                    }
+                                                    $package_groups[$package_product_id]['items'][] = $item;
+                                                } else {
+                                                    $normal_items[] = $item;
+                                                }
+                                            }
+                                        @endphp
 
-                                        $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
-
-                                        $package_product_price = 0;
-                                        $package_name = '';
-                                        $is_first_package_item = false;
-                                        $show_package_separator = false;
-
-                                        if($is_package == 1){
-                                            $package_product_id = $item->package_product_id;
-                                            $package = $CartService->getPackageProductDetails($package_product_id);
-
-                                            $package_product_price = $package->product_price;
-                                            $package_name = $package->product_title;
-                                        }
-                                        
-                                        ?>
-
-                                        <tr>
-
-                                            <td>
-                                                @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                    {{ $product_detail->product_title }}
-                                                @else
-                                                    {{ $item->product->product_title }}
-                                                @endif
-                                                &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
-                                            </td>
-
-                                            <td>
-                                                <span>
-                                                    
-                                                    <bdi>
-                                                        <span>$</span>
+                                        {{-- Display package groups --}}
+                                        @foreach($package_groups as $package_id => $package_group)
+                                            @php
+                                                $package = $package_group['package'];
+                                                $package_items = $package_group['items'];
+                                                $package_total_price = $package ? $package->product_price : 0;
+                                            @endphp
+                                            
+                                            {{-- Show package header for all packages --}}
+                                            <tr class="package-header">
+                                                <td colspan="2">
+                                                    <strong>{{ $package ? $package->product_title : 'Package Not Found' }} - ${{ number_format($package_total_price, 2) }}</strong>
+                                                </td>
+                                            </tr>
+                                            
+                                            {{-- Show package items --}}
+                                            @foreach($package_items as $item)
+                                                @php
+                                                    $product_detail = $CartService->getProductDetailsByType($item->product_id, $item->product_type);
+                                                @endphp
+                                                
+                                                <tr>
+                                                    <td>
                                                         @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+                                                            {{ $product_detail->product_title }}
                                                         @else
-                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                                {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
-                                                            @else
-                                                                {{ isset($productSalePrice) && !empty($productSalePrice) 
-                                                                    ? number_format($item->quantity * $productSalePrice, 2) 
-                                                                    : number_format($item->quantity * $item->product->product_price, 2)
-                                                                }}
-                                                            @endif
+                                                            {{ $item->product->product_title }}
                                                         @endif
-                                                    </bdi>
-                                                </span>
-                                            </td>
+                                                        &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
+                                                        
+                                                        {{-- Show package name in small text if multiple packages --}}
+                                                        @if(count($package_groups) > 1)
+                                                            <br><small style="color: #666;">Package: {{ $package->product_title }}</small>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        {{-- All package items show "Items" text --}}
+                                                        <span>Items</span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
 
-                                            <input type="hidden" value="@if($item->product_type == 'gift_card')
-                                                {{ number_format($item->quantity * $product_detail->product_price, 2) }}
-                                            @elseif($item->product_type == 'photo_for_sale')
-                                                {{ number_format($item->quantity * $product_detail->product_price, 2) }}
-                                            @else
-                                                {{ isset($productSalePrice) && !empty($productSalePrice) ? number_format($item->quantity * $productSalePrice, 2) : number_format($item->quantity * $item->product->product_price, 2) }}
-                                            @endif">
-
-                                        </tr>
-                                       @endforeach
+                                        {{-- Display normal items (non-package) --}}
+                                        @foreach($normal_items as $item)
+                                            @php
+                                                $product_detail = $CartService->getProductDetailsByType($item->product_id, $item->product_type);
+                                                $productSalePrice = $CartService->getProductSalePrice($item->product_id);
+                                            @endphp
+                                            
+                                            <tr>
+                                                <td>
+                                                    @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                        {{ $product_detail->product_title }}
+                                                    @else
+                                                        {{ $item->product->product_title }}
+                                                    @endif
+                                                    &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
+                                                </td>
+                                                <td>
+                                                    <span>
+                                                        <bdi>
+                                                            <span>$</span>
+                                                            @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                                {{ number_format($item->quantity * $item->product_price, 2) }}
+                                                            @else
+                                                                @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                                    {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
+                                                                @else
+                                                                    {{ isset($productSalePrice) && !empty($productSalePrice) 
+                                                                        ? number_format($item->quantity * $productSalePrice, 2) 
+                                                                        : number_format($item->quantity * $item->product->product_price, 2)
+                                                                    }}
+                                                                @endif
+                                                            @endif
+                                                        </bdi>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
 

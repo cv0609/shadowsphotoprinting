@@ -38,7 +38,7 @@ $CartService = app(App\Services\CartService::class);
                             <table cellspacing="0">
                                 <thead>
                                     <tr @if($has_package_items)style="text-align: center;" @endif>
-                                        <th colspan="3" class="product-name">Product</th>
+                                        <th colspan="3" class="product-name" @if($has_package_items)style="text-align: left;" @endif>Product</th>
                                         <th class="product-price">Price @if($has_package_items) / Package Info @endif </th>
                                         @if($has_non_package_items)
                                             <th class="product-quantity">Quantity</th>
