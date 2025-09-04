@@ -845,16 +845,24 @@ function checkPackageValidationForCart(callback){
                     if (!packageGroups[item.package_slug]) {
                         packageGroups[item.package_slug] = {
                             package_slug: item.package_slug,
-                            photoPrintCount: 0,
-                            canvasPrintCount: 0
+                            typeCounts: {} // Dynamic type counting
                         };
                     }
                     
-                    // Count by category_id: 4 = Photo Prints, 2 = Canvas Prints
-                    if (item.category_id == 4) {
-                        packageGroups[item.package_slug].photoPrintCount += parseInt(item.quantity);
-                    } else if (item.category_id == 2) {
-                        packageGroups[item.package_slug].canvasPrintCount += parseInt(item.quantity);
+                    // Find the package to get type mapping
+                    var package = packages.packages.find(p => p.slug === item.package_slug);
+                    if (package && package.frames) {
+                        // Find the frame type for this category_id
+                        var frame = package.frames.find(f => f.category_id == item.category_id);
+                        if (frame && frame.type) {
+                            var typeKey = frame.type.toLowerCase().replace(/\s+/g, '_');
+                            
+                            if (!packageGroups[item.package_slug].typeCounts[typeKey]) {
+                                packageGroups[item.package_slug].typeCounts[typeKey] = 0;
+                            }
+                            
+                            packageGroups[item.package_slug].typeCounts[typeKey] += parseInt(item.quantity);
+                        }
                     }
                 }
             });
@@ -877,17 +885,21 @@ function checkPackageValidationForCart(callback){
                     var violations = [];
                     
                     console.log('Restrictions:', restrictions);
-                    console.log('Photo count:', packageGroup.photoPrintCount, 'Limit:', restrictions.photo_prints.total_limit);
-                    console.log('Canvas count:', packageGroup.canvasPrintCount, 'Limit:', restrictions.canvas_prints.total_limit);
                     
-                    if (packageGroup.photoPrintCount > restrictions.photo_prints.total_limit) {
-                        var violation = `Photo prints limit exceeded. You are trying to set ${packageGroup.photoPrintCount} photo prints, but the limit is ${restrictions.photo_prints.total_limit}.`;
-                        violations.push(violation);
-                    }
-                    
-                    if (packageGroup.canvasPrintCount > restrictions.canvas_prints.total_limit) {
-                        var violation = `Canvas prints limit exceeded. You are trying to set ${packageGroup.canvasPrintCount} canvas prints, but the limit is ${restrictions.canvas_prints.total_limit}.`;
-                        violations.push(violation);
+                    // Dynamic validation based on JSON restrictions
+                    for (var restrictionType in restrictions) {
+                        var restriction = restrictions[restrictionType];
+                        var typeKey = restrictionType; // e.g., "photo_prints", "canvas_prints"
+                        var currentCount = packageGroup.typeCounts[typeKey] || 0;
+                        var limit = restriction.total_limit;
+                        
+                        console.log(`${typeKey}: count=${currentCount}, limit=${limit}`);
+                        
+                        if (currentCount > limit) {
+                            var typeDisplayName = typeKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                            var violation = `${typeDisplayName} limit exceeded. You are trying to set ${currentCount} ${typeDisplayName.toLowerCase()}, but the limit is ${limit}.`;
+                            violations.push(violation);
+                        }
                     }
                     
                     if (violations.length > 0) {

@@ -434,9 +434,9 @@ function checkPackageValidation(callback){
             if (package && package.restrictions) {
                 var restrictions = package.restrictions;
                 
-                // Count existing items in cart by package and type
-                var existingPhotoPrintCount = 0;
-                var existingCanvasPrintCount = 0;
+                // Dynamic type counting
+                var existingTypeCounts = {};
+                var newTypeCounts = {};
                 var packageProductId = null;
                 
                 // Get package product ID from new items
@@ -448,45 +448,50 @@ function checkPackageValidation(callback){
                 if (currentCartItems && currentCartItems.length > 0 && packageProductId) {
                     currentCartItems.forEach(function(item) {
                         if (item.is_package == 1 && item.package_product_id == packageProductId) {
-                            // Check by category_id: 4 = Photo Prints, 2 = Canvas Prints
-                            if (item.category_id == 4) {
-                                existingPhotoPrintCount += parseInt(item.quantity);
-                            } else if (item.category_id == 2) {
-                                existingCanvasPrintCount += parseInt(item.quantity);
+                            // Find the frame type for this category_id
+                            var frame = package.frames.find(f => f.category_id == item.category_id);
+                            if (frame && frame.type) {
+                                var typeKey = frame.type.toLowerCase().replace(/\s+/g, '_');
+                                if (!existingTypeCounts[typeKey]) {
+                                    existingTypeCounts[typeKey] = 0;
+                                }
+                                existingTypeCounts[typeKey] += parseInt(item.quantity);
                             }
                         }
                     });
                 }
                 
                 // Count new items being added
-                var newPhotoPrintCount = 0;
-                var newCanvasPrintCount = 0;
-                
                 newCartItems.forEach(function(item) {
                     if (item.is_package == 1) {
-                        if (item.category_id == 4) {
-                            newPhotoPrintCount += parseInt(item.quantity);
-                        } else if (item.category_id == 2) {
-                            newCanvasPrintCount += parseInt(item.quantity);
+                        // Find the frame type for this category_id
+                        var frame = package.frames.find(f => f.category_id == item.category_id);
+                        if (frame && frame.type) {
+                            var typeKey = frame.type.toLowerCase().replace(/\s+/g, '_');
+                            if (!newTypeCounts[typeKey]) {
+                                newTypeCounts[typeKey] = 0;
+                            }
+                            newTypeCounts[typeKey] += parseInt(item.quantity);
                         }
                     }
                 });
                 
-                // Calculate total counts
-                var totalPhotoPrintCount = existingPhotoPrintCount + newPhotoPrintCount;
-                var totalCanvasPrintCount = existingCanvasPrintCount + newCanvasPrintCount;
-                
-                // Check restrictions
+                // Check restrictions dynamically
                 var violations = [];
                 
-                if (totalPhotoPrintCount > restrictions.photo_prints.total_limit) {
-                    var violation = `Photo prints limit exceeded. You have ${existingPhotoPrintCount} in cart and trying to add ${newPhotoPrintCount} more, but the limit is ${restrictions.photo_prints.total_limit}.`;
-                    violations.push(violation);
-                }
-                
-                if (totalCanvasPrintCount > restrictions.canvas_prints.total_limit) {
-                    var violation = `Canvas prints limit exceeded. You have ${existingCanvasPrintCount} in cart and trying to add ${newCanvasPrintCount} more, but the limit is ${restrictions.canvas_prints.total_limit}.`;
-                    violations.push(violation);
+                for (var restrictionType in restrictions) {
+                    var restriction = restrictions[restrictionType];
+                    var typeKey = restrictionType; // e.g., "photo_prints", "canvas_prints"
+                    var existingCount = existingTypeCounts[typeKey] || 0;
+                    var newCount = newTypeCounts[typeKey] || 0;
+                    var totalCount = existingCount + newCount;
+                    var limit = restriction.total_limit;
+                    
+                    if (totalCount > limit) {
+                        var typeDisplayName = typeKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        var violation = `${typeDisplayName} limit exceeded. You have ${existingCount} in cart and trying to add ${newCount} more, but the limit is ${limit}.`;
+                        violations.push(violation);
+                    }
                 }
                 
                 if (violations.length > 0) {
