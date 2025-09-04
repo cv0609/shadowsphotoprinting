@@ -251,13 +251,13 @@ $CartService = app(App\Services\CartService::class);
                                         </td>
                                         @if($has_non_package_items)
                                             <td class="product-quantity">
-                                                @if($is_package != 1)  
+                                                {{-- @if($is_package != 1)   --}}
                                                     <input type="number" name="product_quantity[]" id="product_quantity"
                                                     placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
                                                     data-product_type="{{ $item->product_type }}"
                                                     data-product_id="{{ $item->product_id }}"
                                                     data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}">
-                                                @endif    
+                                                {{-- @endif     --}}
                                             </td>
 
                                             <td class="product-subtotal">
