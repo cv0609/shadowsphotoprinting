@@ -136,6 +136,16 @@
                                 <!-- Wedding packages will be loaded here via AJAX -->
                             </select>
                         </div>
+                        
+                        <!-- Package Restrictions Display (Hidden by default) -->
+                        <div class="package-restrictions-info" id="package-restrictions-info" style="display: none; border: 1px solid rgb(230 228 223); border-radius: 4px; padding: 6px 10px; margin: 8px 0;background:#f6f6f6;">
+                            <div class="restrictions-inline" style="background-color: transparent; text-align: center;">
+                                <span style="color: #f12626; font-size: 10px; font-weight: 500;">
+                                    <i class="fas fa-info-circle"></i> 
+                                    <span id="restrictions-content">Package Restrictions</span>
+                                </span>
+                            </div>
+                        </div>
                         <div class="fw-products-box">
                             <table>
                                 <thead>
@@ -678,12 +688,16 @@ function updateCartTotals() {
         if (selectedPackage) {
             // Load the specific wedding package frames
             loadWeddingPackageFrames(selectedPackage);
+            // Load and display package restrictions
+            loadPackageRestrictions(selectedPackage);
             // Hide price and total columns for wedding package items
             $('th:nth-child(3), th:nth-child(4)').hide();
             $('td:nth-child(3), td:nth-child(4)').hide();
         } else {
             // Clear the products table
             $("#products-main").html('<tr><td colspan="4" style="text-align: center; padding: 20px;">Please select a wedding package</td></tr>');
+            // Hide package restrictions
+            $('#package-restrictions-info').hide();
             // Show price and total columns when no package is selected
             $('th:nth-child(3), th:nth-child(4)').show();
             $('td:nth-child(3), td:nth-child(4)').show();
@@ -700,6 +714,32 @@ function updateCartTotals() {
             // Hide price and total columns after loading wedding package frames
             $('th:nth-child(3), th:nth-child(4)').hide();
             $('td:nth-child(3), td:nth-child(4)').hide();
+        });
+    }
+
+    // Function to load package restrictions
+    function loadPackageRestrictions(packageSlug) {
+        $.get("{{ route('wedding-packages-json') }}", function(packages) {
+            var package = packages.packages.find(p => p.slug === packageSlug);
+            if (package && package.restrictions) {
+                var restrictions = [];
+                
+                for (var restrictionType in package.restrictions) {
+                    var restriction = package.restrictions[restrictionType];
+                    var typeDisplayName = restrictionType.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    var quantity = restriction.total_limit;
+                    // var itemText = quantity === 1 ? typeDisplayName : typeDisplayName + 's';
+                    restrictions.push(quantity + ' ' + typeDisplayName);
+                }
+                
+                var restrictionsText = 'Package Includes: ' + restrictions.join(' & ');
+                $('#restrictions-content').html(restrictionsText);
+                $('#package-restrictions-info').show();
+            } else {
+                $('#package-restrictions-info').hide();
+            }
+        }).fail(function() {
+            $('#package-restrictions-info').hide();
         });
     }
 </script>

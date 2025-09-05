@@ -15,15 +15,6 @@
         $package_price = $product->package_price;
         $package_product_id = $product->package_product_id;
         $package_slug = $product->package_slug;
-        
-        // Debug: Log package data
-        \Log::info('Package product data:', [
-            'product_id' => $product->id,
-            'is_package' => $product->is_package,
-            'package_price' => $package_price,
-            'package_product_id' => $package_product_id,
-            'package_slug' => $package_slug
-        ]);
     }
 @endphp
 <tr class="gi-prod">
