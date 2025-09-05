@@ -279,24 +279,23 @@ $CartService = app(App\Services\CartService::class);
                                             @endif
                                             </span>
                                         </td>
-                                        @php
-                                          dump($has_non_package_items);
-                                        @endphp
-                                        @if($has_non_package_items)
-                                            <td class="product-quantity">
 
-                                                    <input type="number" name="product_quantity[]" id="product_quantity"
-                                                    placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
-                                                    data-product_type="{{ $item->product_type }}"
-                                                    data-product_id="{{ $item->product_id }}"
-                                                    data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}"
-                                                    data-is_package="{{ $is_package }}"
-                                                    data-package_product_id="{{ $is_package == 1 ? $item->package_product_id : '' }}"
-                                                    data-category_id="{{ $product_detail->category_id ?? '' }}"
-                                                    data-package_slug="{{ $package_slug ?? '' }}"
-                                                    >
-                                               
-                                            </td>
+                                        <td class="product-quantity">
+
+                                            <input type="number" name="product_quantity[]" id="product_quantity"
+                                            placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
+                                            data-product_type="{{ $item->product_type }}"
+                                            data-product_id="{{ $item->product_id }}"
+                                            data-is_test_print="{{ isset($item->is_test_print) && ($item->is_test_print == '1') ? $item->test_print_cat : '' }}"
+                                            data-is_package="{{ $is_package }}"
+                                            data-package_product_id="{{ $is_package == 1 ? $item->package_product_id : '' }}"
+                                            data-category_id="{{ $product_detail->category_id ?? '' }}"
+                                            data-package_slug="{{ $package_slug ?? '' }}"
+                                            >
+                                       
+                                        </td>
+                                       
+                                        @if($has_non_package_items)
 
                                             <td class="product-subtotal">
                                                 @if($is_package != 1)  
