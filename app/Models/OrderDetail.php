@@ -20,6 +20,9 @@ class OrderDetail extends Model
         'product_price',
         'sale_price',
         'sale_on',
+        'is_package',
+        'package_product_id',
+        'package_price'
     ];
 
     public function order()
