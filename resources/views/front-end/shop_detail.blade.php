@@ -74,6 +74,33 @@
             </div>
         </div>
 
+        <!-- Package Restriction Modal -->
+        <div class="modal fade" id="packageRestrictionModal" tabindex="-1" role="dialog" aria-labelledby="packageRestrictionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="border-radius: 0;">
+                    <div class="modal-header" style="background-color: #f8f9fa; border-radius: 0;">
+                        <h5 class="modal-title text-dark" id="packageRestrictionModalLabel">
+                            <i class="fas fa-exclamation-triangle text-danger"></i> Package Restriction Violation
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #dc3545; font-size: 1.5rem;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #ffffff; padding: 20px;">
+                        <div class="alert alert-info" style="border-radius: 0; border-left: 4px solid #17a2b8;">
+                            <i class="fas fa-info-circle"></i> You cannot add these items to your cart because they exceed the package restrictions.
+                        </div>
+                        <div id="restriction-message"></div>
+                    </div>
+                    <div class="modal-footer" style="background-color: #f8f9fa; border-radius: 0;">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="border-radius: 0; padding: 8px 20px;">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="fw-area">
             <div class="container">
                 <div class="fw-area-wrap">
@@ -99,6 +126,14 @@
                                 @foreach ($productCategories as $productCategory)
                                     <option value="{{ $productCategory->slug }}">{{ ucfirst($productCategory->name) }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        
+                        <!-- Wedding Package Dropdown (Hidden by default) -->
+                        <div class="fw-products-cats wedding-package-dropdown" id="wedding-package-dropdown" style="display: none;">
+                            <select name="wedding_package" id="wedding-package-select">
+                                <option value="">Select Wedding Package</option>
+                                <!-- Wedding packages will be loaded here via AJAX -->
                             </select>
                         </div>
                         <div class="fw-products-box">
@@ -211,6 +246,20 @@ $(document).ready(function() {
     $("#add-to-cart").on('click', function(event) {
         event.preventDefault(); // Prevent default action
 
+        // Check package validation first
+        checkPackageValidation(function(isValid) {
+            if (!isValid) {
+                return false; // Stop if validation fails
+            }
+            
+            // Proceed with adding to cart
+
+            console.log('cart added');
+            addItemsToCart();
+        });
+    });
+    
+    function addItemsToCart() {
         let cartItems = [];
         let total = 0;
         let selectedImages = [];
@@ -224,6 +273,11 @@ $(document).ready(function() {
                 let testPrintPrice = $(this).data('test_print_price');
                 let testPrintQty = $(this).data('test_print_qty');
                 let testPrintCategory_id = $(this).data('category_id');
+                let is_package = $(this).data('is_package') || 0;
+                let package_price = $(this).data('package_price') || null;
+                let package_product_id = $(this).data('package_product_id') || null;
+                let category_id = $(this).data('category_id') || null;
+                
                 let totalPrice = quantity * price;
                 total += totalPrice;
                 cartItems.push({
@@ -233,7 +287,11 @@ $(document).ready(function() {
                     testPrint: testPrint,
                     testPrintPrice: testPrintPrice,
                     testPrintQty: testPrintQty,
-                    testPrintCategory_id: testPrintCategory_id
+                    testPrintCategory_id: testPrintCategory_id,
+                    is_package: is_package,
+                    package_price: package_price,
+                    package_product_id: package_product_id,
+                    category_id: category_id
                 });
             }
         });
@@ -291,13 +349,194 @@ $(document).ready(function() {
         } else {
             alert('No items to add to cart!');
         }
-    });
+    }
 
     // Function to update the cart totals
     
     // Initial update of cart totals on page load
     updateCartTotals();
 });
+
+
+function checkPackageValidation(callback){
+    // Use cart data that's already available on the page
+    @php
+        $cartItemsData = [];
+        if($cart && $cart->items) {
+            foreach($cart->items as $item) {
+                $cartItemsData[] = [
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'is_package' => $item->is_package ?? 0,
+                    'package_product_id' => $item->package_product_id ?? null,
+                    'category_id' => $item->product->category_id ?? null,
+                    'product_type' => $item->product_type ?? null
+                ];
+            }
+        }
+    @endphp
+    var currentCartItems = @json($cartItemsData);
+    
+    // Load wedding packages JSON
+    $.get("{{ route('wedding-packages-json') }}", function(packages) {
+        // Get items being added to cart
+        let newCartItems = [];
+        let hasPackageItems = false;
+        let packageSlug = '';
+        
+        // Get selected images count
+        let selectedImagesCount = 0;
+        $("input[name='selected-image[]']").each(function() {
+            if ($(this).val() == "1") {
+                selectedImagesCount++;
+            }
+        });
+        
+        $("input[name=quantity]").each(function() {
+            let quantity = $(this).val();
+            if (quantity > 0) {
+                let is_package = $(this).data('is_package') || 0;
+                let package_product_id = $(this).data('package_product_id') || null;
+                let category_id = $(this).data('category_id') || null;
+                let package_slug = $(this).data('package_slug') || '';
+                
+                if (is_package == 1) {
+                    hasPackageItems = true;
+                    packageSlug = package_slug;
+                    
+                    // Calculate total quantity: product quantity × selected images count
+                    let totalQuantity = parseFloat(quantity) * selectedImagesCount;
+                    
+                    newCartItems.push({
+                        product_id: $(this).data('productid'),
+                        quantity: totalQuantity, // This is now the total quantity for all images
+                        is_package: is_package,
+                        package_product_id: package_product_id,
+                        category_id: category_id
+                    });
+                } else {
+                    // For non-package items, use original quantity
+                    newCartItems.push({
+                        product_id: $(this).data('productid'),
+                        quantity: parseFloat(quantity),
+                        is_package: is_package,
+                        package_product_id: package_product_id,
+                        category_id: category_id
+                    });
+                }
+            }
+        });
+        
+        if (hasPackageItems && packageSlug) {
+            // Find the package in JSON
+            var package = packages.packages.find(p => p.slug === packageSlug);
+            
+            if (package && package.restrictions) {
+                var restrictions = package.restrictions;
+                
+                // Dynamic type counting
+                var existingTypeCounts = {};
+                var newTypeCounts = {};
+                var packageProductId = null;
+                
+                // Get package product ID from new items
+                if (newCartItems.length > 0 && newCartItems[0].package_product_id) {
+                    packageProductId = newCartItems[0].package_product_id;
+                }
+                
+                // Count existing cart items for this package
+                if (currentCartItems && currentCartItems.length > 0 && packageProductId) {
+                    currentCartItems.forEach(function(item) {
+                        if (item.is_package == 1 && item.package_product_id == packageProductId) {
+                            // Find the frame type for this category_id
+                            var frame = package.frames.find(f => f.category_id == item.category_id);
+                            if (frame && frame.type) {
+                                var typeKey = frame.type.toLowerCase().replace(/\s+/g, '_');
+                                if (!existingTypeCounts[typeKey]) {
+                                    existingTypeCounts[typeKey] = 0;
+                                }
+                                existingTypeCounts[typeKey] += parseInt(item.quantity);
+                            }
+                        }
+                    });
+                }
+                
+                // Count new items being added
+                newCartItems.forEach(function(item) {
+                    if (item.is_package == 1) {
+                        // Find the frame type for this category_id
+                        var frame = package.frames.find(f => f.category_id == item.category_id);
+                        if (frame && frame.type) {
+                            var typeKey = frame.type.toLowerCase().replace(/\s+/g, '_');
+                            if (!newTypeCounts[typeKey]) {
+                                newTypeCounts[typeKey] = 0;
+                            }
+                            newTypeCounts[typeKey] += parseInt(item.quantity);
+                        }
+                    }
+                });
+                
+                // Check restrictions dynamically
+                var violations = [];
+                
+                for (var restrictionType in restrictions) {
+                    var restriction = restrictions[restrictionType];
+                    var typeKey = restrictionType; // e.g., "photo_prints", "canvas_prints"
+                    var existingCount = existingTypeCounts[typeKey] || 0;
+                    var newCount = newTypeCounts[typeKey] || 0;
+                    var totalCount = existingCount + newCount;
+                    var limit = restriction.total_limit;
+                    
+                    if (totalCount > limit) {
+                        var typeDisplayName = typeKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        var violation = `${typeDisplayName} limit exceeded. You have ${existingCount} in cart and trying to add ${newCount} more, but the limit is ${limit}.`;
+                        violations.push(violation);
+                    }
+                }
+                
+                if (violations.length > 0) {
+                    var message = `
+                        <div class="package-violation" style="background-color: #f8f9fa; padding: 15px; border-radius: 0;">
+                            <h6 class="text-danger mb-3" style="font-weight: bold;">
+                                <i class="fas fa-gift"></i> ${package.name}
+                            </h6>
+                            <div class="violations-list">
+                                <ul class="list-unstyled mb-0">
+                    `;
+                    
+                    violations.forEach(function(violation) {
+                        message += `<li class="mb-2" style="color: #6c757d; font-size: 14px;"><i class="fas fa-times-circle text-danger"></i> ${violation}</li>`;
+                    });
+                    
+                    message += `
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Show modal with violation message
+                    $('#restriction-message').html(message);
+                    $('#packageRestrictionModal').modal('show');
+                    
+                    // Ensure close button works
+                    $('#packageRestrictionModal .close, #packageRestrictionModal [data-dismiss="modal"]').off('click').on('click', function() {
+                        $('#packageRestrictionModal').modal('hide');
+                    });
+                    
+                    callback(false); // Prevent adding to cart
+                    return;
+                } else {
+                    callback(true); // Allow adding to cart
+                    return;
+                }
+            }
+        }
+        
+        callback(true); // No package items or no restrictions, allow
+    }).fail(function() {
+        callback(true); // Allow if JSON fails to load
+    });
+}
 
 
 function updateCartTotals() {
@@ -366,12 +605,29 @@ function updateCartTotals() {
 
 
  $("#category").on('change',function(){
+    var selectedCategory = $(this).val();
     var total = 0;
     var totalQuantity = 0;
 
+    // Show/hide wedding package dropdown based on category selection
+    if (selectedCategory === 'wedding-package') {
+        $('#wedding-package-dropdown').show();
+        loadWeddingPackages();
+        // Hide cart totals when wedding package is selected
+        $('.cart-totals').hide();
+    } else {
+        $('#wedding-package-dropdown').hide();
+        $('#wedding-package-select').val('');
+        // Show cart totals for other categories
+        $('.cart-totals').show();
+        // Show price and total columns for non-wedding package categories
+        $('th:nth-child(3), th:nth-child(4)').show();
+        $('td:nth-child(3), td:nth-child(4)').show();
+    }
+
     $.post("{{ route('products-by-category') }}",
     {
-        slug: $(this).val(),
+        slug: selectedCategory,
         '_token': "{{ csrf_token() }}"
     },
     function(res){
@@ -404,6 +660,49 @@ function updateCartTotals() {
             });
         });
     });
+
+    // Function to load wedding packages
+    function loadWeddingPackages() {
+        $.get("{{ route('wedding-packages-list') }}", function(data) {
+            var options = '<option value="">Select Wedding Package</option>';
+            data.forEach(function(package) {
+                options += '<option value="' + package.slug + '">' + package.name + ' - $' + package.price + '</option>';
+            });
+            $('#wedding-package-select').html(options);
+        });
+    }
+
+    // Wedding package dropdown change event
+    $("#wedding-package-select").on('change', function() {
+        var selectedPackage = $(this).val();
+        if (selectedPackage) {
+            // Load the specific wedding package frames
+            loadWeddingPackageFrames(selectedPackage);
+            // Hide price and total columns for wedding package items
+            $('th:nth-child(3), th:nth-child(4)').hide();
+            $('td:nth-child(3), td:nth-child(4)').hide();
+        } else {
+            // Clear the products table
+            $("#products-main").html('<tr><td colspan="4" style="text-align: center; padding: 20px;">Please select a wedding package</td></tr>');
+            // Show price and total columns when no package is selected
+            $('th:nth-child(3), th:nth-child(4)').show();
+            $('td:nth-child(3), td:nth-child(4)').show();
+        }
+    });
+
+    // Function to load wedding package frames
+    function loadWeddingPackageFrames(packageSlug) {
+        $.post("{{ route('wedding-package-frames') }}", {
+            package_slug: packageSlug,
+            '_token': "{{ csrf_token() }}"
+        }, function(res) {
+            $("#products-main").html(res);
+            // Hide price and total columns after loading wedding package frames
+            $('th:nth-child(3), th:nth-child(4)').hide();
+            $('td:nth-child(3), td:nth-child(4)').hide();
+        });
+    }
 </script>
+
 
 @endsection
