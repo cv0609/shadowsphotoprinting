@@ -226,10 +226,10 @@
                                             $normal_items = [];
                                             
                                             foreach ($cart->items as $item) {
-                                                $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
-                                                
+                                        $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
+
                                                 if($is_package == 1) {
-                                                    $package_product_id = $item->package_product_id;
+                                            $package_product_id = $item->package_product_id;
                                                     if(!isset($package_groups[$package_product_id])) {
                                                         $package_groups[$package_product_id] = [
                                                             'package' => $CartService->getPackageProductDetails($package_product_id),
@@ -294,35 +294,35 @@
                                             @endphp
                                             
                                             <tr>
-                                                <td>
-                                                    @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                        {{ $product_detail->product_title }}
-                                                    @else
-                                                        {{ $item->product->product_title }}
-                                                    @endif
-                                                    &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
-                                                </td>
-                                                <td>
-                                                    <span>
-                                                        <bdi>
-                                                            <span>$</span>
-                                                            @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                                {{ number_format($item->quantity * $item->product_price, 2) }}
+                                            <td>
+                                                @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                    {{ $product_detail->product_title }}
+                                                @else
+                                                    {{ $item->product->product_title }}
+                                                @endif
+                                                &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <bdi>
+                                                        <span>$</span>
+                                                        @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
+                                                        @else
+                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                                {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
                                                             @else
-                                                                @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                                    {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
-                                                                @else
-                                                                    {{ isset($productSalePrice) && !empty($productSalePrice) 
-                                                                        ? number_format($item->quantity * $productSalePrice, 2) 
-                                                                        : number_format($item->quantity * $item->product->product_price, 2)
-                                                                    }}
-                                                                @endif
+                                                                {{ isset($productSalePrice) && !empty($productSalePrice) 
+                                                                    ? number_format($item->quantity * $productSalePrice, 2) 
+                                                                    : number_format($item->quantity * $item->product->product_price, 2)
+                                                                }}
                                                             @endif
-                                                        </bdi>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                        @endif
+                                                    </bdi>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                       @endforeach
                                     </tbody>
                                     <tfoot>
 
