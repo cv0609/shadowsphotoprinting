@@ -279,9 +279,12 @@ $CartService = app(App\Services\CartService::class);
                                             @endif
                                             </span>
                                         </td>
+                                        @php
+                                          dump($has_non_package_items);
+                                        @endphp
                                         @if($has_non_package_items)
                                             <td class="product-quantity">
-                                                {{-- @if($is_package != 1)   --}}
+
                                                     <input type="number" name="product_quantity[]" id="product_quantity"
                                                     placeholder="0" value="{{ $item->quantity }}" data-row="{{ $item->id }}"
                                                     data-product_type="{{ $item->product_type }}"
@@ -292,7 +295,7 @@ $CartService = app(App\Services\CartService::class);
                                                     data-category_id="{{ $product_detail->category_id ?? '' }}"
                                                     data-package_slug="{{ $package_slug ?? '' }}"
                                                     >
-                                                {{-- @endif     --}}
+                                               
                                             </td>
 
                                             <td class="product-subtotal">
