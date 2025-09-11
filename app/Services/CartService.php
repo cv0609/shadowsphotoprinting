@@ -65,11 +65,21 @@ class CartService
                     if (isset($sale_price) && !empty($sale_price)) {
                         $product_price = $sale_price->sale_price;
                     } else {
-                        $product_price = $item->product->product_price;
+                        if(isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)){
+                            $product_price = $item->package_price;
+                        }else{
+                            $product_price = $item->product->product_price;
+                        }
                     }
                 }
             }
-            return $carry + ($product_price * $item->quantity);
+            
+            // For package items, don't multiply by quantity since package has fixed price
+            if(isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)){
+                return $carry + $product_price;
+            } else {
+                return $carry + ($product_price * $item->quantity);
+            }
         }, 0);
         
         $shippingCharge = 0;
@@ -482,5 +492,10 @@ class CartService
 
         // Return the relative path for database storage
         return 'testprint/' . $outputImageName;
+    }
+
+    public function getPackageProductDetails($package_product_id){
+        $product = Product::where('id', $package_product_id)->first();
+        return $product;
     }
 }

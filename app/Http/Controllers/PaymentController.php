@@ -549,7 +549,10 @@ class PaymentController extends Controller
                 'product_desc' => $item->product_desc,
                 'product_price' => (!empty($item->is_test_print) && $item->is_test_print == '1') ? $item->test_print_price : $product_price ?? 0,
                 'sale_price' => $sale_price,
-                'sale_on' => $sale_on
+                'sale_on' => $sale_on,
+                'is_package' => $item->is_package ?? 0,
+                'package_product_id' => $item->package_product_id ?? null,
+                'package_price' => $item->package_price ?? null
             ]);
         }
 

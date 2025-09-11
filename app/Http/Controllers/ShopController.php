@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Shop;
+use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -71,23 +73,41 @@ class ShopController extends Controller
       $productCategories = ProductCategory::where('slug','!=','photos-for-sale')->where('slug','!=','gift-card')->where('slug','!=','hand-craft')->get();
     }
     // dd($productCategories);
-    $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
+    $products = Product::where('category_id','!=',20)->select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     $currentDate = date('F-j-Y-1');
     $page_content = [
         "meta_title" => "{$currentDate} - " . config('constant.pages_meta.shop_detail.meta_title'),
         "meta_description" => config('constant.pages_meta.shop_detail.meta_description')
     ];
 
-    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content'));
+    if (Auth::check() && !empty(Auth::user())) {
+      $user = Auth::user();
+      $auth_id = $user->id;
+      $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+    } else {
+        // Guest user logic with referral_code already in session
+        $session_id = Session::getId();
+        $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+    }
+
+    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content','cart'));
   }  
 
   public function getProductsBycategory(Request $request)
   {
     $categorySlug = $request->slug;
     $products = [];
+    
+    // Handle wedding package category specially
+    if($categorySlug == 'wedding-package') {
+        // Don't load any products, just show a message to select a wedding package
+        echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">Please select a wedding package from the dropdown above to view available products.</td></tr>';
+        return;
+    }
+    
     if($categorySlug == "all")
     {
-      $products = Product::select(['id','product_title','product_price'])->orderBy('position','asc')->get();
+      $products = Product::where('category_id','!=',20)->select(['id','product_title','product_price'])->orderBy('position','asc')->get();
     }
     else
     {
@@ -119,4 +139,113 @@ class ShopController extends Controller
     }
     echo view('front-end/shop_details_product_ajax', compact('products'));
   }
+
+  public function getWeddingPackagesList()
+  {
+    // Get wedding package products from database (category ID 20)
+    $category = ProductCategory::where('id', 20)->first();
+    if($category) {
+        $products = $category->products()->orderBy('position', 'asc')->get();
+        
+        // Format products for dropdown
+        $packages = $products->map(function($product) {
+            return [
+                'name' => $product->product_title,
+                'slug' => $product->slug,
+                'price' => $product->product_price
+            ];
+        });
+        return response()->json($packages);
+    }
+
+    
+    return response()->json([]);
+  }
+
+  public function getWeddingPackageFrames(Request $request)
+  {
+    $packageSlug = $request->input('package_slug');
+
+    $package_product = Product::where('slug',$packageSlug)->first();
+    
+    // Load wedding package data from JSON
+    $jsonPath = resource_path('pages_json/wedding_packages.json');
+    if(!file_exists($jsonPath)) {
+        echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">Wedding package data not found</td></tr>';
+        return;
+    }
+    
+    $weddingPackageData = json_decode(file_get_contents($jsonPath), true);
+    
+    // Find the selected package in JSON
+    $selectedPackage = null;
+    foreach($weddingPackageData['packages'] as $package) {
+        if($package['slug'] === $packageSlug) {
+            $selectedPackage = $package;
+            break;
+        }
+    }
+    
+    if(!$selectedPackage) {
+        echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">Package not found</td></tr>';
+        return;
+    }
+    
+    $matchingProducts = collect();
+    
+    // For each frame in the JSON package, find matching products by category_id and slug
+    foreach($selectedPackage['frames'] as $frame) {
+        $categoryId = $frame['category_id'];
+        $frameSlug = $frame['slug'];
+        
+        // Get the category from database
+        $category = ProductCategory::where('id', $categoryId)->first();
+        if(!$category) {
+            continue; // Skip if category not found
+        }
+        
+        // Find products that match the slug in the specific category
+        $matchingFrameProducts = $category->products()
+            ->where('slug', $frameSlug)
+            ->orderBy('position', 'asc')
+            ->get();  
+        
+        // Add matching products to the collection
+        foreach($matchingFrameProducts as $product) {
+            // Add frame data to the product for display
+            // $product->frame_data = $frame;
+            $product->is_package = 1;
+                          $product->package_price = $package_product->product_price;
+              $product->package_product_id = $package_product->id;
+              $product->package_slug = $packageSlug; // Add package slug
+              $matchingProducts->push($product);
+        }
+    }
+
+    // \Log::info('$matchingProducts');
+    // \Log::info($matchingProducts);
+    
+    // Use the same view as regular products
+    $products = $matchingProducts;
+    echo view('front-end/shop_details_product_ajax', compact('products'));
+  }
+
+  public function getWeddingPackagesJson()
+  {
+    $jsonPath = resource_path('pages_json/wedding_packages.json');
+    
+    if (!file_exists($jsonPath)) {
+      return response()->json(['error' => 'Wedding packages file not found'], 404);
+    }
+    
+    $jsonContent = file_get_contents($jsonPath);
+    $data = json_decode($jsonContent, true);
+    
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      return response()->json(['error' => 'Invalid JSON format'], 500);
+    }
+    
+    return response()->json($data);
+  }
+
 }

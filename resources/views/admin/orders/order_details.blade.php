@@ -124,13 +124,69 @@
       </div>
       <div class="x_content">
 
+      @php
+        // Group order details by packages
+        $package_groups = [];
+        $normal_items = [];
+        $has_package_items = false;
+        $has_non_package_items = false;
+        
+        // Load wedding packages JSON to get package names
+        $weddingPackages = null;
+        try {
+            $weddingPackagesPath = resource_path('pages_json/wedding_packages.json');
+            if (file_exists($weddingPackagesPath)) {
+                $weddingPackages = json_decode(file_get_contents($weddingPackagesPath), true);
+            }
+        } catch (Exception $e) {
+            // Handle error silently
+        }
+        
+        foreach ($orderDetail->orderDetails as $item) {
+            $is_package = isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1) ? 1 : 0;
+            
+            if($is_package == 1) {
+                $has_package_items = true;
+                $package_product_id = $item->package_product_id;
+                if(!isset($package_groups[$package_product_id])) {
+                    // Try to get package name from wedding packages JSON
+                    $package_name = 'Package #' . $package_product_id;
+                    if ($weddingPackages && isset($weddingPackages['packages'])) {
+                        foreach ($weddingPackages['packages'] as $package) {
+                            if (isset($package['id']) && $package['id'] == $package_product_id) {
+                                $package_name = $package['name'];
+                                break;
+                            }
+                        }
+                    }
+                    
+                    $package_groups[$package_product_id] = [
+                        'package_name' => $package_name,
+                        'package_price' => $item->package_price ?? 0,
+                        'items' => []
+                    ];
+                }
+                $package_groups[$package_product_id]['items'][] = $item;
+            } else {
+                $has_non_package_items = true;
+                $normal_items[] = $item;
+            }
+        }
+      @endphp
+
       <div class="table-responsive-sm order-invoice-main">
         <table class="table">
           <thead class="table_head">
             <tr>
               <th class="center">Item</th>
               <th></th>
-              <th class="right">Cost</th>
+              @if($has_package_items && !$has_non_package_items)
+                <th class="right">Items</th>
+              @elseif($has_package_items && $has_non_package_items)
+                <th class="right">Cost</th>
+              @else
+                <th class="right">Cost</th>
+              @endif
               <th class="right">Sale</th>
               <th class="right">Sale Cost</th>
               <th class="center">Qty</th>
@@ -138,7 +194,163 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($orderDetail->orderDetails as $key => $item)
+            @foreach ($package_groups as $package_product_id => $package_group)
+              <!-- Package Header -->
+              <tr style="background-color: #e3f2fd; font-weight: bold; border-top: 3px solid #2196f3;">
+                <td colspan="2" style="padding: 15px 10px; border-bottom: 2px solid #bbdefb;">
+                  <i class="fas fa-box" style="color: #1976d2;"></i> 
+                  <span style="color: #1976d2; font-size: 16px;">{{ $package_group['package_name'] }}</span>
+                  <span style="color: #666; font-size: 14px; margin-left: 10px;">- ${{ number_format($package_group['package_price'], 2) }}</span>
+                </td>
+                <td colspan="5" style="padding: 15px 10px; border-bottom: 2px solid #bbdefb; text-align: right; color: #1976d2;">
+                  <i class="fas fa-list"></i> Package Items
+                </td>
+              </tr>
+              
+              @foreach ($package_group['items'] as $key => $item)
+            <?php 
+              $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
+              $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
+              
+              $photo_product_desc = '';
+              $giftcard_product_desc = '';
+
+              if($item->product_type == "photo_for_sale"){
+                  $photo_product_desc = json_decode($item->product_desc);
+              }
+              if($item->product_type == "gift_card"){
+                  $giftcard_product_desc = json_decode($item->product_desc);
+              }
+            ?>
+            <tr>
+                <td class="center order-img" data-title="image">
+                                
+                  @php
+                      $image1 = '';
+                      $image2 = '';
+                      if(isset($product_detail->product_image)){
+                          $imageArray = explode(',', $product_detail->product_image);
+                          $image1 = $imageArray[0] ?? '';
+                          $image2 = $imageArray[1] ?? '';
+                      }
+                  @endphp
+
+                  <img src="
+                      @if($item->product_type == 'gift_card')
+                          {{ asset($product_detail->product_image) }}
+                      @elseif($item->product_type == 'photo_for_sale')
+
+                          {{ asset($image1) }}
+
+                      @elseif($item->product_type == 'hand_craft')
+
+                          {{ asset($image1) }}
+
+                      @else
+                          {{ getS3Img(asset($item->selected_images), 'medium') }}
+                      @endif
+                  " alt="">
+                
+                </td>
+                <td class="strong order_page_td">
+                  
+                      @if($item->product_type == "gift_card")
+                      <a href="{{ route('gift-card-show', ['category_id' => $product_detail->id]) }}">
+                          {{ $product_detail->product_title }}
+                          <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
+                      </a>    
+                      @elseif($item->product_type == "photo_for_sale")
+                      <a href="{{ route('photos-for-sale-product-show', ['slug' => $product_detail->slug]) }}">
+                          {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                      </a>    
+                      @elseif($item->product_type == "hand_craft")  
+                      <a href="{{ route('hand-craft-product-show', ['slug' => $product_detail->slug]) }}">
+                        {{ $product_detail->product_title ?? '' }}  
+                      </a>
+                      @else
+                      <a href="{{ route('product-show', ['slug' => $item->product->slug]) }}">
+                        {{ $item->product->product_title ?? ''}}
+                      </a>
+                      @endif
+                  
+                  <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
+                  <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
+
+                  <a href="{{ str_contains($item->selected_images, 'amazonaws.com') ? $item->selected_images : asset($item->selected_images) }}" download>Download image</a>
+              </td>
+
+
+              <td class="right order_page_td" data-title="price">
+                  <span class="">
+                    @if(!$has_package_items)
+                      <bdi>
+                          <span>$</span>
+                      {{-- @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                          {{ number_format($item->product_price, 2) }}
+                      @else
+                          {{ number_format($product_detail->product_price, 2) }}
+                      @endif --}}
+                        {{ number_format($item->product_price, 2) }}
+                      </bdi>
+                    @else
+                          package item
+                    @endif
+                  </span>
+              </td>
+              <td>
+                  @php
+                  $sale_status = "";
+                  $sale_price = "";
+                    if(isset($item->sale_on) && !empty($item->sale_on)){
+                      $sale_status = 'On';
+                      $sale_price = $item->sale_price;
+                    }else{
+                      $sale_status = 'Off';
+                      $sale_price = '-';
+                    }
+                  @endphp
+
+                  {{$sale_status}}
+
+              </td>
+              <td>{{$sale_price}}</td>
+
+              <td class="center order_page_td" data-title="qty">{{ $item->quantity }}</td>
+              <td class="right order_page_td" data-title="total">
+                @if(!$has_package_items)
+                $ 
+                  @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                      {{ number_format($item->quantity * $item->product_price, 2) }}
+                  @else
+
+                      {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $item->product_price, 2) }}
+                      
+                  @endif
+
+                @else
+                
+                @endif
+              </td>
+            </tr>
+
+              @endforeach
+              
+              <!-- Package Separator -->
+              @if(!$loop->last)
+                <tr style="height: 20px; background-color: #f8f9fa;">
+                  <td colspan="7" style="border: none; padding: 0;"></td>
+                </tr>
+              @endif
+            @endforeach
+            
+            @if($has_package_items && $has_non_package_items)
+              <!-- Separator between packages and normal items -->
+              <tr style="height: 30px; background-color: #f8f9fa;">
+                <td colspan="7" style="border: none; padding: 0;"></td>
+              </tr>
+            @endif
+            
+            @foreach ($normal_items as $key => $item)
             <?php 
               $product_detail =  $CartService->getProductDetailsByType($item->product_id,$item->product_type);
               $product_sale_price =  $CartService->getProductSalePrice($item->product_id);
@@ -253,8 +465,8 @@
                   @endif
               </td>
             </tr>
-
             @endforeach
+            
             <tr class="download_zip_tr">
               <td>
                   @if(isset($orderDetail->orderBillingShippingDetails['order_notes']) && !empty($orderDetail->orderBillingShippingDetails['order_notes']))

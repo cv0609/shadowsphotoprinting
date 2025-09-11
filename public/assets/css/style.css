@@ -5118,6 +5118,74 @@ a {
 #afterpay-modal .model-svg-flex {
 grid-template-columns: repeat(2, 1fr);
 }
+
+/* Mobile package display fixes */
+.package-info {
+    display: block !important;
+    margin: 8px 0;
+}
+
+.package-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 3px;
+}
+
+.package-price {
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+}
+
+.package-item-label {
+    display: block !important;
+    margin: 8px 0;
+}
+
+.package-item-text {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
+
+table td.product-price {
+    vertical-align: top;
+    padding: 10px 5px;
+}
+}
+
+@media (max-width: 575px) {
+    .package-info {
+        display: block !important;
+        margin: 10px 0;
+    }
+    
+    .package-name {
+        font-size: 15px;
+        line-height: 1.3;
+    }
+    
+    .package-price {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+    
+    table {
+        font-size: 14px;
+    }
+    
+    table td.product-price {
+        min-width: 120px;
+        word-wrap: break-word;
+    }
+    
+    .package-info,
+    .package-item-label {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
 }
 
 @media (max-width: 575px) {
@@ -5165,4 +5233,64 @@ text-align: left;
 #afterpay-modal .afterpay-modal-logo {
 max-width: 190px;
 }
+}
+
+/* Shop Detail Page Dropdown Styling */
+/* Wedding Package Dropdown Styling */
+.wedding-package-dropdown {
+    margin-top: 10px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.wedding-package-dropdown select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wedding-package-dropdown select:focus {
+    outline: none;
+}
+
+.wedding-package-dropdown select:hover {
+    border-color: #ddd;
+}
+
+/* Animation for dropdown appearance */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure consistent styling with main dropdown */
+.fw-products-cats select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.fw-products-cats select:focus {
+    outline: none;
+}
+
+.fw-products-cats select:hover {
+    border-color: #ddd;
 }
