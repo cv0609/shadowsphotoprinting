@@ -228,7 +228,7 @@
             browse_button : 'selectfiles', // you can pass an id...
             container: document.getElementById('img-upload-container'), // ... or DOM Element itself
             drop_element: document.getElementById('img-upload-container'), // ... or DOM Element itself
-            url : 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/',
+            url : 'https://shadowsphotoprintinguploads.s3.ap-southeast-2.amazonaws.com/',
             flash_swf_url : '{{ asset("assets/js/Moxie.swf") }}',
             silverlight_xap_url : '{{ asset("assets/js/Moxie.xap") }}',
             dragdrop: true,
@@ -306,7 +306,7 @@
                 },
 
                 FileUploaded: function(uploader, file, result) {
-                    var ufileurl = 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
+                    var ufileurl = 'https://shadowsphotoprintinguploads.s3.ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
                     fuploaded_files[fuploaded_files.length] = ufileurl;
                     is_first_upload = 0;
                 },

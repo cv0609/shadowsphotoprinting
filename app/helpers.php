@@ -56,15 +56,20 @@ if (!function_exists('getWatermarkedImageUrl')) {
 
 if (!function_exists('getS3Img')) {
     function getS3Img($str, $size){
-        $str = str_replace('original', $size, $str);
+        $str = str_replace('raw', $size, $str);
         return $str;
     }
 }
 
 if (!function_exists('getS3Img2')) {
     function getS3Img2($str, $size){
+        // If size is 'raw', return the original path
+        if ($size === 'raw') {
+            return $str;
+        }
+        // For other sizes, remove 'raw/' and add the size folder
         $str = str_replace('raw/', '', $str);
-        $str = preg_replace('/(.*)(\/[^\/]*?$)/', "$1/$size$2", $str);
+        $str = preg_replace('/(.*\/[^\/]*?)(\/[^\/]*?$)/', "$1/$size$2", $str);
         return $str;
     }
 }

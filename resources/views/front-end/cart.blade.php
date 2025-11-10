@@ -172,7 +172,7 @@ $CartService = app(App\Services\CartService::class);
                                                    {{-- {{ asset($item->selected_images) }} --}}
                                                  @else
                                                  {{-- {{ asset($item->selected_images) }} --}}
-                                                 {{ getS3Img($item->selected_images, 'medium') }}
+                                                 {{ getS3Img($item->selected_images, 'raw') }}
                                                  @endif
                                             @endif
                                         " data-src="
