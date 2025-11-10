@@ -47,6 +47,7 @@ ul {
     background-color: rgba(0, 0, 0, 1);
     min-height: 100vh;
     position: relative;
+    overflow: hidden;
 }
 
 /* HEADER CSS */
@@ -1351,6 +1352,10 @@ section.products_list {
     padding-left: 20px;
 }
 
+#products-main td span {
+    display: flex;
+    align-items: center;
+}
 p.sale_product {
     position: absolute;
     top: 0;
@@ -3051,7 +3056,7 @@ section.fw-area {
     BOTTOM: 0;
     z-index: 1000;
     padding: 15px 10px;
-    width: 350px;
+    width: 450px;
     background: #fff;
     overflow: auto;
     font-size: 12px;
