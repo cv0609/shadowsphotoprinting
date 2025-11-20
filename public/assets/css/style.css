@@ -5115,9 +5115,42 @@ a {
 
     writing-mode: vertical-lr;
 }
-
-
-
+/* contact page */
+.contact-page-panel {
+    padding: 50px 0;
+    border-bottom: 1px solid #ffc20561;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center; /* centers horizontally */
+}
+.shipping-contact-info {
+    max-width: 800px;
+    line-height: 1.7;
+    font-size: 16px;
+}
+.shipping-contact-info h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #ffc205;
+}
+.shipping-contact-info .subtitle {
+    font-size: 17px;
+    color: #ffc205;
+    margin-bottom: 10px;
+}
+.shipping-contact-info h3 {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ffc205;
+}
+.shipping-contact-info ul {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+.shipping-contact-info li {
+    margin-bottom: 6px;
+    color: #ffc205;
+}
 
 /* responsive */
 @media (max-width: 767px) {
