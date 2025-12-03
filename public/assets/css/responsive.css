@@ -233,13 +233,15 @@
 
     section.fw-area {
         position: static;
-        background-color: transparent;
+        /* background-color: transparent; */
         width: 100%;
+        margin-top: 40px;
     }
 
     .fw-products-box table tr td input {
-        background-color: #fff;
-        border: #fcfcfc;
+        /* background-color: #fff; */
+        /* border: #fcfcfc; */
+        border: 1px solid #0000004f;
     }
 
     .fw-area-wrap {

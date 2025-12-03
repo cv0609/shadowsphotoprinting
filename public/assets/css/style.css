@@ -47,6 +47,7 @@ ul {
     background-color: rgba(0, 0, 0, 1);
     min-height: 100vh;
     position: relative;
+    overflow: hidden;
 }
 
 /* HEADER CSS */
@@ -1351,6 +1352,10 @@ section.products_list {
     padding-left: 20px;
 }
 
+#products-main td span {
+    display: flex;
+    align-items: center;
+}
 p.sale_product {
     position: absolute;
     top: 0;
@@ -3051,7 +3056,7 @@ section.fw-area {
     BOTTOM: 0;
     z-index: 1000;
     padding: 15px 10px;
-    width: 350px;
+    width: 450px;
     background: #fff;
     overflow: auto;
     font-size: 12px;
@@ -3070,7 +3075,7 @@ section.fw-area {
     letter-spacing: 1.2px;
     font-weight: 400;
     font-style: normal;
-    color: #ffc205;
+    color: #000;
     font-size: 24px;
 }
 
@@ -3084,8 +3089,8 @@ section.fw-area {
     letter-spacing: 0px;
     font-weight: 400;
     font-style: normal;
-    color: #ffc205;
-    font-size: 12px;
+      color: #000;
+    font-size: 15px;
 }
 
 .fw-products h4 {
@@ -3094,7 +3099,7 @@ section.fw-area {
     letter-spacing: 1.2px;
     font-weight: 400;
     font-style: normal;
-    color: #ffc205;
+    color: #000;
     font-size: 24px;
     margin: 2% 0;
 }
@@ -3125,8 +3130,9 @@ section.fw-area {
 .fw-products-box table tr th {
     padding: 10px;
     font-style: normal;
-    color: #ffc205;
-    font-size: 12px;
+    color: #000;
+  font-size: 14px;
+    letter-spacing: -0.5px;
 }
 
 tr.gi-prod {
@@ -3136,7 +3142,7 @@ tr.gi-prod {
 .fw-products-box table tr td input {
     width: 50px;
     padding: 1px 1px 1px 3px;
-    font-size: 12px;
+    font-size: 14px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -5109,9 +5115,42 @@ a {
 
     writing-mode: vertical-lr;
 }
-
-
-
+/* contact page */
+.contact-page-panel {
+    padding: 50px 0;
+    border-bottom: 1px solid #ffc20561;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center; /* centers horizontally */
+}
+.shipping-contact-info {
+    max-width: 800px;
+    line-height: 1.7;
+    font-size: 16px;
+}
+.shipping-contact-info h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #ffc205;
+}
+.shipping-contact-info .subtitle {
+    font-size: 17px;
+    color: #ffc205;
+    margin-bottom: 10px;
+}
+.shipping-contact-info h3 {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ffc205;
+}
+.shipping-contact-info ul {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+.shipping-contact-info li {
+    margin-bottom: 6px;
+    color: #ffc205;
+}
 
 /* responsive */
 @media (max-width: 767px) {
