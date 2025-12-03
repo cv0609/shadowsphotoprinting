@@ -247,7 +247,8 @@
                           {{ asset($image1) }}
 
                       @else
-                          {{ getS3Img(asset($item->selected_images), 'medium') }}
+                          {{-- {{ getS3Img(asset($item->selected_images), 'medium') }} --}}
+                          {{ getS3Img(asset($item->selected_images), 'raw') }}
                       @endif
                   " alt="">
                 
@@ -390,7 +391,8 @@
                           {{ asset($image1) }}
 
                       @else
-                          {{ getS3Img(asset($item->selected_images), 'medium') }}
+                          {{-- {{ getS3Img(asset($item->selected_images), 'medium') }} --}}
+                          {{ getS3Img(asset($item->selected_images), 'raw') }}
                       @endif
                   " alt="">
                 
