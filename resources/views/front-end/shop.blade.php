@@ -228,7 +228,8 @@
             browse_button : 'selectfiles', // you can pass an id...
             container: document.getElementById('img-upload-container'), // ... or DOM Element itself
             drop_element: document.getElementById('img-upload-container'), // ... or DOM Element itself
-            url : 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/',
+            // url : 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/',
+            url : 'https://shadowsphotoprintinguploads.s3.ap-southeast-2.amazonaws.com/',
             flash_swf_url : '{{ asset("assets/js/Moxie.swf") }}',
             silverlight_xap_url : '{{ asset("assets/js/Moxie.xap") }}',
             dragdrop: true,
@@ -292,7 +293,19 @@
 
                 
                 BeforeUpload: function(up, file) {
-                    file.name = fupload_sanitize(file.name);
+                    // Add timestamp prefix to filename for uniqueness (including milliseconds)
+                    var now = new Date();
+                    var year = now.getFullYear();
+                    var month = ('0' + (now.getMonth() + 1)).slice(-2);
+                    var day = ('0' + now.getDate()).slice(-2);
+                    var hours = ('0' + now.getHours()).slice(-2);
+                    var minutes = ('0' + now.getMinutes()).slice(-2);
+                    var seconds = ('0' + now.getSeconds()).slice(-2);
+                    var milliseconds = ('000' + now.getMilliseconds()).slice(-3); // 3-digit milliseconds
+                    var unixTimestamp = Date.now(); // Full Unix timestamp in milliseconds
+                    var timestamp = year + '-' + month + '-' + day + '-' + hours + '-' + minutes + '-' + seconds + '-' + milliseconds + '-' + unixTimestamp;
+                    var sanitizedName = fupload_sanitize(file.name);
+                    file.name = timestamp + '-' + sanitizedName;
                     fupload_files[fupload_files.length] = file;
                     up.settings.multipart_params['key'] = fupload_folder+'/'+file.name;
                     
@@ -306,7 +319,8 @@
                 },
 
                 FileUploaded: function(uploader, file, result) {
-                    var ufileurl = 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
+                    // var ufileurl = 'https://fotovenderau.s3-ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
+                    var ufileurl = 'https://shadowsphotoprintinguploads.s3.ap-southeast-2.amazonaws.com/'+fupload_folder+'/'+file.name;
                     fuploaded_files[fuploaded_files.length] = ufileurl;
                     is_first_upload = 0;
                 },

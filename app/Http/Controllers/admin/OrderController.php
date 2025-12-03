@@ -199,6 +199,7 @@ class OrderController extends Controller
         }
 
         if (file_exists($imagePath)) {
+            \Log::info('first3', ['path' => $imagePath]);
             $baseName = pathinfo($imagePath, PATHINFO_FILENAME);
             $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
 
