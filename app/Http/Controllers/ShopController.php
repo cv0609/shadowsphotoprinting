@@ -43,8 +43,29 @@ class ShopController extends Controller
     $temImagesStore = Session::get('temImages', []);
 
     $imageUrls = $request->input('images');
+    // Generate timestamp with milliseconds for better uniqueness
+    $microtime = microtime(true); // Get microseconds as float
+    $milliseconds = str_pad((int)(($microtime - floor($microtime)) * 1000), 3, '0', STR_PAD_LEFT); // Extract and pad milliseconds
+    $timeString = date('Y-m-d-H-i-s') . '-' . $milliseconds . '-' . (int)$microtime;
 
     foreach ($imageUrls as $imageUrl) {
+      // Extract filename from URL and add timestamp prefix if not already present
+      $parsedUrl = parse_url($imageUrl);
+      $path = $parsedUrl['path'] ?? '';
+      $pathParts = explode('/', $path);
+      $fileName = end($pathParts);
+      
+      // Check if timestamp already exists in filename (format: Y-m-d-H-i-s-milliseconds-timestamp-filename)
+      $timestampPattern = '/^\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}-\d{3}-\d+-/';
+      if (!preg_match($timestampPattern, $fileName)) {
+        // Add timestamp prefix to filename
+        $newFileName = $timeString . '-' . $fileName;
+        // Reconstruct URL with new filename
+        $pathParts[count($pathParts) - 1] = $newFileName;
+        $newPath = implode('/', $pathParts);
+        $imageUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
+      }
+      
       $temImagesStore[] = $imageUrl;
     }
 
