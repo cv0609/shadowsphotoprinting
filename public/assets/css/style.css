@@ -7,11 +7,11 @@
 
 p {
     font-family: "Source Sans Pro";
-    line-height: 24px;
+    line-height: 30px;
     letter-spacing: 0px;
     font-weight: 400;
     font-style: normal;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 img {
@@ -375,8 +375,8 @@ section.entry-content {
 
 .textwidget p {
     color: #fff;
-    font-size: 16px;
-    margin-bottom: 24px;
+    font-size: 20px;
+    margin-bottom: 30px;
     font-family: "Source Sans Pro";
 }
 
@@ -909,7 +909,7 @@ section.blog-new {
 
 .entry-summary p {
     color: #fff;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .read-printing a {
@@ -1024,12 +1024,12 @@ section.shipping-policy {
 
 .tinymce ol li {
     font-family: "Source Sans Pro";
-    line-height: 24px;
+    line-height: 30px;
     letter-spacing: 0px;
     font-weight: 400;
     font-style: normal;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .tinymce {
@@ -1436,12 +1436,12 @@ span.price {
 
 .Product_info p {
     font-family: "Source Sans Pro";
-    line-height: 24px;
+    line-height: 30px;
     letter-spacing: 0px;
     font-weight: 400;
     font-style: normal;
-    color: #ffc205;
-    font-size: 16px;
+    color: #ffffff;
+    font-size: 20px;
 }
 
 section.canvas-bnr {
@@ -1968,6 +1968,8 @@ span.posted_in a {
     margin: 5px 0;
     width: 100%;
     max-width: 790px;
+    font-size: 20px;
+    line-height: 30px;
 }
 
 .shadtpang ul {
@@ -5134,7 +5136,7 @@ a {
     color: #ffc205;
 }
 .shipping-contact-info .subtitle {
-    font-size: 17px;
+    font-size: 20px;
     color: #ffffff;
     margin-bottom: 10px;
 }
@@ -5150,6 +5152,7 @@ a {
 .shipping-contact-info li {
     margin-bottom: 6px;
     color: #ffffff;
+    font-size: 20px;
 }
 
 /* responsive */
@@ -5332,4 +5335,11 @@ max-width: 190px;
 
 .fw-products-cats select:hover {
     border-color: #ddd;
+}
+.about-printing p span {
+    font-size: 20px !important;
+}
+.woocommerce-tabs p {
+    font-size: 20px;
+    line-height: 30px;
 }
