@@ -522,7 +522,15 @@ class CartController extends Controller
 
             foreach ($cart->items as $item) {
 
-                $productCategory = (string)$item->product->category_id;
+                // Handle gift card items - they have category_id = 8
+                if ($item->product_type == 'gift_card') {
+                    $productCategory = '6'; // Gift card category ID
+                } elseif ($item->product && $item->product->category_id) {
+                    $productCategory = (string)$item->product->category_id;
+                } else {
+                    // Skip items without valid category
+                    continue;
+                }
 
                 if (!in_array((string)$productCategory, $couponCategories)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
@@ -541,6 +549,16 @@ class CartController extends Controller
         if (isset($coupon->products) && !empty($coupon->products) && $coupon->products != null) {
             $couponProducts = explode(',', $coupon->products);
             foreach ($cart->items as $item) {
+
+                // Skip gift card items in product-specific validation as they use GiftCardCategory, not Product
+                // Gift card coupons should use product_category instead
+                if ($item->product_type == 'gift_card') {
+                    continue;
+                }
+
+                if (!$item->product) {
+                    continue;
+                }
 
                 if (!in_array($item->product->id, $couponProducts)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
@@ -567,24 +585,41 @@ class CartController extends Controller
             }
         }
 
+        // For gift card coupons (is_gift_card = 1), ensure cart contains gift card items
+        // Note: If product_category is set, the category validation above already handles the check
+        if ($coupon->is_gift_card == '1') {
+            $hasGiftCardItem = false;
+            foreach ($cart->items as $item) {
+                if ($item->product_type == 'gift_card') {
+                    $hasGiftCardItem = true;
+                    break;
+                }
+            }
+            
+            if (!$hasGiftCardItem) {
+                return ['success' => false, 'message' => 'This coupon is only applicable to gift card items in your cart'];
+            }
+        }
+
         if ($coupon->use_limit !== null && $coupon->use_limit <= 0) {
             return ['success' => false, 'message' => 'Your coupon limit has expired.'];
         }
 
         $amount = 0;
 
+        // Handle gift card coupons separately - they use the amount directly
         if($coupon->is_gift_card == '1'){
-
             if($coupon->amount <= 0){
                 return ['success' => false, 'message' => 'Expired Gift card voucher.'];
             }
             $amount = $coupon->amount;
-        }
-
-        if ($coupon->type == "0") {
-            $amount = $coupon->amount;
-        } elseif ($coupon->type == "1") {
-            $amount = ($coupon->amount / 100) * $total['subtotal'];
+        } else {
+            // Regular coupon calculation based on type
+            if ($coupon->type == "0") {
+                $amount = $coupon->amount;
+            } elseif ($coupon->type == "1") {
+                $amount = ($coupon->amount / 100) * $total['subtotal'];
+            }
         }
         // $coupon->used++;
         $coupon->save();
