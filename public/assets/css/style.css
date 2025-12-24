@@ -5343,3 +5343,7 @@ max-width: 190px;
     font-size: 20px;
     line-height: 30px;
 }
+
+.Product_info b {
+    color: #ffc205 !important;
+}
