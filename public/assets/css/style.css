@@ -5343,3 +5343,17 @@ max-width: 190px;
     font-size: 20px;
     line-height: 30px;
 }
+
+.Product_info b {
+    font-size: 20px;
+}
+
+.Product_info li {
+    font-size: 20px;
+}
+.Product_info span {
+    font-size: 20px;
+}
+.print_paper_type {
+font-size: 20px !important;
+}
