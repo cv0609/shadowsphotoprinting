@@ -5345,5 +5345,15 @@ max-width: 190px;
 }
 
 .Product_info b {
-    color: #ffc205 !important;
+    font-size: 20px;
+}
+
+.Product_info li {
+    font-size: 20px;
+}
+.Product_info span {
+    font-size: 20px;
+}
+.print_paper_type {
+font-size: 20px !important;
 }
