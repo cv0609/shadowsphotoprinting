@@ -22,9 +22,9 @@
 
                 <h3>Photo Prints & Scrapbook Pages</h3>
                 <ul>
-                    <li>1–60 prints — $15 / $20</li>
-                    <li>61–100 prints — $18.40 / $22.65</li>
-                    <li>101+ prints — $22.60 / $30.21</li>
+                    <li>Flat – rate - 1–60 prints — $15.00 Standard / $20.00 Express</li>
+                    <li>Flat – rate - 61–100 prints — $18.40 Standard / $22.65 Express</li>
+                    <li>Flat – rate - 101+ prints — $22.60 Standard / $30.21 express</li>
                 </ul>
 
                 <h3>Canvas, Photo Enlargements & Posters </h3>
