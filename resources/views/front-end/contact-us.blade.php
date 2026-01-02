@@ -20,14 +20,14 @@
                 <p class="subtitle">Wherever you are, we’re here to get your prints to you safely and simply. <br>
                 Choose Standard or Express Post and let us do the rest.</p>
 
-                <h3>Photo Prints & Scrapbook Pages</h3>
+                <h3 style="color: #ffc205">Photo Prints & Scrapbook Pages</h3>
                 <ul>
                     <li>Flat – rate - 1–60 prints — $15.00 Standard / $20.00 Express</li>
                     <li>Flat – rate - 61–100 prints — $18.40 Standard / $22.65 Express</li>
                     <li>Flat – rate - 101+ prints — $22.60 Standard / $30.21 express</li>
                 </ul>
 
-                <h3>Canvas, Photo Enlargements & Posters </h3>
+                <h3 style="color: #ffc205">Canvas, Photo Enlargements & Posters </h3>
                 <ul>
                     <li>Flat-rate — $22.60 Standard / $30.21 Express</li>
                 </ul>
