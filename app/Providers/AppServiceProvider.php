@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Carbon\Carbon;
-
+use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -33,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         \Log::info('Current Laravel Timezone: ' . config('app.timezone'));
         \Log::info('PHP Timezone: ' . date_default_timezone_get());
         \Log::info('Carbon Now: ' . Carbon::now());
+         Paginator::useBootstrap();
     }
 }
