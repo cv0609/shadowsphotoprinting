@@ -21,8 +21,13 @@
                 <a href="javascript:void(0)">Uncategorized</a>
             </div>
             <div class="benefit">
-                <h3>{{$blog_details->title}}</h3>
                 <div class="kt_color_gray">
+                    
+                    <div class="shadtpang">
+                        <img src="{{asset($blog_details->image)}}" alt="Image">
+                        {!!html_entity_decode($blog_details->description)!!}
+                    </div>
+                    <br>
                     <span>{{ $blog_details->updated_at->format('F d, Y') }}</span>
                     <span>by</span>
                     @php
@@ -33,11 +38,6 @@
                     @endphp
                 
                     <span> <a href="#">{{ $authorName }}</a> </span>
-
-                    <div class="shadtpang">
-                        <img src="{{asset($blog_details->image)}}" alt="Image">
-                        {!!html_entity_decode($blog_details->description)!!}
-                    </div>
                 </div>
             </div>
         </div>
