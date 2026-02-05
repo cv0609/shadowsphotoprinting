@@ -598,13 +598,6 @@ section.restoration {
 }
 
 /*  */
-footer.footer {
-    background-color: #16a085;
-    padding: 11px 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
 
 .footercredits p {
     margin: 0;
@@ -4758,17 +4751,22 @@ section.product_item-clearfix.photo-for-sale.list-view-section .instock-udik img
         height: 100%;
         object-fit: cover;
     }
-    /* .main-page {
+    .main-page {
         padding-bottom: 100px;
-    } */
+    }
+
+    body{
+        position: relative;
+    }
 
     footer.footer {
-        margin-top: 100px;
-        position: static;
+        position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         width: 100%;
+        background-color: #16a085;
+        padding: 11px 0;
     }
     .quanti a i {
         margin-left: 8px;
