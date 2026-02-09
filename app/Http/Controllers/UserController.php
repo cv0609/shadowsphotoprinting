@@ -89,8 +89,8 @@ public function augustPromotionEmail(Request $request)
         'amount' => '10',
         'minimum_spend' => 0.00,
         'maximum_spend' => 10000000000.00,
-        'start_date' => Carbon::create(2025, 8, 1)->format('Y-m-d'),
-        'end_date' => Carbon::create(2025, 8, 31)->format('Y-m-d'),
+        'start_date' => Carbon::create(2025, date('m'), date('d'))->format('Y-m-d'),
+        'end_date' => Carbon::now()->endOfMonth()->format('Y-m-d'),
         'is_active' => 1,
         'use_limit' => 1
     ]);
