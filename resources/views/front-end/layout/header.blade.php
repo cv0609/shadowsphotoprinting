@@ -146,7 +146,7 @@ $CartCount = $cartModel::getCartCount();
                     <div class="modal-content">
                         <div class="modal-header" style="background: #000; color: white; border-bottom: 2px solid #ffd700; padding: 15px 20px;">
                             <h5 class="modal-title mb-0">
-                                <i class="fas fa-gift"></i> August 2025 Special Promotion!
+                                <i class="fas fa-gift"></i> {{date('M Y')}} Special Promotion!
                             </h5>
                             <button type="button" class="close close-august-popup" data-dismiss="modal" aria-label="Close" style="color: white;">
                                 <span aria-hidden="true">&times;</span>
@@ -207,7 +207,7 @@ $CartCount = $cartModel::getCartCount();
                         <div class="modal-footer" style="background: #f8f9fa; border-top: 1px solid #e9ecef; padding: 10px 20px;">
                             <small style="color: #6c757d; font-size: 11px;">
                                 <i class="fas fa-info-circle"></i> 
-                                Valid for first-time customers only. August 1-31, 2025.
+                                Valid for first-time customers only.
                             </small>
                         </div>
                     </div>
