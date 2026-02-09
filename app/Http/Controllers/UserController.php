@@ -70,7 +70,7 @@ public function augustPromotionEmail(Request $request)
 
     $generateGiftCardCoupon = generateGiftCardCoupon(8);
 
-    $coupon_code = "FreeAug".$generateGiftCardCoupon;
+    $coupon_code = "Free".date('M').$generateGiftCardCoupon;
     $email = $user->email;
 
     $data = [
