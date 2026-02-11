@@ -31,7 +31,7 @@ class SendAugustCouponCode extends Mailable
     public function build()
     {
         return $this->from(env('APP_MAIL'))
-            ->subject('Your 10% Discount Coupon - August 2025')
+            ->subject('Your 10% Discount Coupon - '.date('M Y'))
             ->view('mail.august-coupon-code')
             ->with('data', $this->data);
 

@@ -269,7 +269,9 @@ $CartCount = $cartModel::getCartCount();
             @if(auth()->user()->is_august_coupon != 1)
                 $('#augustPromotionPopup').modal('show');
             @else
-                alert('You have already received your August promotion coupon!');
+                const now = new Date();
+                const month = now.toLocaleString('default', { month: 'long' });
+                alert(`You have already received your ${month} promotion coupon!`);
             @endif
         @else
             // User is not logged in, show login prompt
