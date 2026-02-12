@@ -587,7 +587,7 @@ class PaymentController extends Controller
             $orderDetail = $order->whereId($order->id)->with('orderDetails.product', 'orderBillingShippingDetails')->first();
 
             Mail::to($order_address['email'])->send(new MakeOrder($orderDetail));
-            Mail::to(env('APP_MAIL'))->send(new AdminNotifyOrder($orderDetail));
+            Mail::to(env('ADMIN_MAIL'))->send(new AdminNotifyOrder($orderDetail));
         }
 
         Session::forget(['order_address', 'coupon', 'billing_details', 'order_type','shutter_point']);

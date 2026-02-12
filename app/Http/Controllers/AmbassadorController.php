@@ -103,7 +103,7 @@ class AmbassadorController extends Controller
 
       $ambassador = Ambassador::create($data);
 
-      Mail::to(env('APP_MAIL'))->send(new NewAmbassadorAdminNotification($ambassador));
+      Mail::to(env('ADMIN_MAIL'))->send(new NewAmbassadorAdminNotification($ambassador));
 
       //return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
       return redirect()->back()->with('success', 'Thank you! We look forward to reviewing your application! You should hear a response from us within 7-10 days (or sooner).');
@@ -142,7 +142,7 @@ class AmbassadorController extends Controller
      }
     $blog = Blog::create(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,'status'=>'2',"added_by"=>1,'user_id'=>$user_id]);
 
-    Mail::to(env('APP_MAIL'))->send(new BlogSubmittedAdminNotification($blog));
+    Mail::to(env('ADMIN_MAIL'))->send(new BlogSubmittedAdminNotification($blog));
 
      return redirect()->route('ambassador.blog')->with('success','Blog is submitted successfully');
   }
