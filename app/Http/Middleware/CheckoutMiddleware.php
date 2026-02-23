@@ -23,7 +23,7 @@ class CheckoutMiddleware
 
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
-            $cart = Cart::where('user_id', $auth_id)->first();
+            $cart = Cart::where('user_id', $auth_id)->where('session_id',null)->first();
         }else{
             $session_id = Session::getId();
             $cart = Cart::where('session_id', $session_id)->first();

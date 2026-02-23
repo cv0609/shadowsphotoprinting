@@ -332,7 +332,7 @@ class CartController extends Controller
 
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
-            $cart = Cart::where('user_id', $auth_id)->with(['items' => function($query) {
+            $cart = Cart::where('user_id', $auth_id)->where('session_id' , null)->with(['items' => function($query) {
                 // Order items so package items come first, then regular items
                 // Within package items, order by package_product_id, then by creation time
                 $query->orderByRaw('CASE WHEN is_package = 1 THEN 0 ELSE 1 END, package_product_id ASC, created_at ASC');
