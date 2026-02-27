@@ -454,7 +454,9 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
     {
-        $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
+        $couponCodeInput = $request->coupon_code;
+        $code = is_array($couponCodeInput) ? ($couponCodeInput['code'] ?? '') : $couponCodeInput;
+        $coupon = Coupon::where('code', $code)->where('is_active', true)->first();
 
         $total = $this->CartService->getCartTotal();
 
@@ -607,13 +609,52 @@ class CartController extends Controller
 
         $amount = 0;
 
+        // DOUBLE15 only: canvas prints – 15% off entire subtotal. All other coupons use the logic below (gift card / type 0 / type 1).
+        if (strtoupper((string) $coupon->code) === 'DOUBLE15' && isset($coupon->product_category) && $coupon->product_category != '') {
+            $canvasCategoryIds = ProductCategory::where('name', 'like', '%canvas%')->pluck('id')->map(function ($id) {
+                return (int) $id;
+            })->toArray();
+            $couponCatIds = array_map('intval', explode(',', $coupon->product_category));
+            $isCanvasCoupon = !empty($canvasCategoryIds) && array_intersect($couponCatIds, $canvasCategoryIds);
+
+            if ($isCanvasCoupon) {
+                $canvasCount = 0;
+                foreach ($cart->items as $item) {
+                    if (in_array($item->product_type, ['gift_card', 'photo_for_sale', 'hand_craft'])) {
+                        continue;
+                    }
+                    if (isset($item->is_package) && (string) $item->is_package === '1') {
+                        continue;
+                    }
+                    if (isset($item->is_test_print) && (string) $item->is_test_print === '1') {
+                        continue;
+                    }
+                    if (!$item->product || !in_array((int) $item->product->category_id, $canvasCategoryIds)) {
+                        continue;
+                    }
+                    if ((int) $item->quantity <= 0) {
+                        continue;
+                    }
+                    $canvasCount++;
+                }
+
+                if ($canvasCount < 2) {
+                    return ['success' => false, 'message' => 'Add at least 2 canvas products (mix and match any size) to use this coupon.'];
+                }
+
+                // 15% off entire subtotal (cart already validated as canvas-only for this coupon)
+                $amount = round($total['subtotal'] * 0.15, 2);
+                $amount = min($amount, $total['subtotal']);
+            }
+        }
+
         // Handle gift card coupons separately - they use the amount directly
-        if($coupon->is_gift_card == '1'){
-            if($coupon->amount <= 0){
+        if ($amount == 0 && $coupon->is_gift_card == '1') {
+            if ($coupon->amount <= 0) {
                 return ['success' => false, 'message' => 'Expired Gift card voucher.'];
             }
             $amount = $coupon->amount;
-        } else {
+        } elseif ($amount == 0) {
             // Regular coupon calculation based on type
             if ($coupon->type == "0") {
                 $amount = $coupon->amount;
@@ -621,7 +662,7 @@ class CartController extends Controller
                 $amount = ($coupon->amount / 100) * $total['subtotal'];
             }
         }
-        // $coupon->used++;
+
         $coupon->save();
 
         Session::put('coupon', [

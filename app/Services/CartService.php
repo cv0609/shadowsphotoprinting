@@ -92,17 +92,20 @@ class CartService
         $coupon_id = "";
         $totalAfterDiscount = $subtotal;
         if ($couponCode) {
-            $coupon = Coupon::where(['code' => $couponCode['code']])->where('is_active', true)->first();
+            $code = is_array($couponCode) ? ($couponCode['code'] ?? '') : $couponCode;
+            $coupon = Coupon::where('code', $code)->where('is_active', true)->first();
 
             $coupon_code = $couponCode;
             if ($coupon) {
-                if ($coupon->type == '1') {
+                // DOUBLE15: use discount amount stored by applyCoupon (15% of subtotal for canvas). Other coupons use type below.
+                if (strtoupper((string) $coupon->code) === 'DOUBLE15' && is_array($couponCode) && isset($couponCode['discount_amount'])) {
+                    $discount = (float) $couponCode['discount_amount'];
+                } elseif ($coupon->type == '1') {
                     $discount = ($subtotal * $coupon->amount) / 100;
                 } elseif ($coupon->type == '0') {
                     $discount = $coupon->amount;
                 }
                 // Ensure the discount does not exceed the total
-                
                 $discount = min($discount, $subtotal); // Ensure discount is not more than subtotal
                 $coupon_id = $coupon->id;
 
