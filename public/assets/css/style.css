@@ -903,6 +903,7 @@ section.blog-new {
 .entry-summary {
     max-width: 100%;
     overflow: hidden;
+    color: #fff;
 }
 .entry-summary p {
     color: #fff;
