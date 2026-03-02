@@ -25,7 +25,9 @@
                     
                     <div class="shadtpang">
                         <img src="{{asset($blog_details->image)}}" alt="Image">
-                        {!!html_entity_decode($blog_details->description)!!}
+                        <div class="blog-post-body">
+                            {!! html_entity_decode($blog_details->description) !!}
+                        </div>
                     </div>
                     <br>
                     <span>{{ $blog_details->updated_at->format('F d, Y') }}</span>

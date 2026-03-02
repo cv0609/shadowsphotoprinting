@@ -900,6 +900,10 @@ section.blog-new {
     display: inline-block;
 }
 
+.entry-summary {
+    max-width: 100%;
+    overflow: hidden;
+}
 .entry-summary p {
     color: #fff;
     font-size: 20px;
@@ -1979,6 +1983,25 @@ span.posted_in a {
     font-style: normal;
     color: #ffc205;
     font-size: 16px;
+}
+
+/* Keep blog post body inside container - prevents "going out of div" */
+.blog-post-body {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+.blog-post-body h1,
+.blog-post-body h2,
+.blog-post-body h3 {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+.blog-post-body img {
+    max-width: 100%;
+    height: auto;
 }
 
 .previous-box {

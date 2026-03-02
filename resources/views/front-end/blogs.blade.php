@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="entry-summary">
-                        {!! html_entity_decode(substr($value['description'],0,200)) !!}
+                        {{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($value['description'])), 200) }}
                         {{-- <p>Have you ever wanted to bring your memories back to life? Photo restoration can
                             help you do just that! With the right tools, you can take old photos and restore
                             them to their former glory. Whether it’s restoring a single … </p> --}}
