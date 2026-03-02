@@ -177,7 +177,19 @@
                         </div>
                     </div>
 
-
+                    <div class="ln_solid"></div>
+                    <div style="max-width: 100%; width: 100%; overflow: hidden; box-sizing: border-box; margin-bottom: 20px; padding: 0;">
+                        <h5 style="margin: 0 0 8px 0;">1st at full price, 2nd onward at discount</h5>
+                        <p class="text-muted small" style="margin: 0 0 15px 0;">Uses the category from <strong>Only Category</strong> above and the same discount type (Amount or Percent) as the main coupon. First item in that category stays full price; extra items get the discount value below.</p>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <div class="checkbox">
+                                <label style="display: block; margin: 0; max-width: 100%;">
+                                    <input type="checkbox" value="1" name="rule_enabled" id="rule_enabled" {{ ($coupon_detail->rule_enabled ?? false) ? 'checked' : '' }}> Enable: first item in category at full price, 2nd item onward get the discount above (Coupon Type & Amount)
+                                    <input type="hidden" name="rule_leave_first" value="1">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <input type="hidden" name="coupon_id" value="{{ $coupon_detail->id }}">
 
                     <div class="ln_solid"></div>

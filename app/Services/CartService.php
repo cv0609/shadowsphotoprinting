@@ -96,14 +96,18 @@ class CartService
 
             $coupon_code = $couponCode;
             if ($coupon) {
-                if ($coupon->type == '1') {
-                    $discount = ($subtotal * $coupon->amount) / 100;
-                } elseif ($coupon->type == '0') {
-                    $discount = $coupon->amount;
+                // Use stored discount_amount when set by applyCoupon (includes slug rule when enabled); else recalculate – keeps existing behaviour when no slug rule
+                $stored = $couponCode['discount_amount'] ?? null;
+                if ($stored !== null && $stored !== '' && is_numeric($stored)) {
+                    $discount = (float) $stored;
+                } else {
+                    if ($coupon->type == '1') {
+                        $discount = ($subtotal * $coupon->amount) / 100;
+                    } elseif ($coupon->type == '0') {
+                        $discount = $coupon->amount;
+                    }
                 }
-                // Ensure the discount does not exceed the total
-                
-                $discount = min($discount, $subtotal); // Ensure discount is not more than subtotal
+                $discount = min($discount, $subtotal);
                 $coupon_id = $coupon->id;
 
                 if($coupon->is_gift_card != '1'){

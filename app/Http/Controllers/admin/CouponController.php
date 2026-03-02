@@ -39,7 +39,29 @@ class CouponController extends Controller
          }
       }
 
-      Coupon::create(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'product_category'=>$product_category,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'qty' => $request->bulk_qty]);
+      $rule_enabled = $request->has('rule_enabled') ? 1 : 0;
+      $rule_apply_slug = null;
+      $rule_rest_discount_type = null;
+      if ($rule_enabled && $product_category) {
+         $ids = is_array($request->product_category) ? $request->product_category : explode(',', $product_category);
+         $firstId = is_array($ids) ? ($ids[0] ?? null) : $ids;
+         if ($firstId) {
+            $cat = ProductCategory::find($firstId);
+            if ($cat) {
+               $rule_apply_slug = $cat->slug ?? (string)$cat->id;
+            }
+         }
+         $rule_rest_discount_type = $request->coupon_type === '1' ? 'percent' : ($request->coupon_type === '0' ? 'amount' : null);
+      }
+
+      Coupon::create([
+         'code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'product_category'=>$product_category,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'qty' => $request->bulk_qty,
+         'rule_enabled' => $rule_enabled,
+         'rule_apply_slug' => $rule_apply_slug,
+         'rule_leave_first' => $request->has('rule_leave_first') ? 1 : 0,
+         'rule_rest_discount_type' => $rule_rest_discount_type,
+         'rule_rest_discount_value' => ($rule_enabled && $rule_rest_discount_type !== null) ? $request->amount : null,
+      ]);
       return redirect()->route('coupons-list')->with('success', 'Coupon created successfully!');
    }
 
@@ -70,7 +92,29 @@ class CouponController extends Controller
          }
       }
 
-      Coupon::whereId($request->coupon_id)->update(['code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'product_category'=>$product_category,'qty' => $request->bulk_qty]);
+      $rule_enabled = $request->has('rule_enabled') ? 1 : 0;
+      $rule_apply_slug = null;
+      $rule_rest_discount_type = null;
+      if ($rule_enabled && $product_category) {
+         $ids = is_array($request->product_category) ? $request->product_category : explode(',', $product_category);
+         $firstId = is_array($ids) ? ($ids[0] ?? null) : $ids;
+         if ($firstId) {
+            $cat = ProductCategory::find($firstId);
+            if ($cat) {
+               $rule_apply_slug = $cat->slug ?? (string)$cat->id;
+            }
+         }
+         $rule_rest_discount_type = $request->coupon_type === '1' ? 'percent' : ($request->coupon_type === '0' ? 'amount' : null);
+      }
+
+      Coupon::whereId($request->coupon_id)->update([
+         'code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'product_category'=>$product_category,'qty' => $request->bulk_qty,
+         'rule_enabled' => $rule_enabled,
+         'rule_apply_slug' => $rule_apply_slug,
+         'rule_leave_first' => $request->has('rule_leave_first') ? 1 : 0,
+         'rule_rest_discount_type' => $rule_rest_discount_type,
+         'rule_rest_discount_value' => ($rule_enabled && $rule_rest_discount_type !== null) ? $request->amount : null,
+      ]);
       
       return redirect()->route('coupons-list')->with('success', 'Coupon updated successfully!');
    }
