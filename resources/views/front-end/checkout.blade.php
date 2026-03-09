@@ -695,31 +695,43 @@
         })
         .then(response => response.json())
         .then(response => {
-            fetch('/charge-customer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    customer_id: response.id,
-                    amount: cent_total_amount, // amount in cents
-                    stripeToken: formData.stripeToken // Fix: Correct token usage
-                })
-            })
-            .then(response => response.json())
-            .then(charge => {
-                if (charge.error === false) {
-                    let url = "{{ route('thankyou', ['order_id' => ':orderId']) }}";
-                    url = url.replace(':orderId', charge.order_id);
-                    window.location.href = url;
-                } else {
-                    $('#stripe-error').text(charge.data).css('color', 'red');
-                    $('#place-order-btn').removeClass('d-none');
-                    $('#loader-order-btn').addClass('d-none');
-                    console.log(charge.data);
+            if (response.error === true) {  
+                if(response.data)
+                {
+                    $('#stripe-error').text(response.message).css('color', 'red');
+                    console.log(response.data);
+                }else{
+                    $('#email').after(`<span class="error-message" style="color: red;">${response.message}</span>`);
                 }
-            });
+                $('#place-order-btn').removeClass('d-none');
+                $('#loader-order-btn').addClass('d-none');
+            } else {
+                fetch('/charge-customer', {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        customer_id: response.id,
+                        amount: cent_total_amount, // amount in cents
+                        stripeToken: formData.stripeToken // Fix: Correct token usage
+                    })
+                })
+                .then(response => response.json())
+                .then(charge => {
+                    if (charge.error === false) {
+                        let url = "{{ route('thankyou', ['order_id' => ':orderId']) }}";
+                        url = url.replace(':orderId', charge.order_id);
+                        window.location.href = url;
+                    } else {
+                        $('#stripe-error').text(charge.data).css('color', 'red');
+                        $('#place-order-btn').removeClass('d-none');
+                        $('#loader-order-btn').addClass('d-none');
+                        console.log(charge.data);
+                    }
+                });
+            }
         });
     }
 });
