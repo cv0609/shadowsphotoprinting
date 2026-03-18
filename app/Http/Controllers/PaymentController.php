@@ -975,7 +975,7 @@ class PaymentController extends Controller
 
         $couponSuccessMessage = null;
         if ($order && strtoupper((string) ($order->coupon_code ?? '')) === 'APDAYBONUS') {
-            $couponSuccessMessage = 'Because of the current Afterpay sale, 2 extra prints are included with your order.';
+            $couponSuccessMessage = ' Your Afterpay Day bonus is applied — 2 complimentary prints included.';
         }
 
         return view('front-end.afterpay_order_thankyou', compact('page_content', 'couponSuccessMessage'));
