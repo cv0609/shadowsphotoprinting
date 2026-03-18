@@ -714,6 +714,9 @@ class PaymentController extends Controller
         $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
         $coupon_code = $cartTotal['coupon_code'] ?? '';
 
+        $couponCodeString = is_array($coupon_code) ? ($coupon_code['code'] ?? '') : (string) $coupon_code;
+        $couponCodeString = trim((string) $couponCodeString);
+
         $itemsArray = [];
 
         foreach ($cart->items as $items) {
@@ -785,16 +788,6 @@ class PaymentController extends Controller
             ],
             "description" => "Order for consumer",
             "items" => $itemsArray,
-            "discounts" => [
-                [
-                    "displayName" => !empty($coupon_code) ? $coupon_code : 'Summer Discount',
-                    "amount" => [
-                        "amount" => $couponDiscountInCents ?? "0.00",
-                        // "amount" => "5000.00",
-                        "currency" => "AUD"
-                    ]
-                ]
-            ],
             "merchant" => [
                 "redirectConfirmUrl" => route('checkout.success'),
                 "redirectCancelUrl" => route('checkout.cancel'),
@@ -811,6 +804,18 @@ class PaymentController extends Controller
             ]
         ];
 
+        if ((float) $coupon_discount > 0) {
+            $orderDetails["discounts"] = [
+                [
+                    "displayName" => $couponCodeString !== '' ? $couponCodeString : 'Discount',
+                    "amount" => [
+                        "amount" => $couponDiscountInCents ?? "0.00",
+                        "currency" => "AUD"
+                    ]
+                ]
+            ];
+        }
+
         $response = $this->AfterPayService->charge($orderDetails);
 
         $log = new AfterPayLogs;
@@ -821,7 +826,7 @@ class PaymentController extends Controller
             return response()->json(['error' => false, 'data' => $response['redirectCheckoutUrl']]);
         }
 
-        return response()->json(['error' => true, 'data' => $response['error'] ?? 'Error processing Afterpay payment.']);
+        return response()->json(['error' => true, 'data' => $response['message'] ?? ($response['error'] ?? 'Error processing Afterpay payment.')]);
     }
 
     public function freeOrderCheckout(Request $request){
@@ -961,6 +966,18 @@ class PaymentController extends Controller
     public function orderSuccess()
     {
         $page_content = ["meta_title" => config('constant.order.thankyou.meta_title'), "meta_description" => config('constant.order.thankyou.meta_description')];
-        return view('front-end.afterpay_order_thankyou', compact('page_content'));
+        $order = null;
+        if (Auth::check()) {
+            $order = Order::where('user_id', Auth::user()->id)->orderByDesc('id')->first();
+        } else {
+            $order = Order::where('user_session_id', Session::getId())->orderByDesc('id')->first();
+        }
+
+        $couponSuccessMessage = null;
+        if ($order && strtoupper((string) ($order->coupon_code ?? '')) === 'APDAYBONUS') {
+            $couponSuccessMessage = 'Because of the current Afterpay sale, 2 extra prints are included with your order.';
+        }
+
+        return view('front-end.afterpay_order_thankyou', compact('page_content', 'couponSuccessMessage'));
     }
 }

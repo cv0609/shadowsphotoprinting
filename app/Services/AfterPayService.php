@@ -52,8 +52,9 @@ class AfterPayService
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
-                $responseBody = json_decode($response->getBody()->getContents(), true);
-                return $responseBody;
+                $rawBody = (string) $response->getBody();
+                $responseBody = json_decode($rawBody, true);
+                return is_array($responseBody) ? $responseBody : ['error' => $rawBody];
             }
             return ['error' => 'Unable to process Afterpay order.'];
         }
