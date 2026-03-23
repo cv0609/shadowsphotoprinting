@@ -624,6 +624,12 @@ class CartController extends Controller
                 $slugExtraDiscount = 0;
                 $leaveFirst = ($coupon->rule_leave_first ?? true);
 
+                // If leave-first is enabled, we must have at least 2 eligible items in the cart,
+                // otherwise this coupon rule can't be applied as intended.
+                if ($leaveFirst && $slugItems->count() < 2) {
+                    return ['success' => false, 'message' => 'Add at least 2 products in this category to apply this coupon rule.'];
+                }
+
                 Log::channel('single')->info('Coupon slug rule', [
                     'subtotal' => $total['subtotal'],
                     'rule_apply_slug' => $coupon->rule_apply_slug,
