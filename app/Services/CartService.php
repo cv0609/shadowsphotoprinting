@@ -390,11 +390,93 @@ class CartService
         if ($coupon) {
             $amount = 0;
 
-            // Calculate discount based on type
-            if ($coupon->type == "0") {
-                $amount = $coupon->amount; // Fixed amount discount
-            } elseif ($coupon->type == "1") {
-                $amount = ($coupon->amount / 100) * $CartTotal['subtotal']; // Percentage discount
+            // Load current cart items (needed for leave-first/rest category rule)
+            if (Auth::check() && !empty(Auth::user())) {
+                $cart = Cart::where('user_id', Auth::user()->id)->with('items.product')->first();
+            } else {
+                $session_id = Session::getId();
+                $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+            }
+
+            // Slug rule: when toggle enabled AND slug + type/value filled, apply "leave first, rest discount"
+            $slugRuleActive = ($coupon->rule_enabled ?? false)
+                && !empty($coupon->rule_apply_slug)
+                && in_array($coupon->rule_rest_discount_type ?? null, ['percent', 'amount'], true)
+                && isset($coupon->rule_rest_discount_value) && $coupon->rule_rest_discount_value !== '' && $coupon->rule_rest_discount_value !== null
+                && $coupon->is_gift_card != '1';
+
+            if ($slugRuleActive && $cart) {
+                $categoryBySlug = ProductCategory::where('slug', $coupon->rule_apply_slug)
+                    ->orWhere('id', $coupon->rule_apply_slug)
+                    ->first();
+
+                if ($categoryBySlug) {
+                    // Keep same "Only Category" enforcement as applyCoupon for toggle-enabled coupons:
+                    // if product_category is set, all cart items must belong to those categories.
+                    if (!empty($coupon->product_category)) {
+                        $couponCategories = explode(',', $coupon->product_category);
+                        $couponCategories = array_map('strval', $couponCategories);
+
+                        foreach ($cart->items as $item) {
+                            if ($item->product_type == 'gift_card') {
+                                $productCategory = '6'; // gift card category mapping
+                            } elseif ($item->product && $item->product->category_id) {
+                                $productCategory = (string)$item->product->category_id;
+                            } else {
+                                continue;
+                            }
+
+                            if (!in_array((string)$productCategory, $couponCategories)) {
+                                Session::forget('coupon');
+                                return false;
+                            }
+                        }
+                    }
+
+                    $slugItems = $cart->items->filter(function ($item) use ($categoryBySlug) {
+                        return $item->product_type !== 'gift_card'
+                            && $item->product_type !== 'photo_for_sale'
+                            && $item->product_type !== 'hand_craft'
+                            && $item->product
+                            && (string)$item->product->category_id === (string)$categoryBySlug->id;
+                    })->sortBy('id')->values();
+
+                    $leaveFirst = ($coupon->rule_leave_first ?? true);
+
+                    if ($leaveFirst && $slugItems->count() < 2) {
+                        Session::forget('coupon');
+                        return false;
+                    }
+
+                    $slugExtraDiscount = 0;
+
+                    foreach ($slugItems as $index => $item) {
+                        $itemTotal = $this->getCartItemTotalForCoupon($item);
+
+                        if ($leaveFirst && $index === 0) {
+                            continue;
+                        }
+
+                        if ($coupon->rule_rest_discount_type === 'percent') {
+                            $itemDiscount = ($itemTotal * (float)$coupon->rule_rest_discount_value) / 100;
+                        } else {
+                            $itemDiscount = min((float)$coupon->rule_rest_discount_value * $item->quantity, $itemTotal);
+                        }
+
+                        $slugExtraDiscount += $itemDiscount;
+                    }
+
+                    $amount = $slugExtraDiscount;
+                }
+            }
+
+            // Fallback to normal coupon type logic if slug-rule is off or yields 0
+            if ($amount == 0) {
+                if ($coupon->type == "0") {
+                    $amount = $coupon->amount; // Fixed amount discount
+                } elseif ($coupon->type == "1") {
+                    $amount = ($coupon->amount / 100) * $CartTotal['subtotal']; // Percentage discount
+                }
             }
             // Increment usage count if maximum usage is not exceeded
             if ($coupon->use_limit === null || $coupon->used < $coupon->use_limit) {
@@ -420,6 +502,43 @@ class CartService
         // No coupon found, clear session
         Session::forget('coupon');
         return false;
+    }
+
+    /**
+     * Line total for a cart item (used by slug-rule auto-applied coupons only).
+     */
+    protected function getCartItemTotalForCoupon($item)
+    {
+        if ($item->product_type === 'gift_card' || $item->product_type === 'photo_for_sale' || $item->product_type === 'hand_craft') {
+            $product_price = $item->product_price;
+        } else {
+            $currentDate = date('Y-m-d');
+
+            $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)
+                ->where('sale_end_date', '>=', $currentDate)
+                ->where('product_id', $item->product_id)
+                ->first();
+
+            if (!empty($item->is_test_print) && (string)$item->is_test_print === '1') {
+                $product_price = $item->test_print_price;
+            } else {
+                if (isset($sale_price) && !empty($sale_price)) {
+                    $product_price = $sale_price->sale_price;
+                } else {
+                    if (isset($item->is_package) && !empty($item->is_package) && (string)$item->is_package === '1') {
+                        $product_price = $item->package_price;
+                    } else {
+                        $product_price = $item->product->product_price;
+                    }
+                }
+            }
+        }
+
+        if (isset($item->is_package) && !empty($item->is_package) && (string)$item->is_package === '1') {
+            return $product_price;
+        }
+
+        return $product_price * $item->quantity;
     }
 
 
