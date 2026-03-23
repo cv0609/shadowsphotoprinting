@@ -443,7 +443,7 @@ class CartService
 
                     $leaveFirst = ($coupon->rule_leave_first ?? true);
 
-                    if ($leaveFirst && $slugItems->count() < 2) {
+                    if ($leaveFirst && ($slugItems->count() < 2 ? ($slugItems[0]->quantity < 2) : false) ) {
                         Session::forget('coupon');
                         return false;
                     }
@@ -451,11 +451,7 @@ class CartService
                     $slugExtraDiscount = 0;
 
                     foreach ($slugItems as $index => $item) {
-                        $itemTotal = $this->getCartItemTotalForCoupon($item);
-
-                        if ($leaveFirst && $index === 0) {
-                            continue;
-                        }
+                        $itemTotal = $this->getCartItemTotalForCoupon($item, $index);
 
                         if ($coupon->rule_rest_discount_type === 'percent') {
                             $itemDiscount = ($itemTotal * (float)$coupon->rule_rest_discount_value) / 100;
@@ -507,7 +503,7 @@ class CartService
     /**
      * Line total for a cart item (used by slug-rule auto-applied coupons only).
      */
-    protected function getCartItemTotalForCoupon($item)
+    protected function getCartItemTotalForCoupon($item , $index)
     {
         if ($item->product_type === 'gift_card' || $item->product_type === 'photo_for_sale' || $item->product_type === 'hand_craft') {
             $product_price = $item->product_price;
@@ -536,6 +532,10 @@ class CartService
 
         if (isset($item->is_package) && !empty($item->is_package) && (string)$item->is_package === '1') {
             return $product_price;
+        }
+
+        if ($index === 0) {
+            return $product_price * ($item->quantity-1);
         }
 
         return $product_price * $item->quantity;

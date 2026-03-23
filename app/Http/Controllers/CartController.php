@@ -626,10 +626,12 @@ class CartController extends Controller
 
                 // If leave-first is enabled, we must have at least 2 eligible items in the cart,
                 // otherwise this coupon rule can't be applied as intended.
-                if ($leaveFirst && $slugItems->count() < 2) {
-                    return ['success' => false, 'message' => 'Add at least 2 products in this category to apply this coupon rule.'];
-                }
 
+                // dd($slugItems);
+                if ($leaveFirst && ($slugItems->count() > 0 ? ($slugItems[0]->quantity ?? 0 < 2) : false)) {
+                    return ['success' => false, 'message' => 'Add at least 2 quantity of products in this category to apply this coupon rule.'];
+                }                
+                dd('safe');
                 Log::channel('single')->info('Coupon slug rule', [
                     'subtotal' => $total['subtotal'],
                     'rule_apply_slug' => $coupon->rule_apply_slug,
@@ -640,14 +642,14 @@ class CartController extends Controller
                 ]);
 
                 foreach ($slugItems as $index => $item) {
-                    $itemTotal = $this->getCartItemTotalForCoupon($item);
-                    if ($leaveFirst && $index === 0) {
-                        Log::channel('single')->info('Slug rule: skip first item (full price)', [
-                            'index' => $index, 'product_id' => $item->product_id ?? null,
-                            'item_total' => $itemTotal, 'quantity' => $item->quantity,
-                        ]);
-                        continue;
-                    }
+                    $itemTotal = $this->getCartItemTotalForCoupon($item, $index);
+                    // if ($leaveFirst && $index === 0) {
+                    //     Log::channel('single')->info('Slug rule: skip first item (full price)', [
+                    //         'index' => $index, 'product_id' => $item->product_id ?? null,
+                    //         'item_total' => $itemTotal, 'quantity' => $item->quantity,
+                    //     ]);
+                    //     continue;
+                    // }
                     if ($coupon->rule_rest_discount_type === 'percent') {
                         $itemDiscount = ($itemTotal * (float)$coupon->rule_rest_discount_value) / 100;
                     } else {
@@ -701,7 +703,7 @@ class CartController extends Controller
     /**
      * Line total for a cart item (used by slug-rule discount only).
      */
-    protected function getCartItemTotalForCoupon($item)
+    protected function getCartItemTotalForCoupon($item, $index)
     {
         if ($item->product_type === 'gift_card' || $item->product_type === 'photo_for_sale' || $item->product_type === 'hand_craft') {
             $product_price = $item->product_price;
@@ -724,6 +726,9 @@ class CartController extends Controller
         }
         if (isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)) {
             return $product_price;
+        }
+        if ($index === 0) {
+            return $product_price * ($item->quantity-1);
         }
         return $product_price * $item->quantity;
     }
