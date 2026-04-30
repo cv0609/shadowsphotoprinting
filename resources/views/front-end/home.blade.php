@@ -75,21 +75,33 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     <h3 style="color:#ffc205;">{{ $page_content['photographers_camera_clubs_title'] ?? 'For Photographers & Camera Clubs' }}</h3>
                     <p>{!! nl2br(e($page_content['photographers_camera_clubs_description'] ?? "Printed by photographers who understand photography.\n\nWhether you’re a professional photographer, part of a camera club, or building your portfolio, we’re here to support your work.\n\nWe know how important colour, detail, and consistency are — which is why every image is carefully checked and printed with precision.")) !!}</p>
                     <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
-                        <p style="margin:0; color:#fff; font-weight:600;">&#10003; No auto-corrections</p>
+                        <!-- <p style="margin:0; color:#fff; font-weight:600;">&#10003; No auto-corrections</p>
                         <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; No unwanted adjustments</p>
-                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Just your work, printed as you created it</p>
+                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Just your work, printed as you created it</p> -->
+
+                        <ul style="list-style: disc; color: white; padding-left: 10px;">
+                            <li><p style="margin:0; color:#fff; ">No auto-corrections</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#fff; ">No unwanted adjustments</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#fff; ">Just your work, printed as you created it</p></li>
+                        </ul>
                     </div>
                     <p>{!! nl2br(e($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.")) !!}</p>
-                    <p style="font-weight:700; margin-top:8px;">Because your work deserves to be printed with care — and done properly.</p>
-                    <p style="font-weight:700;">Ask us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.</p>
+                    <!-- <p style="font-weight:700; margin-top:8px;">Because your work deserves to be printed with care — and done properly.</p>
+                    <p style="font-weight:700;">Ask us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.</p> -->
                 </div>
                 <div class="col-lg-12" style="margin-top: 20px;">
                     <h3 style="color:#ffc205;">{{ $page_content['scrapbookers_memory_keepers_title'] ?? 'For Scrapbookers & Memory Keepers' }}</h3>
                     <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_description'] ?? "Because the little details matter.\n\nWhether you’re creating albums for your family, preserving milestones, or documenting everyday life, we’re here to help you bring your pages together beautifully.\n\nWe understand how important it is that your prints:")) !!}</p>
                     <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
-                        <p style="margin:0; color:#fff; font-weight:600;">&#10003; Match your layouts</p>
+                        <!-- <p style="margin:0; color:#fff; font-weight:600;">&#10003; Match your layouts</p>
                         <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Hold their colour</p>
-                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Feel right when placed on the page</p>
+                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Feel right when placed on the page</p> -->
+
+                        <ul style="list-style: disc; color: white; padding-left: 10px;">
+                            <li><p style="margin:0; color:#fff; ">Match your layouts</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#fff; ">Hold their colour</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#fff; ">Feel right when placed on the page</p></li>
+                        </ul>
                     </div>
                     <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_footer'] ?? "That’s why every image is carefully checked and printed with care — so your scrapbook pages look just the way you imagined them.\n\nFrom single pages to full albums, your prints are handled with the same attention and respect as if they were our own.")) !!}</p>
                     <p style="font-weight:700; margin-top:8px;">Because the stories you’re creating are worth keeping.</p>
@@ -124,7 +136,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                                     <h3>Printed In-House with Pride — Australian Made</h3>
                                     <div class="textwidget">
                                         {{-- {!! $page_content['description'] !!} --}}
-                                        <p>At Shadows Affordable Memories, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
+                                        <p>At <span style="color: #ffc205; font-weight: 600;">Shadows Affordable Memories</span>, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
                                         </p>
                                         <p>That is why all our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.</p>
                                         <p>
@@ -153,7 +165,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                         <div class="widget-title" data-aos="fade-left">
                             <h3>Our Promise</h3>
                             <div class="textwidget">
-                                <p>At <strong>Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
+                                <p>At <strong >Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
                                 <p>Let us help you turn your <strong>moments into memories</strong> - and your <strong>photography into something you can hold, share, and be proud of for years to come.</strong></p>
                             </div>
                         </div>
