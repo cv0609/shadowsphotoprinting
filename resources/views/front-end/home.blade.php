@@ -71,6 +71,44 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
             <div class="row textwidget" style="padding-top: 31px;">
                 <!-- Add row here -->
                 {!! $page_content['about_description'] !!}
+                <div class="col-lg-12" style="margin-top: 20px;">
+                    <h3 style="color:#ffc205;">{{ $page_content['photographers_camera_clubs_title'] ?? 'For Photographers & Camera Clubs' }}</h3>
+                    <p>{!! nl2br(e($page_content['photographers_camera_clubs_description'] ?? "Printed by photographers who understand photography.\n\nWhether you’re a professional photographer, part of a camera club, or building your portfolio, we’re here to support your work.\n\nWe know how important colour, detail, and consistency are — which is why every image is carefully checked and printed with precision.")) !!}</p>
+                    <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
+                        <p style="margin:0; color:#fff; font-weight:600;">&#10003; No auto-corrections</p>
+                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; No unwanted adjustments</p>
+                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Just your work, printed as you created it</p>
+                    </div>
+                    <p>{!! nl2br(e($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.")) !!}</p>
+                    <p style="font-weight:700; margin-top:8px;">Because your work deserves to be printed with care — and done properly.</p>
+                    <p style="font-weight:700;">Ask us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.</p>
+                </div>
+                <div class="col-lg-12" style="margin-top: 20px;">
+                    <h3 style="color:#ffc205;">{{ $page_content['scrapbookers_memory_keepers_title'] ?? 'For Scrapbookers & Memory Keepers' }}</h3>
+                    <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_description'] ?? "Because the little details matter.\n\nWhether you’re creating albums for your family, preserving milestones, or documenting everyday life, we’re here to help you bring your pages together beautifully.\n\nWe understand how important it is that your prints:")) !!}</p>
+                    <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
+                        <p style="margin:0; color:#fff; font-weight:600;">&#10003; Match your layouts</p>
+                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Hold their colour</p>
+                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Feel right when placed on the page</p>
+                    </div>
+                    <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_footer'] ?? "That’s why every image is carefully checked and printed with care — so your scrapbook pages look just the way you imagined them.\n\nFrom single pages to full albums, your prints are handled with the same attention and respect as if they were our own.")) !!}</p>
+                    <p style="font-weight:700; margin-top:8px;">Because the stories you’re creating are worth keeping.</p>
+                </div>
+                <div class="col-lg-12" style="margin-top: 20px;">
+                    <h3 style="color:#ffc205;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
+                    <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Photo Printing, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
+                    <p style="font-weight:700; margin-top:8px;">If you’re ever passing through Glenreagh, it’s something really special to see in person — and one of our favourite parts of the shop.</p>
+                    <div style="margin-top:21px; text-align:center;">
+                        <img src="{{ isset($page_content['glenreagh_section_image']) && !empty($page_content['glenreagh_section_image']) ? asset($page_content['glenreagh_section_image']) : asset('assets/images/glenreagh-community-shop.png') }}" alt="A Community Print, Art & Gift Shop right here in Glenreagh" style="width:100%; max-width:760px; max-height:520px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.15); box-shadow:0 8px 20px rgba(0,0,0,.35);">
+                    </div>
+                </div>
+                <div class="col-lg-12" style="margin-top: 22px;">
+                    <h3 style="color:#ffc205;">Helpful Tips, Real Advice &amp; Inspiration</h3>
+                    <p>In addition to our printing services, we share helpful tips and simple advice to help you get the best results from your images.</p>
+                    <p>Visit our blog for articles like:<br><strong>“What is Bulk Printing and How Does it Benefit Photographers?”</strong></p>
+                    <p>Whether you’re printing for your family, your scrapbook, or your photography work, we’re here to help.</p>
+                    <p>Join our community of photographers, scrapbookers, and creatives by following us on social media — share your projects, get inspired, and stay updated on our latest offerings and promotions.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -83,14 +121,20 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                         <div class="col-lg-12">
                             <div class="entry-text">
                                 <div class="widget-title" data-aos="fade-left">
-                                    <h3>Printed In-House with Pride – Australian Made</h3>
+                                    <h3>Printed In-House with Pride — Australian Made</h3>
                                     <div class="textwidget">
                                         {{-- {!! $page_content['description'] !!} --}}
-                                        <p>At Shadows Photo Printing, we feel your memories should receive the best possible attention - and that begins with how we create each and every print. That is why all of our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.
+                                        <p>At Shadows Affordable Memories, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
                                         </p>
+                                        <p>That is why all our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.</p>
                                         <p>
-                                            From the time your order is received until the final packing process, each step is done by our small family within one location in Glenreagh N.S.W. This controls quality, reduces turnaround, and provides personal care your prints require. Each photo and canvas is cared for with the same skill and craftsmanship as if it were ours. We do not outsource your prints abroad or to external printing firms. Our promise is straightforward: local printing, professional care, and quality you can count on—every time.
+                                            From the moment your order is received to the final packing process, everything is handled by our small family in Glenreagh NSW. This allows us to maintain quality, reduce turnaround times, and give your prints the care they deserve.
                                         </p>
+                                        <p>Each photo and canvas is treated with the same skill and craftsmanship as if it were our own.</p>
+
+                                        <p>We do not outsource your prints abroad or to external printing firms.</p>
+
+                                        <p style="font-weight:700;">Our promise is simple: local printing, professional care, and quality you can count on — every time.</p>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +150,8 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     <div class="container">
         <div class="custom-wrapper">
             <div class="custom-size-content">
-                <h2 data-aos="fade-right">{!! $page_content['quote_description'] !!}</h2>
+                <h3 data-aos="fade-right" style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#ffc205; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
+                <h2 data-aos="fade-right" style="max-width:820px; margin:0 auto 20px; line-height:1.35;">{!! $page_content['quote_description'] !!}</h2>
                 <div class="ow-button-base" data-aos="fade-left">
                     <a href="{{ url('get-a-quote') }}"> {{ $page_content['get_a_quote'] }} </a>
                 </div>
@@ -121,6 +166,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     <div class="container">
         <div class="categories-heading">
             <h3>{{ $page_content['shop_by_categories_title'] }}</h3>
+            <p style="color:#fff;">Not sure where to start? Here are some of our most popular options .</p>
         </div>
         <div class="categories-wrapper">
             <div class="row">
@@ -219,6 +265,8 @@ $sale_popup = getSalePopup();
                     <div class="col-lg-6">
                         <div class="restoration-content">
                             <h2>{{ ucwords($page_content['accept_bulk_order_description']) }}</h2>
+                            <p>We proudly support photographers, scrapbookers, and creatives across Australia.</p>
+                            <p><strong>Bulk orders available for:</strong></p>
                             {{-- <h2>We accept bulk orders for</h2> --}}
                             <p>
                                 @foreach ($ProductCategoriesForBulk as $ProductCategory)
