@@ -1,284 +1,197 @@
 @extends('front-end.layout.main')
 @section('styles')
 <style>
-
-        .featured-photographers {
-            background: #000;
-        }
-        .featured-photographers .row {
-            align-items: center;
-        }
-        .table-sc-new {
-            background: #000;
-            color: #fff;
-            padding: 90px 0;
-        }
-        .apply-sc {
-            background: #000;
-            text-align: center;
-        }
-        .textwidget a{
-            color: #ffc205;
-        }
-        .apply-btn a {
-            background: #16A085;
-            color: #ffffff;
-            border: 1px solid #16A085;
-            padding: 8px 16px;
-            font-size: 18px;
-            display: inline-block;
-            transition: all .3s ease-in-out;
-            border-radius: 3px;
-            width: 100%;
-            max-width: 200px;
-            margin-top: 20px;
-        }
-        .apply-sc .head-box.custom-wrapper {
-            padding: 40px;
-        }
-        .photographer-list {
-                    width: 100%;
-                    border-collapse: collapse;
-                    font-size: 14px;
-        }
-        .photographer-list th, .photographer-list td {
-            padding: 15px;
-            border-bottom: 1px solid #444242;
-            vertical-align: middle;
-        }
-        .featured-photographers {
-            padding-top: 90px;
-        }
-        .toggle-cell a {
-            color: #ffc205;
-        }
-        .apply-sc-hear {
-            background: #000;
-            padding: 90px 0;
-        }
-        .apply-sc-hear p {
-            text-align: center;
-            color: #fff;
-        }
-            .photographer-list th {
-            background-color: #424242;
-            font-weight: 600;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .photographer-row {
-            display: table-row;
-        }
-        .photographer-row.hidden {
-            display: none;
-        }
-        .toggle-cell {
-            text-align: right;
-            padding-right: 0;
-        }
-       .toggle-icon {
-            cursor: pointer;
-            font-size: 22px;
-            color: #000;
-            user-select: none;
-            margin-left: 15px;
-            vertical-align: middle;
-            background: #ffc205;
-            width: 20px;
-            height: 20px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        .website a {
-            text-decoration: underline;
-            color: #2980b9;
-            white-space: nowrap;
-            transition: color 0.3s ease;
-        }
-        .website a:hover {
-            color: #1a5276;
-        }
-        /* Column Widths and Alignment */
-        .photographer-list th:nth-child(1),
-        .photographer-list td:nth-child(1) {
-            width: 35%;
-            text-align: left;
-        }
-        .photographer-list th:nth-child(2),
-        .photographer-list td:nth-child(2) {
-            width: 20%;
-            text-align: left;
-        }
-        .photographer-list th:nth-child(3),
-        .photographer-list td:nth-child(3) {
-            width: 25%;
-            text-align: left;
-        }
-        .photographer-list th:nth-child(4),
-        .photographer-list td:nth-child(4) {
-            width: 20%;
-            text-align: right;
-        }
-        .apply-btn a:hover {
-            background: #000;
-            border: 1px solid #000;
-        }
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .photographer-list th,
-            .photographer-list td {
-                display: block;
-                width: 100%;
-                padding: 12px;
-                text-align: left;
-            }
-            .photographer-list tr {
-                display: block;
-                margin-bottom: 15px;
-                border: 1px solid #e0e0e0;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            }
-            .photographer-row.hidden {
-                display: none;
-            }
-            .toggle-cell {
-                text-align: right;
-                padding-right: 10px;
-            }
-            .photographer-list th:nth-child(n),
-            .photographer-list td:nth-child(n) {
-                width: 100%;
-            }
-        }
+.featured-pro {
+    background: #000;
+    padding: 80px 0;
+}
+.featured-hero {
+    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+    border-radius: 14px;
+    padding: 34px;
+    margin-bottom: 30px;
+}
+.featured-hero h1 {
+    color: #111;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.featured-hero p {
+    color: #1f1f1f;
+    margin: 0;
+}
+.featured-intro {
+    background: #0b0b0b;
+    border: 1px solid rgba(255, 194, 5, 0.45);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+}
+.shape-divider {
+    width: 80px;
+    height: 4px;
+    border-radius: 20px;
+    background: #16a085;
+    margin-bottom: 16px;
+}
+.featured-intro p,
+.featured-card p {
+    color: #efefef;
+    font-size: 17px;
+    line-height: 1.75;
+}
+.featured-image img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 194, 5, 0.45);
+}
+.featured-card {
+    background: #0b0b0b;
+    border: 1px solid rgba(255, 194, 5, 0.45);
+    border-radius: 12px;
+    padding: 28px;
+    margin-top: 24px;
+}
+.featured-card h2 {
+    color: #ffc205;
+    margin-bottom: 14px;
+}
+.pro-table-wrap {
+    overflow-x: auto;
+}
+.pro-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.pro-table th,
+.pro-table td {
+    border-bottom: 1px solid rgba(255, 194, 5, 0.18);
+    padding: 14px 12px;
+    color: #efefef;
+    vertical-align: top;
+}
+.pro-table th {
+    color: #ffc205;
+    font-weight: 700;
+    background: #111;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+.pro-table td a {
+    color: #16a085;
+    text-decoration: underline;
+}
+.pro-table td a:hover {
+    color: #1cc2a0;
+}
+.cta-btn {
+    display: inline-block;
+    margin-top: 12px;
+    background: #ffc205;
+    color: #121212 !important;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+.cta-btn:hover {
+    background: #f0b700;
+}
+@media (max-width: 991px) {
+    .featured-hero {
+        padding: 24px;
+    }
+}
 </style>
 
 @endsection
 @section('content')
-<section class="featured-photographers">
-    <div class="container ">
+<section class="featured-pro">
+    <div class="container">
+        <div class="featured-hero">
+            <h1>Meet Our Shadows Pro Circle Photographers</h1>
+            <p>Supporting Photographers Across Australia</p>
+        </div>
 
         <div class="row">
-                <!-- Add row here -->
-
-                <div class="col-lg-6">
-                    <div class="entry-text">
-                        <div class="widget-title aos-init aos-animate" data-aos="fade-left">
-                            <h3>Meet the Professionals Behind Our Incredible Imagery</h3>
-                            <div class="textwidget">
-                                <p style="margin-bottom: 10px;">At <strong><a href="{{url('/')}}">Shadows Photo Printing</a></strong>, we’re proud to collaborate with a talented community of professional photographers whose stunning work brings our products to life. Their images, captured with passion and precision, are showcased on our uniquely handcrafted, ready-to-hang canvas and photo prints—made right here in Australia. </p>
-
-                                <p style="margin-bottom: 10px;">If you’ve fallen in love with the photos featured on our products, there’s a good chance you’re admiring the work of one of the amazing photographers listed below. </p>
-
-                                <p style="margin-bottom: 10px;">A heartfelt <strong>thank you</strong> to our incredible pros—we couldn’t do it without you! </p>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-				 <div class="col-lg-6">
-                    <div class="entry-img-n">
-                        <figure data-aos="fade-right" class="aos-init aos-animate">
-                            <img src="{{asset('assets/images/onemeet.jpg')}}" alt="Shadows Photo Printing Photographers">
-                        </figure>
-                    </div>
+            <div class="col-lg-7">
+                <div class="featured-intro">
+                    <div class="shape-divider"></div>
+                    <p>At Shadows Affordable Memories, we’re proud to work alongside a community of photographers from across Australia.</p>
+                    <p>These are the photographers behind the images you see across our website, social media, and printed products.</p>
+                    <p>Their work is captured with care, creativity, and passion — and we have the privilege of helping bring those moments to life through print.</p>
+                    <p>Every photo print and ready-to-hang canvas is produced right here in Australia, by photographers who understand how much your images matter.</p>
+                    <p>If you’ve ever found yourself drawn to the images on our website or products, there’s a good chance you’re seeing the work of one of our Shadows Pro Circle photographers.</p>
+                    <p>Each image tells a story... and through print, those stories become something you can hold onto and enjoy every day.</p>
                 </div>
             </div>
+            <div class="col-lg-5">
+                <div class="featured-image">
+                    <img src="{{ asset('assets/images/onemeet.jpg') }}" alt="Shadows Pro Circle Photographers">
+                </div>
+            </div>
+        </div>
+
+        <div class="featured-card">
+            <div class="shape-divider"></div>
+            <h2>Our Shadows Pro Circle Photographers</h2>
+            <div class="pro-table-wrap">
+                <table class="pro-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Photography Category</th>
+                            <th>Website</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Leanne Robson</td>
+                            <td>Melbourne</td>
+                            <td>Portraits, Other</td>
+                            <td><a href="https://www.spidersilk.net.au" target="_blank" rel="noopener">https://www.spidersilk.net.au</a></td>
+                        </tr>
+                        <tr>
+                            <td>Peter Kneen</td>
+                            <td>Sydney & NSW Southern Highlands - Bundanoon</td>
+                            <td>Landscape / Nature, Portraits</td>
+                            <td><a href="https://peterkneen.photography" target="_blank" rel="noopener">https://peterkneen.photography</a></td>
+                        </tr>
+                        <tr>
+                            <td>Nina Von Rymon-Lipinski</td>
+                            <td>Brisbane</td>
+                            <td>Landscape / Nature, Sports, Lifestyle / Fashion, Other</td>
+                            <td><a href="https://nin472.viewbug.com" target="_blank" rel="noopener">https://nin472.viewbug.com</a></td>
+                        </tr>
+                        <tr>
+                            <td>Luke Burles</td>
+                            <td>Caboolture</td>
+                            <td>Wedding / Engagement / Couples, Newborn, Maternity & Family, School Photography, Portraits, Lifestyle / Fashion</td>
+                            <td><a href="https://www.theportraitlens.photos" target="_blank" rel="noopener">https://www.theportraitlens.photos</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="featured-card">
+            <div class="shape-divider"></div>
+            <h2>Interested in Joining the Shadows Pro Circle?</h2>
+            <p>If you're a photographer who believes your images deserve to be printed, we would love to hear from you.</p>
+            <p>The Shadows Pro Circle is a supportive community for photographers across Australia who care about how their work is printed and presented.</p>
+            <p>You can learn more or apply here:</p>
+            <a class="cta-btn" href="{{ route('apply-form') }}">Apply to Join the Shadows Pro Circle</a>
+        </div>
+
+        <div class="featured-card">
+            <div class="shape-divider"></div>
+            <h2>Thank You to Our Photography Community</h2>
+            <p>Every photograph tells a story.</p>
+            <p>We’re proud to work alongside photographers who trust us to print their work and help bring those stories to life through printed images.</p>
+        </div>
     </div>
 </section>
-<section class="table-sc-new">
-	<div class="container">
-		<div class="table-owner">
-			<table class="photographer-list">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Location</th>
-						<th>Category</th>
-						<th></th> <!-- Empty th for toggle icon alignment -->
-					</tr>
-				</thead>
-				<tbody>
-
-                    @foreach($ambassadors as $ambassador)
-                     <tr class="photographer-row" data-expanded="false">
-						<td>{{$ambassador->name}}</td>
-						<td>{{$ambassador->location}}</td>
-                        @php
-                            $specialty =  is_string($ambassador->specialty) ? explode(',', $ambassador->specialty) : [];
-                            $items = [];
-                            foreach ($specialty ?? [] as $item){
-                                $items[] = $specialtyMap[$item];
-                            }
-                        @endphp
-						<td>
-                        {{implode(', ',$items)}}
-                        </td>
-						<td class="toggle-cell"><a href="{{$ambassador->website}}" target="_blank" class="website">{{$ambassador->website}}</a><span class="toggle-icon">+</span></td>
-					</tr>
-					<tr class="photographer-row hidden" data-index="0">
-						<td colspan="4">Additional details for Mathew Riley Photography can be added here.</td>
-					</tr>
-                    @endforeach
-				</tbody>
-			</table>
-		</div>
-    </div>
-</section>
-<section class="apply-sc">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="head-box custom-wrapper">
-					<h2 class="hdd">Interested in becoming an <br> Shadows Photographer Brand Ambassador?</h2>
-					<div class="apply-btn">
-						<a href="{{route('apply-form')}}">Apply Here</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<section class="apply-sc-hear">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-               <p>Have you noticed the stunning imagery featured on our unique, handcrafted, ready-to-hang canvas and photo prints—proudly made right here in Australia? Chances are, it’s the work of one of our incredibly talented photography partners. </p>
-
-                <p >At <strong>Shadows Photo Printing</strong>, we’re proud to collaborate with a diverse group of professional photographers who bring our products to life. From authentic lifestyle photographers like [Photographer Name], to awe-inspiring landscape artists such as [Photographer Name], and romantic wedding storytellers like [Photographer Name], we’re grateful to work with creatives who truly elevate what we do.  </p>
-
-                <p>Each image tells a story—and through our high-quality prints, that story becomes a lasting piece of art for your space. </p>
-			</div>
-		</div>
-	</div>
-</section>
-@endsection
-@section('scripts')
-<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const rows = document.querySelectorAll('.photographer-row');
-            rows.forEach(row => {
-                if (!row.querySelector('.toggle-icon')) return;
-                row.querySelector('.toggle-icon').addEventListener('click', function() {
-                    const index = row.getAttribute('data-index');
-                    const nextRow = row.nextElementSibling;
-                    const isExpanded = row.getAttribute('data-expanded') === 'true';
-
-                    if (isExpanded) {
-                        nextRow.classList.add('hidden');
-                        row.querySelector('.toggle-icon').textContent = '+';
-                        row.setAttribute('data-expanded', 'false');
-                    } else {
-                        nextRow.classList.remove('hidden');
-                        row.querySelector('.toggle-icon').textContent = '−';
-                        row.setAttribute('data-expanded', 'true');
-                    }
-                });
-            });
-        });
-    </script>
 @endsection
 

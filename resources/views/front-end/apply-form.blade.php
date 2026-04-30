@@ -259,6 +259,19 @@
         .banner-sec-new .div-wrap-head {
             color: #fff;
         }
+        .form-divider {
+            width: 84px;
+            height: 4px;
+            border-radius: 30px;
+            background: #16a085;
+            margin: 18px auto;
+        }
+        .section-title-inline {
+            color: #ffc205;
+            font-weight: 700;
+            margin-top: 6px;
+            margin-bottom: 6px;
+        }
 
         .banner-sec-new:after {
             content: "";
@@ -296,10 +309,10 @@
     <section class="banner-sec-new">
         <div class="container">
             <div class="div-wrap-head">
-                <h3>Apply to Be a SPP Photographer Brand Ambassador</h3>
-                <p>We're proud to work with talented professional photographers across Australia - and you can be one of
-                    them! Selected photographers receive exclusive discounts, opportunities to be showcased on our blog and
-                    social media opportunities, and much more...</p>
+                <h3>Apply to Join the Shadows Pro Circle</h3>
+                <p>We're proud to work alongside talented photographers across Australia - and you can be one of them.</p>
+                <p>Our Pro Circle is a selected group of creatives who value quality, and love seeing their work come to life in print.</p>
+                <p>Selected photographers receive exclusive discounts, features across our blog and social media, and more.</p>
             </div>
         </div>
     </section>
@@ -319,10 +332,11 @@
 
                     <p><strong>Eligibility Requirements:</strong></p>
                     <ul style="text-align: center; color: #fff;">
-                        <li>You must be 18 years or older.</li>
-                        <li>You must reside in Australia.</li>
+                        <li>You must be 18 years or older</li>
+                        <li>You must reside in Australia</li>
                     </ul>
-                    <p style="color: #e74c3c;">* Indicates required question</p>
+                    <p style="color: #e74c3c;">* Indicates a required field</p>
+                    <div class="form-divider"></div>
                 </div>
 
                 <form action="{{ route('apply-form.post') }}" method='post' id="ambassadorForm"
@@ -330,47 +344,52 @@
                     @csrf
 
                     <div class="form-section">
-                        <label for="name">Photographer Information<br> First & Last Name <span
+                        <label class="section-title-inline">Photographer Information</label>
+                        <label for="name">First & Last Name <span
                                 class="required">*</span></label>
                         <input type="text" id="name" name="name" placeholder="First & Last Name" required
                             value="{{ old('name') }}">
                     </div>
+                    <div class="form-divider"></div>
                     <div class="form-section">
                         <label for="location">Where are you located? <span class="required">*</span></label>
-                        <input type="text" id="location" name="location" placeholder="location" required
+                        <input type="text" id="location" name="location" placeholder="Location" required
                             value="{{ old('location') }}">
                     </div>
+                    <div class="form-divider"></div>
                     <div class="form-section">
-                        <label for="business">Does your photography business go by a different name? If so, let us
-                            know.</label>
+                        <label for="business">Does your photography business go by a different name?</label>
                         <input type="text" id="business" name="business" placeholder="Business Name"
                             value="{{ old('business') }}">
                     </div>
+                    <div class="form-divider"></div>
                     <div class="form-section">
                         <label for="email">Email <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="email" required
+                        <input type="email" id="email" name="email" placeholder="Email" required
                             value="{{ old('email') }}">
                         @error('email')
                             <div style="color: #e74c3c; font-size: 0.85em;">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-divider"></div>
                     <div class="form-section">
                         <label for="website">Website <span class="required">*</span></label>
-                        <input type="url" id="website" name="website" placeholder="e.g., https://yourwebsite.com"
+                        <input type="url" id="website" name="website" placeholder="Example: https://yourwebsite.com"
                             required value="{{ old('website') }}">
                     </div>
                     <div class="form-section">
-                        <label for="social">Social Media handle (Instagram, Facebook and/or TikTok) <span
+                        <label for="social">Social Media Handle <span
                                 class="required">*</span></label>
-                        <input type="text" id="social" name="social" placeholder="e.g., @yourhandle" required
+                        <input type="text" id="social" name="social" placeholder="Instagram, Facebook and/or TikTok - e.g. @yourhandle" required
                             value="{{ old('social') }}">
                         @error('social')
                             <div style="color: #e74c3c; font-size: 0.85em;">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-divider"></div>
                     <div class="form-section">
-                        <label>Photography Details <br>What is your photography specialty? You can choose more than one or
-                            Other. <span class="required">*</span></label>
+                        <label class="section-title-inline">Photography Details</label>
+                        <label>What is your photography specialty?<br>(Tick all that apply) <span class="required">*</span></label>
                         <div class="checkbox-card">
                             <ul class="checkbox-list">
                                 <li><label><input type="checkbox" name="specialty[]" value="wedding"
@@ -415,25 +434,27 @@
                             <div style="color: #e74c3c; font-size: 0.85em;">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-divider"></div>
 
                     <div class="form-section">
-                        <label>Tell us anything else about yourself you'd like us to know or why you're interested in
-                            becoming an SPP Photographer Brand Ambassador!</label>
-                        <textarea id="comments" name="comments" rows="3" placeholder="Why you’re interested...">{{ old('comments') }}</textarea>
+                        <label class="section-title-inline">Tell Us About You</label>
+                        <label>Tell us a little about yourself, your photography, and why you'd love to be part of the Shadows Pro Circle.</label>
+                        <textarea id="comments" name="comments" rows="3" placeholder="Share your story...">{{ old('comments') }}</textarea>
                     </div>
+                    <div class="form-divider"></div>
                     <!-- <div class="form-section">
                     <label> Terms & Condition:</label>
                     <label><input type="checkbox" id="confirmation" name="confirmation" value="confirmation" required > <span class="required">*</span> By submitting this application, I confirm that all the information provided is accurate. I understand that if approved, I’ll receive exclusive discounts, potential blog and social media features, and other perks as part of the program. I also confirm that I am <strong>18 years or older</strong> and <strong>reside in Australia</strong>.</label>
                 </div> -->
 
                     <div class="form-section">
-                        <label>Confirmation<span class="required">*</span><br> <input type="checkbox" id="confirmation"
-                                name="confirmation" value="confirmation" required> By submitting this application, I
-                            confirm that all the information provided is accurate. I understand that if approved, I’ll
-                            receive exclusive discounts, potential blog and social media features, and other perks as part
-                            of the program. I also confirm that I am <b>18 years or older</b> and <b>reside in
-                                Australia</b>.</label>
+                        <label class="section-title-inline">Confirmation</label>
+                        <label><input type="checkbox" id="confirmation"
+                                name="confirmation" value="confirmation" required> By submitting this application, I confirm that all information provided is accurate. <span class="required">*</span></label>
+                        <label><input type="checkbox" id="confirmation_age" name="confirmation_age" value="yes"> I confirm that I am 18 years or older and reside in Australia.</label>
+                        <p style="margin-top:8px;">I understand that if approved, I may receive rewards, exclusive offers, early access to promotions, and opportunities to be featured by Shadows Affordable Memories.</p>
                         <div class="form-section">
+                            <label class="section-title-inline">Signature</label>
                             <label for="signature">Digital Signature <span class="required">*</span></label>
                             <div class="signature-pad">
                                 <canvas id="signatureCanvas" width="400" height="150"
@@ -455,6 +476,7 @@
                         <input type="date" id="date" name="date" required
                             value="{{ old('date', $australiaDate) }}" readonly>
                     </div>
+                    <div class="form-divider"></div>
 
                     <div class="button-container">
                         <button type="submit">Submit Application</button>
@@ -463,7 +485,7 @@
                     </div>
                 </form>
                 <div class="footer">
-                    <p>Security note: Avoid submitting sensitive data. Created by <a href="{{url('/')}}">Shadow's Photo Printing</a>. <a
+                    <p>Security Note: Please avoid submitting sensitive personal information. Created by <a href="{{url('/')}}">Shadows Affordable Memories</a>. <a
                             href="{{ url('contact-us') }}">Report Issues</a></p>
                 </div>
             </div>

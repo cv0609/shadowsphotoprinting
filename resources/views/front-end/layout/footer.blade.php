@@ -7,7 +7,7 @@
 </div>
 
 <div class="ambassador-button-container">
-    <a href="{{route('photographer-brandAmbassador')}}" class="btn">Become an Ambassador</a>
+    <a href="{{ route('shadows-pro-circle') }}" class="btn">Become an Ambassador</a>
 </div>
 
     <div class="modal fade newslatter-cls" id="newsletter-modal" aria-hidden="true"

@@ -105,7 +105,7 @@ class AmbassadorController extends Controller
 
       Mail::to(env('ADMIN_MAIL'))->send(new NewAmbassadorAdminNotification($ambassador));
 
-      //return redirect()->route('photographer-brandAmbassador')->with('success', 'Application submitted successfully.');
+      //return redirect()->route('shadows-pro-circle')->with('success', 'Application submitted successfully.');
       return redirect()->back()->with('success', 'Thank you! We look forward to reviewing your application! You should hear a response from us within 7-10 days (or sooner).');
   }
 
