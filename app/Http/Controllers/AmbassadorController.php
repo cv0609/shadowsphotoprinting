@@ -69,6 +69,12 @@ class AmbassadorController extends Controller
 
    // dd($request);
 
+      $website = trim((string) $request->input('website', ''));
+      if ($website !== '' && !preg_match('/^https?:\/\//i', $website)) {
+          $website = 'https://' . $website;
+      }
+      $request->merge(['website' => $website]);
+
       $validated = $request->validate([
           'name' => 'required|string|max:255',
           'location' => 'required|string|max:255',

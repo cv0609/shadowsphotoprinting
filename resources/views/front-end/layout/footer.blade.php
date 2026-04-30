@@ -31,7 +31,7 @@
     <div class="container">
         <div class="footerbase">
             <div class="footercredits">
-                <p>© 2025 Shadows Photo Printing</p>
+                <p>© 2025 Shadows Affordable Memories</p>
             </div>
         </div>
     </div>
