@@ -1,6 +1,6 @@
 @extends('front-end.layout.main')
 @section('styles')
-<style>
+<!-- <style>
 .pro-circle-sec {
     background: #000;
     padding: 80px 0;
@@ -115,7 +115,195 @@
         font-size: 26px;
     }
 }
-</style>
+</style> -->
+
+<style>
+      .pro-circle-sec {
+        background: #000;
+        padding: 80px 0;
+      }
+      .pro-hero-card {
+        max-width: 100%;
+        margin: 0 auto 48px auto;
+        background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+        border-radius: 14px;
+        padding: 40px 36px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .pro-hero-card h1 {
+        color: #111;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .pro-hero-card .sub {
+        color: #1f1f1f;
+        font-size: 18px;
+        margin-bottom: 0;
+      }
+      .pro-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+      .pro-card {
+        background: #0b0b0b;
+        border: 1px solid rgba(255, 194, 5, 0.45);
+        border-radius: 12px;
+        padding: 28px;
+      }
+      .pro-card h2 {
+        color: #ffc205;
+        font-size: 30px;
+        margin: 0 0 14px 0;
+      }
+      .pro-card h3 {
+        color: #ffc205;
+        font-size: 24px;
+        margin: 0 0 10px 0;
+      }
+      .pro-card p,
+      .pro-card li {
+        color: #efefef;
+        font-size: 17px;
+        line-height: 1.7;
+      }
+      .pro-card ul {
+        /* margin: 0; */
+        padding-left: 20px;
+        list-style-type: disc;
+      }
+      .shape-divider {
+        width: 80px;
+        height: 4px;
+        border-radius: 20px;
+        background: #16a085;
+        margin: 0 0 20px 0;
+      }
+      .pro-full {
+        grid-column: 1 / -1;
+      }
+      .pro-image-wrap img {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 194, 5, 0.45);
+      }
+      .pro-quote {
+        font-size: 24px;
+        color: #ffc205;
+        font-weight: 700;
+      }
+      .pro-cta-row {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+      .pro-btn {
+        display: inline-block;
+        padding: 12px 18px;
+        border-radius: 8px;
+        text-decoration: none !important;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .pro-btn-primary {
+        background: #ffc205;
+        color: #121212 !important;
+      }
+      .pro-btn-primary:hover {
+        background: #f0b700;
+      }
+      .pro-btn-outline {
+        border: 1px solid #16a085;
+        color: #16a085 !important;
+      }
+      .pro-btn-outline:hover {
+        background: #16a085;
+        color: #fff !important;
+      }
+      .pro-note {
+        color: #c9c9c9 !important;
+        font-size: 15px !important;
+      }
+      .list-bottom-margin {
+        margin-bottom: 16px;
+      }
+      @media (max-width: 991px) {
+        .pro-grid {
+          grid-template-columns: 1fr;
+        }
+        .pro-card h2 {
+          font-size: 26px;
+        }
+      }
+      @media (max-width: 767px) {
+        .pro-circle-sec {
+          padding: 60px 0;
+        }
+      }
+      @media (max-width: 575px) {
+        .pro-hero-card {
+          margin: 0 auto 30px auto;
+        }
+        .pro-circle-sec {
+          padding: 40px 0;
+        }
+      }
+      @media (max-width: 480px) {
+        .pro-circle-sec {
+          padding: 30px 0;
+        }
+
+        .pro-card h3 {
+          font-size: 20px;
+          margin: 0 0 10px 0;
+        }
+        .pro-card p,
+        .pro-card li {
+          color: #efefef;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        .pro-hero-card {
+          padding: 20px 20px;
+        }
+        .pro-hero-card h1 {
+            font-size: 25px;
+        }
+        .pro-hero-card .sub {
+            font-size: 17px;
+            line-height: normal;
+        }
+        .pro-card h2 {
+    font-size: 21px;
+}
+      }
+      @media (max-width: 380px) {
+        .pro-hero-card h1 {
+          margin-bottom: 10px;
+          font-size: 23px;
+        }
+        .pro-hero-card {
+          padding: 20px 20px;
+        }
+        .pro-card {
+          padding: 20px;
+        }
+        .pro-card h2 {
+          font-size: 20px;
+        }
+        .pro-btn-primary,
+        .pro-btn-outline {
+          font-size: 14px;
+          line-height: normal;
+        }
+        .pro-hero-card .sub {
+          line-height: normal;
+          font-size: 16px;
+        }
+      }
+    </style>
+
 
 @endsection
 @section('content')
@@ -131,7 +319,7 @@
                 <div class="shape-divider"></div>
                 <h2>Why Join the Shadows Pro Circle?</h2>
                 <p>Join a supportive community of photographers and enjoy:</p>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>Reliable, professional printing you can trust</li>
                     <li>Your work featured on our website with links to your portfolio</li>
                     <li>Exclusive print discounts and Shutter Bucks rewards</li>
@@ -169,7 +357,7 @@
                 <h3>Supporting Photographers Through the Shadows Pro Circle</h3>
                 <p>We're proud to work with talented photographers from across Australia, and many of their images are featured on our website and social media.</p>
                 <p>Photographers in the Shadows Pro Circle may choose to share their work with the community. This may include:</p>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>Image galleries with download access and usage rights</li>
                     <li>Photo prints or canvas images featuring their photography</li>
                     <li>Guest blog posts about their photography journey</li>
@@ -199,7 +387,7 @@
                 <p>We now carry that story forward with Joblin by our side.</p>
 
                 <h3>Please Note</h3>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>Shutter Bucks are only available to approved Shadows Pro Circle members</li>
                     <li>Shutter Bucks are not redeemable for cash</li>
                     <li>Shutter Bucks are not transferable</li>
