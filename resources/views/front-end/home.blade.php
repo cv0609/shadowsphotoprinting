@@ -144,6 +144,26 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
             </div>
 </section>
 
+<section class="entry-content">
+    <div class="container">
+        <div class="entry-content-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="entry-text">
+                        <div class="widget-title" data-aos="fade-left">
+                            <h3>Our Promise</h3>
+                            <div class="textwidget">
+                                <p>At <strong>Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
+                                <p>Let us help you turn your <strong>moments into memories</strong> - and your <strong>photography into something you can hold, share, and be proud of for years to come.</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!--  -->
 
 <section class="custom-size">
@@ -171,11 +191,16 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
         <div class="categories-wrapper">
             <div class="row">
                 @foreach ($ProductCategories as $ProductCategory)
+                @php
+                    $displayCategoryName = strtolower(trim($ProductCategory->name)) === 'hand craft'
+                        ? 'Handcrafted'
+                        : ucfirst($ProductCategory->name);
+                @endphp
                 <div class="col-lg-3 col-md-6">
                     <div class="product-categories dfdf">
                         <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">
                             <img src="{{ (isset($ProductCategory->image) && !empty($ProductCategory->image)) ? asset($ProductCategory->image) : asset('assets/admin/images/dummy-image.jpg')}}" alt="{{ ucfirst($ProductCategory->name) }}">
-                            <span>{{ ucfirst($ProductCategory->name) }}</span>
+                            <span>{{ $displayCategoryName }}</span>
                         </a>
                     </div>
                 </div>
@@ -270,13 +295,21 @@ $sale_popup = getSalePopup();
                             {{-- <h2>We accept bulk orders for</h2> --}}
                             <p>
                                 @foreach ($ProductCategoriesForBulk as $ProductCategory)
-                                <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">{{ ucwords($ProductCategory->name) }} {{ (!$loop->last) ? ',' : '' }} </a>
+                                @php
+                                    $displayBulkCategoryName = strtolower(trim($ProductCategory->name)) === 'hand craft'
+                                        ? 'Handcrafted'
+                                        : ucwords($ProductCategory->name);
+                                @endphp
+                                <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">{{ $displayBulkCategoryName }} {{ (!$loop->last) ? ',' : '' }} </a>
                                 @endforeach
                             </p>
                             <div class="restoration-btn">
                                 <a href="{{ url('shop') }}">{{ $page_content['order_now'] }}</a>
                                 {{-- <a href="shop">Order Now</a> --}}
                             </div>
+                            <p style="margin-top:12px;">
+                                Because your moments deserve to be kept... and your work deserves to be printed with care - and done properly.
+                            </p>
                         </div>
                     </div>
                 </div>

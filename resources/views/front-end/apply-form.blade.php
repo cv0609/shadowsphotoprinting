@@ -374,7 +374,7 @@
                     <div class="form-divider"></div>
                     <div class="form-section">
                         <label for="website">Website <span class="required">*</span></label>
-                        <input type="url" id="website" name="website" placeholder="Example: https://yourwebsite.com"
+                        <input type="text" id="website" name="website" placeholder="Example: yourwebsite.com"
                             required value="{{ old('website') }}">
                     </div>
                     <div class="form-section">
