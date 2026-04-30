@@ -106,7 +106,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_footer'] ?? "That’s why every image is carefully checked and printed with care — so your scrapbook pages look just the way you imagined them.\n\nFrom single pages to full albums, your prints are handled with the same attention and respect as if they were our own.")) !!}</p>
                     <p style="font-weight:700; margin-top:8px;">Because the stories you’re creating are worth keeping.</p>
                 </div>
-                <div class="col-lg-12" style="margin-top: 20px;">
+                <div class="col-lg-12 community-class" style="margin-top: 20px; border: 1px solid rgba(255, 194, 5, .45); border-radius: 10px; padding: 12px 14px; margin: 20px 20px 0 !important; max-width: 1090px;">
                     <h3 style="color:#ffc205;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
                     <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Photo Printing, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
                     <p style="font-weight:700; margin-top:8px;">If you’re ever passing through Glenreagh, it’s something really special to see in person — and one of our favourite parts of the shop.</p>
@@ -165,7 +165,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                         <div class="widget-title" data-aos="fade-left">
                             <h3>Our Promise</h3>
                             <div class="textwidget">
-                                <p>At <strong >Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
+                                <p>At <strong style="color: #ffc205;">Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
                                 <p>Let us help you turn your <strong>moments into memories</strong> - and your <strong>photography into something you can hold, share, and be proud of for years to come.</strong></p>
                             </div>
                         </div>
