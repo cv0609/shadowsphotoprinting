@@ -25,7 +25,7 @@
     border: 1px solid rgba(255, 194, 5, 0.45);
     border-radius: 12px;
     padding: 28px;
-    margin-bottom: 24px;
+    /* margin-bottom: 24px; */
 }
 .shape-divider {
     width: 80px;
@@ -44,6 +44,8 @@
     width: 100%;
     border-radius: 12px;
     border: 1px solid rgba(255, 194, 5, 0.45);
+    height: 100%;
+    object-fit: cover;
 }
 .featured-card {
     background: #0b0b0b;
@@ -77,6 +79,7 @@
     text-transform: uppercase;
     font-size: 13px;
     letter-spacing: 0.5px;
+    text-wrap: nowrap;
 }
 .pro-table td a {
     color: #16a085;
@@ -98,15 +101,73 @@
 .cta-btn:hover {
     background: #f0b700;
 }
+.featured-image {
+    height: 100%;
+}
+
 @media (max-width: 991px) {
     .featured-hero {
         padding: 24px;
     }
+    .featured-intro {
+  
+    margin-bottom: 24px;
+}
+.featured-image {
+  s
+    max-height: 750px;
+}
+}
+@media (max-width: 767px){
+    .featured-pro {
+    background: #000;
+    padding: 60px 0;
+}
+.featured-hero h1 {
+    
+    font-size: 30px;
+}
+}
+@media (max-width: 575px){
+    .featured-pro {
+    background: #000;
+    padding: 40px 0;
+}
+.featured-hero h1 {
+    font-size: 26px;
+}
+.pro-hero-card h1 {
+    margin-bottom: 0px;
+}
+}
+@media (max-width: 380px) {
+    .featured-card h2 {
+    
+    font-size: 21px;
+}
+.featured-intro {
+   
+    padding: 20px;
+    /* margin-bottom: 24px; */
+}
+.featured-card {
+  
+    padding: 20px;
+    
+}
+.featured-hero h1 {
+    font-size: 21px;
+}
+.featured-hero p {
+   
+    font-size: 16px;
+    line-height: normal;
+}
 }
 </style>
 
 @endsection
-@section('content')
+@section('content') 
 <section class="featured-pro">
     <div class="container">
         <div class="featured-hero">

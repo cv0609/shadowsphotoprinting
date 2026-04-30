@@ -105,7 +105,7 @@
             margin-right: 8px;
             margin-top: 10px;
             vertical-align: top;
-            accent-color: #000000;
+            accent-color: #fff;
             width: 16px;
             height: 16px;
         }
@@ -282,7 +282,82 @@
             bottom: 0;
             background: #0000008f;
         }
-
+        .required_feild {
+    font-size: 16px;
+    line-height: normal;
+    margin-top: 5px;
+}
+p.eligibility-reqirements {
+    font-size: 22px;
+}
+label.section-title-inline.form-heading {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+p.banner-text {
+    margin: 0;
+    font-size: 18px;
+    line-height: normal;
+    margin-bottom: 4px;
+}
+h3.banner-heading {
+    color: #ffc205;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+input#confirmation_age {
+    margin-right: 8px;
+    margin-top: 2px;
+    vertical-align: top;
+    accent-color: #000000;
+    width: 16px;
+    height: 16px;
+}
+p.declaration {
+    font-size: 18px;
+    line-height: 27px;
+}
+@media (max-width:991px) {
+    h3.banner-heading {
+   
+    font-size: 45px;
+    
+    margin-bottom: 20px;
+}
+}
+@media (max-width: 767px) {
+    h3.banner-heading {
+    font-size: 33px;
+    margin-bottom: 12px;
+}
+p.banner-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: normal;
+    margin-bottom: 4px;
+}
+}
+@media (max-width: 575px) {
+    h3.banner-heading {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+.form-mm {
+    background: #000;
+    color: #fff;
+    padding: 40px 0;
+}
+label.section-title-inline.form-heading {
+    font-size: 18px;
+    margin-bottom: 23px;
+}
+p.declaration {
+    font-size: 16px;
+    line-height: 24px;
+}
+}
         @media (max-width: 480px) {
             .form-mm .form-section {
                 margin-bottom: 12px;
@@ -300,6 +375,50 @@
             .form-mm .clear-btn {
                 margin-top: 0;
             }
+            h3.banner-heading {
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+.banner-sec-new {
+    padding: 100px 0;
+    
+}
+.form-mm .header {
+    padding: 30px 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.form-mm {
+    
+    padding: 30px 0;
+}
+p.eligibility-reqirements {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.form-divider {
+  
+    margin: 15px auto;
+}
+        }
+        @media (max-width:380px) {
+            .form-mm #ambassadorForm {
+    
+    padding: 20px 20px;
+   
+}
+label.section-title-inline.form-heading {
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+.banner-sec-new {
+    padding: 60px 0;
+}
+p.declaration {
+    font-size: 16px;
+    line-height: 24px;
+}
         }
     </style>
     <!-- Signature Pad Library -->
@@ -309,13 +428,13 @@
     <section class="banner-sec-new">
         <div class="container">
             <div class="div-wrap-head">
-                <h3>Apply to Join the Shadows Pro Circle</h3>
-                <p>We're proud to work alongside talented photographers across Australia - and you can be one of them.</p>
-                <p>Our Pro Circle is a selected group of creatives who value quality, and love seeing their work come to life in print.</p>
-                <p>Selected photographers receive exclusive discounts, features across our blog and social media, and more.</p>
+                <h3 class="banner-heading">Apply to Join the Shadows Pro Circle</h3>
+                <p class="banner-text">We're proud to work alongside talented photographers across Australia - and you can be one of them.</p>
+                <p class="banner-text">Our Pro Circle is a selected group of creatives who value quality, and love seeing their work come to life in print.</p>
+                <p class="banner-text">Selected photographers receive exclusive discounts, features across our blog and social media, and more.</p>
             </div>
         </div>
-    </section>
+    </section> 
 
     @if (Session::has('success'))
         <section class="form-mm">
@@ -330,12 +449,12 @@
             <div class="container">
                 <div class="header">
 
-                    <p><strong>Eligibility Requirements:</strong></p>
+                    <p class="eligibility-reqirements"><strong>Eligibility Requirements:</strong></p>
                     <ul style="text-align: center; color: #fff;">
                         <li>You must be 18 years or older</li>
                         <li>You must reside in Australia</li>
                     </ul>
-                    <p style="color: #e74c3c;">* Indicates a required field</p>
+                    <p style="color: #e74c3c;" class="required_feild">* Indicates a required field</p>
                     <div class="form-divider"></div>
                 </div>
 
@@ -344,7 +463,8 @@
                     @csrf
 
                     <div class="form-section">
-                        <label class="section-title-inline">Photographer Information</label>
+                        <label class="section-title-inline form-heading">Photographer Information</label>
+                        
                         <label for="name">First & Last Name <span
                                 class="required">*</span></label>
                         <input type="text" id="name" name="name" placeholder="First & Last Name" required
@@ -377,6 +497,7 @@
                         <input type="url" id="website" name="website" placeholder="Example: https://yourwebsite.com"
                             required value="{{ old('website') }}">
                     </div>
+                    <div class="form-divider"></div>
                     <div class="form-section">
                         <label for="social">Social Media Handle <span
                                 class="required">*</span></label>
@@ -452,7 +573,7 @@
                         <label><input type="checkbox" id="confirmation"
                                 name="confirmation" value="confirmation" required> By submitting this application, I confirm that all information provided is accurate. <span class="required">*</span></label>
                         <label><input type="checkbox" id="confirmation_age" name="confirmation_age" value="yes"> I confirm that I am 18 years or older and reside in Australia.</label>
-                        <p style="margin-top:8px;">I understand that if approved, I may receive rewards, exclusive offers, early access to promotions, and opportunities to be featured by Shadows Affordable Memories.</p>
+                        <p style="margin-top:8px;" class="declaration">I understand that if approved, I may receive rewards, exclusive offers, early access to promotions, and opportunities to be featured by Shadows Affordable Memories.</p>
                         <div class="form-section">
                             <label class="section-title-inline">Signature</label>
                             <label for="signature">Digital Signature <span class="required">*</span></label>

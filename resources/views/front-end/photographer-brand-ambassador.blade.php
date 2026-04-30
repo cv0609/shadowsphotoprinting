@@ -6,7 +6,7 @@
     padding: 80px 0;
 }
 .pro-hero-card {
-    max-width: 980px;
+    max-width: 100%;
     margin: 0 auto 48px auto;
     background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
     border-radius: 14px;
@@ -51,8 +51,9 @@
     line-height: 1.7;
 }
 .pro-card ul {
-    margin: 0;
+    /* margin: 0; */
     padding-left: 20px;
+    list-style-type: disc;
 }
 .shape-divider {
     width: 80px;
@@ -107,6 +108,9 @@
     color: #c9c9c9 !important;
     font-size: 15px !important;
 }
+.list-bottom-margin {
+    margin-bottom: 16px;
+}
 @media (max-width: 991px) {
     .pro-grid {
         grid-template-columns: 1fr;
@@ -115,6 +119,62 @@
         font-size: 26px;
     }
 }
+@media (max-width: 767px) {
+    .pro-circle-sec {
+    
+    padding: 60px 0;
+}
+}
+@media (max-width: 575px){
+.pro-hero-card {
+    margin: 0 auto 30px auto;  
+}
+.pro-circle-sec {
+    padding: 40px 0;
+}
+
+}
+@media (max-width: 480px){
+    .pro-circle-sec {
+    padding: 30px 0;
+}
+
+.pro-card h3 {
+   
+    font-size: 20px;
+    margin: 0 0 10px 0;
+}
+.pro-card p, .pro-card li {
+    color: #efefef;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+}
+@media (max-width: 380px) {
+    .pro-hero-card h1 {
+   
+   margin-bottom: 10px;
+   font-size: 23px;
+}
+.pro-hero-card {
+   padding: 20px 20px;
+}
+.pro-card {
+   
+    padding: 20px;
+}
+.pro-card h2 {
+    font-size: 21px;
+}
+.pro-btn-primary, .pro-btn-outline {
+   
+    font-size: 14px;
+    line-height: normal;
+}
+
+}
+
 </style>
 
 @endsection
@@ -169,7 +229,7 @@
                 <h3>Supporting Photographers Through the Shadows Pro Circle</h3>
                 <p>We're proud to work with talented photographers from across Australia, and many of their images are featured on our website and social media.</p>
                 <p>Photographers in the Shadows Pro Circle may choose to share their work with the community. This may include:</p>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>Image galleries with download access and usage rights</li>
                     <li>Photo prints or canvas images featuring their photography</li>
                     <li>Guest blog posts about their photography journey</li>
@@ -186,7 +246,7 @@
                 <p>As part of the community, your work will be featured on our website on the Meet Our Shadows Pro Circle Photographers page, with a link to your website or portfolio to help people discover your photography.</p>
                 <p>From time to time, their work may also be featured on our website, blog, or social media.</p>
                 <p>The Shadows Pro Circle is more than just a program - it's a growing community of photographers who believe in the power of print.</p>
-            </div>
+            </div> 
 
             <div class="pro-card pro-full">
                 <div class="shape-divider"></div>
@@ -199,7 +259,7 @@
                 <p>We now carry that story forward with Joblin by our side.</p>
 
                 <h3>Please Note</h3>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>Shutter Bucks are only available to approved Shadows Pro Circle members</li>
                     <li>Shutter Bucks are not redeemable for cash</li>
                     <li>Shutter Bucks are not transferable</li>
@@ -214,7 +274,7 @@
                 <h3>Contribution Requirements</h3>
                 <p>To continue receiving Shutter Bucks rewards, members are expected to contribute at least twice per year.</p>
                 <p>This may include:</p>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>Image galleries (with download access and usage rights)</li>
                     <li>Prints or canvas images featuring your work</li>
                     <li>Guest blog posts (your story, tips, or behind the scenes)</li>
@@ -243,7 +303,7 @@
                 <div class="shape-divider"></div>
                 <h3>Who Can Apply?</h3>
                 <p>The Shadows Pro Circle is open to photographers across Australia who value quality and community.</p>
-                <ul>
+                <ul class="list-bottom-margin">
                     <li>You must be 18 years or older</li>
                     <li>You must live in Australia</li>
                     <li>You have an active photography business, portfolio, or online presence</li>
