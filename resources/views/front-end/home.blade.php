@@ -20,7 +20,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
 
 <!-- HERO SECTION -->
 
-<!-- Welcome to Shadows Photo Printing -->
+<!-- Welcome to Shadows Affordable Memories -->
 
 <section class="entry-content">
     <div class="container">
@@ -85,7 +85,10 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                             <li><p style="margin:4px 0 0 0; color:#fff; ">Just your work, printed as you created it</p></li>
                         </ul>
                     </div>
-                    <p>{!! nl2br(e($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.")) !!}</p>
+                    
+                    <p>
+                        {!! nl2br($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our <span style='color:#ffc205;'>Shadows Pro Circle</span> — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.") !!}
+                    </p>
                     <!-- <p style="font-weight:700; margin-top:8px;">Because your work deserves to be printed with care — and done properly.</p>
                     <p style="font-weight:700;">Ask us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.</p> -->
                 </div>
@@ -108,7 +111,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 </div>
                 <div class="col-lg-12 community-class" style="margin-top: 20px; border: 1px solid rgba(255, 194, 5, .45); border-radius: 10px; padding: 12px 14px; margin: 20px 20px 0 !important; max-width: 1090px;">
                     <h3 style="color:#ffc205;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
-                    <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Photo Printing, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
+                    <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Affordable Memories, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
                     <p style="font-weight:700; margin-top:8px;">If you’re ever passing through Glenreagh, it’s something really special to see in person — and one of our favourite parts of the shop.</p>
                     <div style="margin-top:21px; text-align:center;">
                         <img src="{{ isset($page_content['glenreagh_section_image']) && !empty($page_content['glenreagh_section_image']) ? asset($page_content['glenreagh_section_image']) : asset('assets/images/glenreagh-community-shop.png') }}" alt="A Community Print, Art & Gift Shop right here in Glenreagh" style="width:100%; max-width:760px; max-height:520px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.15); box-shadow:0 8px 20px rgba(0,0,0,.35);">
@@ -125,7 +128,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
         </div>
     </div>
 </section>
-<!-- Welcome to Shadows Photo Printing -->
+<!-- Welcome to Shadows Affordable Memories -->
 <section class="entry-content">
             <div class="container">
                 <div class="entry-content-wrapper"> <!-- Corrected class name -->
