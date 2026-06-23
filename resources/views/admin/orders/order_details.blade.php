@@ -493,14 +493,14 @@
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->sub_total,2) }}</strong></td>
             </tr>
 
-            @if(isset($OrderTotal['coupon_code']) && !empty($OrderTotal['coupon_code']) && $OrderTotal['coupon_code'] != null)
+            @if(!empty($orderDetail->coupon_code))
 
               <tr>
-                <td style="padding: 5px;">Coupon ({{ $OrderTotal['coupon_code']}}):</td>
-                <td style="text-align: right; padding: 5px;"><strong>${{ number_format($OrderTotal['coupon_discount'],2)}}</strong></td>
+                <td style="padding: 5px;">Coupon ({{ $orderDetail->coupon_code }}):</td>
+                <td style="text-align: right; padding: 5px;"><strong>-${{ number_format($orderDetail->discount, 2) }}</strong></td>
               </tr>
 
-            @endif 
+            @endif
 
             @if($orderDetail->order_type != '1')
 
