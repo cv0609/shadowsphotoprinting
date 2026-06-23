@@ -296,9 +296,7 @@
                     <img src="{{ asset('assets/images/onemeet.jpg') }}" alt="Shadows Pro Circle Photographers">
                 </div>
             </div>
-        </div>
-
-        <div class="featured-card">
+              <div class="featured-card">
             <div class="shape-divider"></div>
             <h2>Our Shadows Pro Circle Photographers</h2>
             <div class="pro-table-wrap">
@@ -312,34 +310,43 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse ($ambassadors as $ambassador)
+                        @php
+                            $specialties = is_string($ambassador->specialty) ? explode(',', $ambassador->specialty) : [];
+                            $specialtyLabels = [];
+                            foreach ($specialties as $s) {
+                                $s = trim($s);
+                                if (isset($specialtyMap[$s])) {
+                                    $specialtyLabels[] = $specialtyMap[$s];
+                                }
+                            }
+                            if ($ambassador->other_specialty) {
+                                $specialtyLabels[] = $ambassador->other_specialty;
+                            }
+                        @endphp
                         <tr>
-                            <td>Leanne Robson</td>
-                            <td>Melbourne</td>
-                            <td>Portraits, Other</td>
-                            <td><a href="https://www.spidersilk.net.au" target="_blank" rel="noopener">https://www.spidersilk.net.au</a></td>
+                            <td>{{ $ambassador->name }}</td>
+                            <td>{{ $ambassador->location }}</td>
+                            <td>{{ implode(', ', $specialtyLabels) }}</td>
+                            <td>
+                                @if($ambassador->website)
+                                    <a href="{{ $ambassador->website }}" target="_blank" rel="noopener">{{ $ambassador->website }}</a>
+                                @else
+                                    —
+                                @endif
+                            </td>
                         </tr>
+                        @empty
                         <tr>
-                            <td>Peter Kneen</td>
-                            <td>Sydney & NSW Southern Highlands - Bundanoon</td>
-                            <td>Landscape / Nature, Portraits</td>
-                            <td><a href="https://peterkneen.photography" target="_blank" rel="noopener">https://peterkneen.photography</a></td>
+                            <td colspan="4" style="text-align:center; color:#aaa;">No photographers listed yet.</td>
                         </tr>
-                        <tr>
-                            <td>Nina Von Rymon-Lipinski</td>
-                            <td>Brisbane</td>
-                            <td>Landscape / Nature, Sports, Lifestyle / Fashion, Other</td>
-                            <td><a href="https://nin472.viewbug.com" target="_blank" rel="noopener">https://nin472.viewbug.com</a></td>
-                        </tr>
-                        <tr>
-                            <td>Luke Burles</td>
-                            <td>Caboolture</td>
-                            <td>Wedding / Engagement / Couples, Newborn, Maternity & Family, School Photography, Portraits, Lifestyle / Fashion</td>
-                            <td><a href="https://www.theportraitlens.photos" target="_blank" rel="noopener">https://www.theportraitlens.photos</a></td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
+            {{ $ambassadors->links('pagination::bootstrap-4') }}
         </div>
+    </div>
 
         <div class="featured-card">
             <div class="shape-divider"></div>
