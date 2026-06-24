@@ -7,7 +7,7 @@
 </div>
 
 <div class="ambassador-button-container">
-    <a href="{{route('photographer-brandAmbassador')}}" class="btn">Become an Ambassador</a>
+    <a href="{{ route('shadows-pro-circle') }}" class="btn">Join the Shadows Pro Circle</a>
 </div>
 
     <div class="modal fade newslatter-cls" id="newsletter-modal" aria-hidden="true"
@@ -31,7 +31,7 @@
     <div class="container">
         <div class="footerbase">
             <div class="footercredits">
-                <p>© 2025 Shadows Photo Printing</p>
+                <p>© 2025 Shadows Affordable Memories</p>
             </div>
         </div>
     </div>

@@ -23,7 +23,9 @@ class GiftCardCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:gift_card_category,product_title',
-            "image" => 'image|mimes:jpeg,png,jpg|max:2048'
+            "image" => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            "use_different_email_image" => 'nullable|in:0,1',
+            "email_image" => 'nullable|image|mimes:jpeg,png,jpg|max:2048|required_if:use_different_email_image,1'
         ];
     }
 }

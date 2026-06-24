@@ -67,6 +67,42 @@
 					"type": "textarea",
 					"required": true,
 					"name": "about_description"
+				},
+				{
+					"title": "photographers_camera_clubs_title",
+					"type": "text",
+					"required": false,
+					"name": "photographers_camera_clubs_title"
+				},
+				{
+					"title": "photographers_camera_clubs_description",
+					"type": "textarea",
+					"required": false,
+					"name": "photographers_camera_clubs_description"
+				},
+				{
+					"title": "photographers_camera_clubs_footer",
+					"type": "textarea",
+					"required": false,
+					"name": "photographers_camera_clubs_footer"
+				},
+				{
+					"title": "scrapbookers_memory_keepers_title",
+					"type": "text",
+					"required": false,
+					"name": "scrapbookers_memory_keepers_title"
+				},
+				{
+					"title": "scrapbookers_memory_keepers_description",
+					"type": "textarea",
+					"required": false,
+					"name": "scrapbookers_memory_keepers_description"
+				},
+				{
+					"title": "scrapbookers_memory_keepers_footer",
+					"type": "textarea",
+					"required": false,
+					"name": "scrapbookers_memory_keepers_footer"
 				}
 
             ]

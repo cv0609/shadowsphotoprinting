@@ -19,6 +19,7 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MakeOrder;
 use App\Models\TestPrint;
+use App\Models\product_sale;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
@@ -332,7 +333,7 @@ class CartController extends Controller
 
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
-            $cart = Cart::where('user_id', $auth_id)->with(['items' => function($query) {
+            $cart = Cart::where('user_id', $auth_id)->where('session_id' , null)->with(['items' => function($query) {
                 // Order items so package items come first, then regular items
                 // Within package items, order by package_product_id, then by creation time
                 $query->orderByRaw('CASE WHEN is_package = 1 THEN 0 ELSE 1 END, package_product_id ASC, created_at ASC');
@@ -522,7 +523,15 @@ class CartController extends Controller
 
             foreach ($cart->items as $item) {
 
-                $productCategory = (string)$item->product->category_id;
+                // Handle gift card items - they have category_id = 8
+                if ($item->product_type == 'gift_card') {
+                    $productCategory = '6'; // Gift card category ID
+                } elseif ($item->product && $item->product->category_id) {
+                    $productCategory = (string)$item->product->category_id;
+                } else {
+                    // Skip items without valid category
+                    continue;
+                }
 
                 if (!in_array((string)$productCategory, $couponCategories)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart'];
@@ -541,6 +550,16 @@ class CartController extends Controller
         if (isset($coupon->products) && !empty($coupon->products) && $coupon->products != null) {
             $couponProducts = explode(',', $coupon->products);
             foreach ($cart->items as $item) {
+
+                // Skip gift card items in product-specific validation as they use GiftCardCategory, not Product
+                // Gift card coupons should use product_category instead
+                if ($item->product_type == 'gift_card') {
+                    continue;
+                }
+
+                if (!$item->product) {
+                    continue;
+                }
 
                 if (!in_array($item->product->id, $couponProducts)) {
                     return ['success' => false, 'message' => 'This coupon is not applicable to the items in your cart based on product'];
@@ -567,25 +586,109 @@ class CartController extends Controller
             }
         }
 
+        // For gift card coupons (is_gift_card = 1), ensure cart contains gift card items
+        // Note: If product_category is set, the category validation above already handles the check
+        if ($coupon->is_gift_card == '1') {
+            $hasGiftCardItem = false;
+            foreach ($cart->items as $item) {
+                if ($item->product_type == 'gift_card') {
+                    $hasGiftCardItem = true;
+                    break;
+                }
+            }
+            
+            if (!$hasGiftCardItem) {
+                return ['success' => false, 'message' => 'This coupon is only applicable to gift card items in your cart'];
+            }
+        }
+
         if ($coupon->use_limit !== null && $coupon->use_limit <= 0) {
             return ['success' => false, 'message' => 'Your coupon limit has expired.'];
         }
 
         $amount = 0;
 
-        if($coupon->is_gift_card == '1'){
+        // Slug rule: only when checkbox enabled AND slug + type + value filled – then apply “leave first, rest discount” for that category. Otherwise existing behaviour unchanged.
+        $slugRuleActive = ($coupon->rule_enabled ?? false)
+            && !empty($coupon->rule_apply_slug)
+            && in_array($coupon->rule_rest_discount_type ?? null, ['percent', 'amount'], true)
+            && isset($coupon->rule_rest_discount_value) && $coupon->rule_rest_discount_value !== '' && $coupon->rule_rest_discount_value !== null
+            && $coupon->is_gift_card != '1';
+        if ($slugRuleActive) {
+            $categoryBySlug = ProductCategory::where('slug', $coupon->rule_apply_slug)->orWhere('id', $coupon->rule_apply_slug)->first();
+            if ($categoryBySlug) {
+                $slugItems = $cart->items->filter(function ($item) use ($categoryBySlug) {
+                    return $item->product_type !== 'gift_card' && $item->product_type !== 'photo_for_sale' && $item->product_type !== 'hand_craft'
+                        && $item->product && (string)$item->product->category_id === (string)$categoryBySlug->id;
+                })->sortBy('id')->values();
+                $slugExtraDiscount = 0;
+                $leaveFirst = ($coupon->rule_leave_first ?? true);
 
-            if($coupon->amount <= 0){
-                return ['success' => false, 'message' => 'Expired Gift card voucher.'];
+                // If leave-first is enabled, we must have at least 2 eligible items in the cart,
+                // otherwise this coupon rule can't be applied as intended.
+
+                // dd($slugItems);
+                if ($leaveFirst && ($slugItems->count() > 0 ? ($slugItems[0]->quantity ?? 0 < 2) : false)) {
+                    return ['success' => false, 'message' => 'Add at least 2 quantity of products in this category to apply this coupon rule.'];
+                }                
+                dd('safe');
+                Log::channel('single')->info('Coupon slug rule', [
+                    'subtotal' => $total['subtotal'],
+                    'rule_apply_slug' => $coupon->rule_apply_slug,
+                    'rule_rest_discount_type' => $coupon->rule_rest_discount_type,
+                    'rule_rest_discount_value' => $coupon->rule_rest_discount_value,
+                    'leave_first' => $leaveFirst,
+                    'slug_items_count' => $slugItems->count(),
+                ]);
+
+                foreach ($slugItems as $index => $item) {
+                    $itemTotal = $this->getCartItemTotalForCoupon($item, $index);
+                    // if ($leaveFirst && $index === 0) {
+                    //     Log::channel('single')->info('Slug rule: skip first item (full price)', [
+                    //         'index' => $index, 'product_id' => $item->product_id ?? null,
+                    //         'item_total' => $itemTotal, 'quantity' => $item->quantity,
+                    //     ]);
+                    //     continue;
+                    // }
+                    if ($coupon->rule_rest_discount_type === 'percent') {
+                        $itemDiscount = ($itemTotal * (float)$coupon->rule_rest_discount_value) / 100;
+                    } else {
+                        $itemDiscount = min((float)$coupon->rule_rest_discount_value * $item->quantity, $itemTotal);
+                    }
+                    $slugExtraDiscount += $itemDiscount;
+                    Log::channel('single')->info('Slug rule: discount applied', [
+                        'index' => $index, 'product_id' => $item->product_id ?? null,
+                        'item_total' => $itemTotal, 'quantity' => $item->quantity,
+                        'item_discount' => round($itemDiscount, 2),
+                    ]);
+                }
+
+                Log::channel('single')->info('Coupon slug rule total', [
+                    'slug_extra_discount' => round($slugExtraDiscount, 2),
+                    'after_discount_subtotal' => round($total['subtotal'] - $slugExtraDiscount, 2),
+                ]);
+
+                $amount = $slugExtraDiscount;
             }
-            $amount = $coupon->amount;
         }
 
-        if ($coupon->type == "0") {
-            $amount = $coupon->amount;
-        } elseif ($coupon->type == "1") {
-            $amount = ($coupon->amount / 100) * $total['subtotal'];
+        // Existing behaviour: when slug rule is off, or slug rule could not be applied (no category / no matching items), use main coupon (gift card / type 0 / type 1).
+        if (!$slugRuleActive || $amount == 0) {
+            if($coupon->is_gift_card == '1'){
+                if($coupon->amount <= 0){
+                    return ['success' => false, 'message' => 'Expired Gift card voucher.'];
+                }
+                $amount = $coupon->amount;
+            } else {
+                if ($coupon->type == "0") {
+                    $amount = $coupon->amount;
+                } elseif ($coupon->type == "1") {
+                    $amount = ($coupon->amount / 100) * $total['subtotal'];
+                }
+            }
         }
+
+        $amount = min($amount, $total['subtotal']);
         // $coupon->used++;
         $coupon->save();
 
@@ -595,6 +698,39 @@ class CartController extends Controller
         ]);
 
         return ['success' => true, 'total' => $total['subtotal'] - $amount];
+    }
+
+    /**
+     * Line total for a cart item (used by slug-rule discount only).
+     */
+    protected function getCartItemTotalForCoupon($item, $index)
+    {
+        if ($item->product_type === 'gift_card' || $item->product_type === 'photo_for_sale' || $item->product_type === 'hand_craft') {
+            $product_price = $item->product_price;
+        } else {
+            $currentDate = date('Y-m-d');
+            $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id', $item->product_id)->first();
+            if (!empty($item->is_test_print) && $item->is_test_print == '1') {
+                $product_price = $item->test_print_price;
+            } else {
+                if (isset($sale_price) && !empty($sale_price)) {
+                    $product_price = $sale_price->sale_price;
+                } else {
+                    if (isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)) {
+                        $product_price = $item->package_price;
+                    } else {
+                        $product_price = $item->product->product_price;
+                    }
+                }
+            }
+        }
+        if (isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)) {
+            return $product_price;
+        }
+        if ($index === 0) {
+            return $product_price * ($item->quantity-1);
+        }
+        return $product_price * $item->quantity;
     }
 
     public function resetCoupon()

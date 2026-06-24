@@ -34,7 +34,12 @@ class Coupon extends Model
         'coupon_code',
         'qty',
         'is_gift_card',
-        'is_active'
+        'is_active',
+        'rule_enabled',
+        'rule_apply_slug',
+        'rule_leave_first',
+        'rule_rest_discount_type',
+        'rule_rest_discount_value',
     ];
 
     // public function isExpired()

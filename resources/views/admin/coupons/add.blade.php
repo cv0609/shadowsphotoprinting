@@ -174,6 +174,29 @@
                     </div>
 
                     <div class="ln_solid"></div>
+                    <div class="card mb-4 border" style="max-width: 100%; overflow: hidden; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                        <div class="card-header d-flex align-items-center justify-content-between py-3 px-4 cursor-pointer coupon-rule-toggle" role="button" data-toggle="collapse" data-target="#coupon-rule-collapse" aria-expanded="{{ old('rule_enabled') ? 'true' : 'false' }}" aria-controls="coupon-rule-collapse" style="cursor: pointer; background: linear-gradient(180deg, #f8f9fa 0%, #eef1f4 100%); border-bottom: 1px solid #dee2e6;">
+                            <div class="d-flex align-items-center">
+                                <span class="mr-2" style="font-size: 1.25rem; line-height: 1;">&#9679;</span>
+                                <h5 class="mb-0 font-weight-bold" style="color: #2c3e50;">1st at full price, 2nd onward at discount</h5>
+                            </div>
+                            <span class="coupon-rule-chevron" style="transition: transform 0.25s ease; color: #6c757d;">&#9660;</span>
+                        </div>
+                        <div class="collapse {{ old('rule_enabled') ? 'show' : '' }}" id="coupon-rule-collapse">
+                            <div class="card-body py-4 px-4" style="background: #fff;">
+                                <p class="text-muted small mb-3">Uses the category from <strong>Only Category</strong> above and the same discount type (Amount or Percent) as the main coupon. First item in that category stays full price; extra items get the discount value below.</p>
+                                <div class="form-group mb-0">
+                                    <div class="checkbox">
+                                        <label style="display: block; margin: 0;">
+                                            <input type="checkbox" value="1" name="rule_enabled" id="rule_enabled" {{ old('rule_enabled') ? 'checked' : '' }}> Enable: first item in category at full price, 2nd item onward get the discount above (Coupon Type & Amount)
+                                            <input type="hidden" name="rule_leave_first" value="1">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
                     <div class="item form-group">
                         <div class="col-md-6 col-sm-6 offset-md-3">
                             <button type="submit" class="btn btn-success">Submit</button>
@@ -222,6 +245,17 @@
             placeholder: 'Select product category',
             allowClear: true
         });
+    });
+
+    $(document).ready(function() {
+        var $collapse = $('#coupon-rule-collapse');
+        var $chevron = $('.coupon-rule-chevron');
+        function setChevron() {
+            $chevron.css('transform', $collapse.hasClass('show') ? 'rotate(180deg)' : 'rotate(0deg)');
+        }
+        setChevron();
+        $collapse.on('show.bs.collapse', function() { $chevron.css('transform', 'rotate(180deg)'); });
+        $collapse.on('hide.bs.collapse', function() { $chevron.css('transform', 'rotate(0deg)'); });
     });
 </script>
 @endsection

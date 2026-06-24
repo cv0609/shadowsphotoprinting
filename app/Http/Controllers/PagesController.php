@@ -238,7 +238,7 @@ class PagesController extends Controller
         $data['email'] = $request->email;
 
         if (isset($data) && !empty($data)) {
-            Mail::to(env('APP_MAIL'))->send(new QuoteMail($data));
+            Mail::to(env('ADMIN_MAIL'))->send(new QuoteMail($data));
         }
         return redirect()->back()->with('success', 'Quote message sent successfully.');
     }

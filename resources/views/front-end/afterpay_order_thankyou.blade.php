@@ -3,6 +3,11 @@
 <section class="sans-ser">
     <div class="container">
         <div class="been-orders">
+          @if(!empty($couponSuccessMessage))
+              <div class="alert alert-success text-center" role="alert" style="margin-bottom: 20px;">
+                  {{ $couponSuccessMessage }}
+              </div>
+          @endif
           <h5>Thank you for your order with Afterpay!</h5>
             <div class="shortly">
                 <h1>ORDER CONFIRMATION

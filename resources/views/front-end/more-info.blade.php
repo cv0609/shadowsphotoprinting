@@ -4,9 +4,9 @@
 <section class="about-printing">
     <div class="container">
         <div class="about-printing">
-            <h3>About Shadows Photo Printing & Gift Shop</h3>
+            <h3>About Shadows Affordable Memories & Gift Shop</h3>
             
-            <p>At Shadows Photo Printing & Gift Shop, we’re professional photographers passionate about supporting the photography and scrapbooking communities across Australia. As a small, family-owned business, we understand how meaningful your images are — that’s why every order is handled with genuine care and attention to detail.</p>
+            <p>At Shadows Affordable Memories & Gift Shop, we’re professional photographers passionate about supporting the photography and scrapbooking communities across Australia. As a small, family-owned business, we understand how meaningful your images are — that’s why every order is handled with genuine care and attention to detail.</p>
             
             <h4>Premium Quality Prints</h4>
             <p>We use high-quality archival paper to ensure your photo prints and scrapbook pages are made to last. Your files are printed exactly as provided — we don’t apply filters or edits — preserving the original emotion and intent behind every shot.</p>

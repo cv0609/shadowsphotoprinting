@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your 10% Discount Coupon - August 2025 Promotion</title>
+    <title>Your 10% Discount Coupon - {{date('M Y')}} Promotion</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -25,7 +25,7 @@
                          style="max-width: 150px; width: 100%; height: auto;">
                 </a>
             </div>
-            <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🎉 August 2025 Special Promotion! 🎉</h1>
+            <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🎉 {{date('M Y')}} Special Promotion! 🎉</h1>
             <p style="margin: 10px 0 0 0; font-size: 16px; color: #ffffff;">Welcome to Shadows Photo Printing</p>
         </div>
 
@@ -34,7 +34,7 @@
             <h2 style="color: #333; margin-bottom: 20px; font-size: 24px;">Hello!</h2>
             
             <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
-                Thank you for participating in our August 2025 promotion! As a first-time customer, we're excited to offer you a special discount.
+                Thank you for participating in our {{date('M Y')}} promotion! As a first-time customer, we're excited to offer you a special discount.
             </p>
 
             <!-- Coupon Code Box -->
@@ -88,7 +88,7 @@
 
         <!-- Footer -->
         <div style="background-color: #f8f9fa; padding: 25px 30px; text-align: center; border-top: 1px solid #e9ecef;">
-            <p style="color: #6c757d; font-size: 12px; margin: 0 0 5px 0;">© 2025 Shadows Photo Printing. All rights reserved.</p>
+            <p style="color: #6c757d; font-size: 12px; margin: 0 0 5px 0;">© {{date('Y')}} Shadows Photo Printing. All rights reserved.</p>
         </div>
 
     </div>

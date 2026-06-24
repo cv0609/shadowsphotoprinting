@@ -54,7 +54,7 @@
                             <form id="submitForm" method="post">
                                 <div class="quantity">
                                     <input type="hidden" id="giftcard_id" value="{{$blog_detail->id}}">
-                                    <input type="hidden" id="giftcard_image" value="{{$blog_detail->product_image}}">
+                                    <input type="hidden" id="giftcard_image" value="{{ ($blog_detail->use_different_email_image == 1 && !empty($blog_detail->email_product_image)) ? $blog_detail->email_product_image : $blog_detail->product_image }}">
                                     <div class="mehala">
                                         <label class="wglabel">Enter Gift Card Price </label>
                                         <input type="number" id="card_price" value="100" class="input-text">
