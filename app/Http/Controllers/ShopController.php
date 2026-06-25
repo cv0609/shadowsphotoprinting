@@ -16,7 +16,9 @@ use App\Services\CartService;
 use App\Mail\MakeOrder;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TestPrint;
+use App\Models\Country;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Log;
 use Session;
 
 class ShopController extends Controller
@@ -101,6 +103,8 @@ class ShopController extends Controller
         "meta_description" => config('constant.pages_meta.shop_detail.meta_description')
     ];
 
+    $countries = Country::whereIn('code', ['AU', 'NZ'])->get();
+
     if (Auth::check() && !empty(Auth::user())) {
       $user = Auth::user();
       $auth_id = $user->id;
@@ -111,13 +115,15 @@ class ShopController extends Controller
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
     }
 
-    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content','cart'));
+    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content','cart','countries'));
   }  
 
   public function getProductsBycategory(Request $request)
   {
     $categorySlug = $request->slug;
     $products = [];
+    $country = $request->country;
+
     
     // Handle wedding package category specially
     if($categorySlug == 'wedding-package') {
@@ -129,7 +135,132 @@ class ShopController extends Controller
     if($categorySlug == "all")
     {
       $products = Product::where('category_id','!=',20)->select(['id','product_title','product_price'])->orderBy('position','asc')->get();
+    } elseif($country == "New Zealand") {
+
+    $categories = ProductCategory::whereIn('name', [
+        'Photo Prints',
+        'scrapbook page printing',
+        'canvas prints'
+    ])->get()->keyBy('name');
+
+    $photoPrintId = optional($categories->get('Photo Prints'))->id;
+    $scrapbookId = optional($categories->get('scrapbook page printing'))->id;
+    $canvasId = optional($categories->get('canvas prints'))->id;
+
+    $allowedCanvasSizes = [
+        '12-x12','12-x16','12-x20','12-x30','12x40','16-x16','16-x20','16-x30','20-x20','20-x30',
+        '20-x40','30-x20','30-x30','30-x40','40-x30'
+    ];
+
+    $products = Product::query();
+
+    // Category selected
+    if (!empty($categorySlug) && $categorySlug != 'all') {
+
+        $category = ProductCategory::where('slug', $categorySlug)->first();
+
+        Log::info('NZ Category Selected', [
+            'slug' => $categorySlug,
+            'category' => $category ? $category->name : null
+        ]);
+
+        if ($category) {
+
+            // Photo Prints
+           if ($category->id == $photoPrintId) {
+
+                $products->where('category_id', $photoPrintId)
+                        ->where('slug', 'NOT LIKE', '%12-x-48%');
+            }
+
+            // Scrapbook Page Printing
+            elseif ($category->id == $scrapbookId) {
+
+                $products->where('category_id', $scrapbookId);
+            }
+
+            // Canvas Prints
+            elseif ($category->id == $canvasId) {
+
+                $products->where('category_id', $canvasId)
+                    ->where(function ($query) use ($allowedCanvasSizes) {
+
+                        foreach ($allowedCanvasSizes as $size) {
+                            $query->orWhere('slug', 'like', '%' . $size . '%');
+                        }
+                    });
+            }
+            // Any other category not allowed for NZ
+            else {
+
+                $products->whereRaw('1 = 0');
+            }
+        }
+
+    } else {
+
+        // No category selected -> show all allowed NZ products
+        $products->where(function ($query) use (
+            $photoPrintId,
+            $scrapbookId,
+            $canvasId,
+            $allowedCanvasSizes
+        ) {
+
+              // Photo Prints
+            // Photo Prints
+              $query->orWhere(function ($q) use ($photoPrintId) {
+                  $q->where('category_id', $photoPrintId)
+                    ->where('slug', 'NOT LIKE', '%12-x-48%');
+              });
+
+              // Scrapbook
+              $query->orWhere('category_id', $scrapbookId);
+
+              // Canvas
+              $query->orWhere(function ($q) use ($canvasId, $allowedCanvasSizes) {
+
+                  $q->where('category_id', $canvasId)
+                      ->where(function ($canvas) use ($allowedCanvasSizes) {
+
+                          foreach ($allowedCanvasSizes as $size) {
+                              $canvas->orWhere('slug', 'like', '%' . $size . '%');
+                          }
+                      });
+              });
+
+        });
     }
+
+    \Log::info('NZ Products Count', [
+    'categorySlug' => $categorySlug,
+    'count' => $products->count()
+]);
+
+    $products = $products
+        ->select([
+            'id',
+            'product_title',
+            'product_price',
+            'slug',
+            'category_id'
+        ])
+        ->orderBy('position', 'asc')
+        ->get();
+
+    Log::info('NZ Products Count', [
+        'count' => $products->count(),
+        'categorySlug' => $categorySlug
+    ]);
+
+    return response()->json([
+        'products' => view(
+            'front-end.shop_details_product_ajax',
+            compact('products')
+        )->render(),
+        'categories' => $categories->values()
+    ]);
+}
     else
     {
       if($categorySlug == 'test-print'){  
@@ -270,3 +401,4 @@ class ShopController extends Controller
   }
 
 }
+ 

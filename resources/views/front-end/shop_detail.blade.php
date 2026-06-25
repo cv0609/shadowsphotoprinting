@@ -124,14 +124,34 @@
                         </div>
                     </div>
                     <div class="fw-products">
-                        <h4>PRODUCTS</h4>
-                        <div class="fw-products-cats">
-                            <select name="category" id="category">
-                                <option value="all">All</option>
-                                @foreach ($productCategories as $productCategory)
-                                    <option value="{{ $productCategory->slug }}">{{ ucfirst($productCategory->name) }}</option>
-                                @endforeach
-                            </select>
+                        <div style="display:flex; gap:30px; align-items:flex-start;">
+
+                            <div style="display:flex; flex-direction:column;">
+                                <h4>PRODUCTS</h4>
+                                <div class="fw-products-cats">
+                                    <select name="category" id="category">
+                                        <option value="all">All</option>
+                                        @foreach ($productCategories as $productCategory)
+                                            <option value="{{ $productCategory->slug }}">
+                                                {{ ucfirst($productCategory->name) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; flex-direction:column;">
+                                <h4>COUNTRY</h4>
+                                <div class="fw-products-cats">
+                                    <select name="country" id="country">
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->name }}">
+                                                {{ ucfirst($country->name) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Wedding Package Dropdown (Hidden by default) -->
@@ -621,9 +641,9 @@ function updateCartTotals() {
 
  $("#category").on('change',function(){
     var selectedCategory = $(this).val();
+    let country = $("#country").val();
     var total = 0;
     var totalQuantity = 0;
-
     // Show/hide wedding package dropdown based on category selection
     if (selectedCategory === 'wedding-package') {
         $('#wedding-package-dropdown').show();
@@ -642,17 +662,55 @@ function updateCartTotals() {
 
     $.post("{{ route('products-by-category') }}",
     {
+        country: country,
         slug: selectedCategory,
         '_token': "{{ csrf_token() }}"
     },
     function(res){
         // updateCartTotals();
+        console.log(res,'res');
+
+        if(country==='New Zealand'){
+            res = res.products;
+        }
         $("#products-main").html(res);
         // updateCartTotals();
     });
     $("#cart-total-price").children('.show-details').text( total.toFixed(2)); 
     $("#cart-total-itmes").children('.show-details').text(totalQuantity);
  })
+
+$("#country").on("change", function () {
+
+    let country = $(this).val();
+
+    if (country === "New Zealand") {
+        $.post("{{ route('products-by-category') }}", {
+            country: country,
+            _token: "{{ csrf_token() }}"
+        }, function(res){
+
+            // console.log(res,'res');
+            console.log(res.categories);
+            console.log(res.products);
+
+            $("#products-main").html(res.products);
+
+            let options = '<option value="all">All</option>';
+
+            $.each(res.categories, function(index, category){
+                options += `<option value="${category.slug}">
+                                ${category.name}
+                            </option>`;
+            });
+
+            $("#category").html(options);
+        });
+    } else if (country === "Australia") {
+       window.location.reload();
+    }
+});
+
 
 </script>
 <script>
