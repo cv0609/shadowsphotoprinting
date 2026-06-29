@@ -334,7 +334,14 @@ Route::get('/test-cart', function() {
 
 Route::get('/more-info', [BasePagesController::class, 'moreInfo'])->name('more-info');
 
+Route::post('/check-cart-country', [ShopController::class, 'checkCartCountry'])
+    ->name('check-cart-country');
+
+Route::post('/change-cart-country', [ShopController::class, 'changeCartCountry'])
+    ->name('change-cart-country');
+
+Route::get('/cart-country', [ShopController::class, 'getCartCountry'])
+    ->name('cart-country');
+
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);
-
-

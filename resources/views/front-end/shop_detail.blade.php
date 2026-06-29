@@ -145,7 +145,7 @@
                                 <div class="fw-products-cats">
                                     <select name="country" id="country">
                                         @foreach ($countries as $country)
-                                            <option value="{{ $country->name }}">
+                                            <option value="{{ $country->name }}" id="{{ $country->id }}">
                                                 {{ ucfirst($country->name) }}
                                             </option>
                                         @endforeach
@@ -343,6 +343,9 @@ $(document).ready(function() {
                 alert('Please select an image');
                 return false;
             }
+        
+        var countryId = localStorage.getItem("country_id");
+        
 
         if (cartItems.length > 0) {
             
@@ -354,6 +357,7 @@ $(document).ready(function() {
                     total: total,
                     selectedImages:selectedImages,
                     item_type:'shop',
+                    country_id:countryId,
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
@@ -390,6 +394,28 @@ $(document).ready(function() {
     
     // Initial update of cart totals on page load
     updateCartTotals();
+});
+
+$(document).ready(function () {
+    $.get("{{ route('cart-country') }}", function(response){
+
+        if(response.country_id){
+            $("#country option[id='"+response.country_id+"']").prop("selected", true);
+            localStorage.setItem("country_id", response.country_id);
+
+            if(response.country_id == 159){
+                loadCountryProducts("New Zealand");
+            }
+
+        } else {
+            let id = $("#country option:selected").attr("id");
+            localStorage.setItem("country_id", id);
+        }
+
+
+        
+    });
+
 });
 
 
@@ -680,19 +706,14 @@ function updateCartTotals() {
     $("#cart-total-itmes").children('.show-details').text(totalQuantity);
  })
 
-$("#country").on("change", function () {
-
-    let country = $(this).val();
+function loadCountryProducts(country) {
 
     if (country === "New Zealand") {
+
         $.post("{{ route('products-by-category') }}", {
             country: country,
             _token: "{{ csrf_token() }}"
         }, function(res){
-
-            // console.log(res,'res');
-            console.log(res.categories);
-            console.log(res.products);
 
             $("#products-main").html(res.products);
 
@@ -706,10 +727,55 @@ $("#country").on("change", function () {
 
             $("#category").html(options);
         });
-    } else if (country === "Australia") {
-       window.location.reload();
+
+    } else if(country === "Australia") {
+
+        window.location.reload();
+
     }
+}
+
+$("#country").on("change", function () {
+
+    let country = $(this).val();
+    let countryId = $("#country option:selected").attr("id");
+
+    localStorage.setItem("country_id", $("#country option:selected").attr("id"));
+
+    $.post("{{ route('check-cart-country') }}", {
+        country_id: countryId,
+        _token: "{{ csrf_token() }}"
+    }, function(response){
+
+        console.log(response,'response');
+       // No cart
+        if (!response.hasCart) {
+            loadCountryProducts(country);
+            return;
+        }
+
+        if (response.sameCountry) {
+            loadCountryProducts(country);
+            return;
+        }
+
+        if (confirm("Changing the country will remove all items from your cart. Continue?")) {
+
+            $.post("{{ route('change-cart-country') }}", {
+                country_id: countryId,
+                _token: "{{ csrf_token() }}"
+            }, function(){
+
+                localStorage.setItem("country_id", countryId);
+                loadCountryProducts(country);
+
+            });
+        }
+
+    });
+
 });
+
 
 
 </script>

@@ -19,6 +19,7 @@ use App\Models\TestPrint;
 use App\Models\Country;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Log;
+use App\Models\CartData;
 use Session;
 
 class ShopController extends Controller
@@ -227,40 +228,30 @@ class ShopController extends Controller
                               $canvas->orWhere('slug', 'like', '%' . $size . '%');
                           }
                       });
+                  });
+
               });
+          }
 
-        });
+        $products = $products
+            ->select([
+                'id',
+                'product_title',
+                'product_price',
+                'slug',
+                'category_id'
+            ])
+            ->orderBy('position', 'asc')
+            ->get();
+
+        return response()->json([
+            'products' => view(
+                'front-end.shop_details_product_ajax',
+                compact('products')
+            )->render(),
+            'categories' => $categories->values()
+        ]);
     }
-
-    \Log::info('NZ Products Count', [
-    'categorySlug' => $categorySlug,
-    'count' => $products->count()
-]);
-
-    $products = $products
-        ->select([
-            'id',
-            'product_title',
-            'product_price',
-            'slug',
-            'category_id'
-        ])
-        ->orderBy('position', 'asc')
-        ->get();
-
-    Log::info('NZ Products Count', [
-        'count' => $products->count(),
-        'categorySlug' => $categorySlug
-    ]);
-
-    return response()->json([
-        'products' => view(
-            'front-end.shop_details_product_ajax',
-            compact('products')
-        )->render(),
-        'categories' => $categories->values()
-    ]);
-}
     else
     {
       if($categorySlug == 'test-print'){  
@@ -399,6 +390,117 @@ class ShopController extends Controller
     
     return response()->json($data);
   }
+
+ public function checkCartCountry(Request $request)
+  {
+      Log::info('Checking cart country', [
+          'user_id' => auth()->id(),
+          'session_id' => session()->getId(),
+          'country_id' => $request->country_id
+      ]);
+
+      $cart = Cart::where(function ($query) {
+          if (auth()->check()) {
+              $query->where('user_id', auth()->id());
+          } else {
+              $query->where('session_id', session()->getId());
+          }
+      })->first();
+
+      // No cart
+      if (!$cart) {
+          return response()->json([
+              'hasCart' => false
+          ]);
+      }
+
+      // Cart exists but has no items
+      $hasItems = CartData::where('cart_id', $cart->id)->exists();
+
+      if (!$hasItems) {
+          return response()->json([
+              'hasCart' => false
+          ]);
+      }
+
+      Log::info('Cart found', [
+          'cart_id' => $cart->id,
+          'cart_country_id' => $cart->country_id
+      ]);
+
+      // Country not set yet
+      if (empty($cart->country_id)) {
+
+          $cart->country_id = $request->country_id;
+          $cart->save();
+
+          return response()->json([
+              'hasCart' => true,
+              'sameCountry' => true
+          ]);
+      }
+
+      // Same country
+      if ($cart->country_id == $request->country_id) {
+
+          return response()->json([
+              'hasCart' => true,
+              'sameCountry' => true
+          ]);
+      }
+
+      // Different country
+      return response()->json([
+          'hasCart' => true,
+          'sameCountry' => false
+      ]);
+  }
+
+  public function changeCartCountry(Request $request)
+  {
+      $cart = Cart::where(function ($query) {
+          if (auth()->check()) {
+              $query->where('user_id', auth()->id());
+          } else {
+              $query->where('session_id', session()->getId());
+          }
+      })->first();
+
+      if (!$cart) {
+          return response()->json([
+              'success' => false
+          ]);
+      }
+
+      // Delete existing cart items
+      CartData::where('cart_id', $cart->id)->delete();
+
+      // Update cart country
+      $cart->country_id = $request->country_id;
+      $cart->save();
+
+      return response()->json([
+          'success' => true
+      ]);
+  }
+
+  public function getCartCountry()
+  {
+
+      $cart = Cart::where(function ($query) {
+          if (auth()->check()) {
+              $query->where('user_id', auth()->id());
+          } else {
+              $query->where('session_id', session()->getId());
+          }
+      })->first();
+
+      return response()->json([
+          'country_id' => $cart->country_id ?? null
+      ]);
+  }
+
+
 
 }
  

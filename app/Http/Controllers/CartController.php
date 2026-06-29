@@ -88,6 +88,11 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+        log::channel('single')->info('Add to Cart Request', [
+            'request_data' => $request->all(),
+        ]);
+
+
         if (Session::has('coupon')) {
             $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
             $response = $this->applyCoupon($request_data);
@@ -118,6 +123,26 @@ class CartController extends Controller
             "coupon_id" => null,
             "session_id" => $session_id
         ]);
+
+         $selectedCountryId = $request->country_id;
+
+         log::info('Cart country', [
+             'cart_country_id' => $cart->country_id,
+             'selected_country_id' => $selectedCountryId
+         ]);
+        // If no country is set, save it
+        if (empty($cart->country_id)) {
+
+            $cart->country_id = $selectedCountryId;
+            $cart->save();
+
+        }
+        // If country is different, update it
+        elseif ($cart->country_id != $selectedCountryId) {
+
+            $cart->country_id = $selectedCountryId;
+            $cart->save();
+        }
 
         if ($cart) {
 

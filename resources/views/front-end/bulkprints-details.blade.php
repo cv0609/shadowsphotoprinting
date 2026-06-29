@@ -161,6 +161,7 @@ $(document).ready(function() {
     var productId = "{{$productDetails->id}}";
 
     $('#addToCartBtn').click(function() {
+
         addToCartFn();
        
     });
@@ -224,6 +225,7 @@ function addToCartFn(){
                     selectedImages:selectedImages,
                     card_price:product_price,
                     item_type:'shop',
+                    coutry_id:countryId,
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {
