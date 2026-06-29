@@ -224,6 +224,7 @@ Route::get('/wedding-packages-json',[ShopController::class,'getWeddingPackagesJs
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('checkout');
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
+Route::post('/clear-cart/', [CartController::class, 'clearCart'])->name('clear-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
 Route::post('/order-type', [CartController::class, 'orderType'])->name('order-type');
 Route::post('/shutter-point', [CartController::class, 'shutterPoint'])->name('shutter-point');

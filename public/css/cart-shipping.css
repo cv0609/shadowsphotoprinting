@@ -462,4 +462,29 @@
     .service-price {
         align-self: flex-end;
     }
+
+    .cart-action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .cart-action-buttons .button {
+        width: 100%;
+    }
+}
+
+/* Cart action buttons (Update / Clear) */
+
+.cart-action-buttons {
+    padding-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+    clear: both;
+}
+
+.cart-action-buttons .button {
+    margin: 0;
 } 

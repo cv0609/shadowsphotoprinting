@@ -326,8 +326,12 @@ ul.sub-menu {
 }
 
 @media only screen and (max-width: 767px) {
-    button#update_cart {
-        margin-top: 20px;
+    .cart-action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .cart-action-buttons .button {
         width: 100%;
     }
     .tinymce ol {

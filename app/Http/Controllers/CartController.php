@@ -451,6 +451,25 @@ class CartController extends Controller
         return redirect()->route('cart')->with('success', 'Item removed from cart');
     }
 
+    public function clearCart()
+    {
+        if (Auth::check() && !empty(Auth::user())) {
+            $auth_id = Auth::user()->id;
+            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+        } else {
+            $session_id = Session::getId();
+            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+        }
+
+        if ($cart) {
+            CartData::where('cart_id', $cart->id)->delete();
+            Session::forget('coupon');
+            $this->recalculateShippingAfterCartUpdate();
+        }
+
+        session()->flash('success', 'Cart is cleared');
+    }
+
 
 
     public function applyCoupon(Request $request)
