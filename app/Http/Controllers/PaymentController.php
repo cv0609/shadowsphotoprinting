@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 use App\Events\OrderPlaced;
 
@@ -75,7 +76,7 @@ class PaymentController extends Controller
 
         $shipping = $this->CartService->getShippingCharge();
 
-        $countries = Country::find(14);
+        $countries = Country::find($cart?->country_id);
         $CartTotal = $this->CartService->getCartTotal();
 
         $page_content = ["meta_title" => config('constant.pages_meta.checkout.meta_title'), "meta_description" => config('constant.pages_meta.checkout.meta_description')];
@@ -369,6 +370,8 @@ class PaymentController extends Controller
             'service' => $shippingService,
             'carrier' => $shippingCarrier
         ];
+
+        $country_id = $cart?->country_id;
         
 
 
@@ -398,7 +401,8 @@ class PaymentController extends Controller
                 : ($afterPay['status'] ?? ''),
             'payment_method' => $payment_method,
             'order_status' => "0",
-            'order_type' => $order_type
+            'order_type' => $order_type,
+            'country_id' => $country_id,
         ]);
 
 
@@ -648,6 +652,8 @@ class PaymentController extends Controller
         $ship_postcode = $formData['ship_postcode'] ?? '';
         $order_comments = $formData['order_comments'] ?? '';
         $isShippingAddress = $formData['isShippingAddress'] ?? '';
+        $country_id = $formData['country_id'] ?? 14;
+        $country_name = $formData['country_name'] ?? config('constant.default_country');
 
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
@@ -692,7 +698,7 @@ class PaymentController extends Controller
                 'ship_state' => $ship_state_name->name ?? '',
                 'ship_postcode' => $ship_postcode,
                 'isShippingAddress' => isset($isShippingAddress) && ($isShippingAddress == true) ? $isShippingAddress : false,
-                'ship_country_region' => config('constant.default_country'),
+                'ship_country_region' => $country_name ?? config('constant.default_country'),
                 'order_comments' => $order_comments
             ];
         }
@@ -859,6 +865,8 @@ class PaymentController extends Controller
         $ship_postcode = $formData['ship_postcode'] ?? '';
         $order_comments = $formData['order_comments'] ?? '';
         $isShippingAddress = $formData['isShippingAddress'] ?? '';
+        $country_id = $formData['country_id'] ?? 14;
+        $country_name = $formData['country_name'] ?? config('constant.default_country');
 
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
@@ -903,7 +911,7 @@ class PaymentController extends Controller
                 'ship_state' => $ship_state_name->name ?? '',
                 'ship_postcode' => $ship_postcode,
                 'isShippingAddress' => isset($isShippingAddress) && ($isShippingAddress == true) ? $isShippingAddress : false,
-                'ship_country_region' => config('constant.default_country'),
+                'ship_country_region' => $country_name ?? config('constant.default_country'),
                 'order_comments' => $order_comments
             ];
         }

@@ -91,7 +91,7 @@ class ProductsController extends Controller
         $data = [];
         $slug = Str::slug($request->product_title);
 
-        $data = ["category_id"=>$request->category_id,"product_title"=>$this->sanitizeProductTitle($request->product_title),"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        $data = ["category_id"=>$request->category_id,"product_title"=>$this->sanitizeProductTitle($request->product_title),"product_description"=>$request->product_description, "length" => $request->length,"width" => $request->width,"height" => $request->height,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
 
 
         if ($request->hasFile('product_image')) {
@@ -123,6 +123,7 @@ class ProductsController extends Controller
     {
         $product = Product::with('productSale')->where('slug', $slug)->first();
         $productCategories = ProductCategory::where('slug','!=','test-print')->get();
+       
         return view('admin.products.edit', compact('product','productCategories'));
     }
 
@@ -133,7 +134,7 @@ class ProductsController extends Controller
         $slug = Str::slug($request->product_title);
 
         $data = ["category_id"=>$request->category_id,"product_title"=>$this->sanitizeProductTitle($request->product_title)
-        ,"product_description"=>$request->product_description,"product_price"=>$request->product_price,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
+        ,"product_description"=>$request->product_description,"product_price"=>$request->product_price, "length" => $request->length,"width" => $request->width,"height" => $request->height,"type_of_paper_use"=>$request->type_of_paper_use,'slug'=>$slug];
 
         if ($request->hasFile('product_image')) {
             $image = $request->file('product_image');

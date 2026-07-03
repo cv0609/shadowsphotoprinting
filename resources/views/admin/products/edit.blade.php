@@ -79,6 +79,29 @@
                         </div>
                     </div>
 
+                     <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align">
+                            Product Dimensions
+                        </label>
+
+                        <div class="col-md-2 col-sm-2">
+                            <input type="number" step="0.01" min="0"id="length"name="length"class="form-control" value="{{$product->length}}" placeholder="Length (cm)">
+                            <span class="validation-error length_error"></span>
+                        </div>
+
+                        <div class="col-md-2 col-sm-2">
+                            <input type="number" step="0.01" min="0"id="width" name="width" class="form-control" value="{{ $product->width }}"placeholder="Width (cm)">
+                            <span class="validation-error width_error"></span>
+                        </div>
+
+                        <div class="col-md-2 col-sm-2">
+                            <input type="number" step="0.01" min="0" id="height"name="height"class="form-control" value="{{$product->height}}"placeholder="Height (cm)">
+                            <span class="validation-error height_error"></span>
+                        </div>
+                    </div>
+
+
+
                     <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="product_description"> Product Description <span class="required">*</span>
                         </label>

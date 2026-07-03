@@ -245,13 +245,12 @@ Route::post('/august-promotion/send-email', [UserController::class, 'augustPromo
 Route::post('/billing-details',[CartController::class,'billingDetails'])->name('billing-details');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout')->middleware('checkout');
-Route::post('/create-customer', [PaymentController::class, 'createCustomer']);
-
+Route::post('/create-customer', [PaymentController::class, 'createCustomer'])->name('create-customer');
 Route::post('/free-order', [PaymentController::class, 'freeOrderCheckout'])->name('free_order.checkout');
 
 
 
-Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
+Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer'])->name('charge-customer');
 Route::get('/thank-you/{order_id}', [PaymentController::class,'thankyou'])->name('thankyou');
 Route::get('/promotions', [BasePagesController::class, 'promotions'])->name('promotions');
 Route::get('/promotion-detail/{slug}', [BasePagesController::class, 'promotionDetail'])->name('promotion-detail');

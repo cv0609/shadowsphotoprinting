@@ -330,6 +330,11 @@ class CartController extends Controller
             }
         }
 
+        log::info('Cart updated here', [
+            'cart' => $cart,
+            'cart_count' => $cartCount
+        ]);
+
         $this->applyReferralCouponIfNeeded();
 
         // Recalculate shipping after adding items to cart

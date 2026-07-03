@@ -48,7 +48,9 @@
                                 <p class="form-row">
                                     <label>Country / Region *
                                     </label>
-                                    <span> <strong>{{ config('constant.default_country') }} </strong></span>
+                                    <span> <strong>{{ $countries?->name ?? config('constant.default_country') }} </strong></span>
+                                    <input type="hidden" name="country_id" id="country_id" value="{{ $countries->id}}">
+                                    <input type="hidden" name="country_name" id="country_name" value="{{ $countries->name}}">
                                 </p>
                                 <p class="form-row">
                                     <label> Street address *
@@ -146,7 +148,9 @@
                                             <p class="form-row">
                                                 <label>Country / Region *
                                                 </label>
-                                                <span> <strong>{{ config('constant.default_country') }}</strong></span>
+                                                <span> <strong>{{ $countries?->name ?? config('constant.default_country') }} </strong></span>
+                                                <input type="hidden" name="country_id" id="country_id" value="{{ $countries->id}}">
+                                                <input type="hidden" name="country_name" id="country_name" value="{{ $countries->name}}">
                                             </p>
                                             <p class="form-row">
                                                 <label> Street address *
@@ -409,6 +413,7 @@
 
                                     <div class="mt-5">
                                     <h3 class="mb-4">Select Payment Method</h3>
+                                        @if($cart?->country_id !== config('constant.country.NZ'))
                                         <div class="row">
                                             @if(env('STRIPE') == true)
                                             <div class="col-md-6">
@@ -419,6 +424,7 @@
                                                     <span>Stripe</span>
                                                 </label>
                                             </div>
+                                            @endif
                                             @endif
 
                                             @if(env('AFFTERPAY') == true)
@@ -437,7 +443,9 @@
 
                                 <div id="payment">
                                     <form id="payment-form">
+
                                         @if($CartTotal['total'] > 0)
+                                        @if($cart?->country_id !== config('constant.country.NZ'))
                                         <div class="payment_methods stripe-details">
                                             <ul>
                                             {{-- @if(env('STRIPE') == true)      --}}
@@ -466,6 +474,7 @@
                                                 {{-- @endif --}}
                                             </ul>
                                         </div>
+                                        @endif
                                         @endif
                                     <div class="experience-throughout">
                                         <p id="afterPayError"></p>
@@ -514,8 +523,9 @@
 
 
     var authcheck = "{{Auth::check()}}";
+    var isNZ = "{{ $cart?->country_id === config('constant.country.NZ') ? '1' : '0' }}";
 
-    if(order_cart_total > 0){
+    if(order_cart_total > 0 && isNZ == '0'){
         var stripe = Stripe("{{ env('STRIPE_KEY') }}");
         
         var elements = stripe.elements();
@@ -568,6 +578,8 @@
         var shipping_charge = $('#shipping_charge').val();
         var total_amount = $('#total_amount').val();
         var customer_order_type = $('#customer_order_type').val();
+        var country_id = $('#country_id').val();
+        var country_name = $('#country_name').val();
         
         
         
@@ -632,7 +644,9 @@
             password: password,
             company_name:company_name,
             shipping_charge:shipping_charge,
-            customer_order_type: customer_order_type
+            customer_order_type: customer_order_type,
+            country_id: country_id,
+            country_name: country_name
         };
 
         if ($('#shipcheckbox').is(':checked')) {
@@ -685,7 +699,7 @@
 
         var cent_total_amount = total_amount * 100; // Convert to cents
 
-        fetch('/create-customer', {
+        fetch('{{ route("create-customer") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -706,7 +720,7 @@
                 $('#place-order-btn').removeClass('d-none');
                 $('#loader-order-btn').addClass('d-none');
             } else {
-                fetch('/charge-customer', {
+                fetch('{{ route("charge-customer") }}', {
                     method: 'POST', 
                     headers: {
                         'Content-Type': 'application/json',
