@@ -219,6 +219,7 @@ class CartShippingService
             $width  = (float) ($product->width ?? 0);
             $height = (float) ($product->height ?? 0);
             $qty    = (int) ($item['quantity'] ?? 1);
+            $weight = (float) ($product->weight ?? 0);
 
             // Skip items with no dimensions on file instead of silently under/overcharging
             if ($length <= 0 || $width <= 0 || $height <= 0) {
@@ -229,14 +230,12 @@ class CartShippingService
             }
 
             // Volumetric weight = L x W x H / 6000
-            $shippingWeight = (($length * $width * $height) / 6000) * $qty;
+            $shippingWeight = $weight * $qty;
 
             Log::info('NZ Shipping Calculation', [
                 'product_id'      => $product->id,
                 'product_title'   => $product->product_title,
-                'length'          => $length,
-                'width'           => $width,
-                'height'          => $height,
+                'weight'          => $weight,
                 'qty'             => $qty,
                 'shipping_weight' => $shippingWeight,
             ]);

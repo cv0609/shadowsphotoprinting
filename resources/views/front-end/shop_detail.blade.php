@@ -716,16 +716,6 @@ function loadCountryProducts(country) {
         }, function(res){
 
             $("#products-main").html(res.products);
-
-            let options = '<option value="all">All</option>';
-
-            $.each(res.categories, function(index, category){
-                options += `<option value="${category.slug}">
-                                ${category.name}
-                            </option>`;
-            });
-
-            $("#category").html(options);
         });
 
     } else if(country === "Australia") {

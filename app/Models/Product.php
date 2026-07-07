@@ -20,6 +20,7 @@ class Product extends Model
         'length',
         'width',
         'height',
+        'weight',
     ];
 
     public function product_category()
