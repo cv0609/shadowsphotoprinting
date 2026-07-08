@@ -337,8 +337,12 @@ $CartService = app(App\Services\CartService::class);
                                             </div>
                                             @endif
 
-                                            <button type="button" class="button satay3" name="update_cart"
-                                                value="Update cart" id="update_cart">Update cart</button>
+                                            <div class="cart-action-buttons">
+                                                <button type="button" class="button satay3" name="update_cart"
+                                                    value="Update cart" id="update_cart">Update cart</button>
+                                                <button type="button" class="button satay3" name="clear_cart"
+                                                    value="Clear cart" id="clear_cart">Clear cart</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1006,7 +1010,28 @@ function checkPackageValidationForCart(callback){
                         }
                     });
             });
-        })
+        });
+
+        $("#clear_cart").on('click', function () {
+            if (!confirm('Are you sure you want to clear your cart?')) {
+                return;
+            }
+
+            $('#qty-validation').addClass('d-none');
+
+            $.post("{{ route('clear-cart') }}", {
+                    "_token": "{{ csrf_token() }}"
+                },
+                function (data, status) {
+                    if (data && data.error === true) {
+                        $('#qty-validation').removeClass('d-none');
+                        $('#qty-validation p').text(data.message);
+                        return false;
+                    } else {
+                        location.reload();
+                    }
+                });
+        });
 
         $(".product-img").on('click', function () {
             $("#modal-img").attr('src', $(this).children('img').attr('data-src'));
