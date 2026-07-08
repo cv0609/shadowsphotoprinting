@@ -93,5 +93,10 @@ return
               'meta_title' =>'Email verification | Shadows Photo Printing',
               'meta_description' => ''
            ]
-      ]
+      ],
+      'country' => [
+        'AU'   => 14, // Australia country_id
+        'NZ' => 159, // New Zealand country_id
+    ],
+
 ];

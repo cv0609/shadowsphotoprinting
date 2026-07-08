@@ -15,7 +15,12 @@ class Product extends Model
         'type_of_paper_use',
         'product_image',
         'manage_sale',
-        'position'
+        'position',
+         // Shipping dimensions (in CM)
+        'length',
+        'width',
+        'height',
+        'weight',
     ];
 
     public function product_category()

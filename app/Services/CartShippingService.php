@@ -4,15 +4,52 @@ namespace App\Services;
 
 use App\Models\ShippingTier;
 use App\Models\Product;
+use App\Models\Cart;
+
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartShippingService
 {
     /**
      * Calculate shipping for cart items
      */
+
+    private function getCurrentCart()
+    {
+        if (Auth::check()) {
+            return Cart::where('user_id', Auth::id())->first();
+        }
+
+        return Cart::where('session_id', Session::getId())->first();
+    }
+
+    private function getCountryId()
+    {
+        $cart = $this->getCurrentCart();
+
+        return $cart ? $cart->country_id : null;
+    }
+
     public function calculateShipping($cartItems)
     {
+        $countryId = $this->getCountryId();
+        if($countryId === config('constant.country.NZ')) {
+
+            log::info('Calculating New Zealand shipping for cart items', [
+                'cartItems' => $cartItems
+            ]);
+            return $this->calculateNewZealandShipping($cartItems);
+        }
+
+        return $this->calculateAustraliaShipping($cartItems);
+       
+    }
+
+    private function calculateAustraliaShipping($cartItems)
+    {
+
         $shippingOptions = [];
         
         // Group items by category
@@ -155,6 +192,119 @@ class CartShippingService
         $shippingOptions = $this->filterShippingOptions($shippingOptions);
         
         return $shippingOptions;
+
+    }
+
+    public function calculateNewZealandShipping($cartItems)
+    {
+        $totalWeight = 0;
+
+        Log::info('calculateNewZealandShipping', ['cartItems' => $cartItems]);
+
+        $productIds = collect($cartItems)->pluck('product_id')->unique();
+        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
+
+        foreach ($cartItems as $item) {
+            // Gift cards, photo-for-sale, hand-craft don't get physical weight shipping
+            if (isset($item['product_type']) && in_array($item['product_type'], ['gift_card', 'photo_for_sale', 'hand_craft'])) {
+                continue;
+            }
+
+            $product = $products->get($item['product_id']);
+            if (!$product) {
+                continue;
+            }
+
+            $length = (float) ($product->length ?? 0);
+            $width  = (float) ($product->width ?? 0);
+            $height = (float) ($product->height ?? 0);
+            $qty    = (int) ($item['quantity'] ?? 1);
+            $weight = (float) ($product->weight ?? 0);
+
+            // Skip items with no dimensions on file instead of silently under/overcharging
+            if ($length <= 0 || $width <= 0 || $height <= 0) {
+                Log::warning('NZ shipping: product missing dimensions, skipping weight calc', [
+                    'product_id' => $product->id,
+                ]);
+                continue;
+            }
+
+            // Volumetric weight = L x W x H / 6000
+            $shippingWeight = $weight * $qty;
+
+            Log::info('NZ Shipping Calculation', [
+                'product_id'      => $product->id,
+                'product_title'   => $product->product_title,
+                'weight'          => $weight,
+                'qty'             => $qty,
+                'shipping_weight' => $shippingWeight,
+            ]);
+
+            $totalWeight += $shippingWeight;
+        }
+
+        Log::info('Total NZ Shipping Weight', ['auspost_weight' => $totalWeight]);
+
+        $shippingOptions = $totalWeight > 0
+            ? $this->calculateWeightBasedShipping($totalWeight, 'nz_auspost_zone1')
+            : [];
+
+        Log::info('NZ shipping options resolved', ['options' => $shippingOptions]);
+
+        return $shippingOptions;
+    }
+
+    /**
+     * Weight-based tier lookup for NZ Australia Post shipping.
+     * Mirrors calculateTierBasedShipping() but compares decimal kg instead of integer quantity.
+     */
+    private function calculateWeightBasedShipping($weight, $categoryName)
+    {
+        $shippingCategory = \App\Models\ShippingCategory::where('name', $categoryName)->first();
+
+        if (!$shippingCategory) {
+            Log::warning("NZ shipping category not found: {$categoryName}");
+            return [];
+        }
+
+        $shippingRules = \App\Models\ShippingRule::where('shipping_category_id', $shippingCategory->id)
+            ->where('is_active', true)
+            ->orderBy('priority')
+            ->get();
+
+        $options = [];
+
+        foreach ($shippingRules as $rule) {
+            if ($this->checkWeightCondition($weight, $rule->condition)) {
+                $options[] = [
+                    'carrier'       => $rule->carrier,
+                    'service'       => $rule->service,
+                    'price'         => (float) $rule->price,
+                    'delivery_time' => $rule->delivery_time,
+                    'note'          => $rule->condition . 'kg tier',
+                ];
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * Check if a weight (kg, decimal) falls inside a bracket condition
+     * like "0-0.25", "0.26-0.5", "15.01-20".
+     */
+    private function checkWeightCondition($weight, $condition)
+    {
+        if (strpos($condition, '-') !== false) {
+            [$min, $max] = explode('-', $condition);
+            return $weight >= (float) $min && $weight <= (float) $max;
+        }
+
+        if (strpos($condition, '+') !== false) {
+            return $weight >= (float) str_replace('+', '', $condition);
+        }
+
+        return false;
     }
     
     /**

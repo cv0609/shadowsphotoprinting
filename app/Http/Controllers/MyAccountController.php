@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Log;
 use App\Services\StripeService;
 use Illuminate\Http\Request;
 use App\Models\Cart;
@@ -25,7 +25,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Blog;
-
 
 class MyAccountController extends Controller
 {
@@ -139,6 +138,10 @@ class MyAccountController extends Controller
 
         $state_name = State::whereId($state)->select('name')->first();
         $ship_state_name = State::whereId($ship_state)->select('name')->first();
+         // Resolve country from the user's actual cart, not a hardcoded default
+        $cart = Cart::where('user_id', $auth_id)->first();
+
+        $country = Country::find($cart->country_id);
 
         $address = [
             'user_id' => $auth_id,
@@ -148,7 +151,7 @@ class MyAccountController extends Controller
             'street2' => $street2 ,
             'state' => $state_name->name ?? null,
             'company_name' => $company_name ?? null,
-            'country_region' => $request->slug == 'billing' ? config('constant.default_country') : '',
+            'country_region' => $request->slug == 'billing' ? $country->name : '',
             'state' => $state_name->name ?? null,
             'postcode' => $postcode ?? null,
             'phone' => $phone ?? null,
@@ -162,7 +165,7 @@ class MyAccountController extends Controller
             'ship_street2' => $ship_street2 ,
             'ship_state' => $ship_state_name->name ?? null,
             'ship_company' => $ship_company ?? null,
-            'ship_country_region' => $request->slug == 'shipping' ? config('constant.default_country') : '',
+            'ship_country_region' => $request->slug == 'shipping' ? $country->name : '',
             'ship_postcode' => $ship_postcode ?? null,
             'isShippingAddress' => '1' ?? null,
             'ship_suburb' => $ship_suburb ?? null,

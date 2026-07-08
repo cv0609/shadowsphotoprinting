@@ -47,6 +47,7 @@ class CartService
             return 0;
         }
 
+        $countryId = $cart?->country_id; // or $cart ? $cart->country_id : null;
 
         $subtotal = $cart->items->reduce(function ($carry, $item) {
 
@@ -134,7 +135,7 @@ class CartService
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
 
-        $data = ['subtotal' => $subtotal, 'total' => $totalAfterShipping, 'coupon_discount' => $discount, "coupon_code" => $coupon_code, 'coupon_id' => $coupon_id, "shippingCharge" => $shippingCharge];
+        $data = ['subtotal' => $subtotal, 'total' => $totalAfterShipping, 'coupon_discount' => $discount, "coupon_code" => $coupon_code, 'coupon_id' => $coupon_id, "shippingCharge" => $shippingCharge,'country_id'=> $countryId];
         \Log::info('$data',$data);
         return $data;
     }
@@ -197,9 +198,12 @@ class CartService
         }
         
         // Log cart items being sent to CartShippingService
-        Log::info('Cart items being sent to CartShippingService:', [
-            'cart_items' => $cartItems
+        Log::info('Cart items being sent to CartShippingService1:', [
+            'cart_items' => $cartItems,
+            'country_id' =>  $cart?->country_id
         ]);
+
+        /// tommorrow check from here continue from here
         
         // Get shipping options from CartShippingService
         $shippingOptions = $cartShippingService->calculateShipping($cartItems);
@@ -620,5 +624,19 @@ class CartService
     public function getPackageProductDetails($package_product_id){
         $product = Product::where('id', $package_product_id)->first();
         return $product;
+    }
+
+    public function getCartCountryCode($cart)
+    {
+        if (!$cart || empty($cart->country_id)) {
+            return config('constant.default_country'); // e.g. 'AU'
+        }
+
+        if ($cart->country_id == config('constant.country.NZ')) {
+            return 'NZ';
+        }
+
+        return config('constant.default_country'); // e.g. 'AU'
+
     }
 }
