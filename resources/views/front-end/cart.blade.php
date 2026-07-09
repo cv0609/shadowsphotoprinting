@@ -2,7 +2,7 @@
 @section('content')
 @php
 $CartService = app(App\Services\CartService::class);
-// dd($CartTotal);
+//dd($CartTotal);
 // function getS3Img($str, $size){
 // $str = str_replace('original', $size, $str);
 // return $str;
@@ -357,7 +357,17 @@ $CartService = app(App\Services\CartService::class);
                                             <td data-title="Subtotal">
                                                 <span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span>
                                             </td>
+                                            
                                         </tr>
+                                        <tr class="cart-subtotal">
+                                            <th>Shipping</th>
+                                            <td data-title="Shipping">
+                                                @if($cart?->country_id === config('constant.country.NZ'))
+                                                <span><bdi><span>$</span>{{ number_format($CartTotal['shippingCharge'],2) }}</bdi></span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        
                                         <tr>
                                             <td>
                                                 <div class="rad-btns-box">
@@ -367,6 +377,7 @@ $CartService = app(App\Services\CartService::class);
                                                             $order_type = Session::get('order_type');
                                                         }
                                                     @endphp
+                                                    @if($cart?->country_id !== config('constant.country.NZ'))
                                                     <div class="rad-btns">
                                                         <input type="radio" id="cart-shipping" name="order_type" class="orderType" value="0" @if($order_type == 0) checked @endif>
                                                         <label for="c-shipping">Shipping</label>
@@ -375,6 +386,7 @@ $CartService = app(App\Services\CartService::class);
                                                        <input type="radio" id="cart-pickup" name="order_type" class="orderType" value="1" @if($order_type == 1) checked @endif>
                                                         <label for="c-pickup">Pickup</label>
                                                     </div>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -433,10 +445,12 @@ $CartService = app(App\Services\CartService::class);
                                         <tr class="shipping-section">
                                             {{-- <th></th> --}}
                                             <td>
+                                                @if($cart?->country_id !== config('constant.country.NZ'))
                                                 <!-- Category-wise Shipping Calculator -->
                                                 <div id="category-shipping-options">
                                                     <div class="shipping-loading">Calculating shipping options...</div>
                                                 </div>
+                                                @endif
                                                 
                                                 <!-- Total Shipping Cost -->
                                                 {{-- <div id="total-shipping-cost" style="display: none;">
@@ -625,8 +639,11 @@ $CartService = app(App\Services\CartService::class);
     })
 </script>
 
-<!-- Include category-wise shipping calculator script -->
+
+<!-- -- Category-wise Shipping Calculator: AU only -- -->
+ @if($cart?->country_id !== config('constant.country.NZ'))
 <script src="{{ asset('js/category-shipping.js') }}"></script>
+@endif
 
 <script>
     $(document).ready(function () {
@@ -682,8 +699,16 @@ $CartService = app(App\Services\CartService::class);
         console.log('=== END UPDATE SHIPPING AND TOTAL ===');
     }
 
-    let orderType = {{$order_type}}; 
-    updateShippingAndTotal(orderType);
+    let orderType = {{$order_type}};
+    let isNZCart = "{{ $cart?->country_id === config('constant.country.NZ') ? '1' : '0' }}";
+
+    if (isNZCart === '0') {
+        // Existing AU behavior — unchanged
+        updateShippingAndTotal(orderType);
+    } else {
+        // NZ: server-rendered total is already correct, don't recalculate client-side
+        console.log('NZ cart — using server-calculated total');
+    }
 
 
     $(".orderType").change(function () {
@@ -697,19 +722,24 @@ $CartService = app(App\Services\CartService::class);
                 _token: "{{ csrf_token() }}", 
             },
             success: function (response) {
-                // If pickup is selected, clear shipping selection
-                if (orderType == 1) {
-                    // Clear shipping selection from server
-                    if (window.categoryShippingCalculator) {
-                        // Clear shipping session
-                        $.ajax({
-                            url: '/cart-shipping/clear-shipping-selection',
-                            method: 'POST',
-                            data: {
-                                '_token': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
+                if (isNZCart === '0') {
+                    // If pickup is selected, clear shipping selection
+                    if (orderType == 1) {
+                        // Clear shipping selection from server
+                        if (window.categoryShippingCalculator) {
+                            // Clear shipping session
+                            $.ajax({
+                                url: '/cart-shipping/clear-shipping-selection',
+                                method: 'POST',
+                                data: {
+                                    '_token': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                        }
                     }
+                } else {
+                    // NZ: reload so server recalculates total (pickup vs shipping)
+                    location.reload();
                 }
                 
                 updateShippingAndTotal(response.order_type);
