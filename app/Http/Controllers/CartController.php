@@ -88,6 +88,16 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+        if (
+            $request->item_type === 'hand_craft'
+            && Session::get('shop_shipping_country', 'AU') === 'NZ'
+        ) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Handcrafted products are not available for customers in New Zealand.',
+            ]);
+        }
+
         if (Session::has('coupon')) {
             $request_data = request()->merge(['coupon_code' => Session::get('coupon')]);
             $response = $this->applyCoupon($request_data);
@@ -112,12 +122,36 @@ class CartController extends Controller
 
         $auth_id = Auth::check() && !empty(Auth::user()) ? Auth::user()->id : null;
         $session_id = $auth_id ? null : Session::getId();
+        $shippingCountry = Country::whereIn('code', ['AU', 'NZ'])
+            ->where('code', Session::get('shop_shipping_country', 'AU'))
+            ->first()
+            ?? Country::where('code', 'AU')->firstOrFail();
 
         $cart = Cart::firstOrCreate([
             "user_id" => $auth_id,
             "coupon_id" => null,
             "session_id" => $session_id
+        ], [
+            "coupon_id" => null,
+            "shipping_country_id" => $shippingCountry->id
         ]);
+
+        if (
+            (int) $cart->shipping_country_id !== (int) $shippingCountry->id
+            && $cart->items()->exists()
+        ) {
+            $cartCountryName = $cart->shippingCountry->name ?? 'the previously selected country';
+
+            return response()->json([
+                'error' => true,
+                'country_conflict' => true,
+                'message' => "Your cart already contains products for {$cartCountryName}. "
+                    . "To add products for {$shippingCountry->name}, you must remove the existing cart products. "
+                    . "Clear the cart to continue, or keep your existing cart and select products for {$cartCountryName}.",
+            ]);
+        }
+
+        $cart->update(['shipping_country_id' => $shippingCountry->id]);
 
         if ($cart) {
 
@@ -360,6 +394,10 @@ class CartController extends Controller
         $session_id = Session::getId();
 
         $countries = Country::with('states')->find(14);
+        $cartCountry = $cart ? $cart->shippingCountry : null;
+        $cartCountry = $cartCountry
+            ?? Country::where('code', Session::get('shop_shipping_country', 'AU'))->first()
+            ?? Country::where('code', 'AU')->first();
         
         $this->applyReferralCouponIfNeeded();
 
@@ -370,7 +408,7 @@ class CartController extends Controller
         $page_content = ["meta_title" => config('constant.pages_meta.cart.meta_title'), "meta_description" => config('constant.pages_meta.cart.meta_description')];
 
         if (!empty($cart)) {
-            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'affiliate_sales', 'countries', 'page_content'));
+            return view('front-end.cart', compact('cart', 'CartTotal', 'shipping', 'affiliate_sales', 'countries', 'cartCountry', 'page_content'));
         } else {
 
             return redirect('shop');

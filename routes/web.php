@@ -217,6 +217,7 @@ Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout'
 Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('shop-upload-image');
 Route::get('/shop-upload-image-csrf-refresh',[ShopController::class,'uploadImageCsrfRefresh'])->name('shop-upload-image-csrf-refresh');
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
+Route::post('/shop-shipping-country',[ShopController::class,'setShopShippingCountry'])->name('shop-shipping-country');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::get('/wedding-packages-list',[ShopController::class,'getWeddingPackagesList'])->name('wedding-packages-list');
 Route::post('/wedding-package-frames',[ShopController::class,'getWeddingPackageFrames'])->name('wedding-package-frames');

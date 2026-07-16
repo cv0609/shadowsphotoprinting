@@ -9,6 +9,11 @@
             $CartTotal['shippingCharge'] = 0;
         }
     }
+
+    $billingCountry = $shoppingCountry;
+    $shippingCountry = $shoppingCountry;
+    $billingState = isset($user_address) && $user_address ? $user_address->state : '';
+    $shippingState = isset($user_address) && $user_address ? $user_address->ship_state : '';
 @endphp
 
 <section class="coupon-main">
@@ -48,7 +53,13 @@
                                 <p class="form-row">
                                     <label>Country / Region *
                                     </label>
-                                    <span> <strong>{{ config('constant.default_country') }} </strong></span>
+                                    <select class="form-control checkout-country" id="billing_country" name="billing_country" data-state-select="#state" data-state-input="#state_region" disabled>
+                                        @foreach ($addressCountries as $country)
+                                            <option value="{{ $country->code }}" {{ $billingCountry->code === $country->code ? 'selected' : '' }}>
+                                                {{ $country->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </p>
                                 <p class="form-row">
                                     <label> Street address *
@@ -64,26 +75,14 @@
                                 </p>
 
                                 <p class="form-row">
-                                    @php
-                                        $address_state = '';
-                                        $ship_address_state = '';
-                                        if (isset($user_address) && !empty($user_address->state)) {
-                                            $address_state = $user_address->state;
-                                        }
-
-                                        if (isset($user_address) && !empty($user_address->ship_state)) {
-                                            $ship_address_state = $user_address->ship_state;
-                                        }
-
-
-                                    @endphp
-                                
+                                    <label>State / Region</label>
                                     <select class="form-control" id="state" name="state">
                                         <option value="">State</option>
-                                        @foreach ($countries->states as $state)
-                                            <option value="{{ $state->id }}" {{ $address_state == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
+                                        @foreach ($billingCountry->states as $state)
+                                            <option value="{{ $state->id }}" {{ $billingState == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                                         @endforeach
                                     </select>
+                                    <input type="text" id="state_region" value="{{ $billingState }}" placeholder="Enter state or region" style="display: none;">
                                 </p>
                                 
                                 <p class="form-row">
@@ -146,7 +145,13 @@
                                             <p class="form-row">
                                                 <label>Country / Region *
                                                 </label>
-                                                <span> <strong>{{ config('constant.default_country') }}</strong></span>
+                                                <select class="form-control checkout-country" id="shipping_country" name="shipping_country" data-state-select="#ship_state" data-state-input="#ship_state_region" disabled>
+                                                    @foreach ($addressCountries as $country)
+                                                        <option value="{{ $country->code }}" {{ $shippingCountry->code === $country->code ? 'selected' : '' }}>
+                                                            {{ $country->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </p>
                                             <p class="form-row">
                                                 <label> Street address *
@@ -163,13 +168,15 @@
 
 
                                             <p class="form-row">
+                                                <label>State / Region</label>
                                                 <select class="form-control" id="ship_state" name="ship_state" >
                                                     <option value="">State</option>
-                                                    @foreach ($countries->states as $state)
-                                                      <option value="{{ $state->id }}" {{ $ship_address_state == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                    @foreach ($shippingCountry->states as $state)
+                                                      <option value="{{ $state->id }}" {{ $shippingState == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                                                     @endforeach
 
                                                 </select>
+                                                <input type="text" id="ship_state_region" value="{{ $shippingState }}" placeholder="Enter state or region" style="display: none;">
 
                                             </p>
                                             <p class="form-row">
@@ -196,6 +203,19 @@
                     <div class="col-lg-6">
                         <div class="woocommerce-billing-fields">
                             <h3>Your order</h3>
+
+                            <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 20px; padding: 14px 16px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 8px;">
+                                <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #16a085; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                </span>
+                                <span style="min-width: 0; line-height: 1.4;">
+                                    <small style="display: block; color: #6c757d;">Shopping Country</small>
+                                    <strong style="display: block; color: #222;">{{ $shoppingCountry->name ?? 'Australia' }}</strong>
+                                </span>
+                                <a href="{{ route('shop-detail') }}" style="margin-left: auto; color: #168f83; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">
+                                    Change
+                                </a>
+                            </div>
 
                             @php
                                 // Check if there are any non-package items in the cart
@@ -498,6 +518,40 @@
 <script>
 
     $(document).ready(function() {
+        var addressCountryStates = @json($addressCountryStates);
+
+        function updateStateField($countrySelect, preserveValue) {
+            var states = addressCountryStates[$countrySelect.val()] || [];
+            var $stateSelect = $($countrySelect.data('state-select'));
+            var $stateInput = $($countrySelect.data('state-input'));
+            var selectedState = preserveValue ? $stateSelect.val() : '';
+
+            if (states.length > 0) {
+                $stateSelect.empty().append($('<option>', { value: '', text: 'State' }));
+                states.forEach(function(state) {
+                    $stateSelect.append($('<option>', {
+                        value: state.id,
+                        text: state.name,
+                        selected: String(state.id) === String(selectedState)
+                    }));
+                });
+                $stateInput.hide();
+                $stateSelect.show();
+            } else {
+                $stateSelect.hide();
+                $stateInput.show();
+                if (!preserveValue) {
+                    $stateInput.val('');
+                }
+            }
+        }
+
+        $('.checkout-country').each(function() {
+            updateStateField($(this), true);
+        }).on('change', function() {
+            updateStateField($(this), false);
+        });
+
         if ($('#afterpayId').is(':checked')) {
             $('.stripe-details').hide();
         }
@@ -559,7 +613,8 @@
         var lname = $('#lname').val();
         var street1 = $('#street1').val();
         var street2 = $('#street2').val();
-        var state = $('#state').val();
+        var country_code = $('#billing_country').val();
+        var state = $('#state').is(':visible') ? $('#state').val() : $('#state_region').val();
         var postcode = $('#postcode').val();
         var phone = $('#phone').val();
         var suburb = $('#suburb').val();
@@ -581,8 +636,8 @@
             var ship_street1 = $('#ship_street1').val();
             var ship_street2 = $('#ship_street2').val();
             var ship_suburb = $('#ship_suburb').val();
-            var ship_state = $('#ship_state').val();
-            // var ship_state = $('#ship_state').val();
+            var ship_country_code = $('#shipping_country').val();
+            var ship_state = $('#ship_state').is(':visible') ? $('#ship_state').val() : $('#ship_state_region').val();
             var ship_postcode = $('#ship_postcode').val();
             var order_comments = $('#order_comments').val();
             isShippingAddress = true;
@@ -623,6 +678,7 @@
             lname: lname,
             street1: street1,
             street2: street2,
+            country_code: country_code,
             state: state,
             postcode: postcode,
             phone: phone,
@@ -642,6 +698,7 @@
             formData.ship_street1 = ship_street1;
             formData.ship_street2 = ship_street2;
             formData.ship_suburb = ship_suburb;
+            formData.ship_country_code = ship_country_code;
             formData.ship_state = ship_state;
             formData.ship_postcode = ship_postcode;
             formData.order_comments = order_comments;

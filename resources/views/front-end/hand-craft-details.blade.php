@@ -140,7 +140,16 @@
                                 <input type="hidden" id="product_image" value="{{$image1 ?? ''}}">
                                 <input type="hidden" id="product_id" value="{{$productDetails->id}}">
 
-                                @if($productDetails->sold == 1)
+                                @if(Session::get('shop_shipping_country', 'AU') === 'NZ')
+                                    <div class="sold-message">
+                                        <h3 class="text-danger">Unavailable in Your Selected Country</h3>
+                                        <p>This handcrafted product is not available in New Zealand.</p>
+                                        <a href="{{ route('shop-detail') }}"
+                                            style="display: inline-block; margin-top: 14px; padding: 9px 16px; border-radius: 4px; background: #16a085; color: #fff; font-weight: 600; text-decoration: none;">
+                                            <i class="fas fa-globe" aria-hidden="true"></i> Change Shopping Country
+                                        </a>
+                                    </div>
+                                @elseif($productDetails->sold == 1)
                                     <div class="sold-message">
                                         <h3 class="text-danger">This item is SOLD OUT</h3>
                                         <p>This product is no longer available for purchase.</p>
@@ -183,7 +192,6 @@
         </div>
     </div>
 </section>
-
 
 <section class="related-products">
     <div class="container">
@@ -266,6 +274,7 @@ $(document).ready(function() {
             return false; // Prevent default behavior of the Enter key
         }
     });
+
 });
 
 function addToCartFn(){

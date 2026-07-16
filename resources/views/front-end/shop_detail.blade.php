@@ -123,15 +123,37 @@
                             <span id="cart-total-price">$<span class="show-details">0.00</span> </span>
                         </div>
                     </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0; padding: 10px 12px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 6px;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: 0 0 32px; color: #16a085; background: #fff; border-radius: 50%;">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                        </span>
+                        <span style="line-height: 1.3;">
+                            <small style="display: block; color: #6c757d;">Shopping Country</small>
+                            <strong id="shopping-country-name" style="display: block; color: #222;">
+                                {{ $shippingCountry === 'NZ' ? 'New Zealand' : 'Australia' }}
+                            </strong>
+                        </span>
+                    </div>
                     <div class="fw-products">
                         <h4>PRODUCTS</h4>
-                        <div class="fw-products-cats">
-                            <select name="category" id="category">
-                                <option value="all">All</option>
-                                @foreach ($productCategories as $productCategory)
-                                    <option value="{{ $productCategory->slug }}">{{ ucfirst($productCategory->name) }}</option>
-                                @endforeach
-                            </select>
+                        <div class="shop-filter-row" style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                            <div class="fw-products-cats" style="flex: 0 0 42%; margin-bottom: 0;">
+                                <select name="shop_shipping_country" id="shop-shipping-country">
+                                    @foreach ($shippingCountries as $country)
+                                        <option value="{{ $country->code }}" {{ $shippingCountry === $country->code ? 'selected' : '' }}>
+                                            {{ $country->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="fw-products-cats" style="flex: 1; min-width: 0; margin-bottom: 0;">
+                                <select name="category" id="category">
+                                    <option value="all">All</option>
+                                    @foreach ($productCategories as $productCategory)
+                                        <option value="{{ $productCategory->slug }}">{{ ucfirst($productCategory->name) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         
                         <!-- Wedding Package Dropdown (Hidden by default) -->
@@ -200,6 +222,26 @@
                     </div>
                     <div class="quanti">
                         <a href="{{ route('cart') }}">VIEW CART / CHECKOUT</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="countryConflictModal" role="dialog" aria-modal="true" aria-labelledby="countryConflictModalLabel"
+                style="display: none; position: fixed; inset: 0; z-index: 99999; background: rgba(0, 0, 0, 0.65);">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 92%; max-width: 540px; background: #fff; color: #222; border-radius: 6px; overflow: hidden; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd;">
+                        <h5 id="countryConflictModalLabel" style="margin: 0; color: #222;">
+                            <i class="fas fa-exclamation-triangle" style="color: #d39e00;"></i> Different Shipping Country
+                        </h5>
+                        <button type="button" class="country-conflict-cancel" aria-label="Close"
+                            style="border: 0; background: transparent; color: #333; font-size: 28px; line-height: 1; cursor: pointer;">&times;</button>
+                    </div>
+                    <div style="padding: 24px; background: #fff;">
+                        <p id="country-conflict-message" style="color: #222; font-size: 15px; line-height: 1.6; margin: 0;"></p>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; padding: 15px 20px; background: #f8f9fa; border-top: 1px solid #ddd;">
+                        <button type="button" class="btn btn-secondary country-conflict-cancel">Keep Existing Cart</button>
+                        <button type="button" class="btn btn-danger" id="clear-country-conflict-cart">Clear Cart &amp; Continue</button>
                     </div>
                 </div>
             </div>
@@ -338,7 +380,41 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     if(response.error == true){
-                       alert(response.message);
+                        if (response.country_conflict) {
+                            $('#country-conflict-message').text(response.message);
+                            $('#countryConflictModal').stop(true, true).fadeIn(150);
+
+                            $('.country-conflict-cancel').off('click').on('click', function() {
+                                $('#countryConflictModal').stop(true, true).fadeOut(150);
+                            });
+
+                            $('#countryConflictModal').off('click.countryConflict').on('click.countryConflict', function(event) {
+                                if (event.target === this) {
+                                    $(this).stop(true, true).fadeOut(150);
+                                }
+                            });
+
+                            $('#clear-country-conflict-cart').off('click').on('click', function() {
+                                var $button = $(this);
+                                $button.prop('disabled', true).text('Clearing Cart...');
+
+                                $.post("{{ route('clear-cart') }}", {
+                                    '_token': "{{ csrf_token() }}"
+                                })
+                                .done(function() {
+                                    $('#countryConflictModal').stop(true, true).fadeOut(150);
+                                    $("#add-to-cart").trigger('click');
+                                })
+                                .fail(function() {
+                                    $('#country-conflict-message').text('Unable to clear the existing cart. Please try again.');
+                                })
+                                .always(function() {
+                                    $button.prop('disabled', false).text('Clear Cart & Continue');
+                                });
+                            });
+                        } else if (!response.country_conflict) {
+                            alert(response.message);
+                        }
                     }else{
                         var toastElement = new bootstrap.Toast(document.getElementById('add_to_cart_toast')); 
                         toastElement.show();
@@ -618,6 +694,29 @@ function updateCartTotals() {
 
 }
 
+
+ $("#shop-shipping-country").on('change', function() {
+    var countryCode = $(this).val();
+
+    $.post("{{ route('shop-shipping-country') }}", {
+        country_code: countryCode,
+        '_token': "{{ csrf_token() }}"
+    })
+    .done(function(response) {
+        var categoryOptions = '<option value="all">All</option>';
+        $('#shopping-country-name').text($('#shop-shipping-country option:selected').text().trim());
+
+        response.categories.forEach(function(category) {
+            categoryOptions += '<option value="' + category.slug + '">' + category.name + '</option>';
+        });
+
+        $('#category').html(categoryOptions).val('all').trigger('change');
+    })
+    .fail(function() {
+        alert('Unable to change the country. Please try again.');
+        window.location.reload();
+    });
+ });
 
  $("#category").on('change',function(){
     var selectedCategory = $(this).val();
