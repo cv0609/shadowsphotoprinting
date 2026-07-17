@@ -2,8 +2,25 @@
 
 <tr>
   <td data-title="s_no">{{ $key + 1 }}</td>
-  <td data-title="order-number"> <a
-          href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
+  <td data-title="order-number">
+      <a href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
+      @php
+          $countryName = $order->shoppingCountry->name ?? null;
+          $countryCode = strtoupper((string) ($order->shoppingCountry->code ?? ''));
+      @endphp
+      @if($countryName)
+          <div>
+              <span class="order-country-badge {{ $countryCode === 'NZ' ? 'is-nz' : ($countryCode === 'AU' ? 'is-au' : '') }}">
+                  <span class="flag" aria-hidden="true">
+                      @if($countryCode === 'NZ') 🇳🇿
+                      @elseif($countryCode === 'AU') 🇦🇺
+                      @else 🌍
+                      @endif
+                  </span>
+                  {{ $countryName }}
+              </span>
+          </div>
+      @endif
   </td>
   <td>{{ $order->orderBillingShippingDetails->fname ?? ''}}</td>
   <td data-title="created-at">{{ date('M d, Y',strtotime($order->created_at)) }}</td>

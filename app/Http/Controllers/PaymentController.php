@@ -73,6 +73,8 @@ class PaymentController extends Controller
             $cart = Cart::where('session_id', $session_id)->with(['items.product', 'shippingCountry'])->first();
         }
 
+        $orderType = (int) Session::get('order_type', 0);
+
         $shipping = $this->CartService->getShippingCharge();
 
         $shoppingCountry = $cart->shippingCountry
@@ -88,6 +90,17 @@ class PaymentController extends Controller
             })->values()];
         });
         $CartTotal = $this->CartService->getCartTotal();
+
+        // Shipping required unless pickup. Direct /checkout must still resolve a shipping method.
+        if (
+            $orderType !== 1
+            && $shipping
+            && (string) $shipping->status === '1'
+            && (float) ($CartTotal['shippingCharge'] ?? 0) <= 0
+        ) {
+            return redirect()->route('cart')
+                ->with('error', 'Please wait for shipping options to finish loading before checkout.');
+        }
 
         $page_content = ["meta_title" => config('constant.pages_meta.checkout.meta_title'), "meta_description" => config('constant.pages_meta.checkout.meta_description')];
 
@@ -438,7 +451,8 @@ class PaymentController extends Controller
                 : ($afterPay['status'] ?? ''),
             'payment_method' => $payment_method,
             'order_status' => "0",
-            'order_type' => $order_type
+            'order_type' => $order_type,
+            'shopping_country_id' => $cart->shipping_country_id ?? null
         ]);
 
 
@@ -806,9 +820,9 @@ class PaymentController extends Controller
                 "line1" => $street1 ?? 'address1',
                 "line2" => $street2 ?? 'address2',
                 "suburb" => $suburb ?? 'suberb',
-                "state" => 'NSW',
+                "state" => $state_name !== '' ? $state_name : ($country_code === 'NZ' ? 'AUK' : 'NSW'),
                 "postcode" => $postcode ?? '123456',
-                "countryCode" => "AU",
+                "countryCode" => $country_code,
                 "phoneNumber" => $phone ?? '0412345678',
             ],
             "shipping" => [
@@ -816,9 +830,11 @@ class PaymentController extends Controller
                 "line1" => $ship_street1 ? $ship_street1 : $street1,
                 "line2" => $ship_street2 ? $ship_street2 : $street2,
                 "suburb" => $ship_suburb ? $ship_suburb : $suburb,
-                "state" => 'NSW',
+                "state" => ($isShippingAddress && $ship_state_name !== '')
+                    ? $ship_state_name
+                    : ($state_name !== '' ? $state_name : ($ship_country_code === 'NZ' ? 'AUK' : 'NSW')),
                 "postcode" => $ship_postcode ? $ship_postcode : $postcode,
-                "countryCode" => "AU",
+                "countryCode" => $ship_country_code,
                 "phoneNumber" => $phone ?? '0412345678'
             ],
             "courier" => [

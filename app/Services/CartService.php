@@ -145,8 +145,14 @@ class CartService
 
         
         if ($selectedShipping) {
-            // Return the selected shipping price from session
-            return (float) $selectedShipping['price'];
+            $selectedPrice = (float) ($selectedShipping['price'] ?? 0);
+
+            // Ignore stale/empty $0 session selections so checkout never uses a loading-race zero
+            if ($selectedPrice > 0) {
+                return $selectedPrice;
+            }
+
+            session()->forget('selected_shipping');
         }
         
         // Check for test print items first

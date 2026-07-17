@@ -1,5 +1,64 @@
 @extends('admin.layout.main')
 @section('page-content')
+<style>
+  .order-country-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    border: 1px solid #dbe3ea;
+    background: #f5f7fa;
+    color: #334155;
+  }
+
+  .order-country-badge.is-nz {
+    border-color: #b7ddd5;
+    background: #f0faf7;
+    color: #0f766e;
+  }
+
+  .order-country-badge.is-au {
+    border-color: #c9d8e8;
+    background: #f3f7fb;
+    color: #1d4f7c;
+  }
+
+  .order-country-badge .flag {
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .order-range-list .serach-bar-range {
+    position: relative;
+    max-width: 340px;
+    width: 100%;
+  }
+
+  .order-range-list .serach-bar-range input#order-search {
+    width: 100%;
+    max-width: 340px;
+    padding-right: 36px;
+    text-transform: none;
+  }
+
+  .order-range-list .serach-bar-range .fa-search {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+    color: #73879c;
+    pointer-events: auto;
+  }
+</style>
 
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">
@@ -23,7 +82,7 @@
                 </div>
 
                 <div class="serach-bar-range">
-                    <input type="text" name="search" id="order-search" placeholder="Search by Order number/username"><span><i class="fa fa-search"></i></span>
+                    <input type="text" name="search" id="order-search" placeholder="Search order, username, country"><span><i class="fa fa-search"></i></span>
                 </div>
             </div>
         </div>
@@ -56,8 +115,25 @@
 
                                   <tr>
                                     <td data-title="s_no">{{ $key + 1 }}</td>
-                                    <td data-title="order-number"> <a
-                                            href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
+                                    <td data-title="order-number">
+                                        <a href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
+                                        @php
+                                            $countryName = $order->shoppingCountry->name ?? null;
+                                            $countryCode = strtoupper((string) ($order->shoppingCountry->code ?? ''));
+                                        @endphp
+                                        @if($countryName)
+                                            <div>
+                                                <span class="order-country-badge {{ $countryCode === 'NZ' ? 'is-nz' : ($countryCode === 'AU' ? 'is-au' : '') }}">
+                                                    <span class="flag" aria-hidden="true">
+                                                        @if($countryCode === 'NZ') 🇳🇿
+                                                        @elseif($countryCode === 'AU') 🇦🇺
+                                                        @else 🌍
+                                                        @endif
+                                                    </span>
+                                                    {{ $countryName }}
+                                                </span>
+                                            </div>
+                                        @endif
                                     </td>
                                     <td>{{ $order->orderBillingShippingDetails->fname ?? ''}}</td>
                                     <td data-title="created-at">{{ date('M d, Y',strtotime($order->created_at)) }}</td>
@@ -194,52 +270,86 @@
 
     });
 
+    let orderSearchTimer = null;
+
+    function getActiveDateRange() {
+        const picker = $('#date-range-picker').data('daterangepicker');
+        if (!picker || !picker.startDate || !picker.endDate) {
+            return {};
+        }
+
+        // Only send dates when user has applied a custom range via apply event
+        if (!$('#date-range-picker').data('range-applied')) {
+            return {};
+        }
+
+        return {
+            start_date: picker.startDate.format('YYYY-MM-DD'),
+            end_date: picker.endDate.format('YYYY-MM-DD')
+        };
+    }
+
+    function runOrderSearch(query) {
+        query = (query || '').trim();
+
+        // Restore original paginated list when search is cleared
+        if (query === '' && !$('#date-range-picker').data('range-applied')) {
+            window.location.reload();
+            return;
+        }
+
+        $.ajax({
+            url: '{{ route("orders.search") }}',
+            type: 'GET',
+            data: Object.assign({ query: query }, getActiveDateRange()),
+            success: function (data) {
+                $('.pagination').addClass('d-none');
+                if (data && String(data).trim() !== '') {
+                    $("#main-tbody").html(data);
+                } else {
+                    $("#main-tbody").html("<tr><td colspan='9'><p class='text-center'>No any data found!</p></td></tr>");
+                }
+            },
+            error: function () {
+                $("#main-tbody").html("<tr><td colspan='9'><p class='text-center'>Something went wrong. Please try again.</p></td></tr>");
+            }
+        });
+    }
+
     $('#order-search').on('keyup', function () {
-        
-        let query = $('#order-search').val();
-        
+        clearTimeout(orderSearchTimer);
+        const query = $(this).val();
+        orderSearchTimer = setTimeout(function () {
+            runOrderSearch(query);
+        }, 300);
+    });
+
+    $('#order-search').on('search', function () {
+        runOrderSearch($(this).val());
+    });
+
+
+    $('#date-range-picker').on('apply.daterangepicker', function (ev, picker) {
+        $('#date-range-picker').data('range-applied', true);
+        $('.drp-calendar .right').css('display','none');
+        let startDate = picker.startDate.format('YYYY-MM-DD');
+        let endDate = picker.endDate.format('YYYY-MM-DD');
+        let query = ($('#order-search').val() || '').trim();
+
         $.ajax({
             url: '{{ route("orders.search") }}',
             type: 'GET',
             data: {
                 query: query,
-            },
-            success: function (data) {
-                if (data) {
-                    $('.pagination').addClass('d-none');
-                    $("#main-tbody").html(data);
-                    if(!query){
-                        console.log('yes');
-                        $('.pagination').removeClass('d-none');
-                    }
-                } else {
-                    $("#main-tbody").html("<tr><td colspan='5'><p class='text-center'>No any data found!</p></td></tr>");
-                }
-            }
-        });
-    });
-
-
-    $('#date-range-picker').on('apply.daterangepicker', function (ev, picker) {
-        $('.drp-calendar .right').css('display','none');
-        let dateRange = $('#date-range-picker').data('daterangepicker');
-        let startDate = dateRange.startDate.format('YYYY-MM-DD');
-        let endDate = dateRange.endDate.format('YYYY-MM-DD');
-
-        $.ajax({
-            url: '{{ route("orders.search") }}',
-            type: 'GET',
-            data: {
                 start_date: startDate,
                 end_date: endDate
             },
             success: function (data) {
-                console.log(data);
-                if (data) {
-                    $('.pagination').addClass('d-none');
+                $('.pagination').addClass('d-none');
+                if (data && String(data).trim() !== '') {
                     $("#main-tbody").html(data);
                 } else {
-                    $("#main-tbody").html("<tr><td colspan='5'><p class='text-center'>No any data found!</p></td></tr>");
+                    $("#main-tbody").html("<tr><td colspan='9'><p class='text-center'>No any data found!</p></td></tr>");
                 }
             }
         });

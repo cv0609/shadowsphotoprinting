@@ -14,6 +14,22 @@
     $shippingCountry = $shoppingCountry;
     $billingState = isset($user_address) && $user_address ? $user_address->state : '';
     $shippingState = isset($user_address) && $user_address ? $user_address->ship_state : '';
+
+    $parseCheckoutProductTitle = function (?string $title): array {
+        $title = trim((string) $title);
+        if ($title === '') {
+            return ['base' => '', 'option' => null];
+        }
+
+        if (preg_match('/^(.*?)(?:\s*[–—\-]\s*|\s+)(with\s+4mm\s+white\s+border)\s*$/iu', $title, $matches)) {
+            return [
+                'base' => trim(preg_replace('/\s+/', ' ', $matches[1])),
+                'option' => 'With 4mm White Border',
+            ];
+        }
+
+        return ['base' => $title, 'option' => null];
+    };
 @endphp
 
 <section class="coupon-main">
@@ -202,28 +218,370 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="woocommerce-billing-fields">
+                            <style>
+                                .checkout-order-summary h3 {
+                                    color: #e8b923 !important;
+                                    font-weight: 700;
+                                    margin-bottom: 16px;
+                                }
+
+                                .checkout-country-bar {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 12px;
+                                    margin: 0 0 18px;
+                                    padding: 14px 16px;
+                                    background: #fff;
+                                    border-radius: 12px;
+                                }
+
+                                .checkout-country-bar .icon {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    width: 38px;
+                                    height: 38px;
+                                    flex: 0 0 38px;
+                                    color: #16a085;
+                                    background: #e8f7f3;
+                                    border-radius: 50%;
+                                }
+
+                                .checkout-country-bar small {
+                                    display: block;
+                                    color: #6c757d;
+                                    font-size: 12px;
+                                    line-height: 1.2;
+                                }
+
+                                .checkout-country-bar strong {
+                                    display: block;
+                                    color: #222;
+                                    font-size: 15px;
+                                    line-height: 1.3;
+                                }
+
+                                .checkout-country-bar a {
+                                    margin-left: auto;
+                                    color: #168f83;
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    text-decoration: none;
+                                    white-space: nowrap;
+                                }
+
+                                .checkout-order-card {
+                                    background: rgba(255, 255, 255, 0.04);
+                                    border: 1px solid rgba(255, 255, 255, 0.12);
+                                    border-radius: 14px;
+                                    padding: 8px 14px 14px;
+                                    margin-bottom: 16px;
+                                }
+
+                                .checkout-order-card .shop_table {
+                                    margin: 0;
+                                    background: transparent !important;
+                                }
+
+                                .checkout-order-card .shop_table thead th {
+                                    color: #e8b923 !important;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+                                    font-weight: 600;
+                                }
+
+                                .checkout-order-card .shop_table tbody td,
+                                .checkout-order-card .shop_table tfoot th,
+                                .checkout-order-card .shop_table tfoot td {
+                                    color: #fff !important;
+                                    border-top: 0 !important;
+                                    border-bottom: 0 !important;
+                                    background: transparent !important;
+                                    padding-top: 10px !important;
+                                    padding-bottom: 10px !important;
+                                }
+
+                                .checkout-order-card .shop_table tbody tr + tr td {
+                                    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+                                }
+
+                                .checkout-order-card .shop_table tbody strong {
+                                    color: #e8b923;
+                                }
+
+                                .checkout-product-option {
+                                    display: block;
+                                    margin-top: 4px;
+                                    padding-left: 2px;
+                                    color: #e8b923;
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    line-height: 1.35;
+                                }
+
+                                .checkout-order-card .summary-divider td {
+                                    border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+                                    padding-top: 14px !important;
+                                }
+
+                                .checkout-order-card .coupon-row th {
+                                    color: #e8b923 !important;
+                                }
+
+                                .checkout-order-card .coupon-row td {
+                                    color: #22c55e !important;
+                                    font-weight: 600;
+                                }
+
+                                .checkout-delivery-card {
+                                    margin: 8px 0 4px;
+                                    border: 1px solid #e8b923;
+                                    border-radius: 12px;
+                                    overflow: hidden;
+                                    background: rgba(232, 185, 35, 0.06);
+                                }
+
+                                .checkout-delivery-head {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                    width: 100%;
+                                    padding: 12px 14px;
+                                    border: 0;
+                                    border-bottom: 1px solid rgba(232, 185, 35, 0.35);
+                                    background: transparent;
+                                    cursor: pointer;
+                                    text-align: left;
+                                }
+
+                                .checkout-delivery-card.is-collapsed .checkout-delivery-head {
+                                    border-bottom: 0;
+                                }
+
+                                .checkout-delivery-head .icon {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    width: 28px;
+                                    height: 28px;
+                                    border-radius: 50%;
+                                    border: 1px solid #e8b923;
+                                    color: #e8b923;
+                                    font-size: 12px;
+                                }
+
+                                .checkout-delivery-head .title {
+                                    color: #e8b923;
+                                    font-weight: 700;
+                                    font-size: 14px;
+                                    letter-spacing: 0.02em;
+                                }
+
+                                .checkout-delivery-head .chevron {
+                                    margin-left: auto;
+                                    color: #fff;
+                                    font-size: 12px;
+                                    opacity: 0.85;
+                                    transition: transform 0.2s ease;
+                                }
+
+                                .checkout-delivery-card.is-collapsed .checkout-delivery-head .chevron {
+                                    transform: rotate(180deg);
+                                }
+
+                                .checkout-delivery-body {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                    gap: 12px;
+                                    padding: 14px;
+                                }
+
+                                .checkout-delivery-card.is-collapsed .checkout-delivery-body {
+                                    display: none;
+                                }
+
+                                .checkout-delivery-body .label {
+                                    color: #fff;
+                                    font-weight: 700;
+                                    font-size: 14px;
+                                    line-height: 1.35;
+                                }
+
+                                .checkout-delivery-body .meta {
+                                    display: block;
+                                    margin-top: 3px;
+                                    color: #d1d5db;
+                                    font-size: 12px;
+                                    font-weight: 500;
+                                }
+
+                                .checkout-delivery-body .price {
+                                    color: #fff;
+                                    font-weight: 700;
+                                    font-size: 15px;
+                                    white-space: nowrap;
+                                }
+
+                                .checkout-order-total {
+                                    display: flex;
+                                    align-items: baseline;
+                                    justify-content: space-between;
+                                    gap: 12px;
+                                    margin: 8px 2px 10px;
+                                }
+
+                                .checkout-order-total .label {
+                                    color: #fff;
+                                    font-size: 18px;
+                                    font-weight: 700;
+                                }
+
+                                .checkout-order-total .amount {
+                                    color: #e8b923;
+                                    font-size: 28px;
+                                    font-weight: 800;
+                                    line-height: 1;
+                                }
+
+                                .checkout-trust-bar {
+                                    display: grid;
+                                    grid-template-columns: repeat(4, minmax(0, 1fr));
+                                    gap: 18px 24px;
+                                    margin: 28px 0 8px;
+                                    padding: 22px 28px;
+                                    background: #1a1a1a;
+                                    border-radius: 16px;
+                                    border: 1px solid rgba(255, 255, 255, 0.08);
+                                }
+
+                                .checkout-trust-item {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 14px;
+                                    min-width: 0;
+                                }
+
+                                .checkout-trust-item .icon {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    flex: 0 0 42px;
+                                    width: 42px;
+                                    height: 42px;
+                                    color: #22c55e;
+                                    font-size: 26px;
+                                    line-height: 1;
+                                }
+
+                                .checkout-trust-item .text {
+                                    min-width: 0;
+                                }
+
+                                .checkout-trust-item strong {
+                                    display: block;
+                                    color: #fff;
+                                    font-size: 15px;
+                                    font-weight: 700;
+                                    line-height: 1.25;
+                                }
+
+                                .checkout-trust-item span {
+                                    display: block;
+                                    margin-top: 2px;
+                                    color: rgba(255, 255, 255, 0.72);
+                                    font-size: 12px;
+                                    font-weight: 500;
+                                    line-height: 1.3;
+                                }
+
+                                @media (max-width: 991px) {
+                                    .checkout-trust-bar {
+                                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                                        padding: 18px 16px;
+                                        gap: 16px;
+                                    }
+                                }
+
+                                @media (max-width: 575px) {
+                                    .checkout-trust-bar {
+                                        grid-template-columns: 1fr;
+                                    }
+                                }
+                            </style>
+
+                            <div class="checkout-order-summary">
                             <h3>Your order</h3>
 
-                            <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 20px; padding: 14px 16px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 8px;">
-                                <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #16a085; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
-                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                            <div class="checkout-country-bar">
+                                <span class="icon" aria-hidden="true">
+                                    <i class="fas fa-map-marker-alt"></i>
                                 </span>
-                                <span style="min-width: 0; line-height: 1.4;">
-                                    <small style="display: block; color: #6c757d;">Shopping Country</small>
-                                    <strong style="display: block; color: #222;">{{ $shoppingCountry->name ?? 'Australia' }}</strong>
+                                <span>
+                                    <small>Shipping Country</small>
+                                    <strong>{{ $shoppingCountry->name ?? 'Australia' }}</strong>
                                 </span>
-                                <a href="{{ route('shop-detail') }}" style="margin-left: auto; color: #168f83; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">
-                                    Change
-                                </a>
+                                <a href="{{ route('shop-detail') }}">Change</a>
                             </div>
 
                             @php
                                 // Check if there are any non-package items in the cart
                                 $has_non_package_items = $cart->items->where('is_package', '!=', 1)->count() > 0;
                                 $has_package_items = $cart->items->where('is_package', 1)->count() > 0;
+
+                                $isPickupOrder = (int) $order_type === 1;
+                                $selectedShipping = session('selected_shipping');
+                                $serviceLabels = [
+                                    'snail_mail' => 'Standard',
+                                    'express' => 'Express',
+                                    'mixed' => 'Mixed',
+                                ];
+                                $serviceEta = [
+                                    'snail_mail' => 'Regular delivery',
+                                    'express' => 'Priority delivery',
+                                    'mixed' => 'Mixed delivery',
+                                ];
+                                $shippingMethod = null;
+                                $shippingMethodKey = null;
+                                $methodDetails = [];
+
+                                if (!$isPickupOrder && !empty($selectedShipping['category_selections']) && is_array($selectedShipping['category_selections'])) {
+                                    $servicesUsed = [];
+                                    foreach ($selectedShipping['category_selections'] as $selection) {
+                                        $serviceKey = $selection['service'] ?? null;
+                                        if (!$serviceKey) {
+                                            continue;
+                                        }
+                                        $servicesUsed[$serviceKey] = true;
+                                        $label = $serviceLabels[$serviceKey] ?? ucwords(str_replace('_', ' ', $serviceKey));
+                                        $price = isset($selection['price']) ? number_format((float) $selection['price'], 2) : null;
+                                        $methodDetails[] = $price !== null ? "{$label} — \${$price}" : $label;
+                                    }
+                                    $serviceKeys = array_keys($servicesUsed);
+                                    if (count($serviceKeys) === 1) {
+                                        $shippingMethodKey = $serviceKeys[0];
+                                        $shippingMethod = $serviceLabels[$shippingMethodKey] ?? ucwords(str_replace('_', ' ', $shippingMethodKey));
+                                    } elseif (count($serviceKeys) > 1) {
+                                        $shippingMethodKey = 'mixed';
+                                        $shippingMethod = 'Mixed';
+                                    }
+                                }
+
+                                if (!$isPickupOrder && !$shippingMethod && !empty($selectedShipping['service'])) {
+                                    $shippingMethodKey = $selectedShipping['service'];
+                                    $shippingMethod = $serviceLabels[$shippingMethodKey]
+                                        ?? ucwords(str_replace('_', ' ', $shippingMethodKey));
+                                }
+
+                                $deliveryEta = $serviceEta[$shippingMethodKey] ?? null;
+                                $deliverySummary = $isPickupOrder
+                                    ? 'Store Pickup'
+                                    : trim('Shipping' . ($shippingMethod ? ' • ' . $shippingMethod : '') . ($deliveryEta ? ' (' . $deliveryEta . ')' : ''));
+                                $deliveryPriceLabel = $isPickupOrder
+                                    ? 'FREE'
+                                    : '$' . number_format((float) ($CartTotal['shippingCharge'] ?? 0), 2);
                             @endphp
 
-                            <div class="order_review">
+                            <div class="order_review checkout-order-card">
                                 <table class="shop_table ">
                                     <thead>
                                         <tr>
@@ -231,10 +589,8 @@
                                             <th>
                                                 @if($has_package_items && !$has_non_package_items)
                                                     Items
-                                                @elseif($has_package_items && $has_non_package_items)
-                                                    Subtotal
                                                 @else
-                                                    Subtotal
+                                                    Items
                                                 @endif
                                             </th>
                                         </tr>
@@ -286,16 +642,24 @@
                                                 
                                                 <tr>
                                                     <td>
-                                                        @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                            {{ $product_detail->product_title }}
+                                                        @php
+                                                            $rawTitle = ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                                ? ($product_detail->product_title ?? '')
+                                                                : ($item->product->product_title ?? '');
+                                                            $parsedTitle = in_array($item->product_type, ['gift_card', 'photo_for_sale', 'hand_craft'], true)
+                                                                ? ['base' => $rawTitle, 'option' => null]
+                                                                : $parseCheckoutProductTitle($rawTitle);
+                                                        @endphp
+                                                        {{ $parsedTitle['base'] }}
+                                                        @if($parsedTitle['option'])
+                                                            <span class="checkout-product-option">— {{ $parsedTitle['option'] }} × {{ $item->quantity }}</span>
                                                         @else
-                                                            {{ $item->product->product_title }}
+                                                            &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
                                                         @endif
-                                                        &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
                                                         
                                                         {{-- Show package name in small text if multiple packages --}}
                                                         @if(count($package_groups) > 1)
-                                                            <br><small style="color: #666;">Package: {{ $package->product_title }}</small>
+                                                            <br><small style="color: #e8b923;">Package: {{ $package->product_title }}</small>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -315,12 +679,23 @@
                                             
                                             <tr>
                                             <td>
-                                                @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                    {{ $product_detail->product_title }}
+                                                @php
+                                                    $rawTitle = ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                        ? ($product_detail->product_title ?? '')
+                                                        : ($item->product->product_title ?? '');
+                                                    $parsedTitle = in_array($item->product_type, ['gift_card', 'photo_for_sale', 'hand_craft'], true)
+                                                        ? ['base' => $rawTitle, 'option' => null]
+                                                        : $parseCheckoutProductTitle($rawTitle);
+                                                    $displayQty = (isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                        ? ($item->test_print_qty ?? $item->quantity)
+                                                        : $item->quantity;
+                                                @endphp
+                                                {{ $parsedTitle['base'] }}
+                                                @if($parsedTitle['option'])
+                                                    <span class="checkout-product-option">— {{ $parsedTitle['option'] }} × {{ $displayQty }}</span>
                                                 @else
-                                                    {{ $item->product->product_title }}
+                                                    &nbsp; <strong>×&nbsp;{{ $displayQty }}</strong>
                                                 @endif
-                                                &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
                                             </td>
                                             <td>
                                                 <span>
@@ -346,59 +721,63 @@
                                     </tbody>
                                     <tfoot>
 
-                                        <tr>
+                                        <tr class="summary-divider">
                                             <th>Subtotal</th>
                                             <td><span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span> </td>
                                         </tr>
                                         @if(Session::has('coupon'))
-                                        <tr>
-                                            <th>Coupon: {{ $CartTotal['coupon_code']['code'] }}</th>
-                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_discount'],2) }}</span> </td>
+                                        <tr class="coupon-row">
+                                            <th>Coupon: {{ is_array($CartTotal['coupon_code'] ?? null) ? ($CartTotal['coupon_code']['code'] ?? '') : ($CartTotal['coupon_code'] ?? '') }}</th>
+                                            <td>-$ {{ number_format($CartTotal['coupon_discount'],2) }}</td>
                                         </tr>
                                         @endif
 
                                         @if($cart->shutter_point == '1')
                                         <tr>
                                             <th>Shutter Point:</th>
-                                            <td>-<span><span></span>{{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})</span> </td>
+                                            <td>- {{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})</td>
                                         </tr>
                                         @endif
 
-                                        @if($shipping->status == "1" && $order_type != 1)
+                                        @if($isPickupOrder || ($shipping && (string) $shipping->status === '1'))
                                         <tr>
-                                            <th>Shipping Charge</th>
-                                            <td>
-                                                <ul>
-                                                    <li>
-                                                        <input type="hidden" data-index="0">
-                                                        <label>
-                                                            <span><bdi><span>$</span>{{ number_format($CartTotal['shippingCharge'],2) }}</bdi></span>
-                                                        </label>
-                                                       
-                                                    </li>
-                                                </ul>
+                                            <td colspan="2" style="padding: 8px 0 4px !important;">
+                                                <div class="checkout-delivery-card" id="checkout-delivery-card">
+                                                    <button type="button" class="checkout-delivery-head" id="checkout-delivery-toggle" aria-expanded="true" aria-controls="checkout-delivery-body">
+                                                        <span class="icon" aria-hidden="true">
+                                                            <i class="fas {{ $isPickupOrder ? 'fa-store' : 'fa-truck' }}"></i>
+                                                        </span>
+                                                        <span class="title">Delivery</span>
+                                                        <span class="chevron" aria-hidden="true"><i class="fas fa-chevron-up"></i></span>
+                                                    </button>
+                                                    <div class="checkout-delivery-body" id="checkout-delivery-body">
+                                                        <div>
+                                                            <span class="label">{{ $deliverySummary }}</span>
+                                                            @if(!$isPickupOrder && count($methodDetails) > 1)
+                                                                <span class="meta">{{ implode(' · ', $methodDetails) }}</span>
+                                                            @endif
+                                                        </div>
+                                                        <span class="price">{{ $deliveryPriceLabel }}</span>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         @endif
 
-                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($CartTotal['shippingCharge'] ?? 0, 2) }}">
-
+                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($isPickupOrder ? 0 : ($CartTotal['shippingCharge'] ?? 0), 2) }}">
                                         <input type="hidden" name="customer_order_type" id="customer_order_type" value="{{$order_type}}">
+                                    </tfoot>
+                                </table>
+                            </div>
 
-                                        <tr class="order-total">
-                                            <th>Total</th>
-                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
-                                                {{-- <small class="includes_tax">(includes
-                                                    <span><span>$</span>1.12</span>
-                                                    GST)</small> --}}
-                                            </td>
-                                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
-                                        </tr>
+                            <div class="checkout-order-total">
+                                <span class="label">Total</span>
+                                <span class="amount">$ {{ number_format($CartTotal['total'], 2) }}</span>
+                            </div>
+                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
 
-                                        @if($CartTotal['total'] > 0)
-
-                                        <tr>
-                                            <td>
+                            @if($CartTotal['total'] > 0)
+                            <div style="margin-bottom: 12px;">
                                                 <div class="afterpay-4-payment">
                                                     <span>or 4 payments as low as ${{ number_format(($CartTotal['total'])/4,2) }} with </span>
                                                     <div class="after-pay-modal afterpayButton">
@@ -417,13 +796,10 @@
                                                     </svg>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                            </div>
+                            @endif
 
-                                        @endif
-
-                                    </tfoot>
-                                </table>
+                            </div>
 
                                 @if($CartTotal['total'] > 0)
 
@@ -493,7 +869,7 @@
                                             experience throughout this website, and for other purposes described
                                             in our privacy policy.</p> --}}
                                         <div class="place-order" id="place-order-btn">
-                                            <button id="submit"> Place order </button>
+                                            <button type="submit" id="submit"> Place order </button>
                                         </div>
                                         <div class="loader-order d-none" id="loader-order-btn">
                                             <button type="button" disabled="disabled"> <img src="{{asset('assets/images/loader.gif')}}"> </button>
@@ -505,6 +881,37 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="checkout-trust-bar" aria-label="Checkout assurances">
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></span>
+                    <span class="text">
+                        <strong>Secure Checkout</strong>
+                        <span>100% protected payments</span>
+                    </span>
+                </div>
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-truck"></i></span>
+                    <span class="text">
+                        <strong>Fast Delivery</strong>
+                        <span>Australia &amp; New Zealand shipping</span>
+                    </span>
+                </div>
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-award"></i></span>
+                    <span class="text">
+                        <strong>Premium Quality</strong>
+                        <span>Satisfaction guaranteed</span>
+                    </span>
+                </div>
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
+                    <span class="text">
+                        <strong>24/7 Support</strong>
+                        <span>We're here to help</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -601,9 +1008,33 @@
     
 
     var form = document.getElementById('payment-form');
+    var isPlacingOrder = false;
+
+    function lockPlaceOrder() {
+        isPlacingOrder = true;
+        $('#submit').prop('disabled', true);
+        $('#place-order-btn').addClass('d-none');
+        $('#loader-order-btn').removeClass('d-none');
+    }
+
+    function unlockPlaceOrder() {
+        isPlacingOrder = false;
+        $('#submit').prop('disabled', false);
+        $('#place-order-btn').removeClass('d-none');
+        $('#loader-order-btn').addClass('d-none');
+    }
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
+        event.stopPropagation();
+
+        // Prevent double-click / multiple submissions while request is in progress
+        if (isPlacingOrder) {
+            return;
+        }
+
+        // Show loader immediately so user cannot click again during delay
+        lockPlaceOrder();
 
         $('.error-message').remove();
 
@@ -673,6 +1104,11 @@
             });
         }
 
+        if (!isValid) {
+            unlockPlaceOrder();
+            return;
+        }
+
         var formData = {
             fname: fname,
             lname: lname,
@@ -724,18 +1160,15 @@
                 }
         
                 if (!isValid) {
+                    unlockPlaceOrder();
                     return;
                 }
                 
                 stripe.createToken(cardNumber).then(function (result) {
     if (result.error) {
         $('#stripe-error').text(result.error.message).css('color', 'red');
-        $('#place-order-btn').removeClass('d-none');
-        $('#loader-order-btn').addClass('d-none');
+        unlockPlaceOrder();
     } else {
-        $('#place-order-btn').addClass('d-none');
-        $('#loader-order-btn').removeClass('d-none');
-
         // Send the token to the server    
         formData.stripeToken = result.token.id;
         formData.payment_method = 'stripe';
@@ -760,8 +1193,7 @@
                 }else{
                     $('#email').after(`<span class="error-message" style="color: red;">${response.message}</span>`);
                 }
-                $('#place-order-btn').removeClass('d-none');
-                $('#loader-order-btn').addClass('d-none');
+                unlockPlaceOrder();
             } else {
                 fetch('/charge-customer', {
                     method: 'POST', 
@@ -783,25 +1215,24 @@
                         window.location.href = url;
                     } else {
                         $('#stripe-error').text(charge.data).css('color', 'red');
-                        $('#place-order-btn').removeClass('d-none');
-                        $('#loader-order-btn').addClass('d-none');
+                        unlockPlaceOrder();
                         console.log(charge.data);
                     }
+                })
+                .catch(function () {
+                    $('#stripe-error').text('Payment failed. Please try again.').css('color', 'red');
+                    unlockPlaceOrder();
                 });
             }
+        })
+        .catch(function () {
+            $('#stripe-error').text('Something went wrong. Please try again.').css('color', 'red');
+            unlockPlaceOrder();
         });
     }
 });
 
             }else{
-
-                if (!isValid) {
-                    $('#place-order-btn').removeClass('d-none');
-                    $('#loader-order-btn').addClass('d-none');
-                    return;
-                }
-                $('#place-order-btn').addClass('d-none');
-                $('#loader-order-btn').removeClass('d-none');
 
                 formData.payment_method = 'afterPay';
 
@@ -817,22 +1248,16 @@
                             window.location = data.data; 
                         } else {
                             $('#afterPayError').text(data.data).css('color','red');
+                            unlockPlaceOrder();
                         }
                     },
                     error: function(xhr, status, error) {
                         alert("Error: " + error);
+                        unlockPlaceOrder();
                     }
                 });
             }
         }else{
-            if (!isValid) {
-                $('#place-order-btn').removeClass('d-none');
-                $('#loader-order-btn').addClass('d-none');
-                return;
-            }
-            $('#place-order-btn').addClass('d-none');
-            $('#loader-order-btn').removeClass('d-none');
-
             formData.payment_method = 'free';
 
             $.ajax({
@@ -847,10 +1272,12 @@
                         window.location = data.data; 
                     } else {
                         $('#afterPayError').text(data.data).css('color','red');
+                        unlockPlaceOrder();
                     }
                 },
                 error: function(xhr, status, error) {
                     alert("Error: " + error);
+                    unlockPlaceOrder();
                 }
             });
         }
@@ -878,6 +1305,12 @@
     $('#ship_state').select2({
         placeholder: 'Select state',
         allowClear: false
+    });
+
+    $('#checkout-delivery-toggle').on('click', function () {
+        const $card = $('#checkout-delivery-card');
+        const isCollapsed = $card.toggleClass('is-collapsed').hasClass('is-collapsed');
+        $(this).attr('aria-expanded', isCollapsed ? 'false' : 'true');
     });
 
 </script>
