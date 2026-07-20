@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('assets/css/shadows-monthly.css') }}?v=15">
+<link rel="stylesheet" href="{{ asset('assets/css/shadows-monthly.css') }}?v=21">
 @endsection
 @section('content')
 @php
@@ -104,24 +104,26 @@
                                             ? trim($value->user->first_name . ' ' . ($value->user->last_name ?? ''))
                                             : ($value->user->username ?? 'Terri Pangas');
                                     @endphp
-                                    <article class="sm-card sm-card--magazine">
-                                        <a href="{{ route('blog-detail', ['slug' => $value->slug]) }}" class="sm-card__media">
-                                            <img src="{{ $PageDataService->getBlogImageUrl($value->image) }}" alt="{{ $value->title }}">
-                                        </a>
-                                        <div class="sm-card__body">
-                                            <span class="sm-badge">Editor’s Pick</span>
-                                            <h3>
-                                                <a href="{{ route('blog-detail', ['slug' => $value->slug]) }}">{{ $value->title }}</a>
-                                            </h3>
-                                            <div class="sm-card__meta">By {{ $authorName }} · {{ $value->updated_at->format('F d, Y') }}</div>
-                                            <p class="sm-card__excerpt">
-                                                {{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($value->description)), 120) }}
-                                            </p>
-                                            <a class="sm-card__link" href="{{ route('blog-detail', ['slug' => $value->slug]) }}">
-                                                Read Story <i class="fa-solid fa-arrow-right-long"></i>
+                                    <div class="sm-featured-slide">
+                                        <article class="sm-card sm-card--magazine">
+                                            <a href="{{ route('blog-detail', ['slug' => $value->slug]) }}" class="sm-card__media">
+                                                <img src="{{ $PageDataService->getBlogImageUrl($value->image) }}" alt="{{ $value->title }}">
                                             </a>
-                                        </div>
-                                    </article>
+                                            <div class="sm-card__body">
+                                                <span class="sm-badge">Editor’s Pick</span>
+                                                <h3>
+                                                    <a href="{{ route('blog-detail', ['slug' => $value->slug]) }}">{{ $value->title }}</a>
+                                                </h3>
+                                                <div class="sm-card__meta">By {{ $authorName }} · {{ $value->updated_at->format('F d, Y') }}</div>
+                                                <p class="sm-card__excerpt">
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($value->description)), 120) }}
+                                                </p>
+                                                <a class="sm-card__link" href="{{ route('blog-detail', ['slug' => $value->slug]) }}">
+                                                    Read Story <i class="fa-solid fa-arrow-right-long"></i>
+                                                </a>
+                                            </div>
+                                        </article>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -264,6 +266,16 @@
 $(function () {
     var $carousel = $('.sm-featured-carousel');
     if ($carousel.length && typeof $.fn.slick === 'function') {
+        function refreshFeaturedCarousel() {
+            if (!$carousel.hasClass('slick-initialized')) return;
+            $carousel.find('.slick-slide').css('height', 'auto');
+            $carousel.slick('setPosition');
+        }
+
+        $carousel.on('init reInit breakpoint setPosition', function () {
+            $carousel.find('.slick-list').css('height', 'auto');
+        });
+
         $carousel.slick({
             slidesToShow: 3,
             slidesToScroll: 1,
@@ -276,6 +288,11 @@ $(function () {
                 { breakpoint: 640, settings: { slidesToShow: 1 } }
             ]
         });
+
+        $carousel.find('img').on('load', refreshFeaturedCarousel);
+        $(window).on('load', refreshFeaturedCarousel);
+        setTimeout(refreshFeaturedCarousel, 50);
+        setTimeout(refreshFeaturedCarousel, 300);
     }
 
     var $filters = $('#sm-library-filters');

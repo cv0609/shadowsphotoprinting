@@ -536,15 +536,46 @@
 
 .sm-carousel-wrap {
     position: relative;
-    margin: 0 -6px;
+    margin: 0 -10px;
+    padding-bottom: 12px;
+}
+
+/* Slick sets an inline list height that can clip card body text — keep it auto. */
+.sm-featured-carousel.slick-slider {
+    margin-bottom: 28px;
 }
 
 .sm-featured-carousel .slick-list {
-    margin: 0 6px;
+    margin: 0;
+    padding: 8px 0 12px;
+    height: auto !important;
+    overflow: hidden;
+}
+
+.sm-featured-carousel .slick-track {
+    display: flex !important;
+    align-items: stretch;
+    height: auto !important;
 }
 
 .sm-featured-carousel .slick-slide {
-    padding: 8px 10px 18px;
+    height: auto !important;
+    float: none;
+    padding: 8px 14px 20px !important;
+    box-sizing: border-box;
+}
+
+.sm-featured-slide {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.sm-featured-carousel .sm-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
 }
 
 .sm-featured-carousel .slick-arrow {
@@ -565,6 +596,10 @@
 
 .sm-featured-carousel .slick-prev { left: -8px; }
 .sm-featured-carousel .slick-next { right: -8px; }
+
+.sm-featured-carousel .slick-dots {
+    bottom: -6px;
+}
 
 .sm-featured-carousel .slick-dots li button:before {
     color: var(--sm-sunset-gold);
@@ -675,6 +710,7 @@
     border: 1px solid rgba(107, 79, 58, 0.1);
     box-shadow: 0 10px 24px rgba(107, 79, 58, 0.06);
     min-height: 100%;
+    height: 100%;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -686,21 +722,31 @@
 
 .sm-card__media {
     aspect-ratio: 4 / 3;
+    width: 100%;
     background: var(--sm-cream-deep);
     overflow: hidden;
+    flex: 0 0 auto;
 }
 
 .sm-card--magazine .sm-card__media {
     aspect-ratio: 4 / 3;
+    height: auto;
     max-height: none;
+    flex: 0 0 auto;
 }
 
 .sm-card__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     display: block;
     transition: transform 0.4s ease;
+}
+
+.sm-featured-carousel .sm-card__body {
+    flex: 1 1 auto;
+    min-height: auto;
 }
 
 .sm-card:hover .sm-card__media img {
@@ -712,7 +758,8 @@
     flex-direction: column;
     gap: 10px;
     padding: 18px 18px 20px;
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 .sm-badge {
@@ -743,6 +790,7 @@
     font-size: 20px;
     line-height: 1.3;
     color: var(--sm-charcoal);
+    min-height: 2.6em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -767,7 +815,8 @@
     color: #5c534a;
     font-size: 14px;
     line-height: 1.5;
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 4.5em;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -781,6 +830,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    margin-top: auto;
     transition: gap 0.2s ease, color 0.2s ease;
 }
 
