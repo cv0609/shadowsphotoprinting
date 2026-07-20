@@ -131,7 +131,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:16px 20px 8px;font-family:'Raleway',sans-serif;" align="left">
 
-  <div style="color: #16a085; line-height: 120%; text-align: center; word-wrap: break-word;">
+  <div style="color: #69794E; line-height: 120%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 120%;"><strong><span style="font-size: 48px; line-height: 57.6px; font-family: Raleway, sans-serif;">Happy Shopping !!!!</span></strong></p>
   </div>
 
@@ -169,7 +169,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:15px 20px 14px;font-family:'Raleway',sans-serif;" align="left">
 
-  <div style="color: #16a085; line-height: 120%; text-align: center; word-wrap: break-word;">
+  <div style="color: #69794E; line-height: 120%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 120%;"><span style="font-size: 30px; line-height: 36px;">We’re going to help you celebrate.</span></p>
   </div>
 
@@ -183,7 +183,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px;font-family:'Raleway',sans-serif;" align="left">
 
-  <div style="color: #16a085; line-height: 130%; text-align: center; word-wrap: break-word;">
+  <div style="color: #69794E; line-height: 130%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px;">Purchase as a Gift. </span></p>
 <p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px;"></span></p>
   </div>
@@ -198,7 +198,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px;font-family:'Raleway',sans-serif;" align="left">
 
-  <div style="color: #16a085; line-height: 140%; text-align: center; word-wrap: break-word;">
+  <div style="color: #69794E; line-height: 140%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;">Someone special like you deserves the best and the best way to cheer yourself up is to cheer somebody else up. </span></p>
 <p><br></p>
 <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;">Now we’re both happy!”</span></p>
@@ -217,7 +217,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px;font-family:'Raleway',
  sans-serif;" align="left">
 
-  <div style="color: #16a085; line-height: 140%; text-align: center; word-wrap: break-word;">
+  <div style="color: #69794E; line-height: 140%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">Our gift cards are valid for </span></p>
 <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">3 years from date of purchase.</span></p>
   </div>
@@ -235,7 +235,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 <div align="center">
 
     <a href="" target="_blank" class="v-button">
-      <span style="display:block;padding:13px 22px;line-height:120%;background-color: #16a085;color: #FFF;padding: 15px;border-radius: 10px;border: 2px solid #fff;">{{ $order['code'] }}</span>
+      <span style="display:block;padding:13px 22px;line-height:120%;background-color: #69794E;color: #FFF;padding: 15px;border-radius: 10px;border: 2px solid #fff;">{{ $order['code'] }}</span>
     </a>
 
 </div>

@@ -25,7 +25,7 @@
                     </a>
                 </td>
             </tr>
-            <tr style="background-color: #16a085; color: #ffffff;">
+            <tr style="background-color: #69794E; color: #ffffff;">
                 <td
                     style="padding:36px 48px;display:block;text-align:center;padding-top:15px;padding-bottom:15px;padding-left:48px;padding-right:48px">
                     <h1 style="margin: 0;">Get a Quote</h1>
@@ -33,16 +33,16 @@
 
             <tr>
                 <td style="padding: 20px;">
-                    <h2 style="color: #16a085; margin-top: 0;">User Details</h2>
+                    <h2 style="color: #69794E; margin-top: 0;">User Details</h2>
                     <p><strong>First Name:</strong> {{$quote['name'] ?? ''}}</p>
                     <p><strong>Last Name:</strong> {{$quote['last_name'] ?? ''}}</p>
                     <p><strong>Email:</strong> {{$quote['email'] ?? ''}}</p>
                     <p><strong>Phone Number:</strong> {{$quote['phone_number'] ?? ''}}</p>
 
-                    <h2 style="color: #16a085;">Requested Size</h2>
+                    <h2 style="color: #69794E;">Requested Size</h2>
                     <p><strong>Requested Size to be printed:</strong> {{$quote['requested'] ?? ''}}</p>
 
-                    <h2 style="color: #16a085;">Additional Query</h2>
+                    <h2 style="color: #69794E;">Additional Query</h2>
                     <p><strong>Any Other Query:</strong> {{$quote['message'] ?? ''}}</p>
                 </td>
             </tr>

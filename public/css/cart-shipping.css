@@ -1,5 +1,22 @@
 /* Cart Shipping Styles - Modern Compact Design */
 
+/* Shipping / Pickup / shutter point radios — brand accent */
+.rad-btns-box input[type="radio"],
+.rad-btns input[type="radio"],
+input.orderType[type="radio"],
+input.shutterPoint[type="radio"] {
+    accent-color: #69794E;
+    cursor: pointer;
+}
+
+.rad-btns-box input[type="radio"]:focus-visible,
+.rad-btns input[type="radio"]:focus-visible,
+input.orderType[type="radio"]:focus-visible,
+input.shutterPoint[type="radio"]:focus-visible {
+    outline: 2px solid #5D6B43;
+    outline-offset: 2px;
+}
+
 /* Compact shipping section table row */
 .shipping-section {
     border: none !important;
@@ -62,16 +79,16 @@
 }
 
 .shipping-option:hover {
-    border-color: #16a085;
+    border-color: #69794E;
     background: #f8fffe;
     transform: translateY(-1px);
-    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.1);
+    box-shadow: 0 1px 3px rgba(105, 121, 78, 0.1);
 }
 
 .shipping-option.selected {
-    border-color: #16a085;
-    background: #e8f5f2;
-    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+    border-color: #69794E;
+    background: #eef1e8;
+    box-shadow: 0 1px 2px rgba(105, 121, 78, 0.2);
 }
 
 .shipping-option-content {
@@ -85,7 +102,7 @@
     margin: 0;
     cursor: pointer;
     transform: scale(0.7);
-    accent-color: #16a085;
+    accent-color: #69794E;
 }
 
 .shipping-name {
@@ -97,7 +114,7 @@
 
 .shipping-price {
     font-weight: 700;
-    color: #16a085;
+    color: #69794E;
     font-size: 11px;
     min-width: 40px;
     text-align: right;
@@ -132,7 +149,7 @@
     border-bottom: none;
     font-weight: 600;
     font-size: 13px;
-    color: #16a085;
+    color: #69794E;
 }
 
 /* Compact cart design */
@@ -170,7 +187,7 @@
 
 .change-address {
     font-size: 11px;
-    color: #16a085;
+    color: #69794E;
     text-decoration: underline;
     cursor: pointer;
 }
@@ -208,7 +225,7 @@
     height: 14px;
     border: 2px solid #ddd;
     border-radius: 50%;
-    border-top-color: #16a085;
+    border-top-color: #69794E;
     animation: spin 1s ease-in-out infinite;
     margin-left: 6px;
 }
@@ -283,49 +300,49 @@
 .shipping-option {
     display: flex;
     align-items: center;
-    padding: 6px 8px;
-    background: #fafafa;
-    border: 1px solid #f0f0f0;
-    border-radius: 4px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #d9ddd3;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
     margin: 0;
-    min-height: 28px;
+    min-height: 40px;
     user-select: none;
 }
 
 .shipping-option:hover {
-    border-color: #16a085;
-    background: #f8fffe;
+    border-color: #69794E;
+    background: #f5f7f0;
     transform: translateY(-1px);
-    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.1);
+    box-shadow: 0 1px 3px rgba(105, 121, 78, 0.12);
 }
 
 .shipping-option input[type="radio"] {
-    margin-right: 6px;
-    accent-color: #16a085;
-    transform: scale(0.9);
+    margin-right: 8px;
+    accent-color: #69794E;
+    transform: scale(1.05);
     cursor: pointer;
 }
 
 .shipping-option input[type="radio"]:checked + label {
-    color: #16a085;
-    font-weight: 600;
+    color: #5D6B43;
+    font-weight: 700;
 }
 
 .shipping-option input[type="radio"]:checked {
     ~ .shipping-option {
-        border-color: #16a085;
-        background: #e8f5f2;
-        box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+        border-color: #69794E;
+        background: #eef1e8;
+        box-shadow: 0 1px 2px rgba(105, 121, 78, 0.2);
     }
 }
 
 .shipping-option.selected {
-    border-color: #16a085;
-    background: #e8f5f2;
-    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+    border-color: #69794E;
+    background: #eef1e8;
+    box-shadow: 0 1px 2px rgba(105, 121, 78, 0.2);
 }
 
 .shipping-option label {
@@ -334,26 +351,31 @@
     width: auto;
     cursor: pointer;
     margin: 0;
-    font-size: 11px;
+    font-size: 14px;
     padding: 0;
-    color: #333;
-    line-height: 1.2;
-    gap: 4px;
+    color: #1a1a1a;
+    line-height: 1.35;
+    gap: 6px;
 }
 
 .service-name {
-    font-weight: 500;
-    color: #333;
-    text-transform: none;
-    letter-spacing: 0;
-    margin-right: 4px;
-    font-size: 11px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-transform: capitalize;
+    letter-spacing: 0.02em;
+    margin-right: 2px;
+    font-size: 14px;
 }
 
 .service-price {
     font-weight: 700;
-    color: #16a085;
-    font-size: 12px;
+    color: #5D6B43;
+    font-size: 14px;
+}
+
+.shipping-option label .service-name,
+.shipping-option label .service-price {
+    font-weight: 700;
 }
 
 .delivery-time {
@@ -385,8 +407,8 @@
 #total-shipping-cost {
     margin-top: 4px;
     padding: 3px 6px;
-    background: #e8f5f3;
-    border: 1px solid #16a085;
+    background: #eef1e8;
+    border: 1px solid #69794E;
     border-radius: 2px;
     text-align: center;
     font-size: 10px;
@@ -400,14 +422,14 @@
 
 .test-total-label,
 .test-total-amount {
-    color: #FFC205 !important;
+    color: #D7A72C !important;
 }
 .choose-prefered-option-heading{
-    color: #FFC205 !important;
+    color: #D7A72C !important;
 }
 
 #total-shipping-cost strong {
-    color: #16a085;
+    color: #69794E;
     font-size: 11px;
 }
 

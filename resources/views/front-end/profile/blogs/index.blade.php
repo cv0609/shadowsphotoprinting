@@ -15,7 +15,7 @@
 
 .eddpoint-header-title a {
     box-shadow: inset 0 0 0 0 transparent;
-    background-color: #16a085;
+    background-color: #69794E;
     border: 0;
     border-radius: 0;
     display: block;

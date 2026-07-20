@@ -22,19 +22,19 @@
     }
 
     .page-not-found h1 {
-        color: #16a085;
+        color: #69794E;
         font-size: min(6vw, 100px);
         margin: 0 0 20px;
-        text-shadow: 1px 1px #ffc205;
+        text-shadow: 1px 1px #D7A72C;
     }
 
     .page-not-found p {
         font-size: 20px;
         font-weight: 600;
-        color: #ffc205;
+        color: #D7A72C;
     }
     .home-button {
-        background-color: #16a085;
+        background-color: #69794E;
         color: #fff;
         padding: 15px 30px;
         font-size: 18px;

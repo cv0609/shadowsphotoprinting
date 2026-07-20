@@ -1,0 +1,20 @@
+/* Shadows Photo Printing — brand color tokens */
+
+:root {
+    --brand-primary: #69794E;
+    --brand-light: #708052;
+    --brand-dark: #5D6B43;
+    --brand-gold: #D7A72C;
+    --brand-bg: #000000;
+    --brand-text: #F5F5F2;
+}
+
+/* Soft white default text on dark site chrome */
+.main-page {
+    color: var(--brand-text);
+}
+
+/* Brand radio accent from first paint (avoids browser-default blue flash) */
+input[type="radio"] {
+    accent-color: var(--brand-primary);
+}

@@ -25,7 +25,7 @@
                     </a>
                 </td>
             </tr>
-            <tr style="background-image: linear-gradient(135deg, #16a085 0%, #3b8879 100%); color: #ffffff;">
+            <tr style="background-image: linear-gradient(135deg, #69794E 0%, #3b8879 100%); color: #ffffff;">
                 <td
                     style="padding:36px 48px;display:block;text-align:center;padding-top:15px;padding-bottom:15px;padding-left:48px;padding-right:48px">
                     <h1 style="margin: 0; font-size: 30px;">New Ambassador Request Submitted

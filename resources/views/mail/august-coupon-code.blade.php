@@ -38,7 +38,7 @@
             </p>
 
             <!-- Coupon Code Box -->
-            <div style="background-color: #20c997; color: white; padding: 25px; text-align: center; border-radius: 10px; margin: 30px 0; box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);">
+            <div style="background-color: #69794E; color: white; padding: 25px; text-align: center; border-radius: 10px; margin: 30px 0; box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);">
                 <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: normal;">Your Exclusive Coupon Code</h3>
                 <div style="font-size: 32px; font-weight: bold; letter-spacing: 3px; background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; margin: 10px 0;">
                     {{ $data['coupon_code'] }}
@@ -50,9 +50,9 @@
             <div style="background-color: #f8f9fa; padding: 25px; border-radius: 10px; margin: 25px 0;">
                 <h3 style="color: #333; margin-bottom: 15px; font-size: 20px;">📋 How to Use Your Coupon:</h3>
                 <ol style="color: #555; font-size: 16px; line-height: 1.8; margin: 0; padding-left: 20px;">
-                    <li style="margin-bottom: 8px;">Browse our products at <a href="{{ url('/shop') }}" style="color: #20c997; text-decoration: none; font-weight: bold;">shadowsphotoprinting.com</a></li>
+                    <li style="margin-bottom: 8px;">Browse our products at <a href="{{ url('/shop') }}" style="color: #69794E; text-decoration: none; font-weight: bold;">shadowsphotoprinting.com</a></li>
                     <li style="margin-bottom: 8px;">Add items to your cart</li>
-                    <li style="margin-bottom: 8px;">At checkout, enter your coupon code: <strong style="color: #20c997;">{{ $data['coupon_code'] }}</strong></li>
+                    <li style="margin-bottom: 8px;">At checkout, enter your coupon code: <strong style="color: #69794E;">{{ $data['coupon_code'] }}</strong></li>
                     <li style="margin-bottom: 8px;">Enjoy your 10% discount!</li>
                 </ol>
             </div>
@@ -60,7 +60,7 @@
             <!-- Call to Action Button -->
             <div style="text-align: center; margin: 30px 0;">
                 <a href="{{ url('/shop') }}" 
-                   style="display: inline-block; background-color: #20c997; color: white; padding: 15px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);">
+                   style="display: inline-block; background-color: #69794E; color: white; padding: 15px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);">
                     🛒 Start Shopping Now
                 </a>
             </div>
@@ -83,7 +83,7 @@
             </p>
             
             <p style="color: #333; font-size: 16px; margin-bottom: 5px;">Happy shopping!</p>
-            <p style="color: #20c997; font-weight: bold; font-size: 16px; margin: 0;">The Shadows Photo Printing Team</p>
+            <p style="color: #69794E; font-weight: bold; font-size: 16px; margin: 0;">The Shadows Photo Printing Team</p>
         </div>
 
         <!-- Footer -->

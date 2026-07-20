@@ -12,7 +12,7 @@
         }
 
         .form-mm .header a {
-            color: #ffc205;
+            color: #D7A72C;
         }
 
         #signatureCanvas {
@@ -38,7 +38,7 @@
         .form-mm .form-section label {
             display: block;
             font-weight: 500;
-            color: #ffc205;
+            color: #D7A72C;
             margin-bottom: 6px;
             font-size: 0.95em;
             margin-top: 10px;
@@ -144,7 +144,7 @@
             width: 48%;
             -webkit-box-shadow: inset 0 0 0 0 transparent;
             box-shadow: inset 0 0 0 0 transparent;
-            background-color: #16a085;
+            background-color: #69794E;
             border: 0;
             border-radius: 0;
             display: inline-block;
@@ -169,7 +169,7 @@
 
         .form-mm .clear-btn {
             background-color: #fff;
-            color: #ffc205;
+            color: #D7A72C;
             border: 2px solid #dfe6e9;
             margin-right: 0;
         }
@@ -187,7 +187,7 @@
         }
 
         .form-mm .footer a {
-            color: #ffc205;
+            color: #D7A72C;
             text-decoration: none;
             font-weight: 500;
         }
@@ -220,7 +220,7 @@
         }
 
         .form-mm .form-section input[type="date"]:focus {
-            border-color: #ffc205;
+            border-color: #D7A72C;
             outline: none;
         }
 
@@ -237,7 +237,7 @@
             width: auto;
             background: transparent !important;
             box-shadow: none !important;
-            color: #16a085 !important;
+            color: #69794E !important;
         }
 
         .banner-sec-new {
@@ -263,11 +263,11 @@
             width: 84px;
             height: 4px;
             border-radius: 30px;
-            background: #16a085;
+            background: #69794E;
             margin: 18px auto;
         }
         .section-title-inline {
-            color: #ffc205;
+            color: #D7A72C;
             font-weight: 700;
             margin-top: 6px;
             margin-bottom: 6px;
@@ -314,7 +314,7 @@
       }
 
       .form-mm .header a {
-        color: #ffc205;
+        color: #D7A72C;
       }
 
       #signatureCanvas {
@@ -340,7 +340,7 @@
       .form-mm .form-section label {
         display: block;
         font-weight: 500;
-        color: #ffc205;
+        color: #D7A72C;
         margin-bottom: 6px;
         font-size: 0.95em;
         margin-top: 10px;
@@ -449,7 +449,7 @@
         width: 48%;
         -webkit-box-shadow: inset 0 0 0 0 transparent;
         box-shadow: inset 0 0 0 0 transparent;
-        background-color: #16a085;
+        background-color: #69794E;
         border: 0;
         border-radius: 0;
         display: inline-block;
@@ -474,7 +474,7 @@
 
       .form-mm .clear-btn {
         background-color: #fff;
-        color: #ffc205;
+        color: #D7A72C;
         border: 2px solid #dfe6e9;
         margin-right: 0;
       }
@@ -492,7 +492,7 @@
       }
 
       .form-mm .footer a {
-        color: #ffc205;
+        color: #D7A72C;
         text-decoration: none;
         font-weight: 500;
       }
@@ -525,7 +525,7 @@
       }
 
       .form-mm .form-section input[type="date"]:focus {
-        border-color: #ffc205;
+        border-color: #D7A72C;
         outline: none;
       }
 
@@ -544,7 +544,7 @@
         width: auto;
         background: transparent !important;
         box-shadow: none !important;
-        color: #16a085 !important;
+        color: #69794E !important;
       }
 
       .banner-sec-new {
@@ -570,11 +570,11 @@
         width: 84px;
         height: 4px;
         border-radius: 30px;
-        background: #16a085;
+        background: #69794E;
         margin: 18px auto;
       }
       .section-title-inline {
-        color: #ffc205;
+        color: #D7A72C;
         font-weight: 700;
         margin-top: 6px;
         margin-bottom: 6px;
@@ -608,7 +608,7 @@
         margin-bottom: 4px;
       }
       h3.banner-heading {
-        color: #ffc205;
+        color: #D7A72C;
         font-size: 50px;
         text-transform: uppercase;
         font-weight: 600;
@@ -882,7 +882,7 @@
                                     style="border: 1px solid #fff;"></canvas>
                             </div>
                             <button type="button" id="clearSignature"
-                                style="background-color: #fff; color: #ffc205; border: 2px solid #dfe6e9; padding: 5px 10px; margin-top: 5px; border-radius: 6px;">Clear
+                                style="background-color: #fff; color: #D7A72C; border: 2px solid #dfe6e9; padding: 5px 10px; margin-top: 5px; border-radius: 6px;">Clear
                                 Signature</button>
                             <input type="hidden" id="signatureData" name="signatureData" required>
                         </div>

@@ -23,7 +23,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="{{ asset('assets/css/aos.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('assets/css/brand.css') }}?v=2">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?v=7">
 <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
 <script src="https://js.stripe.com/v3/"></script>

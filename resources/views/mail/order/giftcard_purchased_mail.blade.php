@@ -22,7 +22,7 @@
                     </a>
                 </td>
             </tr>
-            <tr style="background-color: #16a085; color: #ffffff;">
+            <tr style="background-color: #69794E; color: #ffffff;">
                 <td style="padding: 20px; text-align: center;">
                     <h1 style="margin: 0;">You've Received a Gift Card!</h1>
                 </td>
@@ -48,7 +48,7 @@
             <tr>
                 <td style="padding: 0 30px 30px 30px; text-align: center;">
                     <h3 style="color: #333;">Personal Message</h3>
-                    <blockquote style="font-style: italic; font-size: 16px; color: #555; margin: 10px auto; border-left: 4px solid #16a085; padding-left: 15px;">
+                    <blockquote style="font-style: italic; font-size: 16px; color: #555; margin: 10px auto; border-left: 4px solid #69794E; padding-left: 15px;">
                         {{ $order['message'] }}
                     </blockquote>
                 </td>

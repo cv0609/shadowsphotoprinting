@@ -143,13 +143,14 @@ class ShopController extends Controller
     Session::put('shop_shipping_country', $country->code);
 
     $cart = Auth::check()
-      ? Cart::where('user_id', Auth::id())->whereNull('session_id')->first()
+      ? Cart::where('user_id', Auth::id())->first()
       : Cart::where('session_id', Session::getId())->first();
 
-    // An empty cart can follow the newly selected country. A cart containing
-    // products keeps its original country until the user clears it.
-    if ($cart && !$cart->items()->exists()) {
+    // Keep cart destination in sync with the selected shopping country so
+    // cart / checkout always show the country the customer just chose.
+    if ($cart) {
       $cart->update(['shipping_country_id' => $country->id]);
+      Session::forget('selected_shipping');
     }
 
     if ($country->code === 'NZ') {
@@ -163,6 +164,7 @@ class ShopController extends Controller
 
     return response()->json([
       'country_code' => $country->code,
+      'country_name' => $country->name,
       'categories' => $categories->map(function ($category) {
         return [
           'name' => ucfirst($category->name),

@@ -24,7 +24,7 @@
                     </a>
                 </td>
             </tr>
-            <tr style="background-color: #16a085; color: #ffffff;">
+            <tr style="background-color: #69794E; color: #ffffff;">
                 <td
                     style="padding:36px 48px;display:block;text-align:center;padding-top:15px;padding-bottom:15px;padding-left:48px;padding-right:48px">
                     <h1 style="margin: 0;">New Order Confirmation</h1>
@@ -44,7 +44,7 @@
                         your
                         reference:</p>
                     <p>We will invoice your company</p> --}}
-                    <h2 style="color: #16a085;">Order #{{$order->order_number ?? ''}} ({{$order_date ?? ''}})</h2>
+                    <h2 style="color: #69794E;">Order #{{$order->order_number ?? ''}} ({{$order_date ?? ''}})</h2>
                 </td>
             </tr>
             <table style="padding: 0 30px;" cellspacing="0" width="100%">
@@ -152,8 +152,8 @@
 
             <table style="padding: 0 30px;" cellspacing="0" width="100%">
                 <tr>
-                    <td style="padding: 12px"> <h2 style="color: #16a085; margin:0;"> Billing address </h2></td>
-                    <td style="padding: 12px"><h2 style="color: #16a085; margin:0;">Shipping address </h2></td>
+                    <td style="padding: 12px"> <h2 style="color: #69794E; margin:0;"> Billing address </h2></td>
+                    <td style="padding: 12px"><h2 style="color: #69794E; margin:0;">Shipping address </h2></td>
                 </tr>
             </table>
 
@@ -175,7 +175,7 @@
                                     {{$order->orderBillingShippingDetails->country_region ?? ''}}<br>
                                     {{$order->orderBillingShippingDetails->order_comments ?? ''}}<br>
                                     <a href="mailto:{{$order->orderBillingShippingDetails->email ?? ''}}"
-                                        style="color: #16a085; text-decoration: underline; font-weight: normal;">{{$order->orderBillingShippingDetails->email ?? ''}}</a>
+                                        style="color: #69794E; text-decoration: underline; font-weight: normal;">{{$order->orderBillingShippingDetails->email ?? ''}}</a>
 
                                 </td>
                             </tr>
@@ -183,7 +183,7 @@
                         </table>
                     </td>
                     <td valign="top" style="width: 50%; border: 1px solid #e5e5e5;">
-                        {{-- <h2 style="color: #16a085;">Shipping address </h2> --}}
+                        {{-- <h2 style="color: #69794E;">Shipping address </h2> --}}
                         <table cellspacing="0" width="100%" style="width: 100%; ">
                             <tr>
                                 <td  valign="top" id="shipping-cell"
