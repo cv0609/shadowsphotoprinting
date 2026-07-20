@@ -16,6 +16,7 @@ class Blog extends Model
         'status',
         'added_by',
         'user_id',
+        'blog_category_id',
     ];
      
     /**
@@ -24,5 +25,17 @@ class Blog extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
+    }
+
+    public function monthlyEditions()
+    {
+        return $this->belongsToMany(MonthlyEdition::class, 'monthly_edition_blog')
+            ->withPivot('sort_order')
+            ->withTimestamps();
     }
 }

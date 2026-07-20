@@ -36,6 +36,21 @@
                         </div>
                     </div>
 
+                    <div class="item form-group">
+                        <label class="col-md-3 label-align">Category</label>
+                        <div class="col-md-6">
+                            <select name="blog_category_id" class="form-control">
+                                <option value="">Select category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected((string) old('blog_category_id') === (string) $category->id)>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('blog_category_id') <p class="text-danger">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
                     {{-- Image --}}
                     <div class="item form-group">
                         <label class="col-md-3 label-align">Blog Image *</label>

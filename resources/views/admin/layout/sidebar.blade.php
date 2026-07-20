@@ -53,7 +53,13 @@
                   <li><a href="{{route('gift-card-list')}}"><i class="fa fa-duotone fa-gift"></i>Gift Cards</a></li>
                   <li><a href="{{route('test-print-product-list')}}"><i class="fa fa-duotone fa-gift"></i>Test Print</a></li>
                   <li><a href="{{route('coupons-list')}}"><i class="fa fa-solid fa-tag"></i>Coupons</a>
-                  <li><a href="{{route('blogs.index')}}"><i class="fa fa-tasks"></i>Blogs</a></li>
+                  <li><a href="#"><i class="fa fa-book"></i> Shadows Monthly</a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('monthly-editions.index') }}">Monthly Editions</a></li>
+                      <li><a href="{{ route('blogs.index') }}">Blog Library</a></li>
+                      <li><a href="{{ route('shadows-monthly-settings.edit') }}">Page Settings</a></li>
+                    </ul>
+                  </li>
 
                   <li><a href="#"><i class="fa fa-picture-o"></i>Brand Ambassador</a>
                     <ul class="nav child_menu">

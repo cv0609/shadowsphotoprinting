@@ -53,6 +53,20 @@
                     </div>
 
                     <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align">Category</label>
+                        <div class="col-md-6 col-sm-6">
+                            <select name="blog_category_id" class="form-control">
+                                <option value="">Select category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected((string) old('blog_category_id', $detail->blog_category_id) === (string) $category->id)>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Blog Image <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">

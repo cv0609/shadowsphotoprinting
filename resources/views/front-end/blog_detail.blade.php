@@ -6,8 +6,8 @@
             <div class="breadcrumbs-wrapper">
                 <span><a href="{{url('/')}}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                {{-- <span><a href="#">uncategorized</a></span>
-                <span class="bc-delimiter">»</span> --}}
+                <span><a href="{{ route('shadows-monthly') }}">Shadows Monthly</a></span>
+                <span class="bc-delimiter">»</span>
                 <span> {{strtoupper($blog_details->title)}}</span>
             </div>
         </div>
@@ -18,13 +18,15 @@
     <div class="container">
         <div class="single-arti">
             <div class="category-kt">
-                <a href="javascript:void(0)">Uncategorized</a>
+                <a href="{{ route('shadows-monthly') }}?category={{ optional($blog_details->category)->slug }}#library">
+                    {{ optional($blog_details->category)->name ?? 'Helpful Information' }}
+                </a>
             </div>
             <div class="benefit">
                 <div class="kt_color_gray">
                     
                     <div class="shadtpang">
-                        <img src="{{asset($blog_details->image)}}" alt="Image">
+                        <img src="{{ app(App\Services\PageDataService::class)->getBlogImageUrl($blog_details->image) }}" alt="{{ $blog_details->title }}">
                         <div class="blog-post-body">
                             {!! html_entity_decode($blog_details->description) !!}
                         </div>

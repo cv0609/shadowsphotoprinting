@@ -1,7 +1,10 @@
 <?php
 namespace App\Services;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\GiftCardCategory;
+use App\Models\MonthlyEdition;
+use App\Models\ShadowsMonthlySetting;
 use App\Models\ProductCategory;
 use App\Models\PhotoForSaleProduct;
 use App\Models\Admin;
@@ -25,7 +28,10 @@ class PageDataService
 
     public function getWebBlogs()
     {
-       $blogs = Blog::where('status','1')->get();
+       $blogs = Blog::with(['category', 'user'])
+           ->where('status','1')
+           ->orderByDesc('updated_at')
+           ->get();
        if(isset($blogs) && !empty($blogs))
         {
            return $blogs;
@@ -34,6 +40,105 @@ class PageDataService
         {
             return null;
         } 
+    }
+
+    public function getBlogCategories()
+    {
+        return BlogCategory::orderBy('sort_order')->get();
+    }
+
+    public function getLatestMonthlyEdition()
+    {
+        $withBlogs = ['blogs' => function ($query) {
+            $query->where('status', '1')->with(['category', 'user']);
+        }];
+
+        $homepage = MonthlyEdition::published()
+            ->where('is_homepage', true)
+            ->with($withBlogs)
+            ->first();
+
+        if ($homepage) {
+            return $homepage;
+        }
+
+        return MonthlyEdition::published()
+            ->with($withBlogs)
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderByDesc('published_at')
+            ->first();
+    }
+
+    public function getPreviousMonthlyEditions(?MonthlyEdition $latest = null)
+    {
+        $query = MonthlyEdition::published()
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderByDesc('published_at');
+
+        if ($latest) {
+            $query->where('id', '!=', $latest->id);
+        }
+
+        return $query->get();
+    }
+
+    public function getLibraryBlogsExcludingEdition(?MonthlyEdition $edition = null)
+    {
+        $query = Blog::with(['category', 'user'])
+            ->where('status', '1')
+            ->orderByDesc('updated_at');
+
+        if ($edition) {
+            $featuredIds = $edition->blogs->pluck('id')->filter()->all();
+            if (!empty($featuredIds)) {
+                $query->whereNotIn('id', $featuredIds);
+            }
+        }
+
+        return $query->get();
+    }
+
+    public function getShadowsMonthlySettings(): ShadowsMonthlySetting
+    {
+        return ShadowsMonthlySetting::current();
+    }
+
+    public function getShadowsMonthlyHeroImage(?MonthlyEdition $edition = null): string
+    {
+        $settings = ShadowsMonthlySetting::current();
+
+        if (!empty($settings->hero_image) && file_exists(public_path($settings->hero_image))) {
+            return asset($settings->hero_image);
+        }
+
+        $defaultHero = 'assets/images/shadows-monthly/hero.jpg';
+        if (file_exists(public_path($defaultHero))) {
+            return asset($defaultHero);
+        }
+
+        return asset('assets/images/logo.png');
+    }
+
+    /**
+     * Public URL for a blog image, with space-safe encoding and a fallback when the file is missing.
+     */
+    public function getBlogImageUrl(?string $path): string
+    {
+        $fallback = asset('assets/images/logo.png');
+        if (empty($path)) {
+            return $fallback;
+        }
+
+        $normalized = ltrim(str_replace('\\', '/', $path), '/');
+        if (!file_exists(public_path($normalized))) {
+            return $fallback;
+        }
+
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $normalized)));
+
+        return url($encoded);
     }
 
     public function getProductCategories()

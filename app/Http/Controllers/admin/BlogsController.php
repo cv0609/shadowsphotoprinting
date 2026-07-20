@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdminBlogRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -14,13 +15,14 @@ class BlogsController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::latest()->orderBy('created_at', 'desc')->paginate(10);
+        $blogs = Blog::with('category')->latest()->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.blogs.index', compact('blogs'));
     }
 
     public function create()
     {
-        return view('admin.blogs.add');
+        $categories = BlogCategory::orderBy('sort_order')->get();
+        return view('admin.blogs.add', compact('categories'));
     }
 
     public function store(AdminBlogRequest $request)
@@ -35,7 +37,14 @@ class BlogsController extends Controller
             $file->move($destinationPath, $fileName);
             $image =  $destinationPath.'/'.$fileName;
         }
-        Blog::create(['title'=>$request->title,'description'=>$request->description,'image'=>$image,'slug'=>$slug,"added_by"=>Auth::guard('admin')->id()]);
+        Blog::create([
+            'title'=>$request->title,
+            'description'=>$request->description,
+            'image'=>$image,
+            'slug'=>$slug,
+            'added_by'=>Auth::guard('admin')->id(),
+            'blog_category_id'=>$request->blog_category_id,
+        ]);
 
         return redirect()->route('blogs.index')->with('success','Blog is created successfully');
     }
@@ -43,13 +52,21 @@ class BlogsController extends Controller
     public function show($slug)
     {  
         $detail = Blog::where('slug',$slug)->first();
-        return view('admin.blogs.edit',compact('detail'));
+        $categories = BlogCategory::orderBy('sort_order')->get();
+        return view('admin.blogs.edit',compact('detail', 'categories'));
     }
     
     public function update(AdminBlogRequest $request)
     {
         $slug = Str::slug($request->title);
-        $data = ['title'=>$request->title,'description'=>$request->description,'slug'=>$slug,'status'=>$request->status,"added_by"=>Auth::guard('admin')->id()];
+        $data = [
+            'title'=>$request->title,
+            'description'=>$request->description,
+            'slug'=>$slug,
+            'status'=>$request->status,
+            'added_by'=>Auth::guard('admin')->id(),
+            'blog_category_id'=>$request->blog_category_id,
+        ];
        if($request->has('image'))
         {
             $file = $request->file('image');
@@ -59,7 +76,6 @@ class BlogsController extends Controller
             $image =  $destinationPath.'/'.$fileName;
             $data['image']=$image;
         }
-        // dd($data);
         Blog::where('id',$request->blog)->update($data);
     
         return redirect()->route('blogs.index')->with('success', 'Blog post updated successfully');
