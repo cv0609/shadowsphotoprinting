@@ -148,9 +148,12 @@ class PagesController extends Controller
     public function monthlyEditionDetail($slug)
     {
         $edition = MonthlyEdition::published()
-            ->with(['blogs' => function ($query) {
-                $query->where('status', '1')->with(['category', 'user']);
-            }])
+            ->with([
+                'blogs' => function ($query) {
+                    $query->where('status', '1')->with(['category', 'user']);
+                },
+                'sections',
+            ])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -167,15 +170,29 @@ class PagesController extends Controller
             ? $published->count() - $currentIndex
             : null;
 
+        $sectionsBeforeFeatured = $edition->sections
+            ->where('placement', '!=', 'after_featured')
+            ->values();
+        $sectionsAfterFeatured = $edition->sections
+            ->where('placement', 'after_featured')
+            ->values();
+        $hasMagazineSections = $edition->sections->isNotEmpty();
+
+        $sectionText = $edition->sections->pluck('content')->implode(' ');
+        $legacyText = ($edition->welcome_note ?? '') . ' ' . ($edition->intro ?? '') . ' ' . ($edition->editor_note ?? '');
         $wordCount = str_word_count(strip_tags(
-            ($edition->welcome_note ?? '') . ' ' . ($edition->intro ?? '') . ' ' . ($edition->editor_note ?? '')
+            $hasMagazineSections ? $sectionText : $legacyText
         ));
         $readMinutes = max(3, (int) ceil($wordCount / 200) + ($edition->blogs->count() * 2));
+
+        $metaSource = $hasMagazineSections
+            ? ($edition->sections->first()->content ?? '')
+            : ($edition->welcome_note ?: ($edition->intro ?? ''));
 
         $page_content = [
             'meta_title' => $edition->title . ' | Shadows Monthly',
             'meta_description' => \Illuminate\Support\Str::limit(
-                strip_tags(html_entity_decode($edition->welcome_note ?: ($edition->intro ?? ''))),
+                strip_tags(html_entity_decode($metaSource)),
                 160
             ),
         ];
@@ -186,7 +203,10 @@ class PagesController extends Controller
             'previousEdition',
             'nextEdition',
             'editionNumber',
-            'readMinutes'
+            'readMinutes',
+            'hasMagazineSections',
+            'sectionsBeforeFeatured',
+            'sectionsAfterFeatured'
         ));
     }
 

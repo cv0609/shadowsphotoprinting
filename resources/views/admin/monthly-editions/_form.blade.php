@@ -97,6 +97,54 @@
     </div>
 </div>
 
+@php
+    $formSections = $formSections ?? [];
+@endphp
+
+<div class="item form-group">
+    <label class="col-md-3 label-align">Magazine Content Sections</label>
+    <div class="col-md-9">
+        <p style="margin-bottom:10px;color:#666;">
+            Add the full magazine body sections for this edition (welcome story, features, offers, closing note, etc.).
+            Drag or use ↑ ↓ to reorder. Sections marked “After Featured Stories” appear below Editor’s Picks on the frontend.
+        </p>
+
+        <div id="me-sections-list" class="me-sections-list">
+            @forelse ($formSections as $index => $section)
+                @include('admin.monthly-editions._section-row', ['index' => $index, 'section' => $section])
+            @empty
+            @endforelse
+        </div>
+
+        <button type="button" class="btn btn-default" id="me-add-section" style="margin-top:10px;">
+            + Add Section
+        </button>
+
+        <template id="me-section-template">
+            @include('admin.monthly-editions._section-row', ['index' => '__INDEX__', 'section' => [
+                'id' => null,
+                'title' => '',
+                'icon' => '',
+                'content' => '',
+                'image' => null,
+                'image_caption' => '',
+                'image_position' => 'full_width',
+                'placement' => 'before_featured',
+                'sort_order' => 1,
+            ]])
+        </template>
+
+        @error('sections') <p class="text-danger">{{ $message }}</p> @enderror
+        @foreach ($errors->getMessages() as $errorKey => $errorMessages)
+            @if (str_starts_with($errorKey, 'sections.'))
+                @foreach ($errorMessages as $errorMessage)
+                    <p class="text-danger">{{ $errorMessage }}</p>
+                @endforeach
+            @endif
+        @endforeach
+    </div>
+</div>
+
 <div class="item form-group">
     <label class="col-md-3 label-align">Featured Articles</label>
     <div class="col-md-6">
@@ -208,5 +256,58 @@
 }
 @media (max-width: 992px) {
     .me-blog-picker { grid-template-columns: 1fr; }
+}
+
+.me-sections-list {
+    display: grid;
+    gap: 14px;
+}
+.me-section-row {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+}
+.me-section-row.dragging {
+    opacity: 0.55;
+}
+.me-section-row__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #eee;
+}
+.me-section-row__handle {
+    cursor: grab;
+    color: #888;
+    font-size: 16px;
+}
+.me-section-row__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #69794E;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+.me-section-row__label {
+    flex: 1;
+    font-size: 14px;
+}
+.me-section-row__actions {
+    display: flex;
+    gap: 4px;
+}
+.me-section-row__body {
+    padding: 14px;
+}
+.me-section-row .ck-editor__editable {
+    min-height: 180px;
 }
 </style>

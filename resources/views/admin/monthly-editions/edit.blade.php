@@ -20,7 +20,10 @@
                     <form action="{{ route('monthly-editions.update', $edition->id) }}" method="POST" enctype="multipart/form-data" class="form-horizontal form-label-left">
                         @csrf
                         @method('PUT')
-                        @include('admin.monthly-editions._form', ['selectedBlogIds' => old('blog_ids', $selectedBlogIds)])
+                        @include('admin.monthly-editions._form', [
+                            'selectedBlogIds' => old('blog_ids', $selectedBlogIds),
+                            'formSections' => $formSections ?? [],
+                        ])
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-3">
@@ -37,7 +40,7 @@
 
 @section('custom-script')
 <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
-<script src="{{ asset('assets/admin/js/monthly-edition-form.js') }}?v=1"></script>
+<script src="{{ asset('assets/admin/js/monthly-edition-form.js') }}?v=3"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     ['#intro', '#welcome_note', '#editor_note'].forEach(function (selector) {

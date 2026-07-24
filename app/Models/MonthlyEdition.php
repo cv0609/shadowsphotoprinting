@@ -47,6 +47,12 @@ class MonthlyEdition extends Model
             ->orderByPivot('sort_order');
     }
 
+    public function sections()
+    {
+        return $this->hasMany(MonthlyEditionSection::class)
+            ->orderBy('sort_order');
+    }
+
     public function scopePublished($query)
     {
         return $query->where('status', 'published');
