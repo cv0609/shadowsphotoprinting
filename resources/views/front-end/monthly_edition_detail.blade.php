@@ -21,7 +21,7 @@
     $hasMagazineSections = $hasMagazineSections ?? $edition->sections->isNotEmpty();
     $sectionsBeforeFeatured = $sectionsBeforeFeatured ?? collect();
     $sectionsAfterFeatured = $sectionsAfterFeatured ?? collect();
-@endphp
+@endphp 
 
 <div class="sm-page sm-page--magazine sm-page--edition">
     <div class="sm-progress" aria-hidden="true"><span class="sm-progress__bar" id="sm-read-progress"></span></div>

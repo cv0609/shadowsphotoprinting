@@ -26,11 +26,11 @@
                         </a>
                         <div class="kadence-posts-content">
                             <div class="kadence-street">
-                                <div class="entry-taxonomies">
+                                {{-- <div class="entry-taxonomies">
                                     <span>
                                         <a href="javascript:void(0)">{{ $categoryName }}</a>
                                     </span>
-                                </div>
+                                </div> --}}
                                 <h2>
                                     <a href="{{ route('blog-detail', ['slug' => $value->slug]) }}">{{ $value->title }}</a>
                                 </h2>
