@@ -240,8 +240,8 @@
                         <p id="country-conflict-message" style="color: #222; font-size: 15px; line-height: 1.6; margin: 0;"></p>
                     </div>
                     <div style="display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; padding: 15px 20px; background: #f8f9fa; border-top: 1px solid #ddd;">
-                        <button type="button" class="btn btn-secondary country-conflict-cancel">Keep Existing Cart</button>
-                        <button type="button" class="btn btn-danger" id="clear-country-conflict-cart">Clear Cart &amp; Continue</button>
+                        <button type="button" class="btn btn-secondary country-conflict-cancel">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="clear-country-conflict-cart">Replace Cart</button>
                     </div>
                 </div>
             </div>
@@ -396,7 +396,7 @@ $(document).ready(function() {
 
                             $('#clear-country-conflict-cart').off('click').on('click', function() {
                                 var $button = $(this);
-                                $button.prop('disabled', true).text('Clearing Cart...');
+                                $button.prop('disabled', true).text('Replacing Cart...');
 
                                 $.post("{{ route('clear-cart') }}", {
                                     '_token': "{{ csrf_token() }}"
@@ -409,7 +409,7 @@ $(document).ready(function() {
                                     $('#country-conflict-message').text('Unable to clear the existing cart. Please try again.');
                                 })
                                 .always(function() {
-                                    $button.prop('disabled', false).text('Clear Cart & Continue');
+                                    $button.prop('disabled', false).text('Replace Cart');
                                 });
                             });
                         } else if (!response.country_conflict) {
@@ -695,25 +695,91 @@ function updateCartTotals() {
 }
 
 
+ var shopShippingPreviousCountry = $("#shop-shipping-country").val();
+ var pendingShopShippingCountry = null;
+
+ function applyShopShippingCountryResponse(response) {
+    var categoryOptions = '<option value="all">All</option>';
+    $('#shopping-country-name').text($('#shop-shipping-country option:selected').text().trim());
+
+    (response.categories || []).forEach(function(category) {
+        categoryOptions += '<option value="' + category.slug + '">' + category.name + '</option>';
+    });
+
+    $('#category').html(categoryOptions).val('all').trigger('change');
+    shopShippingPreviousCountry = response.country_code;
+    pendingShopShippingCountry = null;
+ }
+
+ function bindCountryConflictModal(message, onReplace) {
+    $('#country-conflict-message').text(message);
+    $('#countryConflictModal').stop(true, true).fadeIn(150);
+
+    $('.country-conflict-cancel').off('click').on('click', function() {
+        $('#countryConflictModal').stop(true, true).fadeOut(150);
+        if (shopShippingPreviousCountry) {
+            $('#shop-shipping-country').val(shopShippingPreviousCountry);
+        }
+        pendingShopShippingCountry = null;
+    });
+
+    $('#countryConflictModal').off('click.countryConflict').on('click.countryConflict', function(event) {
+        if (event.target === this) {
+            $(this).stop(true, true).fadeOut(150);
+            if (shopShippingPreviousCountry) {
+                $('#shop-shipping-country').val(shopShippingPreviousCountry);
+            }
+            pendingShopShippingCountry = null;
+        }
+    });
+
+    $('#clear-country-conflict-cart').off('click').on('click', function() {
+        var $button = $(this);
+        $button.prop('disabled', true).text('Replacing Cart...');
+        onReplace($button);
+    });
+ }
+
  $("#shop-shipping-country").on('change', function() {
-    var countryCode = $(this).val();
+    var $select = $(this);
+    var countryCode = $select.val();
+    pendingShopShippingCountry = countryCode;
 
     $.post("{{ route('shop-shipping-country') }}", {
         country_code: countryCode,
+        force_clear: 0,
         '_token': "{{ csrf_token() }}"
     })
     .done(function(response) {
-        var categoryOptions = '<option value="all">All</option>';
-        $('#shopping-country-name').text($('#shop-shipping-country option:selected').text().trim());
+        if (response.country_conflict) {
+            $select.val(shopShippingPreviousCountry);
+            bindCountryConflictModal(response.message, function($button) {
+                $.post("{{ route('shop-shipping-country') }}", {
+                    country_code: pendingShopShippingCountry || countryCode,
+                    force_clear: 1,
+                    '_token': "{{ csrf_token() }}"
+                })
+                .done(function(clearResponse) {
+                    $('#countryConflictModal').stop(true, true).fadeOut(150);
+                    $('#shop-shipping-country').val(clearResponse.country_code);
+                    applyShopShippingCountryResponse(clearResponse);
+                    $('.kt-cart-total').text('0');
+                })
+                .fail(function() {
+                    $('#country-conflict-message').text('Unable to replace the cart. Please try again.');
+                })
+                .always(function() {
+                    $button.prop('disabled', false).text('Replace Cart');
+                });
+            });
+            return;
+        }
 
-        response.categories.forEach(function(category) {
-            categoryOptions += '<option value="' + category.slug + '">' + category.name + '</option>';
-        });
-
-        $('#category').html(categoryOptions).val('all').trigger('change');
+        applyShopShippingCountryResponse(response);
     })
     .fail(function() {
         alert('Unable to change the country. Please try again.');
+        $select.val(shopShippingPreviousCountry);
         window.location.reload();
     });
  });
