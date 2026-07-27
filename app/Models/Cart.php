@@ -11,11 +11,16 @@ class Cart extends Model
 {
     use HasFactory;
     protected $table = 'cart';
-    protected $fillable = ['user_id','coupon_id','shutter_point','session_id'];
+    protected $fillable = ['user_id','coupon_id','shutter_point','session_id','shipping_country_id'];
 
     public function items()
     {
         return $this->hasMany(CartData::class);
+    }
+
+    public function shippingCountry()
+    {
+        return $this->belongsTo(Country::class, 'shipping_country_id');
     }
 
     public static function getCartCount()

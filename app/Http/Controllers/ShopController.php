@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderBillingDetails;
 use App\Models\ProductCategory;
+use App\Models\Country;
 use Illuminate\Support\Facades\Storage;
 use App\Services\CartService;
 use App\Mail\MakeOrder;
@@ -95,6 +96,21 @@ class ShopController extends Controller
     }
     // dd($productCategories);
     $products = Product::where('category_id','!=',20)->select(['id','product_title','product_price'])->orderBy('position','asc')->get();
+
+    $shippingCountry = Session::get('shop_shipping_country', 'AU');
+    if (!in_array($shippingCountry, ['AU', 'NZ'], true)) {
+      $shippingCountry = 'AU';
+      Session::put('shop_shipping_country', $shippingCountry);
+    }
+
+    if ($this->isNewZealand()) {
+      $productCategories = ProductCategory::whereIn('id', config('nz_catalog.allowed_category_ids'))->get();
+      $products = $this->filterProductsForNewZealand($products);
+    }
+
+    $shippingCountries = Country::whereIn('code', ['AU', 'NZ'])
+      ->orderByRaw("FIELD(code, 'AU', 'NZ')")
+      ->get(['name', 'code']);
     $currentDate = date('F-j-Y-1');
     $page_content = [
         "meta_title" => "{$currentDate} - " . config('constant.pages_meta.shop_detail.meta_title'),
@@ -111,13 +127,63 @@ class ShopController extends Controller
         $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
     }
 
-    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content','cart'));
+    return view('front-end/shop_detail', compact('imageName','products','productCategories','page_content','cart','shippingCountries','shippingCountry'));
   }  
+
+  public function setShopShippingCountry(Request $request)
+  {
+    $request->validate([
+      'country_code' => 'required|string|size:2',
+    ]);
+
+    $country = Country::whereIn('code', ['AU', 'NZ'])
+      ->where('code', strtoupper($request->country_code))
+      ->firstOrFail();
+
+    Session::put('shop_shipping_country', $country->code);
+
+    $cart = Auth::check()
+      ? Cart::where('user_id', Auth::id())->first()
+      : Cart::where('session_id', Session::getId())->first();
+
+    // Keep cart destination in sync with the selected shopping country so
+    // cart / checkout always show the country the customer just chose.
+    if ($cart) {
+      $cart->update(['shipping_country_id' => $country->id]);
+      Session::forget('selected_shipping');
+    }
+
+    if ($country->code === 'NZ') {
+      $categories = ProductCategory::whereIn('id', config('nz_catalog.allowed_category_ids'))->get();
+    } else {
+      $categories = ProductCategory::where('slug','!=','photos-for-sale')
+        ->where('slug','!=','gift-card')
+        ->where('slug','!=','hand-craft')
+        ->get();
+    }
+
+    return response()->json([
+      'country_code' => $country->code,
+      'country_name' => $country->name,
+      'categories' => $categories->map(function ($category) {
+        return [
+          'name' => ucfirst($category->name),
+          'slug' => $category->slug,
+        ];
+      })->values(),
+    ]);
+  }
 
   public function getProductsBycategory(Request $request)
   {
     $categorySlug = $request->slug;
     $products = [];
+
+    if ($this->isNewZealand() && $categorySlug !== 'all'
+        && !in_array($categorySlug, config('nz_catalog.allowed_category_slugs'), true)) {
+      echo '<tr><td colspan="4" style="text-align: center; padding: 20px;">This category is not available for New Zealand.</td></tr>';
+      return;
+    }
     
     // Handle wedding package category specially
     if($categorySlug == 'wedding-package') {
@@ -158,7 +224,40 @@ class ShopController extends Controller
         $products = $category->products()->orderBy('position', 'asc')->get();
       }
     }
+    if ($this->isNewZealand()) {
+      $products = $this->filterProductsForNewZealand(collect($products));
+    }
+
     echo view('front-end/shop_details_product_ajax', compact('products'));
+  }
+
+  private function isNewZealand()
+  {
+    return Session::get('shop_shipping_country', 'AU') === 'NZ';
+  }
+
+  private function filterProductsForNewZealand($products)
+  {
+    $blockedProductIds = array_merge(
+      config('nz_catalog.blocked_photo_print_ids'),
+      config('nz_catalog.blocked_photo_enlargement_ids'),
+      config('nz_catalog.blocked_poster_ids')
+    );
+
+    $allowedProductsQuery = Product::whereIn('category_id', config('nz_catalog.allowed_category_ids'))
+      ->whereNotIn('id', $blockedProductIds)
+      ->where(function ($query) {
+        $query->where('category_id', '!=', 2)
+          ->orWhereIn('id', config('nz_catalog.allowed_canvas_product_ids'));
+      });
+
+    foreach (config('nz_catalog.blocked_product_title_patterns') as $pattern) {
+      $allowedProductsQuery->where('product_title', 'not like', '%' . $pattern . '%');
+    }
+
+    $allowedProductIds = $allowedProductsQuery->pluck('id');
+
+    return collect($products)->whereIn('id', $allowedProductIds)->values();
   }
 
   public function getWeddingPackagesList()

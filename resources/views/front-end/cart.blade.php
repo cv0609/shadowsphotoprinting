@@ -1,4 +1,7 @@
 @extends('front-end.layout.main')
+@section('styles')
+<link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}?v=3">
+@endsection
 @section('content')
 @php
 $CartService = app(App\Services\CartService::class);
@@ -43,6 +46,12 @@ $CartService = app(App\Services\CartService::class);
             @if(Session::has('success'))
             <div class="coupon-wrapper">
                 <p class="text-center">{{Session::get('success')}}</p>
+            </div>
+            @endif
+
+            @if(Session::has('error'))
+            <div class="coupon-wrapper" style="border-color:#f59e0b;background:#fffbeb;">
+                <p class="text-center" style="color:#b45309;">{{ Session::get('error') }}</p>
             </div>
             @endif
 
@@ -353,6 +362,18 @@ $CartService = app(App\Services\CartService::class);
                             <div class="cart-collaterals">
                                 <div class="cart_totals ">
                                     <h2>Cart totals</h2>
+                                    <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 14px 16px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 8px;">
+                                        <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #16a085; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
+                                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                        </span>
+                                        <span style="min-width: 0; color: #555; line-height: 1.4;">
+                                            <small style="display: block; color: #6c757d;">Shipping Destination</small>
+                                            <strong style="display: block; color: #222;">{{ $cartCountry->name ?? 'Australia' }}</strong>
+                                        </span>
+                                        <a href="{{ route('shop-detail') }}" style="margin-left: auto; color: #16a085; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">
+                                            Change
+                                        </a>
+                                    </div>
                                 </div>
                                 <table cellspacing="0">
                                     <tbody>
@@ -560,8 +581,9 @@ $CartService = app(App\Services\CartService::class);
                                     </tbody>
                                 </table>
                                 <div class="wc-proceed-to-checkout">
-                                    <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward">
+                                    <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward is-disabled" aria-disabled="true" style="pointer-events:none;opacity:0.55;cursor:not-allowed;">
                                         Proceed to checkout</a>
+                                    <p class="checkout-wait-msg" style="margin:8px 0 0;color:#b45309;font-size:13px;">Please wait until shipping options finish loading.</p>
                                 </div>
                                 <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}"
                                         class="shop_cont_button">Continue
@@ -600,9 +622,6 @@ $CartService = app(App\Services\CartService::class);
 @endsection
 
 @section('scripts')
-<!-- Include shipping calculator styles -->
-<link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}">
-
 <script>
     $("#apply_coupon").on('click', function () {
         $("#coupon_code").removeClass('validator');
@@ -666,6 +685,7 @@ $CartService = app(App\Services\CartService::class);
             // Sync category shipping calculator with the new total
             if (window.categoryShippingCalculator) {
                 window.categoryShippingCalculator.syncWithExternalTotal();
+                window.categoryShippingCalculator.setShippingReady(true);
             }
         } else {
             $(".shipping-section").show(); // Show shipping section
@@ -681,6 +701,7 @@ $CartService = app(App\Services\CartService::class);
             // Sync category shipping calculator with the new total
             if (window.categoryShippingCalculator) {
                 window.categoryShippingCalculator.syncWithExternalTotal();
+                window.categoryShippingCalculator.syncCheckoutButtonState();
             }
         }
         console.log('=== END UPDATE SHIPPING AND TOTAL ===');
@@ -688,6 +709,15 @@ $CartService = app(App\Services\CartService::class);
 
     let orderType = {{$order_type}}; 
     updateShippingAndTotal(orderType);
+
+    $(document).on('click', '.checkout-button', function (e) {
+        const calc = window.categoryShippingCalculator;
+        if (calc && !calc.canProceedToCheckout()) {
+            e.preventDefault();
+            alert('Please wait until shipping options finish loading before checkout.');
+            return false;
+        }
+    });
 
 
     $(".orderType").change(function () {
@@ -713,7 +743,10 @@ $CartService = app(App\Services\CartService::class);
                                 '_token': $('meta[name="csrf-token"]').attr('content')
                             }
                         });
+                        window.categoryShippingCalculator.setShippingReady(true);
                     }
+                } else if (window.categoryShippingCalculator) {
+                    window.categoryShippingCalculator.restoreShippingSession();
                 }
                 
                 updateShippingAndTotal(response.order_type);

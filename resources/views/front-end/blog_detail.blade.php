@@ -4,11 +4,11 @@
     <div class="adbreadcrumbs">
         <div class="container">
             <div class="breadcrumbs-wrapper">
-                <span><a href="{{url('/')}}">Home</a></span>
+                <span><a href="{{ url('/') }}">Home</a></span>
                 <span class="bc-delimiter">»</span>
-                {{-- <span><a href="#">uncategorized</a></span>
-                <span class="bc-delimiter">»</span> --}}
-                <span> {{strtoupper($blog_details->title)}}</span>
+                <span><a href="{{ route('blogs') }}">Blog</a></span>
+                <span class="bc-delimiter">»</span>
+                <span>{{ strtoupper($blog_details->title) }}</span>
             </div>
         </div>
     </div>
@@ -18,13 +18,14 @@
     <div class="container">
         <div class="single-arti">
             <div class="category-kt">
-                <a href="javascript:void(0)">Uncategorized</a>
+                <a href="{{ route('blogs') }}">
+                    {{ optional($blog_details->category)->name ?? 'Uncategorized' }}
+                </a>
             </div>
             <div class="benefit">
                 <div class="kt_color_gray">
-                    
                     <div class="shadtpang">
-                        <img src="{{asset($blog_details->image)}}" alt="Image">
+                        <img src="{{ app(App\Services\PageDataService::class)->getBlogImageUrl($blog_details->image) }}" alt="{{ $blog_details->title }}">
                         <div class="blog-post-body">
                             {!! html_entity_decode($blog_details->description) !!}
                         </div>
@@ -38,8 +39,7 @@
                             ? trim($author->first_name . ' ' . ($author->last_name ?? ''))
                             : ($author->username ?? 'Terri Pangas');
                     @endphp
-                
-                    <span> <a href="#">{{ $authorName }}</a> </span>
+                    <span><a href="#">{{ $authorName }}</a></span>
                 </div>
             </div>
         </div>
@@ -47,28 +47,27 @@
 </section>
 
 <section class="previous-link">
-    @if($previousBlog != null)
-    <div class="container">
-        <div class="previous-box">
-            <a href="{{ route('blog-detail',['slug'=>$previousBlog->slug]) }}">
-                <span class="kt_color_gray">Previous Post</span>
-                <span class="kt_postlink_title">{{ $previousBlog->title }}</span>
-            </a>
+    @if ($previousBlog != null)
+        <div class="container">
+            <div class="previous-box">
+                <a href="{{ route('blog-detail', ['slug' => $previousBlog->slug]) }}">
+                    <span class="kt_color_gray">Previous Post</span>
+                    <span class="kt_postlink_title">{{ $previousBlog->title }}</span>
+                </a>
+            </div>
         </div>
-    </div>
     @endif
 
-    @if($nextBlog != null)
-    <div class="container">
-        <div class="next-link">
-            <a href="{{ route('blog-detail',['slug'=>$nextBlog->slug]) }}">
-                <span class="kt_color_gray">NEXT POST</span>
-                <span class="kt_postlink_title">{{ $nextBlog->title }}</span>
-            </a>
+    @if ($nextBlog != null)
+        <div class="container">
+            <div class="next-link">
+                <a href="{{ route('blog-detail', ['slug' => $nextBlog->slug]) }}">
+                    <span class="kt_color_gray">NEXT POST</span>
+                    <span class="kt_postlink_title">{{ $nextBlog->title }}</span>
+                </a>
+            </div>
         </div>
-    </div>
     @endif
-
 </section>
 @endsection
 
@@ -83,9 +82,8 @@
             cssEase: 'linear'
         });
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.restoration-cls').attr('href', "{{ url('home') }}");
         });
     </script>
-
 @endsection

@@ -253,7 +253,7 @@ class ShippingController extends Controller
             
             foreach ($fixedRules as $rule) {
                 $combinedOrderShipping['combined_order'][$rule->service] = [
-                    'price' => $rule->price + $testPrintExtra,
+                    'price' => $this->shippingService->priceForRule($rule) + $testPrintExtra,
                     'delivery_time' => $rule->delivery_time,
                     'note' => 'Combined order - Fixed pricing'
                 ];
@@ -274,7 +274,7 @@ class ShippingController extends Controller
             
             foreach ($fixedRules as $rule) {
                 $combinedOrderShipping['combined_order'][$rule->service] = [
-                    'price' => $rule->price + $testPrintExtra,
+                    'price' => $this->shippingService->priceForRule($rule) + $testPrintExtra,
                     'delivery_time' => $rule->delivery_time,
                     'note' => 'Combined order - Fixed pricing'
                 ];
@@ -287,12 +287,12 @@ class ShippingController extends Controller
         return [
             'combined_order' => [
                 'snail_mail' => [
-                    'price' => 22.60 + $testPrintExtra,
+                    'price' => $this->fallbackPrice(22.60, 74.15) + $testPrintExtra,
                     'delivery_time' => '5-10 business days',
                     'note' => 'Combined order - Fixed pricing (fallback)'
                 ],
                 'express' => [
-                    'price' => 31.21 + $testPrintExtra,
+                    'price' => $this->fallbackPrice(31.21, 96.00) + $testPrintExtra,
                     'delivery_time' => '1-2 business days',
                     'note' => 'Combined order - Fixed pricing (fallback)'
                 ]
@@ -397,8 +397,8 @@ class ShippingController extends Controller
                 $snailRule = $tierRulesForCondition->where('service', 'snail_mail')->first();
                 $expressRule = $tierRulesForCondition->where('service', 'express')->first();
                 
-                $snailPrice = $snailRule ? $snailRule->price : 0;
-                $expressPrice = $expressRule ? $expressRule->price : 0;
+                $snailPrice = $snailRule ? $this->shippingService->priceForRule($snailRule) : 0;
+                $expressPrice = $expressRule ? $this->shippingService->priceForRule($expressRule) : 0;
             } else {
                 // Fallback values - try to get from any available tier-based category
                 $anyTierCategory = \App\Models\ShippingCategory::where('pricing_type', 'tier')->first();
@@ -413,12 +413,16 @@ class ShippingController extends Controller
                     $fallbackExpress = $fallbackRules->where('service', 'express')->first();
                     
                     $tierNote = '1-60 prints tier (fallback)';
-                    $snailPrice = $fallbackSnail ? $fallbackSnail->price : 15.00;
-                    $expressPrice = $fallbackExpress ? $fallbackExpress->price : 20.00;
+                    $snailPrice = $fallbackSnail
+                        ? $this->shippingService->priceForRule($fallbackSnail)
+                        : $this->fallbackPrice(15.00, 36.40);
+                    $expressPrice = $fallbackExpress
+                        ? $this->shippingService->priceForRule($fallbackExpress)
+                        : $this->fallbackPrice(20.00, 47.00);
                 } else {
                     $tierNote = '1-60 prints tier (fallback)';
-                    $snailPrice = 15.00;
-                    $expressPrice = 20.00;
+                    $snailPrice = $this->fallbackPrice(15.00, 36.40);
+                    $expressPrice = $this->fallbackPrice(20.00, 47.00);
                 }
             }
         } else {
@@ -435,12 +439,16 @@ class ShippingController extends Controller
                 $fallbackExpress = $fallbackRules->where('service', 'express')->first();
                 
                 $tierNote = '1-60 prints tier (fallback)';
-                $snailPrice = $fallbackSnail ? $fallbackSnail->price : 15.00;
-                $expressPrice = $fallbackExpress ? $fallbackExpress->price : 20.00;
+                $snailPrice = $fallbackSnail
+                    ? $this->shippingService->priceForRule($fallbackSnail)
+                    : $this->fallbackPrice(15.00, 36.40);
+                $expressPrice = $fallbackExpress
+                    ? $this->shippingService->priceForRule($fallbackExpress)
+                    : $this->fallbackPrice(20.00, 47.00);
             } else {
                 $tierNote = '1-60 prints tier (fallback)';
-                $snailPrice = 15.00;
-                $expressPrice = 20.00;
+                $snailPrice = $this->fallbackPrice(15.00, 36.40);
+                $expressPrice = $this->fallbackPrice(20.00, 47.00);
             }
         }
         
@@ -798,5 +806,12 @@ class ShippingController extends Controller
                 'message' => 'Error getting cart items'
             ]);
         }
+    }
+
+    private function fallbackPrice(float $australiaPrice, float $newZealandPrice): float
+    {
+        return $this->shippingService->isNewZealandCart()
+            ? $newZealandPrice
+            : $australiaPrice;
     }
 } 

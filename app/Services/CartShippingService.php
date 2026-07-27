@@ -2,12 +2,49 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
 use App\Models\ShippingTier;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class CartShippingService
 {
+    protected $shippingCountryCode;
+
+    public function isNewZealandCart(): bool
+    {
+        return $this->shippingCountryCode() === 'NZ';
+    }
+
+    public function priceForRule($rule): float
+    {
+        if ($this->isNewZealandCart() && $rule->nz_shipping !== null) {
+            return (float) $rule->nz_shipping;
+        }
+
+        return (float) $rule->price;
+    }
+
+    protected function shippingCountryCode(): string
+    {
+        if ($this->shippingCountryCode !== null) {
+            return $this->shippingCountryCode;
+        }
+
+        $cart = Auth::check()
+            ? Cart::where('user_id', Auth::id())->whereNull('session_id')->first()
+            : Cart::where('session_id', Session::getId())->first();
+        $countryCode = $cart ? $cart->shippingCountry()->value('code') : null;
+
+        $this->shippingCountryCode = in_array($countryCode, ['AU', 'NZ'], true)
+            ? $countryCode
+            : Session::get('shop_shipping_country', 'AU');
+
+        return $this->shippingCountryCode;
+    }
+
     /**
      * Calculate shipping for cart items
      */
@@ -223,7 +260,7 @@ class CartShippingService
                 $shippingOptions[] = [
                     'carrier' => $rule->carrier,
                     'service' => $rule->service,
-                    'price' => $rule->price + $testPrintShipping,
+                    'price' => $this->priceForRule($rule) + $testPrintShipping,
                     'delivery_time' => $rule->delivery_time,
                     'note' => 'Combined order - Fixed pricing' . ($testPrintShipping > 0 ? ' + Test Print' : '')
                 ];
@@ -335,7 +372,7 @@ class CartShippingService
                     $shippingOptions[] = [
                         'carrier' => $rule->carrier,
                         'service' => $rule->service,
-                        'price' => $rule->price,
+                        'price' => $this->priceForRule($rule),
                         'delivery_time' => $rule->delivery_time,
                         'note' => $rule->condition . ' prints tier'
                     ];
@@ -1083,7 +1120,7 @@ class CartShippingService
                 $shippingOptions[] = [
                     'carrier' => $rule->carrier,
                     'service' => $rule->service,
-                    'price' => $rule->price,
+                    'price' => $this->priceForRule($rule),
                     'delivery_time' => $rule->delivery_time,
                     'weight' => null,
                     'note' => $rule->condition . ' prints tier'
@@ -1153,7 +1190,7 @@ class CartShippingService
             $shippingOptions[] = [
                 'carrier' => $rule->carrier,
                 'service' => $rule->service,
-                'price' => $rule->price,
+                'price' => $this->priceForRule($rule),
                 'delivery_time' => $rule->delivery_time,
                 'weight' => null,
                 'note' => 'Fixed pricing'

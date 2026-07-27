@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\Blog;
+use App\Models\MonthlyEdition;
 use App\Models\GiftCardCategory;
 use App\Models\PhotoForSaleCategory;
 use App\Models\PhotoForSaleProduct;
@@ -103,18 +104,138 @@ class PagesController extends Controller
 
     public function blogDetail($slug)
     {
-        $blog_details = Blog::where('slug', $slug)->first();
+        $blog_details = Blog::with(['category', 'user'])->where('slug', $slug)->firstOrFail();
 
         $previousBlog = Blog::where('id', '<', $blog_details->id)
+            ->where('status', '1')
             ->orderBy('id', 'desc')
             ->first();
 
         $nextBlog = Blog::where('id', '>', $blog_details->id)
+            ->where('status', '1')
             ->orderBy('id', 'asc')
             ->first();
 
-        $page_content = ["meta_title" => $blog_details['slug'], "meta_description" => $blog_details['description']];
+        $page_content = [
+            'meta_title' => $blog_details->title . ' | Shadows Photo Printing',
+            'meta_description' => \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($blog_details->description)), 160),
+        ];
+
         return view('front-end/blog_detail', compact('blog_details', 'previousBlog', 'nextBlog', 'page_content'));
+    }
+
+    public function blogs()
+    {
+        $page_info = Page::where('slug', 'blogs')->with('pageSections')->first();
+        $page_content = [
+            'meta_title' => 'Blog | Shadows Photo Printing',
+            'meta_description' => 'Tips, stories and inspiration from Shadows Affordable Memories.',
+            'photo_printing_blog_title' => 'Shadows Affordable Memories Blog',
+            'slug' => 'blogs',
+        ];
+
+        if ($page_info && !empty($page_info->pageSections)) {
+            $cms = json_decode($page_info->pageSections['content'], true) ?: [];
+            $page_content = array_merge($page_content, $cms);
+            if (!empty($cms['meta_title'])) {
+                $page_content['meta_title'] = $cms['meta_title'];
+            }
+            if (!empty($cms['meta_description'])) {
+                $page_content['meta_description'] = $cms['meta_description'];
+            }
+            if (empty($page_content['photo_printing_blog_title'])) {
+                $page_content['photo_printing_blog_title'] = 'Shadows Affordable Memories Blog';
+            }
+            $page_content['slug'] = 'blogs';
+        }
+
+        return view('front-end.blogs', compact('page_content', 'page_info'));
+    }
+
+    public function shadowsMonthly()
+    {
+        $page_info = Page::where('slug', 'blogs')->with('pageSections')->first();
+        $page_content = [
+            'meta_title' => 'Shadows Monthly | Shadows Photo Printing',
+            'meta_description' => 'Stories, tips, and our monthly magazine edition — warm Australian family reading.',
+            'photo_printing_blog_title' => 'Shadows Monthly',
+            'slug' => 'shadows-monthly',
+        ];
+
+        if ($page_info && !empty($page_info->pageSections)) {
+            $cms = json_decode($page_info->pageSections['content'], true) ?: [];
+            $page_content = array_merge($page_content, $cms);
+            $page_content['meta_title'] = $cms['meta_title'] ?: $page_content['meta_title'];
+            $page_content['meta_description'] = $cms['meta_description'] ?: $page_content['meta_description'];
+            $page_content['slug'] = 'shadows-monthly';
+        }
+
+        return view('front-end.shadows-monthly', compact('page_content', 'page_info'));
+    }
+
+    public function monthlyEditionDetail($slug)
+    {
+        $edition = MonthlyEdition::published()
+            ->with([
+                'blogs' => function ($query) {
+                    $query->where('status', '1')->with(['category', 'user']);
+                },
+                'sections',
+            ])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $published = MonthlyEdition::published()
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderByDesc('published_at')
+            ->get(['id', 'title', 'slug', 'month', 'year']);
+
+        $currentIndex = $published->search(fn ($item) => (int) $item->id === (int) $edition->id);
+        $previousEdition = $currentIndex !== false ? $published->get($currentIndex + 1) : null;
+        $nextEdition = $currentIndex !== false && $currentIndex > 0 ? $published->get($currentIndex - 1) : null;
+        $editionNumber = $currentIndex !== false
+            ? $published->count() - $currentIndex
+            : null;
+
+        $sectionsBeforeFeatured = $edition->sections
+            ->where('placement', '!=', 'after_featured')
+            ->values();
+        $sectionsAfterFeatured = $edition->sections
+            ->where('placement', 'after_featured')
+            ->values();
+        $hasMagazineSections = $edition->sections->isNotEmpty();
+
+        $sectionText = $edition->sections->pluck('content')->implode(' ');
+        $legacyText = ($edition->welcome_note ?? '') . ' ' . ($edition->intro ?? '') . ' ' . ($edition->editor_note ?? '');
+        $wordCount = str_word_count(strip_tags(
+            $hasMagazineSections ? $sectionText : $legacyText
+        ));
+        $readMinutes = max(3, (int) ceil($wordCount / 200) + ($edition->blogs->count() * 2));
+
+        $metaSource = $hasMagazineSections
+            ? ($edition->sections->first()->content ?? '')
+            : ($edition->welcome_note ?: ($edition->intro ?? ''));
+
+        $page_content = [
+            'meta_title' => $edition->title . ' | Shadows Monthly',
+            'meta_description' => \Illuminate\Support\Str::limit(
+                strip_tags(html_entity_decode($metaSource)),
+                160
+            ),
+        ];
+
+        return view('front-end.monthly_edition_detail', compact(
+            'edition',
+            'page_content',
+            'previousEdition',
+            'nextEdition',
+            'editionNumber',
+            'readMinutes',
+            'hasMagazineSections',
+            'sectionsBeforeFeatured',
+            'sectionsAfterFeatured'
+        ));
     }
 
     public function PhotosForSale(Request $request, $slug = null)

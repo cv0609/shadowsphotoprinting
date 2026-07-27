@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\BlogsController;
+use App\Http\Controllers\admin\MonthlyEditionsController;
+use App\Http\Controllers\admin\ShadowsMonthlySettingsController;
 use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PhotoForSaleController;
@@ -59,6 +61,9 @@ Route::prefix('admin')->group(function () {
         Route::get('set-index',[AuthController::class,'setIndex'])->name('admin.index');
         Route::resource('/pages',PagesController::class);
         Route::resource('/blogs',BlogsController::class);
+        Route::resource('/monthly-editions', MonthlyEditionsController::class);
+        Route::get('/shadows-monthly-settings', [ShadowsMonthlySettingsController::class, 'edit'])->name('shadows-monthly-settings.edit');
+        Route::put('/shadows-monthly-settings', [ShadowsMonthlySettingsController::class, 'update'])->name('shadows-monthly-settings.update');
         Route::get('/generate-blog-pdf/{blog}',[BlogsController::class,'generateBlogPDF'])->name('generate-blog-pdf');
 
         Route::get('/product-categories',[ProductsController::class,'productCategory'])->name('product-categories-list');
@@ -198,6 +203,10 @@ Route::post('/reset-password-save',[LoginController::class,'resetPasswordSave'])
 Route::get('/password-reset', [LoginController::class, 'resetPasswordForm'])->name('password.reset');
 Route::post('/forgot-save',[LoginController::class,'forgotSave'])->name('forgot-save');
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
+Route::get('/blogs', [BasePagesController::class, 'blogs'])->name('blogs');
+// Route::get('/shadows-monthly', [BasePagesController::class, 'shadowsMonthly'])->name('shadows-monthly');
+// Route::get('/shadows-monthly/{slug}', [BasePagesController::class, 'monthlyEditionDetail'])->name('shadows-monthly.edition');
+
 Route::post('/send-quote',[BasePagesController::class,'sendQuote'])->name('send-quote');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
 
@@ -217,6 +226,7 @@ Route::get('/user-logout',[LoginController::class,'logout'])->name('user-logout'
 Route::post('/shop-upload-image',[ShopController::class,'uploadImage'])->name('shop-upload-image');
 Route::get('/shop-upload-image-csrf-refresh',[ShopController::class,'uploadImageCsrfRefresh'])->name('shop-upload-image-csrf-refresh');
 Route::get('/shop-detail',[ShopController::class,'shopDetail'])->name('shop-detail');
+Route::post('/shop-shipping-country',[ShopController::class,'setShopShippingCountry'])->name('shop-shipping-country');
 Route::post('/products-by-category',[ShopController::class,'getProductsBycategory'])->name('products-by-category');
 Route::get('/wedding-packages-list',[ShopController::class,'getWeddingPackagesList'])->name('wedding-packages-list');
 Route::post('/wedding-package-frames',[ShopController::class,'getWeddingPackageFrames'])->name('wedding-package-frames');

@@ -46,6 +46,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Blogs Name</th>
+                                        <th>Category</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -55,6 +56,7 @@
                                         <tr>
                                             <th scope="row">{{ $key + 1 }}</th>
                                             <td>{{ ucfirst($blog->title) }}</td>
+                                            <td>{{ $blog->category->name ?? '—' }}</td>
                                             <td>
                                                 <div class="x_content">
                                                     <a href="{{ route('blogs.show', ['blog' => $blog->slug]) }}"><button

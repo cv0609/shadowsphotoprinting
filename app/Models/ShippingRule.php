@@ -11,11 +11,12 @@ class ShippingRule extends Model
 
     protected $fillable = [
         'shipping_category_id', 'rule_type', 'condition', 'carrier', 'service',
-        'price', 'delivery_time', 'dimensions', 'weight', 'is_active', 'priority'
+        'price', 'nz_shipping', 'delivery_time', 'dimensions', 'weight', 'is_active', 'priority'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
+        'nz_shipping' => 'decimal:2',
         'weight' => 'decimal:2',
         'dimensions' => 'array',
         'is_active' => 'boolean'

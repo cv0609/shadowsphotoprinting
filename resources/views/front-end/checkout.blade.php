@@ -1,4 +1,7 @@
 @extends('front-end.layout.main')
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=4">
+@endsection
 @section('content')
 @php
     $CartService = app(App\Services\CartService::class);
@@ -9,6 +12,27 @@
             $CartTotal['shippingCharge'] = 0;
         }
     }
+
+    $billingCountry = $shoppingCountry;
+    $shippingCountry = $shoppingCountry;
+    $billingState = isset($user_address) && $user_address ? $user_address->state : '';
+    $shippingState = isset($user_address) && $user_address ? $user_address->ship_state : '';
+
+    $parseCheckoutProductTitle = function (?string $title): array {
+        $title = trim((string) $title);
+        if ($title === '') {
+            return ['base' => '', 'option' => null];
+        }
+
+        if (preg_match('/^(.*?)(?:\s*[–—\-]\s*|\s+)(with\s+4mm\s+white\s+border)\s*$/iu', $title, $matches)) {
+            return [
+                'base' => trim(preg_replace('/\s+/', ' ', $matches[1])),
+                'option' => 'With 4mm White Border',
+            ];
+        }
+
+        return ['base' => $title, 'option' => null];
+    };
 @endphp
 
 <section class="coupon-main">
@@ -48,7 +72,13 @@
                                 <p class="form-row">
                                     <label>Country / Region *
                                     </label>
-                                    <span> <strong>{{ config('constant.default_country') }} </strong></span>
+                                    <select class="form-control checkout-country" id="billing_country" name="billing_country" data-state-select="#state" data-state-input="#state_region" disabled>
+                                        @foreach ($addressCountries as $country)
+                                            <option value="{{ $country->code }}" {{ $billingCountry->code === $country->code ? 'selected' : '' }}>
+                                                {{ $country->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </p>
                                 <p class="form-row">
                                     <label> Street address *
@@ -64,26 +94,14 @@
                                 </p>
 
                                 <p class="form-row">
-                                    @php
-                                        $address_state = '';
-                                        $ship_address_state = '';
-                                        if (isset($user_address) && !empty($user_address->state)) {
-                                            $address_state = $user_address->state;
-                                        }
-
-                                        if (isset($user_address) && !empty($user_address->ship_state)) {
-                                            $ship_address_state = $user_address->ship_state;
-                                        }
-
-
-                                    @endphp
-                                
+                                    <label>State / Region</label>
                                     <select class="form-control" id="state" name="state">
                                         <option value="">State</option>
-                                        @foreach ($countries->states as $state)
-                                            <option value="{{ $state->id }}" {{ $address_state == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
+                                        @foreach ($billingCountry->states as $state)
+                                            <option value="{{ $state->id }}" {{ $billingState == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                                         @endforeach
                                     </select>
+                                    <input type="text" id="state_region" value="{{ $billingState }}" placeholder="Enter state or region" style="display: none;">
                                 </p>
                                 
                                 <p class="form-row">
@@ -116,12 +134,13 @@
                             </div>
                             <div class="Ship-field">
                                 <div class="ship-to-different">
-                                    <h3 class="ship-to-different-address">
-                                        <label for="shipcheckbox">
-                                            <input type="checkbox" id="shipcheckbox"> <span> Ship to a different
-                                                address?</span>
-                                        </label>
-                                    </h3>
+                                    <label class="checkout-ship-toggle" for="shipcheckbox">
+                                        <input type="checkbox" id="shipcheckbox">
+                                        <span class="checkout-ship-box" aria-hidden="true">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="checkout-ship-text">Ship to a different address?</span>
+                                    </label>
                                     <div class="fields__field-_gangast" id="dvPassport">
                                         <div class="fields__field-wrapper">
                                             <div class="row">
@@ -146,7 +165,13 @@
                                             <p class="form-row">
                                                 <label>Country / Region *
                                                 </label>
-                                                <span> <strong>{{ config('constant.default_country') }}</strong></span>
+                                                <select class="form-control checkout-country" id="shipping_country" name="shipping_country" data-state-select="#ship_state" data-state-input="#ship_state_region" disabled>
+                                                    @foreach ($addressCountries as $country)
+                                                        <option value="{{ $country->code }}" {{ $shippingCountry->code === $country->code ? 'selected' : '' }}>
+                                                            {{ $country->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </p>
                                             <p class="form-row">
                                                 <label> Street address *
@@ -163,13 +188,15 @@
 
 
                                             <p class="form-row">
+                                                <label>State / Region</label>
                                                 <select class="form-control" id="ship_state" name="ship_state" >
                                                     <option value="">State</option>
-                                                    @foreach ($countries->states as $state)
-                                                      <option value="{{ $state->id }}" {{ $ship_address_state == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
+                                                    @foreach ($shippingCountry->states as $state)
+                                                      <option value="{{ $state->id }}" {{ $shippingState == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
                                                     @endforeach
 
                                                 </select>
+                                                <input type="text" id="ship_state_region" value="{{ $shippingState }}" placeholder="Enter state or region" style="display: none;">
 
                                             </p>
                                             <p class="form-row">
@@ -195,15 +222,80 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="woocommerce-billing-fields">
+
+                            <div class="checkout-order-summary">
                             <h3>Your order</h3>
+
+                            <div class="checkout-country-bar">
+                                <span class="icon" aria-hidden="true">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </span>
+                                <span>
+                                    <small>Shipping Country</small>
+                                    <strong>{{ $shoppingCountry->name ?? 'Australia' }}</strong>
+                                </span>
+                                <a href="{{ route('shop-detail') }}">Change</a>
+                            </div>
 
                             @php
                                 // Check if there are any non-package items in the cart
                                 $has_non_package_items = $cart->items->where('is_package', '!=', 1)->count() > 0;
                                 $has_package_items = $cart->items->where('is_package', 1)->count() > 0;
+
+                                $isPickupOrder = (int) $order_type === 1;
+                                $selectedShipping = session('selected_shipping');
+                                $serviceLabels = [
+                                    'snail_mail' => 'Standard',
+                                    'express' => 'Express',
+                                    'mixed' => 'Mixed',
+                                ];
+                                $serviceEta = [
+                                    'snail_mail' => 'Regular delivery',
+                                    'express' => 'Priority delivery',
+                                    'mixed' => 'Mixed delivery',
+                                ];
+                                $shippingMethod = null;
+                                $shippingMethodKey = null;
+                                $methodDetails = [];
+
+                                if (!$isPickupOrder && !empty($selectedShipping['category_selections']) && is_array($selectedShipping['category_selections'])) {
+                                    $servicesUsed = [];
+                                    foreach ($selectedShipping['category_selections'] as $selection) {
+                                        $serviceKey = $selection['service'] ?? null;
+                                        if (!$serviceKey) {
+                                            continue;
+                                        }
+                                        $servicesUsed[$serviceKey] = true;
+                                        $label = $serviceLabels[$serviceKey] ?? ucwords(str_replace('_', ' ', $serviceKey));
+                                        $price = isset($selection['price']) ? number_format((float) $selection['price'], 2) : null;
+                                        $methodDetails[] = $price !== null ? "{$label} — \${$price}" : $label;
+                                    }
+                                    $serviceKeys = array_keys($servicesUsed);
+                                    if (count($serviceKeys) === 1) {
+                                        $shippingMethodKey = $serviceKeys[0];
+                                        $shippingMethod = $serviceLabels[$shippingMethodKey] ?? ucwords(str_replace('_', ' ', $shippingMethodKey));
+                                    } elseif (count($serviceKeys) > 1) {
+                                        $shippingMethodKey = 'mixed';
+                                        $shippingMethod = 'Mixed';
+                                    }
+                                }
+
+                                if (!$isPickupOrder && !$shippingMethod && !empty($selectedShipping['service'])) {
+                                    $shippingMethodKey = $selectedShipping['service'];
+                                    $shippingMethod = $serviceLabels[$shippingMethodKey]
+                                        ?? ucwords(str_replace('_', ' ', $shippingMethodKey));
+                                }
+
+                                $deliveryEta = $serviceEta[$shippingMethodKey] ?? null;
+                                $deliverySummary = $isPickupOrder
+                                    ? 'Store Pickup'
+                                    : trim('Shipping' . ($shippingMethod ? ' • ' . $shippingMethod : '') . ($deliveryEta ? ' (' . $deliveryEta . ')' : ''));
+                                $deliveryPriceLabel = $isPickupOrder
+                                    ? 'FREE'
+                                    : '$' . number_format((float) ($CartTotal['shippingCharge'] ?? 0), 2);
                             @endphp
 
-                            <div class="order_review">
+                            <div class="order_review checkout-order-card">
                                 <table class="shop_table ">
                                     <thead>
                                         <tr>
@@ -211,10 +303,8 @@
                                             <th>
                                                 @if($has_package_items && !$has_non_package_items)
                                                     Items
-                                                @elseif($has_package_items && $has_non_package_items)
-                                                    Subtotal
                                                 @else
-                                                    Subtotal
+                                                    Items
                                                 @endif
                                             </th>
                                         </tr>
@@ -266,16 +356,24 @@
                                                 
                                                 <tr>
                                                     <td>
-                                                        @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                            {{ $product_detail->product_title }}
+                                                        @php
+                                                            $rawTitle = ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                                ? ($product_detail->product_title ?? '')
+                                                                : ($item->product->product_title ?? '');
+                                                            $parsedTitle = in_array($item->product_type, ['gift_card', 'photo_for_sale', 'hand_craft'], true)
+                                                                ? ['base' => $rawTitle, 'option' => null]
+                                                                : $parseCheckoutProductTitle($rawTitle);
+                                                        @endphp
+                                                        {{ $parsedTitle['base'] }}
+                                                        @if($parsedTitle['option'])
+                                                            <span class="checkout-product-option">— {{ $parsedTitle['option'] }} × {{ $item->quantity }}</span>
                                                         @else
-                                                            {{ $item->product->product_title }}
+                                                            &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
                                                         @endif
-                                                        &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
                                                         
                                                         {{-- Show package name in small text if multiple packages --}}
                                                         @if(count($package_groups) > 1)
-                                                            <br><small style="color: #666;">Package: {{ $package->product_title }}</small>
+                                                            <br><small style="color: #ffc205;">Package: {{ $package->product_title }}</small>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -295,12 +393,23 @@
                                             
                                             <tr>
                                             <td>
-                                                @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                    {{ $product_detail->product_title }}
+                                                @php
+                                                    $rawTitle = ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
+                                                        ? ($product_detail->product_title ?? '')
+                                                        : ($item->product->product_title ?? '');
+                                                    $parsedTitle = in_array($item->product_type, ['gift_card', 'photo_for_sale', 'hand_craft'], true)
+                                                        ? ['base' => $rawTitle, 'option' => null]
+                                                        : $parseCheckoutProductTitle($rawTitle);
+                                                    $displayQty = (isset($item->is_test_print) && ($item->is_test_print == '1'))
+                                                        ? ($item->test_print_qty ?? $item->quantity)
+                                                        : $item->quantity;
+                                                @endphp
+                                                {{ $parsedTitle['base'] }}
+                                                @if($parsedTitle['option'])
+                                                    <span class="checkout-product-option">— {{ $parsedTitle['option'] }} × {{ $displayQty }}</span>
                                                 @else
-                                                    {{ $item->product->product_title }}
+                                                    &nbsp; <strong>×&nbsp;{{ $displayQty }}</strong>
                                                 @endif
-                                                &nbsp; <strong>×&nbsp;{{ $item->quantity }}</strong>
                                             </td>
                                             <td>
                                                 <span>
@@ -326,59 +435,63 @@
                                     </tbody>
                                     <tfoot>
 
-                                        <tr>
+                                        <tr class="summary-divider">
                                             <th>Subtotal</th>
                                             <td><span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span> </td>
                                         </tr>
                                         @if(Session::has('coupon'))
-                                        <tr>
-                                            <th>Coupon: {{ $CartTotal['coupon_code']['code'] }}</th>
-                                            <td>-<span><span>$</span>{{ number_format($CartTotal['coupon_discount'],2) }}</span> </td>
+                                        <tr class="coupon-row">
+                                            <th>Coupon: {{ is_array($CartTotal['coupon_code'] ?? null) ? ($CartTotal['coupon_code']['code'] ?? '') : ($CartTotal['coupon_code'] ?? '') }}</th>
+                                            <td>-$ {{ number_format($CartTotal['coupon_discount'],2) }}</td>
                                         </tr>
                                         @endif
 
                                         @if($cart->shutter_point == '1')
                                         <tr>
                                             <th>Shutter Point:</th>
-                                            <td>-<span><span></span>{{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})</span> </td>
+                                            <td>- {{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})</td>
                                         </tr>
                                         @endif
 
-                                        @if($shipping->status == "1" && $order_type != 1)
+                                        @if($isPickupOrder || ($shipping && (string) $shipping->status === '1'))
                                         <tr>
-                                            <th>Shipping Charge</th>
-                                            <td>
-                                                <ul>
-                                                    <li>
-                                                        <input type="hidden" data-index="0">
-                                                        <label>
-                                                            <span><bdi><span>$</span>{{ number_format($CartTotal['shippingCharge'],2) }}</bdi></span>
-                                                        </label>
-                                                       
-                                                    </li>
-                                                </ul>
+                                            <td colspan="2" style="padding: 8px 0 4px !important;">
+                                                <div class="checkout-delivery-card" id="checkout-delivery-card">
+                                                    <button type="button" class="checkout-delivery-head" id="checkout-delivery-toggle" aria-expanded="true" aria-controls="checkout-delivery-body">
+                                                        <span class="icon" aria-hidden="true">
+                                                            <i class="fas {{ $isPickupOrder ? 'fa-store' : 'fa-truck' }}"></i>
+                                                        </span>
+                                                        <span class="title">Delivery</span>
+                                                        <span class="chevron" aria-hidden="true"><i class="fas fa-chevron-up"></i></span>
+                                                    </button>
+                                                    <div class="checkout-delivery-body" id="checkout-delivery-body">
+                                                        <div>
+                                                            <span class="label">{{ $deliverySummary }}</span>
+                                                            @if(!$isPickupOrder && count($methodDetails) > 1)
+                                                                <span class="meta">{{ implode(' · ', $methodDetails) }}</span>
+                                                            @endif
+                                                        </div>
+                                                        <span class="price">{{ $deliveryPriceLabel }}</span>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         @endif
 
-                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($CartTotal['shippingCharge'] ?? 0, 2) }}">
-
+                                        <input type="hidden" name="shipping_charge" id="shipping_charge" value="{{ number_format($isPickupOrder ? 0 : ($CartTotal['shippingCharge'] ?? 0), 2) }}">
                                         <input type="hidden" name="customer_order_type" id="customer_order_type" value="{{$order_type}}">
+                                    </tfoot>
+                                </table>
+                            </div>
 
-                                        <tr class="order-total">
-                                            <th>Total</th>
-                                            <td><strong><span><bdi><span>$</span>{{ number_format($CartTotal['total'],2) }}</bdi></span></strong>
-                                                {{-- <small class="includes_tax">(includes
-                                                    <span><span>$</span>1.12</span>
-                                                    GST)</small> --}}
-                                            </td>
-                                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
-                                        </tr>
+                            <div class="checkout-order-total">
+                                <span class="label">Total</span>
+                                <span class="amount">$ {{ number_format($CartTotal['total'], 2) }}</span>
+                            </div>
+                            <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
 
-                                        @if($CartTotal['total'] > 0)
-
-                                        <tr>
-                                            <td>
+                            @if($CartTotal['total'] > 0)
+                            <div style="margin-bottom: 12px;">
                                                 <div class="afterpay-4-payment">
                                                     <span>or 4 payments as low as ${{ number_format(($CartTotal['total'])/4,2) }} with </span>
                                                     <div class="after-pay-modal afterpayButton">
@@ -397,13 +510,10 @@
                                                     </svg>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                            </div>
+                            @endif
 
-                                        @endif
-
-                                    </tfoot>
-                                </table>
+                            </div>
 
                                 @if($CartTotal['total'] > 0)
 
@@ -473,7 +583,7 @@
                                             experience throughout this website, and for other purposes described
                                             in our privacy policy.</p> --}}
                                         <div class="place-order" id="place-order-btn">
-                                            <button id="submit"> Place order </button>
+                                            <button type="submit" id="submit"> Place order </button>
                                         </div>
                                         <div class="loader-order d-none" id="loader-order-btn">
                                             <button type="button" disabled="disabled"> <img src="{{asset('assets/images/loader.gif')}}"> </button>
@@ -487,6 +597,37 @@
                     </div>
                 </div>
             </div>
+
+            <div class="checkout-trust-bar" aria-label="Checkout assurances">
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></span>
+                    <span class="text">
+                        <strong>Secure Checkout</strong>
+                        <span>100% protected payments</span>
+                    </span>
+                </div>
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-truck"></i></span>
+                    <span class="text">
+                        <strong>Fast Delivery</strong>
+                        <span>Australia &amp; New Zealand shipping</span>
+                    </span>
+                </div>
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-award"></i></span>
+                    <span class="text">
+                        <strong>Premium Quality</strong>
+                        <span>Satisfaction guaranteed</span>
+                    </span>
+                </div>
+                <div class="checkout-trust-item">
+                    <span class="icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
+                    <span class="text">
+                        <strong>24/7 Support</strong>
+                        <span>We're here to help</span>
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
  {{-- </div> --}}
@@ -498,6 +639,40 @@
 <script>
 
     $(document).ready(function() {
+        var addressCountryStates = @json($addressCountryStates);
+
+        function updateStateField($countrySelect, preserveValue) {
+            var states = addressCountryStates[$countrySelect.val()] || [];
+            var $stateSelect = $($countrySelect.data('state-select'));
+            var $stateInput = $($countrySelect.data('state-input'));
+            var selectedState = preserveValue ? $stateSelect.val() : '';
+
+            if (states.length > 0) {
+                $stateSelect.empty().append($('<option>', { value: '', text: 'State' }));
+                states.forEach(function(state) {
+                    $stateSelect.append($('<option>', {
+                        value: state.id,
+                        text: state.name,
+                        selected: String(state.id) === String(selectedState)
+                    }));
+                });
+                $stateInput.hide();
+                $stateSelect.show();
+            } else {
+                $stateSelect.hide();
+                $stateInput.show();
+                if (!preserveValue) {
+                    $stateInput.val('');
+                }
+            }
+        }
+
+        $('.checkout-country').each(function() {
+            updateStateField($(this), true);
+        }).on('change', function() {
+            updateStateField($(this), false);
+        });
+
         if ($('#afterpayId').is(':checked')) {
             $('.stripe-details').hide();
         }
@@ -547,9 +722,33 @@
     
 
     var form = document.getElementById('payment-form');
+    var isPlacingOrder = false;
+
+    function lockPlaceOrder() {
+        isPlacingOrder = true;
+        $('#submit').prop('disabled', true);
+        $('#place-order-btn').addClass('d-none');
+        $('#loader-order-btn').removeClass('d-none');
+    }
+
+    function unlockPlaceOrder() {
+        isPlacingOrder = false;
+        $('#submit').prop('disabled', false);
+        $('#place-order-btn').removeClass('d-none');
+        $('#loader-order-btn').addClass('d-none');
+    }
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
+        event.stopPropagation();
+
+        // Prevent double-click / multiple submissions while request is in progress
+        if (isPlacingOrder) {
+            return;
+        }
+
+        // Show loader immediately so user cannot click again during delay
+        lockPlaceOrder();
 
         $('.error-message').remove();
 
@@ -559,7 +758,8 @@
         var lname = $('#lname').val();
         var street1 = $('#street1').val();
         var street2 = $('#street2').val();
-        var state = $('#state').val();
+        var country_code = $('#billing_country').val();
+        var state = $('#state').is(':visible') ? $('#state').val() : $('#state_region').val();
         var postcode = $('#postcode').val();
         var phone = $('#phone').val();
         var suburb = $('#suburb').val();
@@ -581,8 +781,8 @@
             var ship_street1 = $('#ship_street1').val();
             var ship_street2 = $('#ship_street2').val();
             var ship_suburb = $('#ship_suburb').val();
-            var ship_state = $('#ship_state').val();
-            // var ship_state = $('#ship_state').val();
+            var ship_country_code = $('#shipping_country').val();
+            var ship_state = $('#ship_state').is(':visible') ? $('#ship_state').val() : $('#ship_state_region').val();
             var ship_postcode = $('#ship_postcode').val();
             var order_comments = $('#order_comments').val();
             isShippingAddress = true;
@@ -618,11 +818,17 @@
             });
         }
 
+        if (!isValid) {
+            unlockPlaceOrder();
+            return;
+        }
+
         var formData = {
             fname: fname,
             lname: lname,
             street1: street1,
             street2: street2,
+            country_code: country_code,
             state: state,
             postcode: postcode,
             phone: phone,
@@ -642,6 +848,7 @@
             formData.ship_street1 = ship_street1;
             formData.ship_street2 = ship_street2;
             formData.ship_suburb = ship_suburb;
+            formData.ship_country_code = ship_country_code;
             formData.ship_state = ship_state;
             formData.ship_postcode = ship_postcode;
             formData.order_comments = order_comments;
@@ -667,18 +874,15 @@
                 }
         
                 if (!isValid) {
+                    unlockPlaceOrder();
                     return;
                 }
                 
                 stripe.createToken(cardNumber).then(function (result) {
     if (result.error) {
         $('#stripe-error').text(result.error.message).css('color', 'red');
-        $('#place-order-btn').removeClass('d-none');
-        $('#loader-order-btn').addClass('d-none');
+        unlockPlaceOrder();
     } else {
-        $('#place-order-btn').addClass('d-none');
-        $('#loader-order-btn').removeClass('d-none');
-
         // Send the token to the server    
         formData.stripeToken = result.token.id;
         formData.payment_method = 'stripe';
@@ -703,8 +907,7 @@
                 }else{
                     $('#email').after(`<span class="error-message" style="color: red;">${response.message}</span>`);
                 }
-                $('#place-order-btn').removeClass('d-none');
-                $('#loader-order-btn').addClass('d-none');
+                unlockPlaceOrder();
             } else {
                 fetch('/charge-customer', {
                     method: 'POST', 
@@ -726,25 +929,24 @@
                         window.location.href = url;
                     } else {
                         $('#stripe-error').text(charge.data).css('color', 'red');
-                        $('#place-order-btn').removeClass('d-none');
-                        $('#loader-order-btn').addClass('d-none');
+                        unlockPlaceOrder();
                         console.log(charge.data);
                     }
+                })
+                .catch(function () {
+                    $('#stripe-error').text('Payment failed. Please try again.').css('color', 'red');
+                    unlockPlaceOrder();
                 });
             }
+        })
+        .catch(function () {
+            $('#stripe-error').text('Something went wrong. Please try again.').css('color', 'red');
+            unlockPlaceOrder();
         });
     }
 });
 
             }else{
-
-                if (!isValid) {
-                    $('#place-order-btn').removeClass('d-none');
-                    $('#loader-order-btn').addClass('d-none');
-                    return;
-                }
-                $('#place-order-btn').addClass('d-none');
-                $('#loader-order-btn').removeClass('d-none');
 
                 formData.payment_method = 'afterPay';
 
@@ -760,22 +962,16 @@
                             window.location = data.data; 
                         } else {
                             $('#afterPayError').text(data.data).css('color','red');
+                            unlockPlaceOrder();
                         }
                     },
                     error: function(xhr, status, error) {
                         alert("Error: " + error);
+                        unlockPlaceOrder();
                     }
                 });
             }
         }else{
-            if (!isValid) {
-                $('#place-order-btn').removeClass('d-none');
-                $('#loader-order-btn').addClass('d-none');
-                return;
-            }
-            $('#place-order-btn').addClass('d-none');
-            $('#loader-order-btn').removeClass('d-none');
-
             formData.payment_method = 'free';
 
             $.ajax({
@@ -790,10 +986,12 @@
                         window.location = data.data; 
                     } else {
                         $('#afterPayError').text(data.data).css('color','red');
+                        unlockPlaceOrder();
                     }
                 },
                 error: function(xhr, status, error) {
                     alert("Error: " + error);
+                    unlockPlaceOrder();
                 }
             });
         }
@@ -821,6 +1019,12 @@
     $('#ship_state').select2({
         placeholder: 'Select state',
         allowClear: false
+    });
+
+    $('#checkout-delivery-toggle').on('click', function () {
+        const $card = $('#checkout-delivery-card');
+        const isCollapsed = $card.toggleClass('is-collapsed').hasClass('is-collapsed');
+        $(this).attr('aria-expanded', isCollapsed ? 'false' : 'true');
     });
 
 </script>

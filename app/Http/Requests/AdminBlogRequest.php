@@ -24,7 +24,8 @@ class AdminBlogRequest extends FormRequest
         return [
             "title" => "required",
             "image" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            "description" => "required"
+            "description" => "required",
+            "blog_category_id" => "nullable|exists:blog_categories,id",
         ];
     }
 }

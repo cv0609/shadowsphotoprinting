@@ -8,6 +8,262 @@
   //   return $str;
   // }
 @endphp
+<style>
+  .order-meta-panel {
+    display: flex;
+    width: 100%;
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid #e5eaf0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .order-meta-col {
+    flex: 1;
+    min-width: 0;
+    padding: 22px 24px;
+  }
+
+  .order-meta-col + .order-meta-col {
+    border-left: 1px solid #e8edf2;
+  }
+
+  .order-meta-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .order-meta-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e8f1fb;
+    color: #3b82f6;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .order-meta-field {
+    margin-bottom: 16px;
+  }
+
+  .order-meta-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .order-meta-label {
+    display: block;
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.01em;
+  }
+
+  .order-meta-value {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    line-height: 1.45;
+  }
+
+  .order-meta-divider {
+    height: 1px;
+    margin: 16px 0;
+    background: #e8edf2;
+  }
+
+  .shopping-country-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #dfe7ee;
+    border-radius: 10px;
+    background: #f8fafc;
+  }
+
+  .shopping-country-card.is-nz {
+    border-color: #b7ddd5;
+    background: #f3faf8;
+  }
+
+  .shopping-country-card.is-au {
+    border-color: #c9d8e8;
+    background: #f5f8fb;
+  }
+
+  .shopping-country-code-lg {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    color: #1f2937;
+    letter-spacing: 0.02em;
+  }
+
+  .shopping-country-text {
+    min-width: 0;
+  }
+
+  .shopping-country-name {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+  }
+
+  .shopping-country-card.is-nz .shopping-country-name {
+    color: #0f766e;
+  }
+
+  .shopping-country-card.is-au .shopping-country-name {
+    color: #1d4f7c;
+  }
+
+  .shopping-country-pill {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #475569;
+    background: #e2e8f0;
+  }
+
+  .shopping-country-card.is-nz .shopping-country-pill {
+    color: #0f766e;
+    background: #d1fae5;
+  }
+
+  .shopping-country-card.is-au .shopping-country-pill {
+    color: #1d4f7c;
+    background: #dbeafe;
+  }
+
+  .order-meta-status select#order-status {
+    width: 100%;
+    max-width: 100%;
+    height: 38px;
+    margin: 0;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px !important;
+    background: #fff;
+    color: #111827;
+    font-size: 14px;
+  }
+
+  .order-meta-address {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.55;
+  }
+
+  .order-meta-contact-label {
+    display: block;
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .order-meta-contact-value {
+    display: block;
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #2563eb;
+    word-break: break-word;
+  }
+
+  .order-meta-muted {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .order-payment-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+  }
+
+  .order-payment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    border: 1px solid transparent;
+  }
+
+  .order-payment-badge i {
+    font-size: 12px;
+  }
+
+  .order-payment-badge.is-stripe {
+    color: #1d4ed8;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+  }
+
+  .order-payment-badge.is-afterpay {
+    color: #065f46;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+  }
+
+  .order-payment-badge.is-other {
+    color: #475569;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+
+  .order-payment-id {
+    color: #2563eb;
+    font-weight: 600;
+    word-break: break-all;
+  }
+
+  .order-payment-meta {
+    color: #64748b;
+  }
+
+  @media (max-width: 991px) {
+    .order-meta-panel {
+      flex-direction: column;
+    }
+
+    .order-meta-col + .order-meta-col {
+      border-left: 0;
+      border-top: 1px solid #e8edf2;
+    }
+  }
+</style>
 <div class="right_col" role="main">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -53,63 +309,123 @@
 
 
                       </div>
-                      @if($orderDetail->payment_method != 'afterPay')
-                        <div class="lower_header">
-                          <p>Payment via Credit Card (Stripe) ( <a href="{{ env('STRIPE_URL').$orderDetail->payment_id }}" target="_blank">{{ $orderDetail->payment_id }}</a>). Paid on {{ date('d F Y H:s A',strtotime($orderDetail->created_at)) }}</p>
-                        </div>
-                      @else
-                        <div class="lower_header">
-                          <p>Payment via AfterPay ( <a href="#">{{ $orderDetail->payment_id }}</a>). Paid on {{ date('d F Y H:s A',strtotime($orderDetail->created_at)) }}</p>
-                        </div>
-                      @endif
+                      @php
+                        $isAfterPay = $orderDetail->payment_method === 'afterPay';
+                        $paidAt = date('j F Y, g:i A', strtotime($orderDetail->created_at));
+                      @endphp
+                      <div class="lower_header order-payment-line">
+                        <span>Payment via</span>
+                        @if($isAfterPay)
+                          <span class="order-payment-badge is-afterpay">
+                            <i class="fas fa-wallet" aria-hidden="true"></i>
+                            AfterPay
+                          </span>
+                          @if(!empty($orderDetail->payment_id))
+                            <span class="order-payment-meta">(<a class="order-payment-id" href="#">{{ $orderDetail->payment_id }}</a>)</span>
+                          @endif
+                        @elseif($orderDetail->payment_method === 'free')
+                          <span class="order-payment-badge is-other">
+                            <i class="fas fa-gift" aria-hidden="true"></i>
+                            Free Order
+                          </span>
+                        @else
+                          <span class="order-payment-badge is-stripe">
+                            <i class="fas fa-credit-card" aria-hidden="true"></i>
+                            Credit Card (Stripe)
+                          </span>
+                          @if(!empty($orderDetail->payment_id))
+                            <span class="order-payment-meta">
+                              (<a class="order-payment-id" href="{{ env('STRIPE_URL').$orderDetail->payment_id }}" target="_blank">{{ $orderDetail->payment_id }}</a>)
+                            </span>
+                          @endif
+                        @endif
+                        <span class="order-payment-meta">· Paid on {{ $paidAt }}</span>
+                      </div>
                     </div>
                   </div>
             </div>
-            <div class="billing_adress_row g-5">
-              <div class="col-md-4">
-                <div class="gerneral_billing_details">
-                  <h4 class="mb-3">General</h4>
+              @php
+              $shoppingCountryName = optional($orderDetail->shoppingCountry)->name ?? 'Not recorded';
+              $shoppingCountryCode = strtoupper((string) (optional($orderDetail->shoppingCountry)->code ?? ''));
+              $isNzOrder = $shoppingCountryCode === 'NZ';
+              $isAuOrder = $shoppingCountryCode === 'AU';
+              $billing = $orderDetail->orderBillingShippingDetails;
+            @endphp
 
-                  <div class="main_input_div">
-                <label for="">Date created:</label>
-                <p>{{ date('Y-m-d',strtotime($orderDetail->created_at)) }}</p>
-                  </div>
+            <div class="order-meta-panel billing_adress_row">
+              <div class="order-meta-col">
+                <h4 class="order-meta-heading">
+                  <span class="order-meta-icon"><i class="fas fa-file-alt"></i></span>
+                  General
+                </h4>
 
+                <div class="order-meta-field">
+                  <span class="order-meta-label">Date Created</span>
+                  <p class="order-meta-value">{{ date('j F Y, g:i A', strtotime($orderDetail->created_at)) }}</p>
+                </div>
 
-                  <div class="main_input_div main_div_status">
-                    <label for="">Status : </label>
-                    <select class="form-select form-control" aria-label="Default select example" id="order-status">
-                      <option value="0" {{ ($orderDetail->order_status == "0") ? 'selected' : ''}}>Processing</option>
-                      <option value="1" {{ ($orderDetail->order_status == "1") ? 'selected' : ''}}>Completed</option>
-                      <option value="2"{{ ($orderDetail->order_status == "2") ? 'selected' : ''}}>Cancelled</option>
-                      <option value="3"{{ ($orderDetail->order_status == "3") ? 'selected' : ''}}>Refunded</option>
-                      <option value="4"{{ ($orderDetail->order_status == "4") ? 'selected' : ''}}>On Hold</option>
-                    </select>
+                <div class="order-meta-divider"></div>
+
+                <div class="order-meta-field">
+                  <span class="order-meta-label">Shopping Country</span>
+                  <div class="shopping-country-card {{ $isNzOrder ? 'is-nz' : ($isAuOrder ? 'is-au' : '') }}">
+                    <span class="shopping-country-code-lg">{{ $shoppingCountryCode !== '' ? $shoppingCountryCode : '—' }}</span>
+                    <div class="shopping-country-text">
+                      <span class="shopping-country-name">{{ $shoppingCountryName }}</span>
+                      @if($shoppingCountryCode !== '')
+                        <span class="shopping-country-pill">{{ $shoppingCountryCode }}</span>
+                      @endif
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="order-address-details">
-                    <h4 class="mb-3">Billing details</h4>
-                    <div class="address">
-                      <p>{{ Str::ucfirst($orderDetail->orderBillingShippingDetails['fname'] ?? '') }} {{ Str::ucfirst($orderDetail->orderBillingShippingDetails['lname'] ?? '') }}<br>{{ $orderDetail->orderBillingShippingDetails['street1'] ?? ''}}<br>{{ $orderDetail->orderBillingShippingDetails['street2'] ?? ''}} {{ Str::ucfirst($orderDetail->orderBillingShippingDetails['suburb'] ?? '') }} {{ Str::ucfirst($orderDetail->orderBillingShippingDetails['state'] ?? '') }} {{ $orderDetail->orderBillingShippingDetails['postcode'] ?? ''}}</p>
-                      <p><strong>Email address:</strong> <br><a href="mailto:{{ $orderDetail->orderBillingShippingDetails['email'] ?? ''}}">{{ $orderDetail->orderBillingShippingDetails['email'] ?? ''}}</a></p>
-                      <p><strong>Phone:</strong><br> <a href="tel:{{ $orderDetail->orderBillingShippingDetails['phone'] ?? ''}}">{{ $orderDetail->orderBillingShippingDetails['phone'] ?? ''}}</a></p>
-                    </div>
+
+                <div class="order-meta-field order-meta-status main_div_status">
+                  <span class="order-meta-label">Status</span>
+                  <select class="form-select form-control" aria-label="Order status" id="order-status">
+                    <option value="0" {{ ($orderDetail->order_status == "0") ? 'selected' : ''}}>Processing</option>
+                    <option value="1" {{ ($orderDetail->order_status == "1") ? 'selected' : ''}}>Completed</option>
+                    <option value="2"{{ ($orderDetail->order_status == "2") ? 'selected' : ''}}>Cancelled</option>
+                    <option value="3"{{ ($orderDetail->order_status == "3") ? 'selected' : ''}}>Refunded</option>
+                    <option value="4"{{ ($orderDetail->order_status == "4") ? 'selected' : ''}}>On Hold</option>
+                  </select>
                 </div>
               </div>
-              <div class="col-md-4">
-                @if($orderDetail->isShippingAddress)
-                    <div class="order-address-details" id="Shipping-address">
-                        <h4 class="mb-3">Shipping details</h4>
-                        <div class="address">
-                            <p>{{ $orderDetail->orderBillingShippingDetails['ship_fname'] }}  {{Str::ucfirst($orderDetail->orderBillingShippingDetails['ship_lname'])}} <br>{{$orderDetail->orderBillingShippingDetails['ship_street1']}}<br>{{$orderDetail->orderBillingShippingDetails['ship_street2']}} {{Str::ucfirst($orderDetail->orderBillingShippingDetails['ship_suburb'])}} {{Str::ucfirst($orderDetail->orderBillingShippingDetails['ship_state'])}} {{$orderDetail->orderBillingShippingDetails['ship_postcode']}}</p><p class="order_note"><strong>Customer provided note:<br></strong> {{$orderDetail->orderBillingShippingDetails['order_comments']}}</p></div>
-                    </div>
+
+              <div class="order-meta-col">
+                <h4 class="order-meta-heading">
+                  <span class="order-meta-icon"><i class="fas fa-user"></i></span>
+                  Billing details
+                </h4>
+                <p class="order-meta-address">
+                  {{ Str::ucfirst($billing['fname'] ?? '') }} {{ Str::ucfirst($billing['lname'] ?? '') }}<br>
+                  {{ $billing['street1'] ?? '' }}<br>
+                  {{ $billing['street2'] ?? '' }} {{ Str::ucfirst($billing['suburb'] ?? '') }} {{ Str::ucfirst($billing['state'] ?? '') }} {{ $billing['postcode'] ?? '' }}
+                </p>
+                <span class="order-meta-contact-label">Email address</span>
+                <a class="order-meta-contact-value" href="mailto:{{ $billing['email'] ?? '' }}">{{ $billing['email'] ?? '' }}</a>
+                <span class="order-meta-contact-label">Phone</span>
+                <a class="order-meta-contact-value" href="tel:{{ $billing['phone'] ?? '' }}">{{ $billing['phone'] ?? '' }}</a>
+              </div>
+
+              <div class="order-meta-col">
+                <h4 class="order-meta-heading">
+                  <span class="order-meta-icon"><i class="fas fa-truck"></i></span>
+                  Shipping details
+                </h4>
+                @if(!empty($billing['isShippingAddress']) && (int) $billing['isShippingAddress'] === 1)
+                  <div id="Shipping-address">
+                    <p class="order-meta-address">
+                      {{ $billing['ship_fname'] ?? '' }} {{ Str::ucfirst($billing['ship_lname'] ?? '') }}<br>
+                      {{ $billing['ship_street1'] ?? '' }}<br>
+                      {{ $billing['ship_street2'] ?? '' }} {{ Str::ucfirst($billing['ship_suburb'] ?? '') }} {{ Str::ucfirst($billing['ship_state'] ?? '') }} {{ $billing['ship_postcode'] ?? '' }}
+                    </p>
+                    @if(!empty($billing['order_comments']))
+                      <span class="order-meta-contact-label">Customer provided note</span>
+                      <p class="order-meta-muted">{{ $billing['order_comments'] }}</p>
+                    @endif
+                  </div>
                 @else
-                <div class="diffrent-address">
-                  <h4 class="mb-3">Shipping details</h4>
-                   <p>The shipping address is the same as the billing address.</p>
-                </div>
+                  <p class="order-meta-muted">The shipping address is the same as the billing address.</p>
                 @endif
               </div>
             </div>
@@ -515,7 +831,7 @@
                         Service: {{ ucwords(str_replace('_', ' ', $orderDetail->shipping_service)) }}
                     </td>
                     <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
-                        <strong>{{ ucwords($orderDetail->shipping_carrier ?? 'Australia Post') }}</strong>
+                        <strong>{{ $orderDetail->getShippingCarrierDisplayName() }}</strong>
                     </td>
                 </tr>
             @endif
@@ -551,11 +867,7 @@
                         @endif
                     </td>
                     <td style="text-align: right; padding: 5px; font-size: 12px; color: #666;">
-                        @if($orderDetail->shipping_carrier)
-                            <strong>{{ $orderDetail->shipping_carrier }}</strong>
-                        @else
-                            <strong>Australia Post</strong>
-                        @endif
+                        <strong>{{ $orderDetail->getShippingCarrierDisplayName() }}</strong>
                     </td>
                 </tr>
                 
@@ -595,8 +907,15 @@
                     <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->total,2) }}</strong></td>
                 </tr>
                 <tr>
-                      <td colspan="" style="padding: 5px;">{{ date('F j, Y', strtotime($orderDetail->created_at ?? '')) }}
-                      @if($orderDetail->payment_method != 'afterPay')  via Credit Card (Stripe) @else via AfterPay @endif
+                      <td colspan="" style="padding: 5px;">
+                        {{ date('j F Y', strtotime($orderDetail->created_at ?? '')) }}
+                        @if($orderDetail->payment_method === 'afterPay')
+                          via <span class="order-payment-badge is-afterpay" style="vertical-align: middle;">AfterPay</span>
+                        @elseif($orderDetail->payment_method === 'free')
+                          via <span class="order-payment-badge is-other" style="vertical-align: middle;">Free Order</span>
+                        @else
+                          via <span class="order-payment-badge is-stripe" style="vertical-align: middle;">Credit Card (Stripe)</span>
+                        @endif
                       </td>
                     <td></td>
                 </tr>

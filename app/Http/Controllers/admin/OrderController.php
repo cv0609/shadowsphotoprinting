@@ -37,14 +37,14 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with('orderBillingShippingDetails')->orderBy('id', 'desc')->paginate(10);
+        $orders = Order::with(['orderBillingShippingDetails', 'shoppingCountry'])->orderBy('id', 'desc')->paginate(10);
         return view('admin.orders.index', compact('orders'));
     }
 
     public function orderDetail($orderNumber)
     {
         $orderDetail = Order::where('order_number', $orderNumber)
-            ->with(['orderDetails', 'orderBillingShippingDetails'])
+            ->with(['orderDetails', 'orderBillingShippingDetails', 'shoppingCountry'])
             ->withCount('orderDetails')
             ->withSum('orderDetails', 'quantity')
             ->first();
@@ -65,30 +65,55 @@ class OrderController extends Controller
 
     public function search(Request $request)
     {
-        $searchTerm  = $request->input('query');
+        $searchTerm = trim((string) $request->input('query', ''));
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-        $startDate = ($request->input('start_date')) ? $request->input('start_date') : "";
-        $endDate = ($request->input('end_date')) ? $request->input('end_date') : "";
-        $orders_result = Order::query();
+        $ordersQuery = Order::query()
+            ->with(['orderBillingShippingDetails', 'shoppingCountry'])
+            ->orderBy('id', 'desc');
 
-        if ($searchTerm) {
-            $orders_result->where('order_number', 'LIKE', "%{$searchTerm}%")
-                ->orWhereHas('orderBillingShippingDetails', function ($query) use ($searchTerm) {
-                    $query->where('fname', 'LIKE', "%{$searchTerm}%");
-                });
+        if ($searchTerm !== '') {
+            $ordersQuery->where(function ($query) use ($searchTerm) {
+                $query->where('order_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereHas('orderBillingShippingDetails', function ($billingQuery) use ($searchTerm) {
+                        $billingQuery->where('fname', 'LIKE', "%{$searchTerm}%")
+                            ->orWhere('lname', 'LIKE', "%{$searchTerm}%");
+                    })
+                    ->orWhereHas('shoppingCountry', function ($countryQuery) use ($searchTerm) {
+                        $countryQuery->where('name', 'LIKE', "%{$searchTerm}%")
+                            ->orWhere('code', 'LIKE', "%{$searchTerm}%");
+                    });
+            });
         }
 
         if (!empty($startDate) && !empty($endDate)) {
-            $startDate = Carbon::parse($startDate)->startOfDay();
-            $endDate = Carbon::parse($endDate)->endOfDay();
-            $orders_result->whereBetween('created_at', [$startDate, $endDate]);
+            $ordersQuery->whereBetween('created_at', [
+                Carbon::parse($startDate)->startOfDay(),
+                Carbon::parse($endDate)->endOfDay(),
+            ]);
         }
-        $orders = $orders_result->with('orderBillingShippingDetails')->get();
 
-        if (empty($orders)) {
-            $orders = Order::with('orderBillingShippingDetails')->orderBy('id', 'desc')->paginate(10);
+        // Empty search with no date filter → restore default first page
+        if ($searchTerm === '' && empty($startDate) && empty($endDate)) {
+            $orders = Order::with(['orderBillingShippingDetails', 'shoppingCountry'])
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+
+            return view('admin.orders.order_search', [
+                'orders' => $orders,
+            ]);
         }
-        echo view('admin.orders.order_search', compact('orders'));
+
+        $orders = $ordersQuery->get();
+
+        if ($orders->isEmpty()) {
+            return response('<tr><td colspan="9"><p class="text-center">No any data found!</p></td></tr>');
+        }
+
+        return view('admin.orders.order_search', [
+            'orders' => $orders,
+        ]);
     }
 
     public function downloadOrderzip($orderId)

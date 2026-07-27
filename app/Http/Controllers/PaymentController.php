@@ -56,7 +56,7 @@ class PaymentController extends Controller
 
         if (Auth::check() && !empty(Auth::user())) {
             $auth_id = Auth::user()->id;
-            $cart = Cart::where('user_id', $auth_id)->with('items.product')->first();
+            $cart = Cart::where('user_id', $auth_id)->with(['items.product', 'shippingCountry'])->first();
             $user_address = UserDetails::where('user_id', $auth_id)->first();
 
             if(Auth::user()->role === 'affiliate'){
@@ -70,17 +70,41 @@ class PaymentController extends Controller
 
         } else {
             $session_id = Session::getId();
-            $cart = Cart::where('session_id', $session_id)->with('items.product')->first();
+            $cart = Cart::where('session_id', $session_id)->with(['items.product', 'shippingCountry'])->first();
         }
+
+        $orderType = (int) Session::get('order_type', 0);
 
         $shipping = $this->CartService->getShippingCharge();
 
-        $countries = Country::find(14);
+        $shoppingCountry = $cart->shippingCountry
+            ?? Country::where('code', Session::get('shop_shipping_country', 'AU'))->first()
+            ?? Country::where('code', 'AU')->first();
+        $addressCountries = Country::whereIn('code', ['AU', 'NZ'])
+            ->with('states:id,country_id,name,code')
+            ->orderBy('name')
+            ->get(['id', 'name', 'code']);
+        $addressCountryStates = $addressCountries->mapWithKeys(function ($country) {
+            return [$country->code => $country->states->map(function ($state) {
+                return ['id' => $state->id, 'name' => $state->name];
+            })->values()];
+        });
         $CartTotal = $this->CartService->getCartTotal();
+
+        // Shipping required unless pickup. Direct /checkout must still resolve a shipping method.
+        if (
+            $orderType !== 1
+            && $shipping
+            && (string) $shipping->status === '1'
+            && (float) ($CartTotal['shippingCharge'] ?? 0) <= 0
+        ) {
+            return redirect()->route('cart')
+                ->with('error', 'Please wait for shipping options to finish loading before checkout.');
+        }
 
         $page_content = ["meta_title" => config('constant.pages_meta.checkout.meta_title'), "meta_description" => config('constant.pages_meta.checkout.meta_description')];
 
-        return view('front-end.checkout', compact('cart','affiliate_sales', 'CartTotal', 'shipping', 'countries', 'page_content', 'user_address'));
+        return view('front-end.checkout', compact('cart','affiliate_sales', 'CartTotal', 'shipping', 'addressCountries', 'addressCountryStates', 'shoppingCountry', 'page_content', 'user_address'));
     }
 
     public function createCustomer(Request $request)
@@ -95,19 +119,9 @@ class PaymentController extends Controller
             }
         }
 
-        $state = $request->input('state');
-        $ship_state = $request->input('ship_state');
-
-        $state_name = '';
-        $ship_state_name = '';
-
-        if (isset($request->state)) {
-            $state_name = State::whereId($state)->select('name')->first();
-        }
-
-        if (isset($request->ship_state)) {
-            $ship_state_name = State::whereId($ship_state)->select('name')->first();
-        }
+        $shoppingCountryCode = $this->shoppingCountryCode();
+        $state_name = $this->addressStateName($request->input('state'), $shoppingCountryCode);
+        $ship_state_name = $this->addressStateName($request->input('ship_state'), $shoppingCountryCode);
 
         $address = $this->orderAddress($request, $state_name, $ship_state_name);
 
@@ -153,16 +167,16 @@ class PaymentController extends Controller
     
     private function orderAddress($request, $state_name, $ship_state_name)
     {
+        $shoppingCountryCode = $this->shoppingCountryCode();
 
         $address = [
             'fname' => $request->fname,
             'lname' => $request->lname,
             'street1' => $request->street1,
             'street2' => $request->street2,
-            'state' => $request->state_name->name ?? '',
             'company_name' => $request->company_name ?? '',
-            'country_region' => config('constant.default_country'),
-            'state' => $state_name->name ?? '',
+            'country_region' => $this->addressCountryName($shoppingCountryCode),
+            'state' => $state_name,
             'postcode' => $request->postcode,
             'phone' => $request->phone,
             'suburb' => $request->suburb,
@@ -191,15 +205,54 @@ class PaymentController extends Controller
                 'ship_street1' => $request->ship_street1,
                 'ship_street2' => $request->ship_street2,
                 'ship_suburb' => $request->ship_suburb,
-                'ship_state' => $ship_state_name->name ?? '',
+                'ship_state' => $ship_state_name,
                 'ship_postcode' => $request->ship_postcode,
                 'isShippingAddress' => $request->isShippingAddress,
-                'ship_country_region' => config('constant.default_country'),
+                'ship_country_region' => $this->addressCountryName($shoppingCountryCode),
                 'order_comments' => $request->order_comments
             ];
         }
 
         return $address;
+    }
+
+    private function shoppingCountryCode()
+    {
+        $cart = Auth::check()
+            ? Cart::where('user_id', Auth::id())->first()
+            : Cart::where('session_id', Session::getId())->first();
+        $countryCode = $cart ? $cart->shippingCountry()->value('code') : null;
+
+        return in_array($countryCode, ['AU', 'NZ'], true)
+            ? $countryCode
+            : Session::get('shop_shipping_country', 'AU');
+    }
+
+    private function addressCountryName($countryCode)
+    {
+        return Country::whereIn('code', ['AU', 'NZ'])
+            ->where('code', strtoupper((string) $countryCode))
+            ->value('name')
+            ?? config('constant.default_country');
+    }
+
+    private function addressStateName($state, $countryCode)
+    {
+        if ($state === null || $state === '') {
+            return '';
+        }
+
+        if (is_numeric($state)) {
+            return State::whereKey($state)
+                ->whereHas('country', function ($query) use ($countryCode) {
+                    $query->whereIn('code', ['AU', 'NZ'])
+                        ->where('code', strtoupper((string) $countryCode));
+                })
+                ->value('name')
+                ?? '';
+        }
+
+        return trim((string) $state);
     }
 
     public function chargeCustomer(Request $request)
@@ -398,7 +451,8 @@ class PaymentController extends Controller
                 : ($afterPay['status'] ?? ''),
             'payment_method' => $payment_method,
             'order_status' => "0",
-            'order_type' => $order_type
+            'order_type' => $order_type,
+            'shopping_country_id' => $cart->shipping_country_id ?? null
         ]);
 
 
@@ -629,6 +683,7 @@ class PaymentController extends Controller
         $lname = $formData['lname'] ?? '';
         $street1 = $formData['street1'] ?? '';
         $street2 = $formData['street2'] ?? '';
+        $country_code = $this->shoppingCountryCode();
         $state = $formData['state'] ?? '';
         $postcode = $formData['postcode'] ?? '';
         $phone = $formData['phone'] ?? '';
@@ -644,13 +699,14 @@ class PaymentController extends Controller
         $ship_street1 = $formData['ship_street1'] ?? '';
         $ship_street2 = $formData['ship_street2'] ?? '';
         $ship_suburb = $formData['ship_suburb'] ?? '';
+        $ship_country_code = $country_code;
         $ship_state = $formData['ship_state'] ?? '';
         $ship_postcode = $formData['ship_postcode'] ?? '';
         $order_comments = $formData['order_comments'] ?? '';
         $isShippingAddress = $formData['isShippingAddress'] ?? '';
 
-        $state_name = State::whereId($state)->select('name')->first();
-        $ship_state_name = State::whereId($ship_state)->select('name')->first();
+        $state_name = $this->addressStateName($state, $country_code);
+        $ship_state_name = $this->addressStateName($ship_state, $ship_country_code);
 
         // Generate username if not provided
         $username = $formData['username'] ?? $formData['email'];
@@ -666,10 +722,9 @@ class PaymentController extends Controller
             'lname' => $lname,
             'street1' => $street1,
             'street2' => $street2,
-            'state' => $state_name->name ?? '',
+            'state' => $state_name,
             'company_name' => $company_name ?? '',
-            'country_region' => config('constant.default_country'),
-            'state' => $state_name->name ?? '',
+            'country_region' => $this->addressCountryName($country_code),
             'postcode' => $postcode,
             'phone' => $phone,
             'suburb' => $suburb,
@@ -681,7 +736,7 @@ class PaymentController extends Controller
             'order_type' => $customer_order_type,
         ];
 
-        if (isset($ship_fname) || isset($ship_lname) || isset($ship_street1) || isset($ship_suburb) || isset($ship_state) || isset($ship_postcode)) {
+        if ($isShippingAddress) {
             $address += [
                 'ship_fname' => $ship_fname,
                 'ship_lname' => $ship_lname,
@@ -689,10 +744,10 @@ class PaymentController extends Controller
                 'ship_street1' => $ship_street1,
                 'ship_street2' => $ship_street2,
                 'ship_suburb' => $ship_suburb,
-                'ship_state' => $ship_state_name->name ?? '',
+                'ship_state' => $ship_state_name,
                 'ship_postcode' => $ship_postcode,
                 'isShippingAddress' => isset($isShippingAddress) && ($isShippingAddress == true) ? $isShippingAddress : false,
-                'ship_country_region' => config('constant.default_country'),
+                'ship_country_region' => $this->addressCountryName($ship_country_code),
                 'order_comments' => $order_comments
             ];
         }
@@ -765,9 +820,9 @@ class PaymentController extends Controller
                 "line1" => $street1 ?? 'address1',
                 "line2" => $street2 ?? 'address2',
                 "suburb" => $suburb ?? 'suberb',
-                "state" => 'NSW',
+                "state" => $state_name !== '' ? $state_name : ($country_code === 'NZ' ? 'AUK' : 'NSW'),
                 "postcode" => $postcode ?? '123456',
-                "countryCode" => "AU",
+                "countryCode" => $country_code,
                 "phoneNumber" => $phone ?? '0412345678',
             ],
             "shipping" => [
@@ -775,9 +830,11 @@ class PaymentController extends Controller
                 "line1" => $ship_street1 ? $ship_street1 : $street1,
                 "line2" => $ship_street2 ? $ship_street2 : $street2,
                 "suburb" => $ship_suburb ? $ship_suburb : $suburb,
-                "state" => 'NSW',
+                "state" => ($isShippingAddress && $ship_state_name !== '')
+                    ? $ship_state_name
+                    : ($state_name !== '' ? $state_name : ($ship_country_code === 'NZ' ? 'AUK' : 'NSW')),
                 "postcode" => $ship_postcode ? $ship_postcode : $postcode,
-                "countryCode" => "AU",
+                "countryCode" => $ship_country_code,
                 "phoneNumber" => $phone ?? '0412345678'
             ],
             "courier" => [
@@ -840,6 +897,7 @@ class PaymentController extends Controller
         $lname = $formData['lname'] ?? '';
         $street1 = $formData['street1'] ?? '';
         $street2 = $formData['street2'] ?? '';
+        $country_code = $this->shoppingCountryCode();
         $state = $formData['state'] ?? '';
         $postcode = $formData['postcode'] ?? '';
         $phone = $formData['phone'] ?? '';
@@ -855,13 +913,14 @@ class PaymentController extends Controller
         $ship_street1 = $formData['ship_street1'] ?? '';
         $ship_street2 = $formData['ship_street2'] ?? '';
         $ship_suburb = $formData['ship_suburb'] ?? '';
+        $ship_country_code = $country_code;
         $ship_state = $formData['ship_state'] ?? '';
         $ship_postcode = $formData['ship_postcode'] ?? '';
         $order_comments = $formData['order_comments'] ?? '';
         $isShippingAddress = $formData['isShippingAddress'] ?? '';
 
-        $state_name = State::whereId($state)->select('name')->first();
-        $ship_state_name = State::whereId($ship_state)->select('name')->first();
+        $state_name = $this->addressStateName($state, $country_code);
+        $ship_state_name = $this->addressStateName($ship_state, $ship_country_code);
 
         // Generate username if not provided
         $username = $formData['username'] ?? $formData['email'];
@@ -877,10 +936,9 @@ class PaymentController extends Controller
             'lname' => $lname,
             'street1' => $street1,
             'street2' => $street2,
-            'state' => $state_name->name ?? '',
+            'state' => $state_name,
             'company_name' => $company_name ?? '',
-            'country_region' => config('constant.default_country'),
-            'state' => $state_name->name ?? '',
+            'country_region' => $this->addressCountryName($country_code),
             'postcode' => $postcode,
             'phone' => $phone,
             'suburb' => $suburb,
@@ -892,7 +950,7 @@ class PaymentController extends Controller
             'order_type' => $customer_order_type,
         ];
 
-        if (isset($ship_fname) || isset($ship_lname) || isset($ship_street1) || isset($ship_suburb) || isset($ship_state) || isset($ship_postcode)) {
+        if ($isShippingAddress) {
             $address += [
                 'ship_fname' => $ship_fname,
                 'ship_lname' => $ship_lname,
@@ -900,10 +958,10 @@ class PaymentController extends Controller
                 'ship_street1' => $ship_street1,
                 'ship_street2' => $ship_street2,
                 'ship_suburb' => $ship_suburb,
-                'ship_state' => $ship_state_name->name ?? '',
+                'ship_state' => $ship_state_name,
                 'ship_postcode' => $ship_postcode,
                 'isShippingAddress' => isset($isShippingAddress) && ($isShippingAddress == true) ? $isShippingAddress : false,
-                'ship_country_region' => config('constant.default_country'),
+                'ship_country_region' => $this->addressCountryName($ship_country_code),
                 'order_comments' => $order_comments
             ];
         }

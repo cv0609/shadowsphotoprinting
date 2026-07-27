@@ -30,7 +30,8 @@ class Order extends Model
         'order_status',
         'payment_status',
         'payment_method',
-        'order_type'
+        'order_type',
+        'shopping_country_id'
     ];
 
     protected $casts = [
@@ -59,6 +60,39 @@ class Order extends Model
     public function orderBillingShippingDetails()
     {
         return $this->hasOne(OrderBillingDetails::class,'order_id','id');
+    }
+
+    public function shoppingCountry()
+    {
+        return $this->belongsTo(Country::class, 'shopping_country_id');
+    }
+
+    public function isNewZealandOrder(): bool
+    {
+        return strtoupper((string) optional($this->shoppingCountry)->code) === 'NZ';
+    }
+
+    /**
+     * Human-readable shipping carrier for admin/customer display.
+     * NZ orders still ship via Australia Post international — label it clearly.
+     */
+    public function getShippingCarrierDisplayName(): string
+    {
+        $carrier = trim((string) ($this->shipping_carrier ?: 'Australia Post'));
+        $normalized = strtolower(str_replace(['_', '-'], ' ', $carrier));
+
+        $isAusPost = in_array($normalized, ['auspost', 'australia post'], true)
+            || str_contains($normalized, 'australia post');
+
+        if ($this->isNewZealandOrder() && $isAusPost) {
+            return 'Australia Post (to NZ)';
+        }
+
+        if ($normalized === 'auspost') {
+            return 'Australia Post';
+        }
+
+        return $carrier === '' ? 'Australia Post' : ucwords($carrier);
     }
 
     /**
@@ -105,9 +139,7 @@ class Order extends Model
             $info['service'] = $this->getServiceDisplayName($this->shipping_service);
         }
         
-        if ($this->shipping_carrier) {
-            $info['carrier'] = $this->shipping_carrier;
-        }
+        $info['carrier'] = $this->getShippingCarrierDisplayName();
         
         if ($this->shipping_breakdown && is_array($this->shipping_breakdown)) {
             $categorySelections = $this->shipping_breakdown['category_selections'] ?? null;

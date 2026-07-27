@@ -10,11 +10,104 @@ class CategoryShippingCalculator {
         this.baseSubtotal = 0;
         this.isInitialLoad = true;
         this.hasSessionData = false;
+        this.isShippingLoading = false;
+        this.isShippingReady = false;
         this.init();
+    }
+
+    setShippingLoading(isLoading) {
+        this.isShippingLoading = isLoading;
+        if (isLoading) {
+            this.isShippingReady = false;
+        }
+        this.syncCheckoutButtonState();
+    }
+
+    setShippingReady(isReady) {
+        this.isShippingReady = !!isReady;
+        if (isReady) {
+            this.isShippingLoading = false;
+        }
+        this.syncCheckoutButtonState();
+    }
+
+    isPickupSelected() {
+        return String($("input[name='order_type']:checked").val()) === '1';
+    }
+
+    getSelectedShippingTotal() {
+        let total = 0;
+        Object.values(this.categorySelections || {}).forEach((selection) => {
+            total += parseFloat(selection?.price || 0);
+        });
+
+        if (total > 0) {
+            return total;
+        }
+
+        $('.category-shipping-option:checked').each(function () {
+            total += parseFloat($(this).data('price') || 0);
+        });
+
+        if (total > 0) {
+            return total;
+        }
+
+        return parseFloat(($('#total-shipping-amount').text() || '').replace(/[^0-9.-]+/g, '') || 0);
+    }
+
+    hasValidShippingSelection() {
+        return this.getSelectedShippingTotal() > 0
+            || $('.category-shipping-option:checked').length > 0;
+    }
+
+    markShippingReadyIfValid() {
+        if (this.isPickupSelected() || this.hasValidShippingSelection()) {
+            this.setShippingReady(true);
+            return true;
+        }
+        return false;
+    }
+
+    canProceedToCheckout() {
+        if (this.isPickupSelected()) {
+            return true;
+        }
+
+        if (this.isShippingLoading) {
+            return false;
+        }
+
+        return this.isShippingReady || this.hasValidShippingSelection();
+    }
+
+    syncCheckoutButtonState() {
+        const $btn = $('.checkout-button');
+        if (!$btn.length) {
+            return;
+        }
+
+        const $waitMsg = $btn.siblings('.checkout-wait-msg');
+
+        if (this.canProceedToCheckout()) {
+            $btn.removeClass('is-disabled')
+                .attr('aria-disabled', 'false')
+                .removeAttr('style');
+            $waitMsg.remove();
+            $('.checkout-wait-msg').remove();
+        } else {
+            $btn.addClass('is-disabled')
+                .attr('aria-disabled', 'true')
+                .css({ 'pointer-events': 'none', opacity: '0.55', cursor: 'not-allowed' });
+            if ($waitMsg.length === 0) {
+                $btn.after('<p class="checkout-wait-msg" style="margin:8px 0 0;color:#b45309;font-size:13px;">Please wait until shipping options finish loading.</p>');
+            }
+        }
     }
 
     init() {
         console.log('CategoryShippingCalculator initializing...');
+        this.setShippingLoading(true);
         
         // Get the current total from CartService (backend) - DO NOT OVERRIDE
         const cartTotalText = $('#cart-total').text();
@@ -47,6 +140,7 @@ class CategoryShippingCalculator {
         }, 500);
         
         this.bindEvents();
+        this.syncCheckoutButtonState();
     }
 
     bindEvents() {
@@ -211,6 +305,7 @@ class CategoryShippingCalculator {
             return;
         }
 
+        this.setShippingLoading(true);
         $('#category-shipping-options').html('<div class="shipping-loading">Calculating shipping options...</div>');
 
         $.ajax({
@@ -227,12 +322,14 @@ class CategoryShippingCalculator {
                     console.log('Category shipping options structure:', this.categoryShippingOptions);
                     this.displayCategoryShippingOptions(autoCalculate);
                 } else {
+                    this.setShippingReady(false);
                     $('#category-shipping-options').html('<div class="shipping-error">Error calculating shipping: ' + (response.message || 'Unknown error') + '</div>');
                 }
             },
             error: (xhr, status, error) => {
                 console.error('Error calculating category shipping:', error);
                 console.error('Response:', xhr.responseText);
+                this.setShippingReady(false);
                 $('#category-shipping-options').html('<div class="shipping-error">Error calculating shipping</div>');
             }
         });
@@ -252,6 +349,7 @@ class CategoryShippingCalculator {
             return;
         }
 
+        this.setShippingLoading(true);
         $('#category-shipping-options').html('<div class="shipping-loading">Calculating shipping options...</div>');
 
         $.ajax({
@@ -274,12 +372,14 @@ class CategoryShippingCalculator {
                         this.displayCategoryShippingOptions(false);
                     }
                 } else {
+                    this.setShippingReady(false);
                     $('#category-shipping-options').html('<div class="shipping-error">Error calculating shipping: ' + (response.message || 'Unknown error') + '</div>');
                 }
             },
             error: (xhr, status, error) => {
                 console.error('Error calculating category shipping:', error);
                 console.error('Response:', xhr.responseText);
+                this.setShippingReady(false);
                 $('#category-shipping-options').html('<div class="shipping-error">Error calculating shipping</div>');
             }
         });
@@ -305,6 +405,7 @@ class CategoryShippingCalculator {
     }
 
     calculateCategoryShippingWithItems(cartItems, autoCalculate = true) {
+        this.setShippingLoading(true);
         $('#category-shipping-options').html('<div class="shipping-loading">Calculating shipping options...</div>');
         
         $.ajax({
@@ -326,12 +427,14 @@ class CategoryShippingCalculator {
                         this.displayCategoryShippingOptions(false);
                     }
                 } else {
+                    this.setShippingReady(false);
                     $('#category-shipping-options').html('<div class="shipping-error">Error calculating shipping: ' + (response.message || 'Unknown error') + '</div>');
                 }
             },
             error: (xhr, status, error) => {
                 console.error('Error calculating category shipping:', error);
                 console.error('Response:', xhr.responseText);
+                this.setShippingReady(false);
                 $('#category-shipping-options').html('<div class="shipping-error">Error calculating shipping</div>');
             }
         });
@@ -339,6 +442,7 @@ class CategoryShippingCalculator {
 
     displayCategoryShippingOptions(autoCalculate = true) {
         if (Object.keys(this.categoryShippingOptions).length === 0) {
+            this.setShippingReady(false);
             $('#category-shipping-options').html('<div class="no-shipping">No shipping options available</div>');
             return;
         }
@@ -465,6 +569,10 @@ class CategoryShippingCalculator {
         
         // Update test total shipping display after options are displayed
         this.updateTestTotalShipping();
+
+        // Options are on screen — enable checkout once a valid selection exists
+        this.isShippingLoading = false;
+        this.markShippingReadyIfValid();
     }
 
     createShippingOptionHtml(category, option) {
@@ -650,9 +758,11 @@ class CategoryShippingCalculator {
             },
             success: (response) => {
                 console.log('Session updated with snail mail selections:', response);
+                this.setShippingReady(true);
             },
             error: (xhr, status, error) => {
                 console.error('Error updating session with snail mail:', error);
+                this.setShippingReady(false);
             }
         });
         
@@ -692,6 +802,8 @@ class CategoryShippingCalculator {
                     
                     // Mark initial load as complete
                     this.isInitialLoad = false;
+                    this.isShippingLoading = false;
+                    this.markShippingReadyIfValid();
                     
                     console.log('Cart total updated to:', this.currentTotal);
                     console.log('Initial load completed, user changes will now update totals');
@@ -704,6 +816,8 @@ class CategoryShippingCalculator {
                 
                 // Mark initial load as complete even on error
                 this.isInitialLoad = false;
+                this.isShippingLoading = false;
+                this.markShippingReadyIfValid();
             }
         });
         
@@ -786,9 +900,12 @@ class CategoryShippingCalculator {
             },
             success: (response) => {
                 console.log('Session updated with existing data:', response);
+                const price = parseFloat(shippingData?.price || 0) || this.getSelectedShippingTotal();
+                this.setShippingReady(price > 0 || this.isPickupSelected() || this.hasValidShippingSelection());
             },
             error: (xhr, status, error) => {
                 console.error('Error updating session with existing data:', error);
+                this.markShippingReadyIfValid();
             }
         });
         
@@ -843,9 +960,11 @@ class CategoryShippingCalculator {
             },
             success: (response) => {
                 console.log('Session updated with checked radio selections:', response);
+                this.setShippingReady(totalShipping > 0 || this.hasValidShippingSelection() || this.isPickupSelected());
             },
             error: (xhr, status, error) => {
                 console.error('Error updating session with checked radios:', error);
+                this.markShippingReadyIfValid();
             }
         });
         
@@ -954,9 +1073,11 @@ class CategoryShippingCalculator {
             },
             success: (response) => {
                 console.log('Shipping session saved:', response);
+                this.setShippingReady(parseFloat(amount) > 0 || this.hasValidShippingSelection() || this.isPickupSelected());
             },
             error: (xhr, status, error) => {
                 console.error('Error saving shipping session:', error);
+                this.markShippingReadyIfValid();
             }
         });
     }
@@ -1057,9 +1178,11 @@ class CategoryShippingCalculator {
                 success: (response) => {
                     console.log('Session updated with current selections:', response);
                     console.log('Session save successful, data saved:', shippingData);
+                    this.setShippingReady(totalShipping > 0 || this.hasValidShippingSelection() || this.isPickupSelected());
                 },
                 error: (xhr, status, error) => {
                     console.error('Error updating session with current selections:', error);
+                    this.markShippingReadyIfValid();
                 }
             });
         } else {
@@ -1098,9 +1221,11 @@ class CategoryShippingCalculator {
                 },
                 success: (response) => {
                     console.log('Session consistency ensured:', response);
+                    this.setShippingReady(totalShipping > 0 || this.hasValidShippingSelection() || this.isPickupSelected());
                 },
                 error: (xhr, status, error) => {
                     console.error('Error ensuring session consistency:', error);
+                    this.markShippingReadyIfValid();
                 }
             });
         }
@@ -1128,6 +1253,7 @@ class CategoryShippingCalculator {
                 // Hide shipping options
                 $('#category-shipping-options').hide();
                 $('#total-shipping-cost').hide();
+                this.setShippingReady(this.isPickupSelected());
             },
             error: (xhr, status, error) => {
                 console.error('Error clearing shipping session:', error);
@@ -1143,6 +1269,7 @@ class CategoryShippingCalculator {
         
         // Show shipping options
         $('#category-shipping-options').show();
+        this.setShippingLoading(true);
         
         // Reload shipping options and session data
         this.calculateCategoryShippingAndUpdateSession(true);
