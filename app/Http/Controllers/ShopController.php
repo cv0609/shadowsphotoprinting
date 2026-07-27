@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Shop;
 use App\Models\Cart;
+use App\Models\CartData;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Order;
@@ -140,14 +141,42 @@ class ShopController extends Controller
       ->where('code', strtoupper($request->country_code))
       ->firstOrFail();
 
-    Session::put('shop_shipping_country', $country->code);
+    $forceClear = $request->boolean('force_clear');
 
     $cart = Auth::check()
-      ? Cart::where('user_id', Auth::id())->first()
-      : Cart::where('session_id', Session::getId())->first();
+      ? Cart::where('user_id', Auth::id())->with('shippingCountry')->first()
+      : Cart::where('session_id', Session::getId())->with('shippingCountry')->first();
 
-    // Keep cart destination in sync with the selected shopping country so
-    // cart / checkout always show the country the customer just chose.
+    $hasItems = $cart && $cart->items()->exists();
+    $cartCountryId = $cart ? (int) $cart->shipping_country_id : null;
+    $countryConflict = $hasItems
+      && $cartCountryId
+      && $cartCountryId !== (int) $country->id;
+
+    // Cart has products for another country — ask user to replace or cancel.
+    if ($countryConflict && !$forceClear) {
+      $cartCountryName = $cart->shippingCountry->name ?? 'the previously selected country';
+
+      return response()->json([
+        'country_conflict' => true,
+        'current_country_code' => optional($cart->shippingCountry)->code,
+        'current_country_name' => $cartCountryName,
+        'requested_country_code' => $country->code,
+        'requested_country_name' => $country->name,
+        'message' => "Your cart already contains products for {$cartCountryName}. "
+          . "To shop for {$country->name}, replace the cart (clear existing products) or cancel to keep your current cart.",
+      ]);
+    }
+
+    if ($forceClear && $cart) {
+      CartData::where('cart_id', $cart->id)->delete();
+      Session::forget('coupon');
+      Session::forget('selected_shipping');
+    }
+
+    Session::put('shop_shipping_country', $country->code);
+
+    // Empty cart (or after replace) follows the newly selected country.
     if ($cart) {
       $cart->update(['shipping_country_id' => $country->id]);
       Session::forget('selected_shipping');
@@ -163,6 +192,7 @@ class ShopController extends Controller
     }
 
     return response()->json([
+      'country_conflict' => false,
       'country_code' => $country->code,
       'country_name' => $country->name,
       'categories' => $categories->map(function ($category) {
