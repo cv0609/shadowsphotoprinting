@@ -363,14 +363,14 @@ $CartService = app(App\Services\CartService::class);
                                 <div class="cart_totals ">
                                     <h2>Cart totals</h2>
                                     <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 14px 16px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 8px;">
-                                        <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #69794E; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
+                                        <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #16a085; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
                                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                                         </span>
                                         <span style="min-width: 0; color: #555; line-height: 1.4;">
                                             <small style="display: block; color: #6c757d;">Shipping Destination</small>
                                             <strong style="display: block; color: #222;">{{ $cartCountry->name ?? 'Australia' }}</strong>
                                         </span>
-                                        <a href="{{ route('shop-detail') }}" style="margin-left: auto; color: #69794E; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">
+                                        <a href="{{ route('shop-detail') }}" style="margin-left: auto; color: #16a085; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">
                                             Change
                                         </a>
                                     </div>

@@ -1,10 +1,10 @@
 /* Shadows Monthly — magazine page (hero-inspired warm accents) */
 
 .sm-page {
-    --sm-eucalyptus: #69794E;
-    --sm-eucalyptus-dark: #5D6B43;
-    --sm-sunset-gold: #C9A227;
-    --sm-brand-gold: #D7A72C;
+    --sm-eucalyptus: #16a085;
+    --sm-eucalyptus-dark: #0d6c5a;
+    --sm-sunset-gold: #ffc205;
+    --sm-brand-gold: #ffc205;
     --sm-dusty-rose: #C4A4A4;
     --sm-warm-cream: #F7F1E6;
     --sm-cream-deep: #EFE6D6;
@@ -233,7 +233,7 @@
     content: "";
     height: 1px;
     width: min(140px, 22vw);
-    background: linear-gradient(90deg, transparent, rgba(105, 121, 78, 0.45), transparent);
+    background: linear-gradient(90deg, transparent, rgba(22, 160, 133, 0.45), transparent);
 }
 
 .sm-divider span {
@@ -341,7 +341,7 @@
 }
 
 .sm-previous-row::-webkit-scrollbar-thumb {
-    background: rgba(105, 121, 78, 0.35);
+    background: rgba(22, 160, 133, 0.35);
     border-radius: 999px;
 }
 
@@ -631,7 +631,7 @@
     padding: 16px 28px;
     font-size: 16px;
     border-radius: 10px;
-    box-shadow: 0 10px 22px rgba(105, 121, 78, 0.28);
+    box-shadow: 0 10px 22px rgba(22, 160, 133, 0.28);
 }
 
 .sm-btn--lg:hover {
@@ -769,7 +769,7 @@
     gap: 4px;
     padding: 5px 10px;
     border-radius: 999px;
-    background: linear-gradient(135deg, #E8C65A, #C9A227);
+    background: linear-gradient(135deg, #E8C65A, #ffc205);
     color: #2b2b2b;
     font-size: 11px;
     font-weight: 800;

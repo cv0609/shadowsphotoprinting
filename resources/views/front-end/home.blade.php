@@ -72,7 +72,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <!-- Add row here -->
                 {!! $page_content['about_description'] !!}
                 <div class="col-lg-12" style="margin-top: 20px;">
-                    <h3 style="color:#D7A72C;">{{ $page_content['photographers_camera_clubs_title'] ?? 'For Photographers & Camera Clubs' }}</h3>
+                    <h3 style="color:#ffc205;">{{ $page_content['photographers_camera_clubs_title'] ?? 'For Photographers & Camera Clubs' }}</h3>
                     <p>{!! nl2br(e($page_content['photographers_camera_clubs_description'] ?? "Printed by photographers who understand photography.\n\nWhether you’re a professional photographer, part of a camera club, or building your portfolio, we’re here to support your work.\n\nWe know how important colour, detail, and consistency are — which is why every image is carefully checked and printed with precision.")) !!}</p>
                     <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
                         <!-- <p style="margin:0; color:#fff; font-weight:600;">&#10003; No auto-corrections</p>
@@ -87,13 +87,13 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     </div>
                     
                     <p>
-                        {!! nl2br($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our <span style='color:#D7A72C;'>Shadows Pro Circle</span> — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.") !!}
+                        {!! nl2br($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our <span style='color:#ffc205;'>Shadows Pro Circle</span> — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.") !!}
                     </p>
                     <!-- <p style="font-weight:700; margin-top:8px;">Because your work deserves to be printed with care — and done properly.</p>
                     <p style="font-weight:700;">Ask us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.</p> -->
                 </div>
                 <div class="col-lg-12" style="margin-top: 20px;">
-                    <h3 style="color:#D7A72C;">{{ $page_content['scrapbookers_memory_keepers_title'] ?? 'For Scrapbookers & Memory Keepers' }}</h3>
+                    <h3 style="color:#ffc205;">{{ $page_content['scrapbookers_memory_keepers_title'] ?? 'For Scrapbookers & Memory Keepers' }}</h3>
                     <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_description'] ?? "Because the little details matter.\n\nWhether you’re creating albums for your family, preserving milestones, or documenting everyday life, we’re here to help you bring your pages together beautifully.\n\nWe understand how important it is that your prints:")) !!}</p>
                     <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
                         <!-- <p style="margin:0; color:#fff; font-weight:600;">&#10003; Match your layouts</p>
@@ -110,7 +110,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     <p style="font-weight:700; margin-top:8px;">Because the stories you’re creating are worth keeping.</p>
                 </div>
                 <div class="col-lg-12 community-class" style="margin-top: 20px; border: 1px solid rgba(255, 194, 5, .45); border-radius: 10px; padding: 12px 14px; margin: 20px 20px 0 !important; max-width: 1090px;">
-                    <h3 style="color:#D7A72C;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
+                    <h3 style="color:#ffc205;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
                     <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Affordable Memories, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
                     <p style="font-weight:700; margin-top:8px;">If you’re ever passing through Glenreagh, it’s something really special to see in person — and one of our favourite parts of the shop.</p>
                     <div style="margin-top:21px; text-align:center;">
@@ -118,7 +118,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     </div>
                 </div>
                 <div class="col-lg-12" style="margin-top: 22px;">
-                    <h3 style="color:#D7A72C;">Helpful Tips, Real Advice &amp; Inspiration</h3>
+                    <h3 style="color:#ffc205;">Helpful Tips, Real Advice &amp; Inspiration</h3>
                     <p>In addition to our printing services, we share helpful tips and simple advice to help you get the best results from your images.</p>
                     <p>Visit our blog for articles like:<br><strong>“What is Bulk Printing and How Does it Benefit Photographers?”</strong></p>
                     <p>Whether you’re printing for your family, your scrapbook, or your photography work, we’re here to help.</p>
@@ -139,7 +139,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                                     <h3>Printed In-House with Pride — Australian Made</h3>
                                     <div class="textwidget">
                                         {{-- {!! $page_content['description'] !!} --}}
-                                        <p>At <span style="color: #D7A72C; font-weight: 600;">Shadows Affordable Memories</span>, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
+                                        <p>At <span style="color: #ffc205; font-weight: 600;">Shadows Affordable Memories</span>, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
                                         </p>
                                         <p>That is why all our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.</p>
                                         <p>
@@ -168,7 +168,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                         <div class="widget-title" data-aos="fade-left">
                             <h3>Our Promise</h3>
                             <div class="textwidget">
-                                <p>At <strong style="color: #D7A72C;">Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
+                                <p>At <strong style="color: #ffc205;">Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
                                 <p>Let us help you turn your <strong>moments into memories</strong> - and your <strong>photography into something you can hold, share, and be proud of for years to come.</strong></p>
                             </div>
                         </div>
@@ -185,7 +185,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     <div class="container">
         <div class="custom-wrapper">
             <div class="custom-size-content">
-                <h3 data-aos="fade-right" style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#D7A72C; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
+                <h3 data-aos="fade-right" style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#ffc205; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
                 <h2 data-aos="fade-right" style="max-width:820px; margin:0 auto 20px; line-height:1.35;">{!! $page_content['quote_description'] !!}</h2>
                 <div class="ow-button-base" data-aos="fade-left">
                     <a href="{{ url('get-a-quote') }}"> {{ $page_content['get_a_quote'] }} </a>

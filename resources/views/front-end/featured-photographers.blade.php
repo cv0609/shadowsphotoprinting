@@ -6,7 +6,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #D7A72C 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -31,7 +31,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #69794E;
+    background: #16a085;
     margin-bottom: 16px;
 }
 .featured-intro p,
@@ -53,7 +53,7 @@
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #D7A72C;
+    color: #ffc205;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -71,7 +71,7 @@
     vertical-align: top;
 }
 .pro-table th {
-    color: #D7A72C;
+    color: #ffc205;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -79,7 +79,7 @@
     letter-spacing: 0.5px;
 }
 .pro-table td a {
-    color: #69794E;
+    color: #16a085;
     text-decoration: underline;
 }
 .pro-table td a:hover {
@@ -88,7 +88,7 @@
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #D7A72C;
+    background: #ffc205;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;
@@ -110,7 +110,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #D7A72C 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -135,7 +135,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #69794E;
+    background: #16a085;
     margin-bottom: 16px;
 }
 .featured-intro p,
@@ -159,7 +159,7 @@
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #D7A72C;
+    color: #ffc205;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -177,7 +177,7 @@
     vertical-align: top;
 }
 .pro-table th {
-    color: #D7A72C;
+    color: #ffc205;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -186,7 +186,7 @@
     text-wrap: nowrap;
 }
 .pro-table td a {
-    color: #69794E;
+    color: #16a085;
     text-decoration: underline;
 }
 .pro-table td a:hover {
@@ -195,7 +195,7 @@
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #D7A72C;
+    background: #ffc205;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;

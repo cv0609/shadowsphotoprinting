@@ -233,7 +233,7 @@
     min-width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: #69794E;
+    background: #16a085;
     color: #fff;
     font-size: 12px;
     font-weight: 700;
@@ -291,7 +291,7 @@
     min-width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: #69794E;
+    background: #16a085;
     color: #fff;
     font-size: 12px;
     font-weight: 700;

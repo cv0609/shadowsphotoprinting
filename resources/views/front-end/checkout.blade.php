@@ -373,7 +373,7 @@
                                                         
                                                         {{-- Show package name in small text if multiple packages --}}
                                                         @if(count($package_groups) > 1)
-                                                            <br><small style="color: #D7A72C;">Package: {{ $package->product_title }}</small>
+                                                            <br><small style="color: #ffc205;">Package: {{ $package->product_title }}</small>
                                                         @endif
                                                     </td>
                                                     <td>

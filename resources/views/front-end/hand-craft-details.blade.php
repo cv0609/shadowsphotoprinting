@@ -145,7 +145,7 @@
                                         <h3 class="text-danger">Unavailable in Your Selected Country</h3>
                                         <p>This handcrafted product is not available in New Zealand.</p>
                                         <a href="{{ route('shop-detail') }}"
-                                            style="display: inline-block; margin-top: 14px; padding: 9px 16px; border-radius: 4px; background: #69794E; color: #fff; font-weight: 600; text-decoration: none;">
+                                            style="display: inline-block; margin-top: 14px; padding: 9px 16px; border-radius: 4px; background: #16a085; color: #fff; font-weight: 600; text-decoration: none;">
                                             <i class="fas fa-globe" aria-hidden="true"></i> Change Shopping Country
                                         </a>
                                     </div>

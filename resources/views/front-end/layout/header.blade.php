@@ -7,10 +7,10 @@ $CartCount = $cartModel::getCartCount();
 @endphp
 <header class="header">
     <!-- August Promotion Banner - Show for all users, but popup only for logged-in users -->
-   <div class="august-promotion-banner" style="background: #708052;color: #F5F5F2;text-align: center;padding: 10px 0;cursor: pointer;" onclick="openAugustPromotion()">
+   <div class="august-promotion-banner" style="background: #16a085;color: #F5F5F2;text-align: center;padding: 10px 0;cursor: pointer;" onclick="openAugustPromotion()">
         <span style="font-size: 16px;font-weight: 600;">
             New Here? Get 10% OFF Your First Order! –
-            <span style="color: #D7A72C; text-decoration: underline; font-weight: bold;">Click here</span> 🎁
+            <span style="color: #ffc205; text-decoration: underline; font-weight: bold;">Click here</span> 🎁
         </span>
     </div>
     
@@ -144,7 +144,7 @@ $CartCount = $cartModel::getCartCount();
             <div id="augustPromotionPopup" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
-                        <div class="modal-header" style="background: #000; color: white; border-bottom: 2px solid #D7A72C; padding: 15px 20px;">
+                        <div class="modal-header" style="background: #000; color: white; border-bottom: 2px solid #ffc205; padding: 15px 20px;">
                             <h5 class="modal-title mb-0">
                                 <i class="fas fa-gift"></i> {{date('M Y')}} Special Promotion!
                             </h5>
@@ -154,7 +154,7 @@ $CartCount = $cartModel::getCartCount();
                         </div>
                         <div class="modal-body" style="padding: 20px;">
                             <div class="text-center mb-3">
-                                <h4 style="color: #D7A72C; margin-bottom: 10px; font-size: 18px;">🎉 Welcome to Shadows Photo Printing! 🎉</h4>
+                                <h4 style="color: #ffc205; margin-bottom: 10px; font-size: 18px;">🎉 Welcome to Shadows Photo Printing! 🎉</h4>
                                 <p style="font-size: 14px; color: #fff; margin-bottom: 15px;">
                                     Get <strong>10% OFF</strong> your first order!
                                 </p>
@@ -186,7 +186,7 @@ $CartCount = $cartModel::getCartCount();
                                     <div class="text-center">
                                         <button type="submit" 
                                                 class="btn btn-primary" 
-                                                style="background: #69794E; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold; color: white; font-size: 14px;">
+                                                style="background: #16a085; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold; color: white; font-size: 14px;">
                                             <i class="fas fa-paper-plane"></i> Send Me My Coupon!
                                         </button>
                                     </div>
@@ -242,7 +242,7 @@ $CartCount = $cartModel::getCartCount();
     }
 
     #augustPromotionPopup .form-control:focus {
-        border-color: #69794E;
+        border-color: #16a085;
         box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
     }
 
