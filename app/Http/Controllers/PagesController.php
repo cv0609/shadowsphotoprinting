@@ -117,11 +117,39 @@ class PagesController extends Controller
             ->first();
 
         $page_content = [
-            'meta_title' => $blog_details->title . ' | Shadows Monthly',
+            'meta_title' => $blog_details->title . ' | Shadows Photo Printing',
             'meta_description' => \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($blog_details->description)), 160),
         ];
 
         return view('front-end/blog_detail', compact('blog_details', 'previousBlog', 'nextBlog', 'page_content'));
+    }
+
+    public function blogs()
+    {
+        $page_info = Page::where('slug', 'blogs')->with('pageSections')->first();
+        $page_content = [
+            'meta_title' => 'Blog | Shadows Photo Printing',
+            'meta_description' => 'Tips, stories and inspiration from Shadows Affordable Memories.',
+            'photo_printing_blog_title' => 'Shadows Affordable Memories Blog',
+            'slug' => 'blogs',
+        ];
+
+        if ($page_info && !empty($page_info->pageSections)) {
+            $cms = json_decode($page_info->pageSections['content'], true) ?: [];
+            $page_content = array_merge($page_content, $cms);
+            if (!empty($cms['meta_title'])) {
+                $page_content['meta_title'] = $cms['meta_title'];
+            }
+            if (!empty($cms['meta_description'])) {
+                $page_content['meta_description'] = $cms['meta_description'];
+            }
+            if (empty($page_content['photo_printing_blog_title'])) {
+                $page_content['photo_printing_blog_title'] = 'Shadows Affordable Memories Blog';
+            }
+            $page_content['slug'] = 'blogs';
+        }
+
+        return view('front-end.blogs', compact('page_content', 'page_info'));
     }
 
     public function shadowsMonthly()
@@ -142,7 +170,7 @@ class PagesController extends Controller
             $page_content['slug'] = 'shadows-monthly';
         }
 
-        return view('front-end.blogs', compact('page_content', 'page_info'));
+        return view('front-end.shadows-monthly', compact('page_content', 'page_info'));
     }
 
     public function monthlyEditionDetail($slug)

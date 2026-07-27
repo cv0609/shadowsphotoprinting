@@ -203,11 +203,10 @@ Route::post('/reset-password-save',[LoginController::class,'resetPasswordSave'])
 Route::get('/password-reset', [LoginController::class, 'resetPasswordForm'])->name('password.reset');
 Route::post('/forgot-save',[LoginController::class,'forgotSave'])->name('forgot-save');
 Route::get('/blog-detail/{slug}',[BasePagesController::class,'blogDetail'])->name('blog-detail');
-Route::get('/shadows-monthly', [BasePagesController::class, 'shadowsMonthly'])->name('shadows-monthly');
-Route::get('/shadows-monthly/{slug}', [BasePagesController::class, 'monthlyEditionDetail'])->name('shadows-monthly.edition');
-Route::get('/blogs', function () {
-    return redirect()->route('shadows-monthly');
-});
+Route::get('/blogs', [BasePagesController::class, 'blogs'])->name('blogs');
+// Route::get('/shadows-monthly', [BasePagesController::class, 'shadowsMonthly'])->name('shadows-monthly');
+// Route::get('/shadows-monthly/{slug}', [BasePagesController::class, 'monthlyEditionDetail'])->name('shadows-monthly.edition');
+
 Route::post('/send-quote',[BasePagesController::class,'sendQuote'])->name('send-quote');
 Route::get('/our-products/photos-for-sale/{slug?}',[BasePagesController::class,'PhotosForSale'])->name('photos-for-sale');
 
