@@ -87,14 +87,14 @@
 
     .toggle-bar {
         display: block !important;
-        color: #fff;
+        color: #F5F5F2;
         font-size: 30px;
     }
 
     span.closebtn {
         display: none !important;
         text-align: right;
-        color: #fff;
+        color: #F5F5F2;
         position: absolute;
         left: 0px;
         top: 0px;
@@ -113,7 +113,7 @@
     .navigation div#mySidenavs ul li a {
         padding: 7px 20px;
         display: block;
-        color: #fff;
+        color: #F5F5F2;
     }
 
     .second-clearfix ul {
@@ -148,7 +148,7 @@
         opacity: 1;
         visibility: visible;
         display: none;
-     background-color: #16a085;;
+     background-color: #69794E;;
     }
   
 
@@ -283,7 +283,7 @@
     }
 
     ul.sub-menu li a {
-        color: #fff;
+        color: #F5F5F2;
     }
 
     ul.sub-menu::before {

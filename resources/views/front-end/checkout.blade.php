@@ -1,6 +1,6 @@
 @extends('front-end.layout.main')
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=4">
+<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=5">
 @endsection
 @section('content')
 @php
@@ -373,7 +373,7 @@
                                                         
                                                         {{-- Show package name in small text if multiple packages --}}
                                                         @if(count($package_groups) > 1)
-                                                            <br><small style="color: #ffc205;">Package: {{ $package->product_title }}</small>
+                                                            <br><small style="color: #D7A72C;">Package: {{ $package->product_title }}</small>
                                                         @endif
                                                     </td>
                                                     <td>

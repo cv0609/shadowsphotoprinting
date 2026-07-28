@@ -97,7 +97,7 @@
                             <div id="selectedFiles"></div>
                             <a id="selectfiles" href="javascript:;" class="button" style="position: relative; z-index: 1;">Select images</a>
                             <a id="uploadfiles" href="javascript:;" class="button" style="display: none;">Upload images</a>
-                            <div class="fupload-processing mt-2" style="display: none; color: #fff">Processing images...</div>
+                            <div class="fupload-processing mt-2" style="display: none; color: #F5F5F2">Processing images...</div>
                         </div>
                     </div>
                 </form>

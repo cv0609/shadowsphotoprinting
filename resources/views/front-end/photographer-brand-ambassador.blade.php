@@ -8,7 +8,7 @@
 .pro-hero-card {
     max-width: 980px;
     margin: 0 auto 48px auto;
-    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
     border-radius: 14px;
     padding: 40px 36px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
@@ -30,17 +30,17 @@
 }
 .pro-card {
     background: #0b0b0b;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
     border-radius: 12px;
     padding: 28px;
 }
 .pro-card h2 {
-    color: #ffc205;
+    color: #D7A72C;
     font-size: 30px;
     margin: 0 0 14px 0;
 }
 .pro-card h3 {
-    color: #ffc205;
+    color: #D7A72C;
     font-size: 24px;
     margin: 0 0 10px 0;
 }
@@ -58,7 +58,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #16a085;
+    background: #69794E;
     margin: 0 0 20px 0;
 }
 .pro-full {
@@ -67,11 +67,11 @@
 .pro-image-wrap img {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
 }
 .pro-quote {
     font-size: 24px;
-    color: #ffc205;
+    color: #D7A72C;
     font-weight: 700;
 }
 .pro-cta-row {
@@ -89,19 +89,20 @@
     letter-spacing: 0.2px;
 }
 .pro-btn-primary {
-    background: #ffc205;
+    background: #D7A72C;
     color: #121212 !important;
 }
 .pro-btn-primary:hover {
-    background: #f0b700;
+    background: #5D6B43;
+    color: #F5F5F2 !important;
 }
 .pro-btn-outline {
-    border: 1px solid #16a085;
-    color: #16a085 !important;
+    border: 1px solid #69794E;
+    color: #69794E !important;
 }
 .pro-btn-outline:hover {
-    background: #16a085;
-    color: #fff !important;
+    background: #69794E;
+    color: #F5F5F2 !important;
 }
 .pro-note {
     color: #c9c9c9 !important;
@@ -125,7 +126,7 @@
       .pro-hero-card {
         max-width: 100%;
         margin: 0 auto 48px auto;
-        background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+        background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
         border-radius: 14px;
         padding: 40px 36px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -147,17 +148,17 @@
       }
       .pro-card {
         background: #0b0b0b;
-        border: 1px solid rgba(255, 194, 5, 0.45);
+        border: 1px solid rgba(215, 167, 44, 0.45);
         border-radius: 12px;
         padding: 28px;
       }
       .pro-card h2 {
-        color: #ffc205;
+        color: #D7A72C;
         font-size: 30px;
         margin: 0 0 14px 0;
       }
       .pro-card h3 {
-        color: #ffc205;
+        color: #D7A72C;
         font-size: 24px;
         margin: 0 0 10px 0;
       }
@@ -176,7 +177,7 @@
         width: 80px;
         height: 4px;
         border-radius: 20px;
-        background: #16a085;
+        background: #69794E;
         margin: 0 0 20px 0;
       }
       .pro-full {
@@ -185,11 +186,11 @@
       .pro-image-wrap img {
         width: 100%;
         border-radius: 12px;
-        border: 1px solid rgba(255, 194, 5, 0.45);
+        border: 1px solid rgba(215, 167, 44, 0.45);
       }
       .pro-quote {
         font-size: 24px;
-        color: #ffc205;
+        color: #D7A72C;
         font-weight: 700;
       }
       .pro-cta-row {
@@ -207,19 +208,20 @@
         letter-spacing: 0.2px;
       }
       .pro-btn-primary {
-        background: #ffc205;
+        background: #D7A72C;
         color: #121212 !important;
       }
       .pro-btn-primary:hover {
-        background: #f0b700;
+        background: #5D6B43;
+        color: #F5F5F2 !important;
       }
       .pro-btn-outline {
-        border: 1px solid #16a085;
-        color: #16a085 !important;
+        border: 1px solid #69794E;
+        color: #69794E !important;
       }
       .pro-btn-outline:hover {
-        background: #16a085;
-        color: #fff !important;
+        background: #69794E;
+        color: #F5F5F2 !important;
       }
       .pro-note {
         color: #c9c9c9 !important;

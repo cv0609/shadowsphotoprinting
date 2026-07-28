@@ -6,7 +6,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -22,7 +22,7 @@
 }
 .featured-intro {
     background: #0b0b0b;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
     border-radius: 12px;
     padding: 28px;
     margin-bottom: 24px;
@@ -31,7 +31,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #16a085;
+    background: #69794E;
     margin-bottom: 16px;
 }
 .featured-intro p,
@@ -43,17 +43,17 @@
 .featured-image img {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
 }
 .featured-card {
     background: #0b0b0b;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
     border-radius: 12px;
     padding: 28px;
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #ffc205;
+    color: #D7A72C;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -65,13 +65,13 @@
 }
 .pro-table th,
 .pro-table td {
-    border-bottom: 1px solid rgba(255, 194, 5, 0.18);
+    border-bottom: 1px solid rgba(215, 167, 44, 0.18);
     padding: 14px 12px;
     color: #efefef;
     vertical-align: top;
 }
 .pro-table th {
-    color: #ffc205;
+    color: #D7A72C;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -79,16 +79,16 @@
     letter-spacing: 0.5px;
 }
 .pro-table td a {
-    color: #16a085;
+    color: #69794E;
     text-decoration: underline;
 }
 .pro-table td a:hover {
-    color: #1cc2a0;
+    color: #708052;
 }
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #ffc205;
+    background: #D7A72C;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;
@@ -96,7 +96,8 @@
     text-decoration: none !important;
 }
 .cta-btn:hover {
-    background: #f0b700;
+    background: #5D6B43;
+    color: #F5F5F2 !important;
 }
 @media (max-width: 991px) {
     .featured-hero {
@@ -110,7 +111,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -126,7 +127,7 @@
 }
 .featured-intro {
     background: #0b0b0b;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
     border-radius: 12px;
     padding: 28px;
     /* margin-bottom: 24px; */
@@ -135,7 +136,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #16a085;
+    background: #69794E;
     margin-bottom: 16px;
 }
 .featured-intro p,
@@ -147,19 +148,19 @@
 .featured-image img {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
     height: 100%;
     object-fit: cover;
 }
 .featured-card {
     background: #0b0b0b;
-    border: 1px solid rgba(255, 194, 5, 0.45);
+    border: 1px solid rgba(215, 167, 44, 0.45);
     border-radius: 12px;
     padding: 28px;
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #ffc205;
+    color: #D7A72C;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -171,13 +172,13 @@
 }
 .pro-table th,
 .pro-table td {
-    border-bottom: 1px solid rgba(255, 194, 5, 0.18);
+    border-bottom: 1px solid rgba(215, 167, 44, 0.18);
     padding: 14px 12px;
     color: #efefef;
     vertical-align: top;
 }
 .pro-table th {
-    color: #ffc205;
+    color: #D7A72C;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -186,16 +187,16 @@
     text-wrap: nowrap;
 }
 .pro-table td a {
-    color: #16a085;
+    color: #69794E;
     text-decoration: underline;
 }
 .pro-table td a:hover {
-    color: #1cc2a0;
+    color: #708052;
 }
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #ffc205;
+    background: #D7A72C;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;
@@ -203,7 +204,8 @@
     text-decoration: none !important;
 }
 .cta-btn:hover {
-    background: #f0b700;
+    background: #5D6B43;
+    color: #F5F5F2 !important;
 }
 .featured-image {
     height: 100%;

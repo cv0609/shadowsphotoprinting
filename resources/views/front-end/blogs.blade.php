@@ -51,7 +51,7 @@
                         </div>
                     </article>
                 @empty
-                    <p style="color: #fff;">No blog posts yet.</p>
+                    <p style="color: #F5F5F2;">No blog posts yet.</p>
                 @endforelse
             </div>
         </div>

@@ -3,7 +3,7 @@
     <!-- <style>
         .form-mm {
             background: #000;
-            color: #fff;
+            color: #F5F5F2;
             padding: 90px 0;
         }
 
@@ -12,7 +12,7 @@
         }
 
         .form-mm .header a {
-            color: #ffc205;
+            color: #D7A72C;
         }
 
         #signatureCanvas {
@@ -38,7 +38,7 @@
         .form-mm .form-section label {
             display: block;
             font-weight: 500;
-            color: #ffc205;
+            color: #D7A72C;
             margin-bottom: 6px;
             font-size: 0.95em;
             margin-top: 10px;
@@ -53,7 +53,7 @@
             transition: border-color 0.3s ease;
             background: #000;
             border: 1px solid #fff;
-            color: #fff;
+            color: #F5F5F2;
             width: 100%;
             background-color: rgba(0, 0, 0, .07);
             padding: 10px;
@@ -98,7 +98,7 @@
             align-items: center;
             cursor: pointer;
             font-size: 0.95em;
-            color: #fff;
+            color: #F5F5F2;
         }
 
         .form-mm .checkbox-list input[type="checkbox"] {
@@ -129,7 +129,7 @@
             border-radius: 4px;
             padding: 4px 8px;
             background: #000;
-            color: #fff;
+            color: #F5F5F2;
         }
 
         .form-mm .button-container {
@@ -144,11 +144,11 @@
             width: 48%;
             -webkit-box-shadow: inset 0 0 0 0 transparent;
             box-shadow: inset 0 0 0 0 transparent;
-            background-color: #16a085;
+            background-color: #69794E;
             border: 0;
             border-radius: 0;
             display: inline-block;
-            color: #fff;
+            color: #F5F5F2;
             font-weight: 700;
             padding: 8px 16px;
             line-height: 24px;
@@ -169,7 +169,7 @@
 
         .form-mm .clear-btn {
             background-color: #fff;
-            color: #ffc205;
+            color: #D7A72C;
             border: 2px solid #dfe6e9;
             margin-right: 0;
         }
@@ -187,7 +187,7 @@
         }
 
         .form-mm .footer a {
-            color: #ffc205;
+            color: #D7A72C;
             text-decoration: none;
             font-weight: 500;
         }
@@ -199,7 +199,7 @@
         .form-mm .signature-pad {
             margin-bottom: 10px;
             border: 1px solid #fff;
-            color: #fff;
+            color: #F5F5F2;
             width: 100%;
             background-color: rgba(0, 0, 0, .07);
             line-height: 20px;
@@ -212,7 +212,7 @@
             appearance: none;
             background: #000;
             border: 1px solid #fff;
-            color: #fff;
+            color: #F5F5F2;
             width: 100%;
             background-color: rgba(0, 0, 0, .07);
             padding: 10px;
@@ -220,7 +220,7 @@
         }
 
         .form-mm .form-section input[type="date"]:focus {
-            border-color: #ffc205;
+            border-color: #D7A72C;
             outline: none;
         }
 
@@ -237,7 +237,7 @@
             width: auto;
             background: transparent !important;
             box-shadow: none !important;
-            color: #16a085 !important;
+            color: #69794E !important;
         }
 
         .banner-sec-new {
@@ -257,17 +257,17 @@
         }
 
         .banner-sec-new .div-wrap-head {
-            color: #fff;
+            color: #F5F5F2;
         }
         .form-divider {
             width: 84px;
             height: 4px;
             border-radius: 30px;
-            background: #16a085;
+            background: #69794E;
             margin: 18px auto;
         }
         .section-title-inline {
-            color: #ffc205;
+            color: #D7A72C;
             font-weight: 700;
             margin-top: 6px;
             margin-bottom: 6px;
@@ -305,7 +305,7 @@
     <style>
       .form-mm {
         background: #000;
-        color: #fff;
+        color: #F5F5F2;
         padding: 90px 0;
       }
 
@@ -314,7 +314,7 @@
       }
 
       .form-mm .header a {
-        color: #ffc205;
+        color: #D7A72C;
       }
 
       #signatureCanvas {
@@ -340,7 +340,7 @@
       .form-mm .form-section label {
         display: block;
         font-weight: 500;
-        color: #ffc205;
+        color: #D7A72C;
         margin-bottom: 6px;
         font-size: 0.95em;
         margin-top: 10px;
@@ -355,7 +355,7 @@
         transition: border-color 0.3s ease;
         background: #000;
         border: 1px solid #fff;
-        color: #fff;
+        color: #F5F5F2;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.07);
         padding: 10px;
@@ -400,7 +400,7 @@
         align-items: center;
         cursor: pointer;
         font-size: 0.95em;
-        color: #fff;
+        color: #F5F5F2;
       }
 
       .form-mm .checkbox-list input[type="checkbox"] {
@@ -431,7 +431,7 @@
         border-radius: 4px;
         padding: 4px 8px;
         background: #000;
-        color: #fff;
+        color: #F5F5F2;
         margin-bottom: 0;
       }
 
@@ -449,11 +449,11 @@
         width: 48%;
         -webkit-box-shadow: inset 0 0 0 0 transparent;
         box-shadow: inset 0 0 0 0 transparent;
-        background-color: #16a085;
+        background-color: #69794E;
         border: 0;
         border-radius: 0;
         display: inline-block;
-        color: #fff;
+        color: #F5F5F2;
         font-weight: 700;
         padding: 8px 16px;
         line-height: 24px;
@@ -474,7 +474,7 @@
 
       .form-mm .clear-btn {
         background-color: #fff;
-        color: #ffc205;
+        color: #D7A72C;
         border: 2px solid #dfe6e9;
         margin-right: 0;
       }
@@ -492,7 +492,7 @@
       }
 
       .form-mm .footer a {
-        color: #ffc205;
+        color: #D7A72C;
         text-decoration: none;
         font-weight: 500;
       }
@@ -504,7 +504,7 @@
       .form-mm .signature-pad {
         margin-bottom: 10px;
         border: 1px solid #fff;
-        color: #fff;
+        color: #F5F5F2;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.07);
         line-height: 20px;
@@ -517,7 +517,7 @@
         appearance: none;
         background: #000;
         border: 1px solid #fff;
-        color: #fff;
+        color: #F5F5F2;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.07);
         padding: 10px;
@@ -525,7 +525,7 @@
       }
 
       .form-mm .form-section input[type="date"]:focus {
-        border-color: #ffc205;
+        border-color: #D7A72C;
         outline: none;
       }
 
@@ -544,7 +544,7 @@
         width: auto;
         background: transparent !important;
         box-shadow: none !important;
-        color: #16a085 !important;
+        color: #69794E !important;
       }
 
       .banner-sec-new {
@@ -564,17 +564,17 @@
       }
 
       .banner-sec-new .div-wrap-head {
-        color: #fff;
+        color: #F5F5F2;
       }
       .form-divider {
         width: 84px;
         height: 4px;
         border-radius: 30px;
-        background: #16a085;
+        background: #69794E;
         margin: 18px auto;
       }
       .section-title-inline {
-        color: #ffc205;
+        color: #D7A72C;
         font-weight: 700;
         margin-top: 6px;
         margin-bottom: 6px;
@@ -608,7 +608,7 @@
         margin-bottom: 4px;
       }
       h3.banner-heading {
-        color: #ffc205;
+        color: #D7A72C;
         font-size: 50px;
         text-transform: uppercase;
         font-weight: 600;
@@ -652,7 +652,7 @@
         }
         .form-mm {
           background: #000;
-          color: #fff;
+          color: #F5F5F2;
           padding: 40px 0;
         }
         label.section-title-inline.form-heading {
@@ -751,7 +751,7 @@
                 <div class="header">
 
                     <p class="eligibility-reqirements"><strong>Eligibility Requirements:</strong></p>
-                    <ul style="text-align: center; color: #fff;">
+                    <ul style="text-align: center; color: #F5F5F2;">
                         <li>You must be 18 years or older</li>
                         <li>You must reside in Australia</li>
                     </ul>
@@ -882,7 +882,7 @@
                                     style="border: 1px solid #fff;"></canvas>
                             </div>
                             <button type="button" id="clearSignature"
-                                style="background-color: #fff; color: #ffc205; border: 2px solid #dfe6e9; padding: 5px 10px; margin-top: 5px; border-radius: 6px;">Clear
+                                style="background-color: #fff; color: #D7A72C; border: 2px solid #dfe6e9; padding: 5px 10px; margin-top: 5px; border-radius: 6px;">Clear
                                 Signature</button>
                             <input type="hidden" id="signatureData" name="signatureData" required>
                         </div>
