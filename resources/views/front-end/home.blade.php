@@ -110,12 +110,26 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     <p style="font-weight:700; margin-top:8px;">Because the stories you’re creating are worth keeping.</p>
                 </div>
                 <div class="col-lg-12 community-class" style="margin-top: 20px; border: 1px solid rgba(215, 167, 44, .45); border-radius: 10px; padding: 12px 14px; margin: 20px 20px 0 !important; max-width: 1090px;">
-                    <h3 style="color:#D7A72C;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
-                    <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Affordable Memories, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
-                    <p style="font-weight:700; margin-top:8px;">If you’re ever passing through Glenreagh, it’s something really special to see in person — and one of our favourite parts of the shop.</p>
-                    <div style="margin-top:21px; text-align:center;">
-                        <img src="{{ isset($page_content['glenreagh_section_image']) && !empty($page_content['glenreagh_section_image']) ? asset($page_content['glenreagh_section_image']) : asset('assets/images/glenreagh-community-shop.png') }}" alt="A Community Print, Art & Gift Shop right here in Glenreagh" style="width:100%; max-width:760px; max-height:520px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.15); box-shadow:0 8px 20px rgba(0,0,0,.35);">
-                    </div>
+                    <h3 style="color:#D7A72C;">Professional Photo Printing with a Community Print, Art &amp; Gift Shop</h3>
+                    <p>At <strong>Shadows Affordable Memories</strong>, professional photo printing has always been at the heart of what we do. Helping preserve your memories with high-quality prints is, and always will be, our passion.</p>
+                    <p>As our business has grown, so has our dream. Alongside our professional printing services, we’ve created a welcoming Community Print, Art &amp; Gift Shop where visitors can browse and purchase locally created art, handcrafted gifts and unique products from talented artists, photographers, creators and makers.</p>
+
+                    <h3 style="color:#D7A72C;">Celebrating the Memories, Creativity and History of Glenreagh</h3>
+                    <p>As you arrive at <strong>Shadows Affordable Memories</strong>, you’ll be welcomed by a mural that celebrates the history, heritage and heart of Glenreagh.</p>
+                    <p>Inspired and designed by the Shadows Family and beautifully brought to life by a talented local artist, the mural reflects our town’s rich timber heritage and honours the days when the old steam trains travelled through Glenreagh. At the heart of the mural is Glenreagh’s iconic train tunnel, a landmark that has connected our community and become part of our town’s story for generations.</p>
+                    <p>The mural also pays tribute to the real inspiration behind our business—<strong>Shadow</strong>, our much-loved Staffy, whose name proudly lives on in <strong>Shadows Affordable Memories</strong>. Her love, loyalty and gentle spirit continue to inspire us every day and remind us why preserving life’s special moments is so important.</p>
+                    <p>For us, the mural is far more than artwork on the front of our shop. It honours the history of our town, celebrates the creativity of our local community and reflects the memories that connect us all. It tells the story of Glenreagh, the people who have shaped our community and the much-loved Staffy who inspired our family business.</p>
+                    <p>We hope that as you visit our shop, you’ll take a moment to enjoy the mural, reflect on the stories it tells and create a few new memories of your own.</p>
+
+                    <h3 style="color:#D7A72C;">Supporting Local Creativity</h3>
+                    <p>Our community is home to so many talented artists, photographers, creators and makers, and we’re proud to provide a place where their work can be displayed, appreciated and purchased by both locals and visitors.</p>
+                    <p>From original works of art and photography to handcrafted gifts and locally made creations, every piece tells its own story and helps support the talented people behind it.</p>
+                    <p>Whether you’re collecting your latest photo prints, searching for the perfect handmade gift, looking for a unique piece of local art to take home, or simply browsing, we invite you to discover the wonderful creativity our community has to offer.</p>
+                    <p>Every purchase directly supports local artists, creators and small businesses while helping strengthen the community we proudly call home.</p>
+
+                    <h3 style="color:#D7A72C;">Are You a Local Artist or Creator?</h3>
+                    <p>If you’re a local artist, photographer, creator or maker looking for a place to display and sell your work, we’d love to hear from you.</p>
+                    <p>Together, we’re creating more than a shop—we’re building a welcoming community space where memories are preserved, creativity is celebrated, local history is honoured, and local artists have the opportunity to share and sell their work with both locals and visitors for generations to come.</p>
                 </div>
                 <div class="col-lg-12" style="margin-top: 22px;">
                     <h3 style="color:#D7A72C;">Helpful Tips, Real Advice &amp; Inspiration</h3>
