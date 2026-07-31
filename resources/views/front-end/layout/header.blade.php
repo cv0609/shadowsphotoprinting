@@ -10,7 +10,7 @@ $CartCount = $cartModel::getCartCount();
    <div class="august-promotion-banner" style="background: #708052;color: #F5F5F2;text-align: center;padding: 10px 0;cursor: pointer;" onclick="openAugustPromotion()">
         <span style="font-size: 16px;font-weight: 600;">
             New Here? Get 10% OFF Your First Order! –
-            <span style="color: #D7A72C; text-decoration: underline; font-weight: bold;">Click here</span> 🎁
+            <span style="color: #FFC205; text-decoration: underline; font-weight: bold;">Click here</span> 🎁
         </span>
     </div>
     
@@ -144,7 +144,7 @@ $CartCount = $cartModel::getCartCount();
             <div id="augustPromotionPopup" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
-                        <div class="modal-header" style="background: #000; color: #F5F5F2; border-bottom: 2px solid #D7A72C; padding: 15px 20px;">
+                        <div class="modal-header" style="background: #000; color: #F5F5F2; border-bottom: 2px solid #FFC205; padding: 15px 20px;">
                             <h5 class="modal-title mb-0">
                                 <i class="fas fa-gift"></i> {{date('M Y')}} Special Promotion!
                             </h5>
@@ -154,7 +154,7 @@ $CartCount = $cartModel::getCartCount();
                         </div>
                         <div class="modal-body" style="padding: 20px;">
                             <div class="text-center mb-3">
-                                <h4 style="color: #D7A72C; margin-bottom: 10px; font-size: 18px;">🎉 Welcome to Shadows Photo Printing! 🎉</h4>
+                                <h4 style="color: #FFC205; margin-bottom: 10px; font-size: 18px;">🎉 Welcome to Shadows Photo Printing! 🎉</h4>
                                 <p style="font-size: 14px; color: #F5F5F2; margin-bottom: 15px;">
                                     Get <strong>10% OFF</strong> your first order!
                                 </p>

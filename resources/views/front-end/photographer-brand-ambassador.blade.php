@@ -8,7 +8,7 @@
 .pro-hero-card {
     max-width: 980px;
     margin: 0 auto 48px auto;
-    background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
+    background: linear-gradient(135deg, #FFC205 0%, #FFC205 100%);
     border-radius: 14px;
     padding: 40px 36px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
@@ -30,17 +30,17 @@
 }
 .pro-card {
     background: #0b0b0b;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
     border-radius: 12px;
     padding: 28px;
 }
 .pro-card h2 {
-    color: #D7A72C;
+    color: #FFC205;
     font-size: 30px;
     margin: 0 0 14px 0;
 }
 .pro-card h3 {
-    color: #D7A72C;
+    color: #FFC205;
     font-size: 24px;
     margin: 0 0 10px 0;
 }
@@ -67,11 +67,11 @@
 .pro-image-wrap img {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
 }
 .pro-quote {
     font-size: 24px;
-    color: #D7A72C;
+    color: #FFC205;
     font-weight: 700;
 }
 .pro-cta-row {
@@ -89,7 +89,7 @@
     letter-spacing: 0.2px;
 }
 .pro-btn-primary {
-    background: #D7A72C;
+    background: #FFC205;
     color: #121212 !important;
 }
 .pro-btn-primary:hover {
@@ -126,7 +126,7 @@
       .pro-hero-card {
         max-width: 100%;
         margin: 0 auto 48px auto;
-        background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
+        background: linear-gradient(135deg, #FFC205 0%, #FFC205 100%);
         border-radius: 14px;
         padding: 40px 36px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -148,17 +148,17 @@
       }
       .pro-card {
         background: #0b0b0b;
-        border: 1px solid rgba(215, 167, 44, 0.45);
+        border: 1px solid rgba(255, 194, 5, 0.45);
         border-radius: 12px;
         padding: 28px;
       }
       .pro-card h2 {
-        color: #D7A72C;
+        color: #FFC205;
         font-size: 30px;
         margin: 0 0 14px 0;
       }
       .pro-card h3 {
-        color: #D7A72C;
+        color: #FFC205;
         font-size: 24px;
         margin: 0 0 10px 0;
       }
@@ -186,11 +186,11 @@
       .pro-image-wrap img {
         width: 100%;
         border-radius: 12px;
-        border: 1px solid rgba(215, 167, 44, 0.45);
+        border: 1px solid rgba(255, 194, 5, 0.45);
       }
       .pro-quote {
         font-size: 24px;
-        color: #D7A72C;
+        color: #FFC205;
         font-weight: 700;
       }
       .pro-cta-row {
@@ -208,7 +208,7 @@
         letter-spacing: 0.2px;
       }
       .pro-btn-primary {
-        background: #D7A72C;
+        background: #FFC205;
         color: #121212 !important;
       }
       .pro-btn-primary:hover {

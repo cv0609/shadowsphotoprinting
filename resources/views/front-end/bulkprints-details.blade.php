@@ -51,7 +51,7 @@
                         {{-- <p>IMAGE</p> --}}
                         <h2>{{$productDetails->product_title ?? ''}}</h2>
                         <p class="incl">${{$productDetails->product_price}}</p>
-                        <h6 style="color: #D7A72C">Type of Paper Use:</h6>
+                        <h6 style="color: #FFC205">Type of Paper Use:</h6>
                         {{-- <input type="text" name="" id="" value="{{$productDetails->type_of_paper_use}}"> --}}
                         <select name="" id="" class="form-control mb-2">
                             <option value="">{{$productDetails->type_of_paper_use}}</option>

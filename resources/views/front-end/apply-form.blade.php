@@ -12,7 +12,7 @@
         }
 
         .form-mm .header a {
-            color: #D7A72C;
+            color: #FFC205;
         }
 
         #signatureCanvas {
@@ -38,7 +38,7 @@
         .form-mm .form-section label {
             display: block;
             font-weight: 500;
-            color: #D7A72C;
+            color: #FFC205;
             margin-bottom: 6px;
             font-size: 0.95em;
             margin-top: 10px;
@@ -169,7 +169,7 @@
 
         .form-mm .clear-btn {
             background-color: #fff;
-            color: #D7A72C;
+            color: #FFC205;
             border: 2px solid #dfe6e9;
             margin-right: 0;
         }
@@ -187,7 +187,7 @@
         }
 
         .form-mm .footer a {
-            color: #D7A72C;
+            color: #FFC205;
             text-decoration: none;
             font-weight: 500;
         }
@@ -220,7 +220,7 @@
         }
 
         .form-mm .form-section input[type="date"]:focus {
-            border-color: #D7A72C;
+            border-color: #FFC205;
             outline: none;
         }
 
@@ -267,7 +267,7 @@
             margin: 18px auto;
         }
         .section-title-inline {
-            color: #D7A72C;
+            color: #FFC205;
             font-weight: 700;
             margin-top: 6px;
             margin-bottom: 6px;
@@ -314,7 +314,7 @@
       }
 
       .form-mm .header a {
-        color: #D7A72C;
+        color: #FFC205;
       }
 
       #signatureCanvas {
@@ -340,7 +340,7 @@
       .form-mm .form-section label {
         display: block;
         font-weight: 500;
-        color: #D7A72C;
+        color: #FFC205;
         margin-bottom: 6px;
         font-size: 0.95em;
         margin-top: 10px;
@@ -474,7 +474,7 @@
 
       .form-mm .clear-btn {
         background-color: #fff;
-        color: #D7A72C;
+        color: #FFC205;
         border: 2px solid #dfe6e9;
         margin-right: 0;
       }
@@ -492,7 +492,7 @@
       }
 
       .form-mm .footer a {
-        color: #D7A72C;
+        color: #FFC205;
         text-decoration: none;
         font-weight: 500;
       }
@@ -525,7 +525,7 @@
       }
 
       .form-mm .form-section input[type="date"]:focus {
-        border-color: #D7A72C;
+        border-color: #FFC205;
         outline: none;
       }
 
@@ -574,7 +574,7 @@
         margin: 18px auto;
       }
       .section-title-inline {
-        color: #D7A72C;
+        color: #FFC205;
         font-weight: 700;
         margin-top: 6px;
         margin-bottom: 6px;
@@ -608,7 +608,7 @@
         margin-bottom: 4px;
       }
       h3.banner-heading {
-        color: #D7A72C;
+        color: #FFC205;
         font-size: 50px;
         text-transform: uppercase;
         font-weight: 600;
@@ -882,7 +882,7 @@
                                     style="border: 1px solid #fff;"></canvas>
                             </div>
                             <button type="button" id="clearSignature"
-                                style="background-color: #fff; color: #D7A72C; border: 2px solid #dfe6e9; padding: 5px 10px; margin-top: 5px; border-radius: 6px;">Clear
+                                style="background-color: #fff; color: #FFC205; border: 2px solid #dfe6e9; padding: 5px 10px; margin-top: 5px; border-radius: 6px;">Clear
                                 Signature</button>
                             <input type="hidden" id="signatureData" name="signatureData" required>
                         </div>

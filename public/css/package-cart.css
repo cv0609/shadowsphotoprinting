@@ -52,7 +52,7 @@
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) !important;
-    background: #D7A72C !important;
+    background: #FFC205 !important;
     color: #000000 !important;
     border-radius: 50% !important;
     width: 24px !important;
@@ -133,7 +133,7 @@ tr.package-item .product-name {
 /* Package quantity styling */
 tr.package-item .product-quantity {
     /* background: #1a1a1a; */
-    color: #D7A72C;
+    color: #FFC205;
     font-weight: bold;
     text-align: center;
     font-size: 14px;

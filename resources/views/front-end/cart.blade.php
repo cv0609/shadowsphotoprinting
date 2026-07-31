@@ -1,6 +1,6 @@
 @extends('front-end.layout.main')
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}?v=4">
+<link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}?v=5">
 @endsection
 @section('content')
 @php
@@ -1077,6 +1077,6 @@ function checkPackageValidationForCart(callback){
          });
  </script>
 
-<link rel="stylesheet" href="{{ asset('css/package-cart.css') }}?v=2">
+<link rel="stylesheet" href="{{ asset('css/package-cart.css') }}?v=3">
 
 @endsection

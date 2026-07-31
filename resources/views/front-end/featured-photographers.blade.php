@@ -6,7 +6,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
+    background: linear-gradient(135deg, #FFC205 0%, #FFC205 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -22,7 +22,7 @@
 }
 .featured-intro {
     background: #0b0b0b;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
     border-radius: 12px;
     padding: 28px;
     margin-bottom: 24px;
@@ -43,17 +43,17 @@
 .featured-image img {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
 }
 .featured-card {
     background: #0b0b0b;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
     border-radius: 12px;
     padding: 28px;
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #D7A72C;
+    color: #FFC205;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -65,13 +65,13 @@
 }
 .pro-table th,
 .pro-table td {
-    border-bottom: 1px solid rgba(215, 167, 44, 0.18);
+    border-bottom: 1px solid rgba(255, 194, 5, 0.18);
     padding: 14px 12px;
     color: #efefef;
     vertical-align: top;
 }
 .pro-table th {
-    color: #D7A72C;
+    color: #FFC205;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -88,7 +88,7 @@
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #D7A72C;
+    background: #FFC205;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;
@@ -111,7 +111,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #D7A72C 0%, #D7A72C 100%);
+    background: linear-gradient(135deg, #FFC205 0%, #FFC205 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -127,7 +127,7 @@
 }
 .featured-intro {
     background: #0b0b0b;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
     border-radius: 12px;
     padding: 28px;
     /* margin-bottom: 24px; */
@@ -148,19 +148,19 @@
 .featured-image img {
     width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
     height: 100%;
     object-fit: cover;
 }
 .featured-card {
     background: #0b0b0b;
-    border: 1px solid rgba(215, 167, 44, 0.45);
+    border: 1px solid rgba(255, 194, 5, 0.45);
     border-radius: 12px;
     padding: 28px;
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #D7A72C;
+    color: #FFC205;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -172,13 +172,13 @@
 }
 .pro-table th,
 .pro-table td {
-    border-bottom: 1px solid rgba(215, 167, 44, 0.18);
+    border-bottom: 1px solid rgba(255, 194, 5, 0.18);
     padding: 14px 12px;
     color: #efefef;
     vertical-align: top;
 }
 .pro-table th {
-    color: #D7A72C;
+    color: #FFC205;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -196,7 +196,7 @@
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #D7A72C;
+    background: #FFC205;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;

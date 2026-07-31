@@ -3,8 +3,8 @@
 .sm-page {
     --sm-eucalyptus: #69794E;
     --sm-eucalyptus-dark: #5D6B43;
-    --sm-sunset-gold: #D7A72C;
-    --sm-brand-gold: #D7A72C;
+    --sm-sunset-gold: #FFC205;
+    --sm-brand-gold: #FFC205;
     --sm-dusty-rose: #C4A4A4;
     --sm-warm-cream: #F7F1E6;
     --sm-cream-deep: #EFE6D6;
@@ -769,7 +769,7 @@
     gap: 4px;
     padding: 5px 10px;
     border-radius: 999px;
-    background: linear-gradient(135deg, #E8C65A, #D7A72C);
+    background: linear-gradient(135deg, #E8C65A, #FFC205);
     color: #2b2b2b;
     font-size: 11px;
     font-weight: 800;

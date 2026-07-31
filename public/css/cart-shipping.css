@@ -422,10 +422,10 @@ input.shutterPoint[type="radio"]:focus-visible {
 
 .test-total-label,
 .test-total-amount {
-    color: #D7A72C !important;
+    color: #FFC205 !important;
 }
 .choose-prefered-option-heading{
-    color: #D7A72C !important;
+    color: #FFC205 !important;
 }
 
 #total-shipping-cost strong {
