@@ -232,8 +232,8 @@ $sale_popup = getSalePopup();
 @endphp
 
 @if(isset($sale_popup) && !empty($sale_popup))
-<div id="sailImagePopup" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<div id="sailImagePopup" class="modal fade" role="dialog" style="z-index: 9999999999 !important;">
+    <div class="modal-dialog" >
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header sail-modal-header">
