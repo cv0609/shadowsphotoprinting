@@ -52,6 +52,67 @@
    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
    })(window,document,'script','dataLayer','GTM-TC2ZRBMT');</script>
+
+<script type="application/ld+json">
+   {
+     "@context": "https://schema.org",
+     "@graph": [
+       {
+         "@type": "LocalBusiness",
+         "@id": "https://shadowsphotoprinting.com.au/#localbusiness",
+         "name": "Shadows Affordable Memories",
+         "url": "https://shadowsphotoprinting.com.au/",
+         "telephone": "+61 2 6602 9424",
+         "email": "shadowsphotoprinting@outlook.com",
+         "priceRange": "$$",
+         "image": "https://shadowsphotoprinting.com.au/assets/images/favicon.jpg ",
+         "logo": "https://shadowsphotoprinting.com.au/assets/images/favicon.jpg ",
+         "address": {
+           "@type": "PostalAddress",
+           "addressLocality": "Glenreagh",
+           "addressRegion": "NSW",
+           "addressCountry": "AU"
+         },
+         "areaServed": {
+           "@type": "Country",
+           "name": "Australia"
+         }
+       },
+       {
+         "@type": "Organization",
+         "@id": "https://shadowsphotoprinting.com.au/#organization",
+         "name": "Shadows Affordable Memories",
+         "url": "https://shadowsphotoprinting.com.au/",
+         "logo": "https://shadowsphotoprinting.com.au/assets/images/favicon.jpg"
+       },
+       {
+         "@type": "WebSite",
+         "@id": "https://shadowsphotoprinting.com.au/#website",
+         "url": "https://shadowsphotoprinting.com.au/",
+         "name": "Shadows Photo Printing",
+         "publisher": {
+           "@id": "https://shadowsphotoprinting.com.au/#organization"
+         }
+       },
+       {
+         "@type": "WebPage",
+         "@id": "https://shadowsphotoprinting.com.au/#webpage",
+         "url": "https://shadowsphotoprinting.com.au/",
+         "name": "Shadows Affordable Memories | Photo Printing Australia",
+         "isPartOf": {
+           "@id": "https://shadowsphotoprinting.com.au/#website"
+         },
+         "about": {
+           "@id": "https://shadowsphotoprinting.com.au/#localbusiness"
+         },
+         "primaryImageOfPage": {
+           "@type": "ImageObject",
+           "url": "https://shadowsphotoprinting.com.au/assets/images/favicon.jpg"
+         }
+       }
+     ]
+   }
+</script>
    <!-- End Google Tag Manager -->
 
    <!-- Google Tag Manager (noscript) -->
