@@ -259,7 +259,7 @@ $(document).ready(function() {
         if (sizeId && typeId) {
             var price = findPrice(sizeId, typeId, productId);
             if (price !== null) {
-                $('.product-price').text('$' + price).css({'color':'#ffc205','font-size':'24px','line-height':'2'});
+                $('.product-price').text('$' + price).css({'color':'#FFC205','font-size':'24px','line-height':'2'});
                 $('#product_price').val(price);
                 $('#product_qty').removeClass('d-none');
                 $('.reset_variations').removeClass('d-none');
@@ -278,7 +278,7 @@ $(document).ready(function() {
         if (sizeId && typeId) {
             var price = findPrice(sizeId, typeId, productId);
             if (price !== null) {
-                $('.product-price').text('$' + price).css({'color':'#ffc205','font-size':'24px','line-height':'2'});
+                $('.product-price').text('$' + price).css({'color':'#FFC205','font-size':'24px','line-height':'2'});
                 $('#product_price').val(price);
                 $('#product_qty').removeClass('d-none');
                 $('.reset_variations').removeClass('d-none');

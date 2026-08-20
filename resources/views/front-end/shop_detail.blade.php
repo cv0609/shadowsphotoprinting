@@ -92,7 +92,7 @@
                         </button>
                     </div>
                     <div class="modal-body" style="background-color: #ffffff; padding: 20px;">
-                        <div class="alert alert-info" style="border-radius: 0; border-left: 4px solid #17a2b8;">
+                        <div class="alert alert-info" style="border-radius: 0; border-left: 4px solid #69794E;">
                             <i class="fas fa-info-circle"></i> You cannot add these items to your cart because they exceed the package restrictions.
                         </div>
                         <div id="restriction-message"></div>
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0; padding: 10px 12px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 6px;">
-                        <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: 0 0 32px; color: #16a085; background: #fff; border-radius: 50%;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: 0 0 32px; color: #69794E; background: #fff; border-radius: 50%;">
                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                         </span>
                         <span style="line-height: 1.3;">

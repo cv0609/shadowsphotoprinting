@@ -5,7 +5,7 @@
 .rad-btns input[type="radio"],
 input.orderType[type="radio"],
 input.shutterPoint[type="radio"] {
-    accent-color: #16a085;
+    accent-color: #69794E;
     cursor: pointer;
 }
 
@@ -13,7 +13,7 @@ input.shutterPoint[type="radio"] {
 .rad-btns input[type="radio"]:focus-visible,
 input.orderType[type="radio"]:focus-visible,
 input.shutterPoint[type="radio"]:focus-visible {
-    outline: 2px solid #0d6c5a;
+    outline: 2px solid #5D6B43;
     outline-offset: 2px;
 }
 
@@ -43,7 +43,7 @@ input.shutterPoint[type="radio"]:focus-visible {
     padding: 6px;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
-    background: #ffffff;
+    background: #F5F5F2ff;
     font-size: 11px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
@@ -79,16 +79,16 @@ input.shutterPoint[type="radio"]:focus-visible {
 }
 
 .shipping-option:hover {
-    border-color: #16a085;
-    background: #f8fffe;
+    border-color: #69794E;
+    background: #f3f4ef;
     transform: translateY(-1px);
-    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.1);
+    box-shadow: 0 1px 3px rgba(105, 121, 78, 0.1);
 }
 
 .shipping-option.selected {
-    border-color: #16a085;
-    background: #e8f6f3;
-    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+    border-color: #69794E;
+    background: #eef1ea;
+    box-shadow: 0 1px 2px rgba(105, 121, 78, 0.2);
 }
 
 .shipping-option-content {
@@ -102,7 +102,7 @@ input.shutterPoint[type="radio"]:focus-visible {
     margin: 0;
     cursor: pointer;
     transform: scale(0.7);
-    accent-color: #16a085;
+    accent-color: #69794E;
 }
 
 .shipping-name {
@@ -114,7 +114,7 @@ input.shutterPoint[type="radio"]:focus-visible {
 
 .shipping-price {
     font-weight: 700;
-    color: #16a085;
+    color: #69794E;
     font-size: 11px;
     min-width: 40px;
     text-align: right;
@@ -149,7 +149,7 @@ input.shutterPoint[type="radio"]:focus-visible {
     border-bottom: none;
     font-weight: 600;
     font-size: 13px;
-    color: #16a085;
+    color: #69794E;
 }
 
 /* Compact cart design */
@@ -187,7 +187,7 @@ input.shutterPoint[type="radio"]:focus-visible {
 
 .change-address {
     font-size: 11px;
-    color: #16a085;
+    color: #69794E;
     text-decoration: underline;
     cursor: pointer;
 }
@@ -225,7 +225,7 @@ input.shutterPoint[type="radio"]:focus-visible {
     height: 14px;
     border: 2px solid #ddd;
     border-radius: 50%;
-    border-top-color: #16a085;
+    border-top-color: #69794E;
     animation: spin 1s ease-in-out infinite;
     margin-left: 6px;
 }
@@ -288,7 +288,7 @@ input.shutterPoint[type="radio"]:focus-visible {
     padding: 6px;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
-    background: #ffffff;
+    background: #F5F5F2ff;
     font-size: 11px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
@@ -302,7 +302,7 @@ input.shutterPoint[type="radio"]:focus-visible {
     align-items: center;
     padding: 10px 12px;
     background: #fff;
-    border: 1px solid #d0e5e0;
+    border: 1px solid #dce2d4;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -313,36 +313,36 @@ input.shutterPoint[type="radio"]:focus-visible {
 }
 
 .shipping-option:hover {
-    border-color: #16a085;
-    background: #f5f7f0;
+    border-color: #69794E;
+    background: #f3f4ef;
     transform: translateY(-1px);
-    box-shadow: 0 1px 3px rgba(22, 160, 133, 0.12);
+    box-shadow: 0 1px 3px rgba(105, 121, 78, 0.12);
 }
 
 .shipping-option input[type="radio"] {
     margin-right: 8px;
-    accent-color: #16a085;
+    accent-color: #69794E;
     transform: scale(1.05);
     cursor: pointer;
 }
 
 .shipping-option input[type="radio"]:checked + label {
-    color: #0d6c5a;
+    color: #5D6B43;
     font-weight: 700;
 }
 
 .shipping-option input[type="radio"]:checked {
     ~ .shipping-option {
-        border-color: #16a085;
-        background: #e8f6f3;
-        box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+        border-color: #69794E;
+        background: #eef1ea;
+        box-shadow: 0 1px 2px rgba(105, 121, 78, 0.2);
     }
 }
 
 .shipping-option.selected {
-    border-color: #16a085;
-    background: #e8f6f3;
-    box-shadow: 0 1px 2px rgba(22, 160, 133, 0.2);
+    border-color: #69794E;
+    background: #eef1ea;
+    box-shadow: 0 1px 2px rgba(105, 121, 78, 0.2);
 }
 
 .shipping-option label {
@@ -369,7 +369,7 @@ input.shutterPoint[type="radio"]:focus-visible {
 
 .service-price {
     font-weight: 700;
-    color: #0d6c5a;
+    color: #5D6B43;
     font-size: 14px;
 }
 
@@ -407,8 +407,8 @@ input.shutterPoint[type="radio"]:focus-visible {
 #total-shipping-cost {
     margin-top: 4px;
     padding: 3px 6px;
-    background: #e8f6f3;
-    border: 1px solid #16a085;
+    background: #eef1ea;
+    border: 1px solid #69794E;
     border-radius: 2px;
     text-align: center;
     font-size: 10px;
@@ -422,14 +422,14 @@ input.shutterPoint[type="radio"]:focus-visible {
 
 .test-total-label,
 .test-total-amount {
-    color: #ffc205 !important;
+    color: #FFC205 !important;
 }
 .choose-prefered-option-heading{
-    color: #ffc205 !important;
+    color: #FFC205 !important;
 }
 
 #total-shipping-cost strong {
-    color: #16a085;
+    color: #69794E;
     font-size: 11px;
 }
 

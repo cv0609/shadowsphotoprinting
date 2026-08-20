@@ -16,7 +16,7 @@
 
 .sold-label {
     background: #dc3545;
-    color: white;
+    color: #F5F5F2;
     padding: 8px 16px;
     border-radius: 4px;
     font-weight: bold;

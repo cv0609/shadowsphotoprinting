@@ -50,7 +50,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                             <span>Always interest-free, when you pay it in 4 installment.</span>
                             <div class="after-pay-modal afterpayButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="98" height="36" class="compact-badge-logo" viewBox="0 0 100 21">
-                                    <path class="afterpay-logo-badge-background" fill="#b2fce4" d="M89.85 20.92h-78.9a10.42 10.42 0 110-20.82h78.89a10.42 10.42 0 010 20.83v-.01z"></path>
+                                    <path class="afterpay-logo-badge-background" fill="#e4ead8" d="M89.85 20.92h-78.9a10.42 10.42 0 110-20.82h78.89a10.42 10.42 0 010 20.83v-.01z"></path>
                                     <g class="afterpay-logo-badge-lockup">
                                         <path d="M85.05 6.37L82.88 5.1l-2.2-1.27a2.2 2.2 0 00-3.3 1.9v.29c0 .16.08.3.22.38l1.03.58c.28.16.63-.04.63-.37v-.67c0-.34.36-.54.65-.38l2.02 1.16 2 1.15c.3.16.3.58 0 .75l-2 1.15-2.02 1.16a.43.43 0 01-.65-.38v-.33a2.2 2.2 0 00-3.28-1.9l-2.2 1.26-2.19 1.25a2.2 2.2 0 000 3.8l2.18 1.25 2.2 1.27a2.2 2.2 0 003.3-1.9v-.3c0-.15-.09-.3-.23-.37L78.02 14a.43.43 0 00-.64.37v.67c0 .34-.36.54-.65.38l-2-1.16-2-1.15a.43.43 0 010-.75l2-1.15 2-1.16c.3-.16.65.05.65.38v.33a2.2 2.2 0 003.3 1.9l2.2-1.26 2.17-1.25a2.2 2.2 0 000-3.8z"></path>
                                         <path d="M70.77 6.78l-5.1 10.53h-2.12l1.91-3.93-3-6.6h2.17l1.93 4.42 2.1-4.42h2.11z"></path>
@@ -72,53 +72,71 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <!-- Add row here -->
                 {!! $page_content['about_description'] !!}
                 <div class="col-lg-12" style="margin-top: 20px;">
-                    <h3 style="color:#ffc205;">{{ $page_content['photographers_camera_clubs_title'] ?? 'For Photographers & Camera Clubs' }}</h3>
+                    <h3 style="color:#FFC205;">{{ $page_content['photographers_camera_clubs_title'] ?? 'For Photographers & Camera Clubs' }}</h3>
                     <p>{!! nl2br(e($page_content['photographers_camera_clubs_description'] ?? "Printed by photographers who understand photography.\n\nWhether you’re a professional photographer, part of a camera club, or building your portfolio, we’re here to support your work.\n\nWe know how important colour, detail, and consistency are — which is why every image is carefully checked and printed with precision.")) !!}</p>
                     <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
-                        <!-- <p style="margin:0; color:#fff; font-weight:600;">&#10003; No auto-corrections</p>
-                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; No unwanted adjustments</p>
-                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Just your work, printed as you created it</p> -->
+                        <!-- <p style="margin:0; color:#F5F5F2; font-weight:600;">&#10003; No auto-corrections</p>
+                        <p style="margin:4px 0 0 0; color:#F5F5F2; font-weight:600;">&#10003; No unwanted adjustments</p>
+                        <p style="margin:4px 0 0 0; color:#F5F5F2; font-weight:600;">&#10003; Just your work, printed as you created it</p> -->
 
-                        <ul style="list-style: disc; color: white; padding-left: 10px;">
-                            <li><p style="margin:0; color:#fff; ">No auto-corrections</p></li>
-                            <li><p style="margin:4px 0 0 0; color:#fff; ">No unwanted adjustments</p></li>
-                            <li><p style="margin:4px 0 0 0; color:#fff; ">Just your work, printed as you created it</p></li>
+                        <ul style="list-style: disc; color: #F5F5F2; padding-left: 10px;">
+                            <li><p style="margin:0; color:#F5F5F2; ">No auto-corrections</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#F5F5F2; ">No unwanted adjustments</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#F5F5F2; ">Just your work, printed as you created it</p></li>
                         </ul>
                     </div>
                     
                     <p>
-                        {!! nl2br($page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our <span style='color:#ffc205;'>Shadows Pro Circle</span> — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.") !!}
+                        {!! nl2br(str_replace(
+                            'Because your work deserves to be printed with care — and done properly.',
+                            '<strong>Because your work deserves to be printed with care — and done properly.</strong>',
+                            $page_content['photographers_camera_clubs_footer'] ?? "From single prints to bulk orders, you can trust that your images will be handled with care, respect, and understanding.\n\nBecause your work deserves to be printed with care — and done properly.\n\nAsk us about our <span style='color:#FFC205;'>Shadows Pro Circle</span> — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community."
+                        )) !!}
                     </p>
                     <!-- <p style="font-weight:700; margin-top:8px;">Because your work deserves to be printed with care — and done properly.</p>
                     <p style="font-weight:700;">Ask us about our Shadows Pro Circle — a simple way to earn Shutter Bucks, receive exclusive offers, and be part of our growing photography community.</p> -->
                 </div>
                 <div class="col-lg-12" style="margin-top: 20px;">
-                    <h3 style="color:#ffc205;">{{ $page_content['scrapbookers_memory_keepers_title'] ?? 'For Scrapbookers & Memory Keepers' }}</h3>
+                    <h3 style="color:#FFC205;">{{ $page_content['scrapbookers_memory_keepers_title'] ?? 'For Scrapbookers & Memory Keepers' }}</h3>
                     <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_description'] ?? "Because the little details matter.\n\nWhether you’re creating albums for your family, preserving milestones, or documenting everyday life, we’re here to help you bring your pages together beautifully.\n\nWe understand how important it is that your prints:")) !!}</p>
                     <div style="margin:14px 0; max-width:460px; border:1px solid rgba(255,194,5,.45); border-radius:10px; padding:12px 14px; background:rgba(255,194,5,.08);">
-                        <!-- <p style="margin:0; color:#fff; font-weight:600;">&#10003; Match your layouts</p>
-                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Hold their colour</p>
-                        <p style="margin:4px 0 0 0; color:#fff; font-weight:600;">&#10003; Feel right when placed on the page</p> -->
+                        <!-- <p style="margin:0; color:#F5F5F2; font-weight:600;">&#10003; Match your layouts</p>
+                        <p style="margin:4px 0 0 0; color:#F5F5F2; font-weight:600;">&#10003; Hold their colour</p>
+                        <p style="margin:4px 0 0 0; color:#F5F5F2; font-weight:600;">&#10003; Feel right when placed on the page</p> -->
 
-                        <ul style="list-style: disc; color: white; padding-left: 10px;">
-                            <li><p style="margin:0; color:#fff; ">Match your layouts</p></li>
-                            <li><p style="margin:4px 0 0 0; color:#fff; ">Hold their colour</p></li>
-                            <li><p style="margin:4px 0 0 0; color:#fff; ">Feel right when placed on the page</p></li>
+                        <ul style="list-style: disc; color: #F5F5F2; padding-left: 10px;">
+                            <li><p style="margin:0; color:#F5F5F2; ">Match your layouts</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#F5F5F2; ">Hold their colour</p></li>
+                            <li><p style="margin:4px 0 0 0; color:#F5F5F2; ">Feel right when placed on the page</p></li>
                         </ul>
                     </div>
                     <p>{!! nl2br(e($page_content['scrapbookers_memory_keepers_footer'] ?? "That’s why every image is carefully checked and printed with care — so your scrapbook pages look just the way you imagined them.\n\nFrom single pages to full albums, your prints are handled with the same attention and respect as if they were our own.")) !!}</p>
                     <p style="font-weight:700; margin-top:8px;">Because the stories you’re creating are worth keeping.</p>
                 </div>
                 <div class="col-lg-12 community-class" style="margin-top: 20px; border: 1px solid rgba(255, 194, 5, .45); border-radius: 10px; padding: 12px 14px; margin: 20px 20px 0 !important; max-width: 1090px;">
-                    <h3 style="color:#ffc205;">{{ $page_content['glenreagh_section_title'] ?? 'A Community Print, Art & Gift Shop right here in Glenreagh' }}</h3>
-                    <p>{!! nl2br(e($page_content['glenreagh_section_description'] ?? "This is something really close to our hearts.\n\nIt’s grown into something more than just printing.\n\nWe’ve created a little space where local artists, photographers, and makers can share what they create...\nsell their work...\nbe seen...\nand feel part of something special within our community.\n\nSupporting local artists is something we truly believe in — our shopfront mural was designed by Terri to reflect the love of Shadow, the real boss of Shadows Affordable Memories, who was such a big part of our story.\n\nOur small family felt the name change was the perfect way to honour her... and with the help of a local artist, we were able to bring that vision to life.")) !!}</p>
-                    <p style="font-weight:700; margin-top:8px;">If you’re ever passing through Glenreagh, it’s something really special to see in person — and one of our favourite parts of the shop.</p>
-                    <div style="margin-top:21px; text-align:center;">
-                        <img src="{{ isset($page_content['glenreagh_section_image']) && !empty($page_content['glenreagh_section_image']) ? asset($page_content['glenreagh_section_image']) : asset('assets/images/glenreagh-community-shop.png') }}" alt="A Community Print, Art & Gift Shop right here in Glenreagh" style="width:100%; max-width:760px; max-height:520px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.15); box-shadow:0 8px 20px rgba(0,0,0,.35);">
-                    </div>
+                    <h3 style="color:#FFC205;">Professional Photo Printing with a Community Print, Art &amp; Gift Shop</h3>
+                    <p>At <strong>Shadows Affordable Memories</strong>, professional photo printing has always been at the heart of what we do. Helping preserve your memories with high-quality prints is, and always will be, our passion.</p>
+                    <p>As our business has grown, so has our dream. Alongside our professional printing services, we’ve created a welcoming Community Print, Art &amp; Gift Shop where visitors can browse and purchase locally created art, handcrafted gifts and unique products from talented artists, photographers, creators and makers.</p>
+
+                    <h3 style="color:#FFC205;">Celebrating the Memories, Creativity and History of Glenreagh</h3>
+                    <p>As you arrive at <strong>Shadows Affordable Memories</strong>, you’ll be welcomed by a mural that celebrates the history, heritage and heart of Glenreagh.</p>
+                    <p>Inspired and designed by the Shadows Family and beautifully brought to life by a talented local artist, the mural reflects our town’s rich timber heritage and honours the days when the old steam trains travelled through Glenreagh. At the heart of the mural is Glenreagh’s iconic train tunnel, a landmark that has connected our community and become part of our town’s story for generations.</p>
+                    <p>The mural also pays tribute to the real inspiration behind our business—<strong>Shadow</strong>, our much-loved Staffy, whose name proudly lives on in <strong>Shadows Affordable Memories</strong>. Her love, loyalty and gentle spirit continue to inspire us every day and remind us why preserving life’s special moments is so important.</p>
+                    <p>For us, the mural is far more than artwork on the front of our shop. It honours the history of our town, celebrates the creativity of our local community and reflects the memories that connect us all. It tells the story of Glenreagh, the people who have shaped our community and the much-loved Staffy who inspired our family business.</p>
+                    <p>We hope that as you visit our shop, you’ll take a moment to enjoy the mural, reflect on the stories it tells and create a few new memories of your own.</p>
+
+                    <h3 style="color:#FFC205;">Supporting Local Creativity</h3>
+                    <p>Our community is home to so many talented artists, photographers, creators and makers, and we’re proud to provide a place where their work can be displayed, appreciated and purchased by both locals and visitors.</p>
+                    <p>From original works of art and photography to handcrafted gifts and locally made creations, every piece tells its own story and helps support the talented people behind it.</p>
+                    <p>Whether you’re collecting your latest photo prints, searching for the perfect handmade gift, looking for a unique piece of local art to take home, or simply browsing, we invite you to discover the wonderful creativity our community has to offer.</p>
+                    <p>Every purchase directly supports local artists, creators and small businesses while helping strengthen the community we proudly call home.</p>
+
+                    <h3 style="color:#FFC205;">Are You a Local Artist or Creator?</h3>
+                    <p>If you’re a local artist, photographer, creator or maker looking for a place to display and sell your work, we’d love to hear from you.</p>
+                    <p>Together, we’re creating more than a shop—we’re building a welcoming community space where memories are preserved, creativity is celebrated, local history is honoured, and local artists have the opportunity to share and sell their work with both locals and visitors for generations to come.</p>
                 </div>
                 <div class="col-lg-12" style="margin-top: 22px;">
-                    <h3 style="color:#ffc205;">Helpful Tips, Real Advice &amp; Inspiration</h3>
+                    <h3 style="color:#FFC205;">Helpful Tips, Real Advice &amp; Inspiration</h3>
                     <p>In addition to our printing services, we share helpful tips and simple advice to help you get the best results from your images.</p>
                     <p>Visit our blog for articles like:<br><strong>“What is Bulk Printing and How Does it Benefit Photographers?”</strong></p>
                     <p>Whether you’re printing for your family, your scrapbook, or your photography work, we’re here to help.</p>
@@ -139,7 +157,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                                     <h3>Printed In-House with Pride — Australian Made</h3>
                                     <div class="textwidget">
                                         {{-- {!! $page_content['description'] !!} --}}
-                                        <p>At <span style="color: #ffc205; font-weight: 600;">Shadows Affordable Memories</span>, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
+                                        <p>At <span style="color: #FFC205; font-weight: 600;">Shadows Affordable Memories</span>, we believe your memories deserve the best possible attention — and that begins with how we create each and every print.
                                         </p>
                                         <p>That is why all our photo and canvas prints are proudly printed in-house in Australia, never farmed out to third-party suppliers.</p>
                                         <p>
@@ -168,7 +186,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                         <div class="widget-title" data-aos="fade-left">
                             <h3>Our Promise</h3>
                             <div class="textwidget">
-                                <p>At <strong style="color: #ffc205;">Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
+                                <p>At <strong style="color: #FFC205;">Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
                                 <p>Let us help you turn your <strong>moments into memories</strong> - and your <strong>photography into something you can hold, share, and be proud of for years to come.</strong></p>
                             </div>
                         </div>
@@ -185,7 +203,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     <div class="container">
         <div class="custom-wrapper">
             <div class="custom-size-content">
-                <h3 data-aos="fade-right" style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#ffc205; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
+                <h3 data-aos="fade-right" style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#FFC205; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
                 <h2 data-aos="fade-right" style="max-width:820px; margin:0 auto 20px; line-height:1.35;">{!! $page_content['quote_description'] !!}</h2>
                 <div class="ow-button-base" data-aos="fade-left">
                     <a href="{{ url('get-a-quote') }}"> {{ $page_content['get_a_quote'] }} </a>
@@ -201,7 +219,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     <div class="container">
         <div class="categories-heading">
             <h3>{{ $page_content['shop_by_categories_title'] }}</h3>
-            <p style="color:#fff;">Not sure where to start? Here are some of our most popular options .</p>
+            <p style="color:#F5F5F2;">Not sure where to start? Here are some of our most popular options .</p>
         </div>
         <div class="categories-wrapper">
             <div class="row">

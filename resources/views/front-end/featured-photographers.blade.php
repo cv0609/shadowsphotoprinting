@@ -6,7 +6,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #FFC205 0%, #FFC205 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -31,7 +31,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #16a085;
+    background: #69794E;
     margin-bottom: 16px;
 }
 .featured-intro p,
@@ -53,7 +53,7 @@
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #ffc205;
+    color: #FFC205;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -71,7 +71,7 @@
     vertical-align: top;
 }
 .pro-table th {
-    color: #ffc205;
+    color: #FFC205;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -79,16 +79,16 @@
     letter-spacing: 0.5px;
 }
 .pro-table td a {
-    color: #16a085;
+    color: #69794E;
     text-decoration: underline;
 }
 .pro-table td a:hover {
-    color: #1cc2a0;
+    color: #708052;
 }
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #ffc205;
+    background: #FFC205;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;
@@ -96,7 +96,8 @@
     text-decoration: none !important;
 }
 .cta-btn:hover {
-    background: #f0b700;
+    background: #5D6B43;
+    color: #F5F5F2 !important;
 }
 @media (max-width: 991px) {
     .featured-hero {
@@ -110,7 +111,7 @@
     padding: 80px 0;
 }
 .featured-hero {
-    background: linear-gradient(135deg, #ffc205 0%, #f5b400 100%);
+    background: linear-gradient(135deg, #FFC205 0%, #FFC205 100%);
     border-radius: 14px;
     padding: 34px;
     margin-bottom: 30px;
@@ -135,7 +136,7 @@
     width: 80px;
     height: 4px;
     border-radius: 20px;
-    background: #16a085;
+    background: #69794E;
     margin-bottom: 16px;
 }
 .featured-intro p,
@@ -159,7 +160,7 @@
     margin-top: 24px;
 }
 .featured-card h2 {
-    color: #ffc205;
+    color: #FFC205;
     margin-bottom: 14px;
 }
 .pro-table-wrap {
@@ -177,7 +178,7 @@
     vertical-align: top;
 }
 .pro-table th {
-    color: #ffc205;
+    color: #FFC205;
     font-weight: 700;
     background: #111;
     text-transform: uppercase;
@@ -186,16 +187,16 @@
     text-wrap: nowrap;
 }
 .pro-table td a {
-    color: #16a085;
+    color: #69794E;
     text-decoration: underline;
 }
 .pro-table td a:hover {
-    color: #1cc2a0;
+    color: #708052;
 }
 .cta-btn {
     display: inline-block;
     margin-top: 12px;
-    background: #ffc205;
+    background: #FFC205;
     color: #121212 !important;
     border-radius: 8px;
     padding: 12px 18px;
@@ -203,7 +204,8 @@
     text-decoration: none !important;
 }
 .cta-btn:hover {
-    background: #f0b700;
+    background: #5D6B43;
+    color: #F5F5F2 !important;
 }
 .featured-image {
     height: 100%;

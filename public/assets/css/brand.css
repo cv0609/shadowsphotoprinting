@@ -1,10 +1,10 @@
 /* Shadows Photo Printing — brand color tokens */
 
 :root {
-    --brand-primary: #16a085;
-    --brand-light: #16a085;
-    --brand-dark: #0d6c5a;
-    --brand-gold: #ffc205;
+    --brand-primary: #69794E;
+    --brand-light: #708052;
+    --brand-dark: #5D6B43;
+    --brand-gold: #FFC205;
     --brand-bg: #000000;
     --brand-text: #F5F5F2;
 }
