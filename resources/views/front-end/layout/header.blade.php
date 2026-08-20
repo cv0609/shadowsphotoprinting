@@ -38,7 +38,7 @@ $CartCount = $cartModel::getCartCount();
                                                         {{-- <img src="{{asset('assets/images/profile-img.png')}}" alt="user"> --}}
                                                         <img src="{{(!empty(Auth::user()->image)) ? asset(Auth::user()->image) : asset('assets/images/profile-img.png') }}" alt="user_img">
                                                     </div>
-                                                    <div class="kad-customer-name">
+                                                    <div class="kad-customer-name" style="-webkit-text-fill-color: #212529">
                                                         <h5> {{ Auth::user()->username ?? ''}} </h5>
                                                     </div>
                                                 </div>
