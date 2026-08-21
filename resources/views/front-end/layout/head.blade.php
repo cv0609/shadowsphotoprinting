@@ -53,6 +53,15 @@
    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
    })(window,document,'script','dataLayer','GTM-TC2ZRBMT');</script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0B1KL1Y0PL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('js', 'G-0B1KL1Y0PL');
+</script>
+
 <script type="application/ld+json">
    {
      "@context": "https://schema.org",
