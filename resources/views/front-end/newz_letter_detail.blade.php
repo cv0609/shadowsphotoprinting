@@ -28,8 +28,17 @@
                     <span> <a href="shadtpang.html">Terri Pangas</a> </span> --}}
 
                     <div class="shadtpang">
-                        {{-- <img src="{{ asset($promotionDetail['image']) }}" alt="Image"> --}}
-                        {!! html_entity_decode($promotionDetail['content']) !!}
+                        @php
+                            $contentHtml = $promotionDetail['content'] ?? '';
+                            $promoTitle = !empty($promotionDetail['title']) ? htmlspecialchars($promotionDetail['title'] . ' - Shadows Photo Printing') : 'Shadows Photo Printing Promotion';
+                            // Add alt attribute if missing
+                            $contentHtml = preg_replace_callback('/<img(?![^>]*\balt=)[^>]*>/i', function($match) use ($promoTitle) {
+                                return substr_replace($match[0], ' alt="' . $promoTitle . '"', 4, 0);
+                            }, $contentHtml);
+                            // Replace empty alt="" with descriptive alt
+                            $contentHtml = preg_replace('/<img([^>]*)\balt=["\']\s*["\']([^>]*)>/i', '<img$1 alt="' . $promoTitle . '"$2>', $contentHtml);
+                        @endphp
+                        {!! html_entity_decode($contentHtml) !!}
                     </div>
                 </div>
             </div>

@@ -36,7 +36,7 @@
                                     @foreach($imageArray as $arrImg)
                                         <div>
                                             <div class="billboard product-img">
-                                                <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                                <img src="{{ asset($arrImg) ?? ''}}" alt="{{ ucfirst($productDetails->product_title ?? 'Photo For Sale') }}">
                                             </div>
                                         </div>
                                     @endforeach
@@ -47,7 +47,7 @@
                                     @foreach($imageArray as $arrImg)
                                         <div>
                                             <div class="billboard">
-                                                <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                                <img src="{{ asset($arrImg) ?? ''}}" alt="{{ ucfirst($productDetails->product_title ?? 'Photo For Sale') }} thumbnail">
                                             </div>
                                         </div>
                                     @endforeach
@@ -190,7 +190,7 @@
                             <a href="{{ route('photos-for-sale-details',['slug'=>$item->slug]) }}">
                             <div class="products-img">
                                 @foreach($imageArray as $arrImg)
-                                    <img src="{{ asset($arrImg) ?? ''}}" alt="">
+                                    <img src="{{ asset($arrImg) ?? ''}}" alt="{{ ucfirst($item->product_title ?? 'Photo For Sale') }}">
                                 @endforeach
                                 <div class="onsale">
                                     <span>Sale!</span>

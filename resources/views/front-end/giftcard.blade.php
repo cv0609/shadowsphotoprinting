@@ -45,7 +45,7 @@
                     <a href="{{ route('gift-card-detail',['slug'=>$blog->slug]) }}">
                         <div class="noflipper ">
                             <div class="product-animations">
-                                <img src="{{ asset($blog['product_image']) }}" alt="Image">
+                                <img src="{{ asset($blog['product_image']) }}" alt="{{ $blog->product_title ?? 'Gift Card' }}">
                             </div>
                         </div>
                     </a>

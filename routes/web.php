@@ -343,6 +343,115 @@ Route::get('/test-cart', function() {
     ]);
 });
 
+// 301 Permanent Redirects for SEO
+$seoRedirects = [
+    // Category & Core Redirects
+    'product-category/hand-craft' => '/our-products/hand-craft',
+    'product-category/bulkprints/scrapbook-prints' => '/our-products/scrapbook-page-printing',
+    'product-category/posters-panoramics' => '/our-products',
+    'order-prints' => '/shop',
+    'upload-your-photos' => '/shop',
+    'gift-card-balance' => '/our-products/gift-card',
+    'my-account/lost-password' => '/forgot-password',
+    'product/5x-8-prints' => '/our-products',
+    'product/5x5-prints' => '/our-products',
+    'product/12x-12-prints' => '/our-products/gift-card',
+    'product/12x-18-prints' => '/',
+    'thank-you' => '/',
+    'testimonials' => '/',
+    'saved-projects-2' => '/',
+
+    // Specific legacy / hash URLs
+    'ZmeRMBauf' => '/our-products',
+    'G0tllrWHW' => '/',
+    'zwh/VysQR' => '/',
+    'a3W3ra0kW' => '/',
+    'gSuJ1p6H8' => '/',
+    'mqVPaEQM' => '/',
+    '0pBqdpJqZ' => '/',
+    'vdvmrxUl0' => '/',
+    'uCDV17Esz' => '/',
+    'cBQm00AAA' => '/',
+    'NfFCzmtkv' => '/',
+    '8loU3r jX' => '/',
+    '8loU3r%20jX' => '/',
+    '8loU3rjX' => '/',
+    'B TcKfs9f' => '/',
+    'B%20TcKfs9f' => '/',
+    'BTcKfs9f' => '/',
+
+    // Specific legacy date URLs from audit
+    'april-17-2023-1' => '/',
+    'june-12-2022-7' => '/',
+    'may-15-2023-1' => '/',
+    'december-13-2022-6' => '/',
+    'august-29-2022-3' => '/',
+    'june-12-2022-16' => '/',
+    'april-11-2023-14' => '/',
+    'january-10-2023-1' => '/',
+    'july-15-2022-2' => '/',
+    'june-11-2022-5' => '/',
+    'december-11-2022-2' => '/',
+    'may-13-2023-4' => '/',
+    'june-10-2022-2' => '/',
+    'january-17-2023-1' => '/',
+    'june-15-2022-2' => '/',
+    'june-5-2022-6' => '/',
+    'june-8-2022-3' => '/',
+    'june-11-2022-19' => '/',
+    'june-9-2022-7' => '/',
+    'may-30-2023-4' => '/',
+    'december-13-2022-2' => '/',
+    'june-13-2022-6' => '/',
+    'may-13-2023-1' => '/',
+    'june-15-2022-7' => '/',
+    'august-11-2022-3' => '/',
+    'june-12-2022-15' => '/',
+    'june-15-2022-3' => '/',
+    'december-12-2022-4' => '/',
+    'may-30-2023-3' => '/',
+    'may-23-2023-2' => '/',
+    'december-6-2022-2' => '/',
+    'september-14-2022-3' => '/',
+    'may-30-2023-1' => '/',
+    'january-17-2023-2' => '/',
+    'june-29-2023-1' => '/',
+    'june-8-2022-1' => '/',
+    'june-8-2022-5' => '/',
+    'june-10-2022-5' => '/',
+    'june-10-2022-18' => '/',
+    'june-10-2022-3' => '/',
+    'december-11-2022-7' => '/',
+    'june-12-2022-19' => '/',
+    'june-12-2022-5' => '/',
+    'may-13-2023-5' => '/',
+    'april-19-2023-1' => '/',
+    'september-14-2022-1' => '/',
+    'august-29-2022-2' => '/',
+    'june-12-2022-4' => '/',
+    'june-11-2022-3' => '/',
+    'june-10-2022-15' => '/',
+    'july-17-2023-1' => '/',
+    'june-11-2022-11' => '/',
+    'april-11-2023-13' => '/',
+    'june-10-2022-1' => '/',
+    'june-9-2022-1' => '/',
+];
+
+foreach ($seoRedirects as $oldUrl => $newUrl) {
+    Route::permanentRedirect($oldUrl, $newUrl);
+}
+
+// Regex route to catch any legacy date patterns like `month-day-year-id`
+Route::get('/{legacyDateSlug}', function () {
+    return redirect('/', 301);
+})->where('legacyDateSlug', '^(january|february|march|april|may|june|july|august|september|october|november|december)-\d{1,2}-\d{4}(-\d+)?$');
+
+Route::permanentRedirect('/testimonial/{slug?}', '/');
+Route::get('/shop-upload-image', function () {
+    return redirect('/shop', 301);
+});
+
 Route::get('/more-info', [BasePagesController::class, 'moreInfo'])->name('more-info');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);

@@ -424,7 +424,7 @@ max-width: 100px;
                   <div class="model-svg-center">
                      <span>
 
-                    <img src="{{ asset('afterpay-1.png') }}" alt="">
+                    <img src="{{ asset('afterpay-1.png') }}" alt="Choose Afterpay at checkout">
 
                     </span>
                     <h4>CHOOSE AFTERPAY </h4>
@@ -434,7 +434,7 @@ max-width: 100px;
                   <div class="model-svg-center">
                     <span>
 
-                   <img src="{{ asset('afterpay-2.png') }}" alt="">
+                   <img src="{{ asset('afterpay-2.png') }}" alt="Login or sign up for Afterpay">
 
                 </span>
                 <h4>LOGIN OR SIGN UP </h4>
@@ -444,7 +444,7 @@ max-width: 100px;
                  <div class="model-svg-center">
                     <span>
 
-                  <img src="{{ asset('afterpay.png') }}" alt="">
+                  <img src="{{ asset('afterpay.png') }}" alt="Pay it in 4 instalments with Afterpay">
 
                 </span>
                 <h4> PAY IT IN 4</h4>

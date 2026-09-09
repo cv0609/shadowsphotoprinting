@@ -56,6 +56,15 @@ class PagesController extends Controller
             $page_content = json_decode($page_info->pageSections['content'], true);
             $page_content['slug'] = $page_info['slug'];
 
+            if ($slug == 'home') {
+                if (empty($page_content['meta_title'])) {
+                    $page_content['meta_title'] = 'Photo Prints Online Australia, Professional Photographer Glenreagh NSW, Canvas Photo Printing, Shadows Photo Printing';
+                }
+                if (empty($page_content['meta_description'])) {
+                    $page_content['meta_description'] = 'Photo Prints Online in Australia - Professional Photographer & Canvas Photo Printing in Glenreagh NSW - At Shadows Photo Printing we offer a professional photo printing by professional Photographers who take the time to check the quality of your image before we print. Contact us today.';
+                }
+            }
+
             if ($page_info['is_product_page'] == '1') {
                 return view('front-end/common-product', compact('page_content', 'page_info'));
             } else {
@@ -91,6 +100,15 @@ class PagesController extends Controller
         if ($page_info && isset($page_info->pageSections) && !empty($page_info->pageSections)) {
             $page_content = json_decode($page_info->pageSections['content'], true);
             $page_content['slug'] = $page_info['slug'];
+
+            if ($slug == 'home') {
+                if (empty($page_content['meta_title'])) {
+                    $page_content['meta_title'] = 'Photo Prints Online Australia, Professional Photographer Glenreagh NSW, Canvas Photo Printing, Shadows Photo Printing';
+                }
+                if (empty($page_content['meta_description'])) {
+                    $page_content['meta_description'] = 'Photo Prints Online in Australia - Professional Photographer & Canvas Photo Printing in Glenreagh NSW - At Shadows Photo Printing we offer a professional photo printing by professional Photographers who take the time to check the quality of your image before we print. Contact us today.';
+                }
+            }
 
             if ($page_info['is_product_page'] == '1') {
                 return view('front-end/common-product', compact('page_content', 'page_info'));
@@ -128,8 +146,8 @@ class PagesController extends Controller
     {
         $page_info = Page::where('slug', 'blogs')->with('pageSections')->first();
         $page_content = [
-            'meta_title' => 'Blog | Shadows Photo Printing',
-            'meta_description' => 'Tips, stories and inspiration from Shadows Affordable Memories.',
+            'meta_title' => 'Blog New | Photo Prints Online | Shadows Photo Printing',
+            'meta_description' => 'Have a passion for photography and want to learn more? Explore our blogfor tips and ideas to capture stunning shots. Read our tips here!',
             'photo_printing_blog_title' => 'Shadows Affordable Memories Blog',
             'slug' => 'blogs',
         ];
@@ -137,12 +155,8 @@ class PagesController extends Controller
         if ($page_info && !empty($page_info->pageSections)) {
             $cms = json_decode($page_info->pageSections['content'], true) ?: [];
             $page_content = array_merge($page_content, $cms);
-            if (!empty($cms['meta_title'])) {
-                $page_content['meta_title'] = $cms['meta_title'];
-            }
-            if (!empty($cms['meta_description'])) {
-                $page_content['meta_description'] = $cms['meta_description'];
-            }
+            $page_content['meta_title'] = !empty($cms['meta_title']) ? $cms['meta_title'] : 'Blog New | Photo Prints Online | Shadows Photo Printing';
+            $page_content['meta_description'] = !empty($cms['meta_description']) ? $cms['meta_description'] : 'Have a passion for photography and want to learn more? Explore our blogfor tips and ideas to capture stunning shots. Read our tips here!';
             if (empty($page_content['photo_printing_blog_title'])) {
                 $page_content['photo_printing_blog_title'] = 'Shadows Affordable Memories Blog';
             }
@@ -156,8 +170,8 @@ class PagesController extends Controller
     {
         $page_info = Page::where('slug', 'blogs')->with('pageSections')->first();
         $page_content = [
-            'meta_title' => 'Shadows Monthly | Shadows Photo Printing',
-            'meta_description' => 'Stories, tips, and our monthly magazine edition — warm Australian family reading.',
+            'meta_title' => 'Shadows Monthly | Photography Tips, Stories & Inspiration',
+            'meta_description' => 'Explore Shadows Monthly for photography tips, printing advice, family stories, product guides and inspiring stories from Shadows Photo Printing.',
             'photo_printing_blog_title' => 'Shadows Monthly',
             'slug' => 'shadows-monthly',
         ];
@@ -165,8 +179,8 @@ class PagesController extends Controller
         if ($page_info && !empty($page_info->pageSections)) {
             $cms = json_decode($page_info->pageSections['content'], true) ?: [];
             $page_content = array_merge($page_content, $cms);
-            $page_content['meta_title'] = $cms['meta_title'] ?: $page_content['meta_title'];
-            $page_content['meta_description'] = $cms['meta_description'] ?: $page_content['meta_description'];
+            $page_content['meta_title'] = !empty($cms['shadows_monthly_meta_title']) ? $cms['shadows_monthly_meta_title'] : 'Shadows Monthly | Photography Tips, Stories & Inspiration';
+            $page_content['meta_description'] = !empty($cms['shadows_monthly_meta_description']) ? $cms['shadows_monthly_meta_description'] : 'Explore Shadows Monthly for photography tips, printing advice, family stories, product guides and inspiring stories from Shadows Photo Printing.';
             $page_content['slug'] = 'shadows-monthly';
         }
 
@@ -240,30 +254,23 @@ class PagesController extends Controller
 
     public function PhotosForSale(Request $request, $slug = null)
     {
-        $page_content = [];
-
-        $page_content = ["meta_title" => config('constant.pages_meta.photos_for_sale.meta_title'), "meta_description" => config('constant.pages_meta.photos_for_sale.meta_description')];
+        $page_content = [
+            "meta_title" => config('constant.pages_meta.photos_for_sale.meta_title'),
+            "meta_description" => config('constant.pages_meta.photos_for_sale.meta_description')
+        ];
 
         if ($slug == null) {
             $products = PhotoForSaleProduct::paginate(10);
         } else {
             $caregory = PhotoForSaleCategory::where('slug', $slug)->first();
-            $products = PhotoForSaleProduct::where('category_id', $caregory->id)->paginate(10);
+            $products = PhotoForSaleProduct::where('category_id', $caregory ? $caregory->id : 0)->paginate(10);
+            $page_content = [
+                "meta_title" => ($caregory ? $caregory->slug : $slug) . ' | Shadows Photo Printing',
+                "meta_description" => config('constant.pages_meta.photos_for_sale.meta_description')
+            ];
         }
 
         $productCategories = PhotoForSaleCategory::get();
-
-        if (!empty($productCategories)) {
-            foreach ($productCategories as $productCategory) {
-                if ($request->url() == route('photos-for-sale', ['slug' => $productCategory->slug])) {
-                    $page_content = [
-                        "meta_title" => $productCategory->slug . ' | Shadows Photo Printing',
-                        "meta_description" => config('constant.pages_meta.photos_for_sale.meta_description')
-                    ];
-                }
-            }
-        }
-
 
         return view('front-end/photos-for-sale', compact('products', 'productCategories', 'page_content'));
     }
@@ -287,9 +294,18 @@ class PagesController extends Controller
 
         $relatedProduct = PhotoForSaleProduct::where('slug', '!=', $slug)->paginate(10);
 
+        $productName = trim($productDetails->product_title ?? '') ?: ucwords(str_replace('-', ' ', (string) $slug));
+        $metaTitle = !empty($productDetails->meta_title)
+            ? $productDetails->meta_title
+            : ($productName . ' – Inspirational Photo Prints & Canvas | Shadows');
+
+        $metaDescription = !empty($productDetails->meta_description)
+            ? $productDetails->meta_description
+            : ('Shop “' . $productName . '” inspirational artwork as a high-quality photo print or canvas. Available in multiple sizes to suit your home or space.');
+
         $page_content = [
-            "meta_title" => $productDetails->meta_title . ' | Shadows Photo Printing',
-            "meta_description" => $productDetails->meta_description
+            "meta_title" => $metaTitle,
+            "meta_description" => $metaDescription
         ];
 
         return view('front-end/photos-for-sale-details', compact('productDetails', 'relatedProduct', 'uniqueSizeRecords', 'uniqueTyepeRecords', 'photoForSaleSizePricesData', 'page_content'));
@@ -319,20 +335,23 @@ class PagesController extends Controller
     public function handCraft($slug = null)
     {
         $page_content = [];
-        $page_content = ["meta_title" => $slug . ' | Shadows Photo Printing', "meta_description" => config('constant.pages_meta.hand_craft.meta_description')];
 
         if ($slug == null) {
+            $page_content = [
+                "meta_title" => config('constant.pages_meta.hand_craft.meta_title'),
+                "meta_description" => config('constant.pages_meta.hand_craft.meta_description')
+            ];
             $products = HandCraftProduct::paginate(10);
         } else {
             $caregory = HandCraftCategory::where('slug', $slug)->first();
             $products = HandCraftProduct::where('category_id', $caregory->id)->paginate(10);
-            // $page_content = ["meta_title"=>$caregory['slug'],"meta_description"=>$caregory['name']];
-
+            $page_content = [
+                "meta_title" => ($caregory ? $caregory->name : ucwords(str_replace('-', ' ', $slug))) . ' | Shadows Photo Printing',
+                "meta_description" => $caregory->name ?? config('constant.pages_meta.hand_craft.meta_description')
+            ];
         }
 
-
         $productCategories = HandCraftCategory::get();
-
 
         return view('front-end/hand-craft', compact('products', 'productCategories', 'page_content'));
     }
@@ -371,21 +390,41 @@ class PagesController extends Controller
     public function promotions()
     {
         $newzletter = Newzletter::where(['is_active' => '1'])->get();
-        $page_content = ["meta_title" => "Promotions", "meta_description" => "Promotions"];
+        $page_content = [
+            "meta_title" => config('constant.promotions_meta.index.meta_title', 'Photo Printing Promotions & Special Offers | Shadows Photo Printing'),
+            "meta_description" => config('constant.promotions_meta.index.meta_description', 'Discover the latest photo printing promotions and special offers from Shadows Photo Printing. Save on photo prints, canvas prints and more.')
+        ];
         return view('front-end.newz_letter', compact('newzletter', 'page_content'));
     }
 
     public function promotionDetail($slug)
     {
         $promotionDetail = Newzletter::where(['slug' => $slug, 'is_active' => '1'])->first();
+        if (!$promotionDetail) {
+            abort(404);
+        }
+
         $previousPromotion = Newzletter::where('id', '<', $promotionDetail->id)
+            ->where('is_active', '1')
             ->orderBy('id', 'desc')
             ->first();
 
         $nextPromotion = Newzletter::where('id', '>', $promotionDetail->id)
+            ->where('is_active', '1')
             ->orderBy('id', 'asc')
             ->first();
-        $page_content = ["meta_title" => "Promotions", "meta_description" => "Promotions"];
+
+        $promoMeta = config("constant.promotions_meta.{$slug}");
+        $defaultTitle = $promotionDetail->title ? ($promotionDetail->title . ' | Shadows') : (ucwords(str_replace('-', ' ', (string) $slug)) . ' | Shadows');
+        $defaultDesc = !empty($promotionDetail->content)
+            ? \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($promotionDetail->content)), 160)
+            : 'Special promotion and offers from Shadows Photo Printing.';
+
+        $page_content = [
+            "meta_title" => $promoMeta['meta_title'] ?? $defaultTitle,
+            "meta_description" => $promoMeta['meta_description'] ?? $defaultDesc
+        ];
+
         return view('front-end.newz_letter_detail', compact('promotionDetail', 'page_content', 'previousPromotion', 'nextPromotion'));
     }
 

@@ -96,7 +96,7 @@
                                 <div class="noflipper" id="image-div">
                                   <div class="product-animation">
                                      @foreach (explode(',',$product->product_image) as $key => $product_image)
-                                       <img src="{{ asset($product_image) }}" alt="">
+                                       <img src="{{ asset($product_image) }}" alt="{{ ucfirst($product->product_title ?? 'Handcrafted Product') }}">
                                      @endforeach
                                  </div>
                                  @if($product->sold == 1)

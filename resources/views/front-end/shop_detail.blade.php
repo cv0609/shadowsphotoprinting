@@ -33,7 +33,7 @@
                         
                         <a href="javascript:void(0)" class="product-img">
                             {{-- <img class="main_check_img" src="{{ getS3Img2($temImages, 'medium') }}" data-src="{{ getS3Img2($temImages, 'original') }}" alt=""> --}}
-                             <img class="main_check_img" src="{{ getS3Img2($temImages, 'raw') }}" data-src="{{ getS3Img2($temImages, 'raw') }}" alt="">
+                             <img class="main_check_img" src="{{ getS3Img2($temImages, 'raw') }}" data-src="{{ getS3Img2($temImages, 'raw') }}" alt="{{ getS3ImgName($temImages) }}">
                         </a>
 
                         {{-- <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ getS3Img2($temImages, 'original') }}" id="image-checkbox-{{ $counter }}"> --}}
@@ -41,10 +41,10 @@
                          <input type="checkbox" name="selected-image[]" value="0" class="d-none" data-img="{{ getS3Img2($temImages, 'raw') }}" id="image-checkbox-{{ $counter }}">
 
                         <div id="unchecked-img-{{ $counter }}" class="common_check unchecked-img" onclick="check_img({{ $counter }})">
-                            <img src="/assets/images/unactive_image_tick.png" alt="" class="img-fluid">
+                            <img src="/assets/images/unactive_image_tick.png" alt="Unchecked selection" class="img-fluid">
                         </div>
                         <div id="checked-img-{{ $counter }}" class="d-none common_check checked-img" onclick="uncheck_img({{ $counter }})">
-                            <img src="assets/images/active_image_tick.png" alt="" class="img-fluid">
+                            <img src="assets/images/active_image_tick.png" alt="Checked selection" class="img-fluid">
                         </div>
                         <p class="title_image_p">{{ getS3ImgName($temImages) }}</p>
                     </div>
