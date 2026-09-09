@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name='robots' content='{{$index=='1' ? config('constant.dashboard_index.on') : config('constant.dashboard_index.off')}}' />
 <meta name="google-site-verification" content="QscuU-oHKOGqK2i0FisB3Hzy7Teuqry8iBl2TaWjFyM" />
-{{-- <title>{{ $page_content['meta_title'] ?? 'Default Title' }}</title> --}}
-<title>{{ html_entity_decode(ucfirst($page_content['meta_title'] ?? '') ?? 'Default Title') }}</title>
-<meta name="description" content="{{ $page_content['meta_description'] ?? 'Default Description' }}">
+<title>{!! html_entity_decode(ucfirst($page_content['meta_title'] ?? '') ?: 'Default Title', ENT_QUOTES, 'UTF-8') !!}</title>
+<meta name="description" content="{!! str_replace('"', '&quot;', html_entity_decode($page_content['meta_description'] ?? 'Default Description', ENT_QUOTES, 'UTF-8')) !!}">
 <link rel="icon" href="{{asset('assets/images/favicon.jpg') }}" type="image/x-icon">
 
 <link rel="canonical" href="{{ request()->url() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}" />
