@@ -108,6 +108,54 @@
             ]
         },
 		{
+            "title": "our_story_section",
+            "layout_type": "row",
+            "fields": [
+                {
+					"title": "our_story_subtitle",
+					"type": "text",
+					"required": false,
+					"name": "our_story_subtitle"
+				},
+				{
+					"title": "our_story_title",
+					"type": "text",
+					"required": false,
+					"name": "our_story_title"
+				},
+				{
+					"title": "our_story_description",
+					"type": "textarea",
+					"required": false,
+					"name": "our_story_description"
+				},
+				{
+					"title": "our_story_tagline",
+					"type": "text",
+					"required": false,
+					"name": "our_story_tagline"
+				},
+				{
+					"title": "our_story_button_text",
+					"type": "text",
+					"required": false,
+					"name": "our_story_button_text"
+				},
+				{
+					"title": "our_story_button_url",
+					"type": "text",
+					"required": false,
+					"name": "our_story_button_url"
+				},
+				{
+					"title": "our_story_image",
+					"type": "image",
+					"required": false,
+					"name": "our_story_image"
+				}
+            ]
+        },
+		{
             "title": "design_section",
             "layout_type": "row",
             "fields": [
