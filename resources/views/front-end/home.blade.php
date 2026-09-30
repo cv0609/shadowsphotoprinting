@@ -30,20 +30,20 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <!-- Add row here -->
                 <div class="col-lg-6">
                     <div class="entry-img">
-                        <figure data-aos="fade-right">
+                        <figure>
                             <img src="{{ $page_content['side_image'] }}" alt="Side Image">
                         </figure>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="entry-text">
-                        <div class="widget-title" data-aos="fade-left">
+                        <div class="widget-title">
                             <h3>{{ $page_content['title'] }}</h3>
                             <div class="textwidget">
                                 {!! $page_content['description'] !!}
                             </div>
                         </div>
-                        <div class="so-widget-sow-button" data-aos="fade-left">
+                        <div class="so-widget-sow-button">
                             <a href="{{ url('shop') }}">{{ $page_content['shop_now'] }}</a>
                         </div>
                         <div class="afterpay-4-payment">
@@ -153,7 +153,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                     <div class="row"> <!-- Add row here -->
                         <div class="col-lg-12">
                             <div class="entry-text">
-                                <div class="widget-title" data-aos="fade-left">
+                                <div class="widget-title">
                                     <h3>Printed In-House with Pride — Australian Made</h3>
                                     <div class="textwidget">
                                         {{-- {!! $page_content['description'] !!} --}}
@@ -183,7 +183,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
             <div class="row">
                 <div class="col-lg-12">
                     <div class="entry-text">
-                        <div class="widget-title" data-aos="fade-left">
+                        <div class="widget-title" data-aos="fade-up" data-aos-once="true">
                             <h3>Our Promise</h3>
                             <div class="textwidget">
                                 <p>At <strong style="color: #FFC205;">Shadows Affordable Memories</strong>, your <strong>memories and your work</strong> are our priority.</p>
@@ -199,21 +199,104 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
 
 <!--  -->
 
-<section class="custom-size">
+<section class="custom-size" data-aos="fade-up" data-aos-once="true">
     <div class="container">
         <div class="custom-wrapper">
             <div class="custom-size-content">
-                <h3 data-aos="fade-right" style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#FFC205; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
-                <h2 data-aos="fade-right" style="max-width:820px; margin:0 auto 20px; line-height:1.35;">{!! $page_content['quote_description'] !!}</h2>
-                <div class="ow-button-base" data-aos="fade-left">
+                <h3 style="margin: 0 auto 14px; display:table; padding:8px 18px; border-radius:999px; background:#111; color:#FFC205; font-weight:700; letter-spacing:.3px;">Need a Custom Size?</h3>
+                <h2 style="max-width:820px; margin:0 auto 20px; line-height:1.35;">{!! $page_content['quote_description'] !!}</h2>
+                <div class="ow-button-base">
                     <a href="{{ url('get-a-quote') }}"> {{ $page_content['get_a_quote'] }} </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!--  -->
 
+<!-- OUR STORY / COMMUNITY MURAL SECTION -->
+<section class="mural-story-section">
+    <div class="container">
+        <!-- Feature Highlights Bar with Icons -->
+        <div class="mural-features-row" data-aos="fade-up" data-aos-once="true">
+            <div class="mural-feature-item">
+                <i class="fa fa-camera-retro feature-icon"></i>
+                <p>High quality prints for all your special moments</p>
+            </div>
+            <div class="mural-feature-item">
+                <i class="fa fa-paint-brush feature-icon"></i>
+                <p>Turn your photos into beautiful canvas art</p>
+            </div>
+            <div class="mural-feature-item">
+                <i class="fa fa-gift feature-icon"></i>
+                <p>Personalised gifts for every occasion</p>
+            </div>
+            <div class="mural-feature-item">
+                <i class="fa fa-heart feature-icon"></i>
+                <p>Proudly supporting the Glenreagh community</p>
+            </div>
+        </div>
+
+        <!-- Story & Mural Card -->
+        <div class="mural-story-card">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12">
+                    <div class="mural-story-content" data-aos="fade-right" data-aos-once="true">
+                        <span class="mural-subtitle">{{ !empty($page_content['our_story_subtitle']) ? $page_content['our_story_subtitle'] : 'OUR STORY' }}</span>
+                        <h2 class="mural-title">{{ !empty($page_content['our_story_title']) ? $page_content['our_story_title'] : 'A Mural That Tells Our Story' }}</h2>
+                        <div class="mural-description">
+                            @if(!empty($page_content['our_story_description']))
+                                {!! nl2br(e($page_content['our_story_description'])) !!}
+                            @else
+                                <p>The mural on our shop-front celebrates Glenreagh's rich history, including its timber heritage, steam trains, the train tunnel and the community that makes this place so special.</p>
+                                <p>It also features Shadow, the much-loved dog who inspired our business name &mdash; a symbol of loyalty, friendship and the memories we help you preserve.</p>
+                            @endif
+                        </div>
+                        <div class="mural-script-tagline">
+                            {{ !empty($page_content['our_story_tagline']) ? $page_content['our_story_tagline'] : 'Local History • Our Community • Lasting Memories' }}
+                        </div>
+                        <div class="mural-btn-wrap">
+                            <a href="{{ url(!empty($page_content['our_story_button_url']) ? $page_content['our_story_button_url'] : 'more-info') }}" class="mural-learn-more-btn">
+                                {{ !empty($page_content['our_story_button_text']) ? $page_content['our_story_button_text'] : 'Learn More' }} <span class="btn-arrow">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="mural-image-wrap" data-aos="fade-left" data-aos-once="true">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#muralModal" data-toggle="modal" data-target="#muralModal" class="mural-img-link" title="Click to view full size mural">
+                            <img src="{{ !empty($page_content['our_story_image']) ? asset($page_content['our_story_image']) : asset('assets/images/shadow-client-img.png') }}" 
+                                 alt="Shadows Affordable Memories Community Mural - Glenreagh NSW" 
+                                 class="mural-main-image">
+                            <span class="mural-zoom-badge"><i class="fa fa-search-plus"></i> Click to Zoom</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mural Lightbox Modal -->
+<div class="modal fade" id="muralModal" tabindex="-1" role="dialog" aria-labelledby="muralModalLabel" aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content" style="background: #111111; border: 1px solid #FFC205; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.8);">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255, 194, 5, 0.3); padding: 14px 22px; display: flex; align-items: center; justify-content: space-between;">
+                <h5 class="modal-title" id="muralModalLabel" style="color: #FFC205; font-size: 20px; font-weight: 700; margin: 0; font-family: 'Source Sans Pro', sans-serif;">Shadows Affordable Memories &mdash; Community Mural</h5>
+                <button type="button" class="mural-modal-close-btn" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close" style="background: transparent; border: none; cursor: pointer; padding: 4px 8px; line-height: 1; outline: none;">
+                    <i class="fa fa-times" style="color: #ffffff !important; font-size: 24px; display: block;"></i>
+                </button>
+            </div>
+            <div class="modal-body text-center" style="padding: 20px; background: #000000;">
+                <img src="{{ !empty($page_content['our_story_image']) ? asset($page_content['our_story_image']) : asset('assets/images/shadow-client-img.png') }}" 
+                     alt="Shadows Affordable Memories Community Mural" 
+                     style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.6);">
+                <p style="color: #F5F5F2; font-size: 17px; margin: 16px 0 0; line-height: 26px; font-family: 'Source Sans Pro', sans-serif;">
+                    Celebrating Glenreagh's rich timber heritage, historic steam trains, rail tunnel, and our beloved dog Shadow.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <section class="categories">
     <div class="container">
@@ -355,7 +438,9 @@ $sale_popup = getSalePopup();
 @section('scripts')
 <script>
     AOS.init({
-        duration: 1200,
+        duration: 900,
+        once: true,
+        offset: 50,
     })
 </script>
 <script>
