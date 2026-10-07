@@ -116,24 +116,24 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <div class="col-lg-12 community-class" style="margin-top: 20px; border: 1px solid rgba(255, 194, 5, .45); border-radius: 10px; padding: 12px 14px; margin: 20px 20px 0 !important; max-width: 1090px;">
                     <h3 style="color:#FFC205;">Professional Photo Printing with a Community Art, History &amp; Creative Gallery</h3>
                     <p>At <strong>Shadows Affordable Memories</strong>, professional photo printing has always been at the heart of what we do. Helping preserve your memories with high-quality prints is, and always will be, our passion.</p>
-                    <p>Alongside our professional printing services, our welcoming Community Art, History &amp; Creative Gallery offers visitors a place to browse and purchase locally created art, handcrafted gifts and unique products from talented artists, photographers, creators and makers.</p>
+                    <p>Alongside our printing services, our welcoming Community Art, History &amp; Creative Gallery offers a place to browse and purchase local art, photography, handcrafted gifts and unique products.</p>
 
                     <h3 style="color:#FFC205;">Celebrating the Memories, Creativity and History of Glenreagh</h3>
-                    <p>As you arrive at <strong>Shadows Affordable Memories</strong>, you’ll be welcomed by a mural that celebrates the history, heritage and heart of Glenreagh.</p>
-                    <p>Inspired and designed by the Shadows Family and beautifully brought to life by a talented local artist <strong>Honi Reifler</strong>, the mural reflects our town’s rich timber heritage and honours the days when the old steam trains travelled through Glenreagh. Featuring our local steam train, affectionately known as <strong>Betty</strong>, and the <strong>Dorrigo tunnel</strong>, the artwork brings a much-loved part of our local history to life.</p>
-                    <p>The mural also pays tribute to the real inspiration behind our business—<strong>Shadow</strong>, our much-loved Staffy, whose name proudly lives on in <strong>Shadows Affordable Memories</strong>. Her love, loyalty and gentle spirit continue to inspire us every day and remind us why preserving life’s special moments is so important.</p>
-                    <p>For us, the mural is far more than artwork on the front of our shop. It honours the history of our town, celebrates the creativity of our local community and reflects the memories that connect us all. It tells the story of Glenreagh, the people who have shaped our community and the much-loved Staffy who inspired our family business.</p>
-                    <p>We hope that as you visit our shop, you’ll take a moment to enjoy the mural, reflect on the stories it tells and create a few new memories of your own.</p>
+                    <p>As you arrive, you’ll be welcomed by a mural that celebrates the history, heritage and heart of Glenreagh.</p>
+                    <p>Inspired and designed by the Shadows family, the mural was beautifully brought to life by talented local artist Honi Reifler, who is also part of the Glenreagh Memorial Museum. We worked alongside Honi and the museum to create this celebration of Glenreagh’s history.</p>
+                    <p>The artwork reflects our town’s rich timber heritage and honours the days when steam trains travelled through Glenreagh. Featuring our local steam train, affectionately known as Betty, and the Dorrigo tunnel, it captures a much-loved part of our local history.</p>
+                    <p>The mural also pays tribute to the inspiration behind our business—Shadow, our much-loved Staffy, whose name proudly lives on in Shadows Affordable Memories. Her love, loyalty and gentle spirit continue to inspire us every day and remind us why preserving life’s special moments is so important.</p>
+                    <p>For us, the mural is far more than artwork on the front of our shop. It connects our family’s story with the town we proudly call home.</p>
+                    <p>We hope you’ll take a moment to enjoy it, reflect on the stories it tells and create a few new memories of your own.</p>
 
                     <h3 style="color:#FFC205;">Supporting Local Creativity</h3>
-                    <p>Our community is home to so many talented artists, photographers, creators and makers, and we’re proud to provide a place where their work can be displayed, appreciated and purchased by both locals and visitors.</p>
-                    <p>From original works of art and photography to handcrafted gifts and locally made creations, every piece tells its own story and helps support the talented people behind it.</p>
-                    <p>Whether you’re collecting your latest photo prints, searching for the perfect handmade gift, looking for a unique piece of local art to take home, or simply browsing, we invite you to discover the wonderful creativity our community has to offer.</p>
-                    <p>Every purchase directly supports local artists, creators and small businesses while helping strengthen the community we proudly call home.</p>
+                    <p>Our community is home to so many talented people, and we’re proud to provide a place where their work can be displayed, appreciated and purchased by locals and visitors.</p>
+                    <p>From original art and photography to handcrafted gifts and locally made creations, every piece tells its own story. Each purchase supports the artists, creators and small businesses behind the items you find here.</p>
+                    <p>Whether you’re collecting your latest photo prints, searching for a special gift, choosing a piece of local art to take home or simply browsing, we’d love you to pop in and have a look around.</p>
 
                     <h3 style="color:#FFC205;">Are You a Local Artist or Creator?</h3>
-                    <p>If you’re a local artist, photographer, creator or maker looking for a place to display and sell your work, we’d love to hear from you. <strong>Please contact us to discuss displaying your work in our gallery.</strong></p>
-                    <p><strong>Shadows Affordable Memories is a welcoming community space where memories are preserved, creativity is celebrated and local history is honoured. Our gallery gives local artists and creators the opportunity to share and sell their work with both locals and visitors.</strong></p>
+                    <p>If you’re a local artist, photographer, creator or maker looking for a place to display and sell your work, we’d love to hear from you. Please contact us to discuss displaying your work in our gallery.</p>
+                    <p>Shadows Affordable Memories is a welcoming community space where memories are preserved, creativity is celebrated and local history is honoured.</p>
                 </div>
                 <div class="col-lg-12" style="margin-top: 22px;">
                     <h3 style="color:#FFC205;">Helpful Tips, Real Advice &amp; Inspiration</h3>
