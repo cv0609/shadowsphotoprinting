@@ -21,7 +21,7 @@ $CartCount = $cartModel::getCartCount();
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="logo">
                         <a href="{{ url('/') }}">
-                            <img src="{{asset('assets/images/logo.png')}}" alt="logo">
+                            <img src="{{asset('assets/images/logo.png')}}" alt="logo" width="206" height="120">
                         </a>
                     </div>
 
@@ -36,7 +36,7 @@ $CartCount = $cartModel::getCartCount();
                                                 <div class="kad-account-avatar">
                                                     <div class="kad-customer-image">
                                                         {{-- <img src="{{asset('assets/images/profile-img.png')}}" alt="user"> --}}
-                                                        <img src="{{(!empty(Auth::user()->image)) ? asset(Auth::user()->image) : asset('assets/images/profile-img.png') }}" alt="user_img">
+                                                        <img src="{{(!empty(Auth::user()->image)) ? asset(Auth::user()->image) : asset('assets/images/profile-img.png') }}" alt="user_img" width="50" height="50">
                                                     </div>
                                                     <div class="kad-customer-name" style="-webkit-text-fill-color: #212529">
                                                         <h5> {{ Auth::user()->username ?? ''}} </h5>
@@ -94,10 +94,9 @@ $CartCount = $cartModel::getCartCount();
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    <!-- HEADER BOTTOM -->
-    <div class="outside-second">
+</header>
+<!-- HEADER BOTTOM -->
+<div class="outside-second">
         <div class="second-navclass">
             <div class="container">
                 <div class="second-clearfix">
@@ -284,8 +283,6 @@ $CartCount = $cartModel::getCartCount();
         $('#augustPromotionPopup').modal('hide');
     });
     </script>
-
-</header>
 
 
 <div id="afterpay-modal" class="modal fade" role="dialog">

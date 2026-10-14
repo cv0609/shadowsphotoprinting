@@ -122,6 +122,10 @@ class PagesController extends Controller
 
     public function blogDetail($slug)
     {
+        if (str_starts_with($slug, 'the-paper-and-canvas-we-use-at-shadows')) {
+            return redirect('/shop', 301);
+        }
+
         $blog_details = Blog::with(['category', 'user'])->where('slug', $slug)->firstOrFail();
 
         $previousBlog = Blog::where('id', '<', $blog_details->id)
@@ -399,6 +403,16 @@ class PagesController extends Controller
 
     public function promotionDetail($slug)
     {
+        $decoded = urldecode($slug);
+        if (
+            str_contains($decoded, 'unsubscribe') ||
+            str_contains($decoded, 'update_profile') ||
+            str_contains($decoded, '{') ||
+            str_contains($decoded, '}')
+        ) {
+            return redirect('/', 301);
+        }
+
         $promotionDetail = Newzletter::where(['slug' => $slug, 'is_active' => '1'])->first();
         if (!$promotionDetail) {
             abort(404);
