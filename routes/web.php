@@ -265,7 +265,35 @@ Route::post('/free-order', [PaymentController::class, 'freeOrderCheckout'])->nam
 Route::post('/charge-customer', [PaymentController::class, 'chargeCustomer']);
 Route::get('/thank-you/{order_id}', [PaymentController::class,'thankyou'])->name('thankyou');
 Route::get('/promotions', [BasePagesController::class, 'promotions'])->name('promotions');
-Route::get('/promotion-detail/{slug}', [BasePagesController::class, 'promotionDetail'])->name('promotion-detail');
+Route::get('/promotion-detail/{slug}', function ($slug) {
+    $decoded = urldecode($slug);
+    if (
+        str_contains($decoded, 'unsubscribe') ||
+        str_contains($decoded, 'update_profile') ||
+        str_contains($decoded, '{') ||
+        str_contains($decoded, '}')
+    ) {
+        return redirect('/', 301);
+    }
+    return app(BasePagesController::class)->promotionDetail($slug);
+})->where('slug', '.*')->name('promotion-detail');
+
+// Redirect legacy /index.php/... URLs
+Route::any('/index.php/{any?}', function ($any = null) {
+    if (empty($any)) {
+        return redirect('/', 301);
+    }
+    $decoded = urldecode($any);
+    if (
+        str_contains($decoded, 'unsubscribe') ||
+        str_contains($decoded, 'update_profile') ||
+        str_contains($decoded, '{') ||
+        str_contains($decoded, '}')
+    ) {
+        return redirect('/', 301);
+    }
+    return redirect('/' . $any, 301);
+})->where('any', '.*');
 
 Route::middleware(['myAccount'])->group(function () {
     Route::get('/my-account', [MyAccountController::class, 'dashboard'])->name('dashboard');
@@ -345,6 +373,13 @@ Route::get('/test-cart', function() {
 
 // 301 Permanent Redirects for SEO
 $seoRedirects = [
+    // SEO Audit 404 Redirects
+    'our-products/scrapbook-prints' => '/our-products/scrapbook-page-printing',
+    'blog-detail/the-paper-and-canvas-we-use-at-shadows-' => '/shop',
+    'blog-detail/the-paper-and-canvas-we-use-at-shadows' => '/shop',
+    'our-products/prints-enlargements' => '/our-products/photo-enlargements',
+    'product/10x-10-prints-with-4mm-white-border' => '/our-products/photo-prints',
+
     // Category & Core Redirects
     'product-category/hand-craft' => '/our-products/hand-craft',
     'product-category/bulkprints/scrapbook-prints' => '/our-products/scrapbook-page-printing',
@@ -453,6 +488,8 @@ Route::get('/shop-upload-image', function () {
 });
 
 Route::get('/more-info', [BasePagesController::class, 'moreInfo'])->name('more-info');
+Route::get('/faqs', [BasePagesController::class, 'accordion'])->name('faqs');
+Route::permanentRedirect('/faq', '/faqs');
 
 Route::get('/{slug?}',[BasePagesController::class,'pages']);
 Route::get('{route?}/{slug?}',[BasePagesController::class,'pages']);

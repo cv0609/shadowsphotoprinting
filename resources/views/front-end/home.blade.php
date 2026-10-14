@@ -11,7 +11,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
     <div>
         <div class="image">
             <div class="slider-wrapper">
-                <img src="{{ asset($image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}">
+                <img src="{{ asset($image) }}" alt="{{ pathinfo($image, PATHINFO_FILENAME) }}" width="1440" height="400" {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <div class="col-lg-6">
                     <div class="entry-img">
                         <figure>
-                            <img src="{{ $page_content['side_image'] }}" alt="Side Image">
+                            <img src="{{ $page_content['side_image'] }}" alt="Side Image" width="403" height="403" loading="lazy">
                         </figure>
                     </div>
                 </div>
@@ -266,7 +266,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                         <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#muralModal" data-toggle="modal" data-target="#muralModal" class="mural-img-link" title="Click to view full size mural">
                             <img src="{{ !empty($page_content['our_story_image']) ? asset($page_content['our_story_image']) : asset('assets/images/shadow-client-img.png') }}" 
                                  alt="Shadows Affordable Memories Community Mural - Glenreagh NSW" 
-                                 class="mural-main-image">
+                                 class="mural-main-image" width="1091" height="500" loading="lazy">
                             <span class="mural-zoom-badge"><i class="fa fa-search-plus"></i> Click to Zoom</span>
                         </a>
                     </div>
@@ -289,7 +289,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
             <div class="modal-body text-center" style="padding: 20px; background: #000000;">
                 <img src="{{ !empty($page_content['our_story_image']) ? asset($page_content['our_story_image']) : asset('assets/images/shadow-client-img.png') }}" 
                      alt="Shadows Affordable Memories Community Mural" 
-                     style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.6);">
+                     style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.6);" width="1091" height="500" loading="lazy">
                 <p style="color: #F5F5F2; font-size: 17px; margin: 16px 0 0; line-height: 26px; font-family: 'Source Sans Pro', sans-serif;">
                     Celebrating Glenreagh's rich timber heritage, historic steam trains, rail tunnel, and our beloved dog Shadow.
                 </p>
@@ -315,7 +315,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <div class="col-lg-3 col-md-6">
                     <div class="product-categories dfdf">
                         <a href="{{ url('our-products/'.str_replace(' ', '-', strtolower($ProductCategory->name)))}}">
-                            <img src="{{ (isset($ProductCategory->image) && !empty($ProductCategory->image)) ? asset($ProductCategory->image) : asset('assets/admin/images/dummy-image.jpg')}}" alt="{{ ucfirst($ProductCategory->name) }}">
+                            <img src="{{ (isset($ProductCategory->image) && !empty($ProductCategory->image)) ? asset($ProductCategory->image) : asset('assets/admin/images/dummy-image.jpg')}}" alt="{{ ucfirst($ProductCategory->name) }}" width="300" height="247" loading="lazy">
                             <span>{{ $displayCategoryName }}</span>
                         </a>
                     </div>
@@ -386,7 +386,7 @@ $sale_popup = getSalePopup();
                     <div class="col-lg-6">
                         <div class="restoration-img">
                             <figure>
-                                <img src="{{ $page_content['photo_restoration_service_image'] }}" alt="Photo restoration image">
+                                <img src="{{ $page_content['photo_restoration_service_image'] }}" alt="Photo restoration image" width="600" height="400" loading="lazy">
                                 {{-- <img src="assets/images/cart-page.jpg" alt=""> --}}
                             </figure>
                         </div>
@@ -398,7 +398,7 @@ $sale_popup = getSalePopup();
                     <div class="col-lg-6">
                         <div class="restoration-img">
                             <figure>
-                                <img src="{{ $page_content['accept_bulk_order_image'] }}" alt="bulk image">
+                                <img src="{{ $page_content['accept_bulk_order_image'] }}" alt="bulk image" width="600" height="400" loading="lazy">
                                 {{-- <img src="assets/images/canvasprint9.jpg" alt=""> --}}
                             </figure>
                         </div>
