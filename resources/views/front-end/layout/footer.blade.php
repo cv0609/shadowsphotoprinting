@@ -41,11 +41,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-12 text-lg-end text-center">
+                <div class="col-lg-5 col-md-12 text-lg-end text-center footer-strip-actions">
                     <button type="button" class="footer-subscribe-btn" data-bs-target="#newsletter-modal" data-bs-toggle="modal">
                         <i class="fa fa-paper-plane me-1"></i> Subscribe to Newsletter
                     </button>
-                    <a href="{{ route('shadows-pro-circle') }}" class="footer-pro-btn ms-2">
+                    <a href="{{ route('shadows-pro-circle') }}" class="footer-pro-btn ms-lg-2">
                         <i class="fa fa-star me-1"></i> Shadows Pro Circle
                     </a>
                 </div>

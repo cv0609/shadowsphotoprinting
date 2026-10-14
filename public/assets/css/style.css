@@ -43,6 +43,11 @@ ul {
     padding: 0;
 }
 
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 .main-page {
     background-color: rgba(0, 0, 0, 1);
     min-height: 100vh;
@@ -6097,6 +6102,71 @@ font-size: 20px !important;
     }
     .footer-newsletter-wrap {
         margin-bottom: 15px;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .footer-top-strip {
+        padding: 22px 10px;
+    }
+    .footer-newsletter-wrap {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+    .footer-newsletter-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+        font-size: 26px;
+        padding: 10px;
+    }
+    .footer-strip-title {
+        font-size: 18px;
+    }
+    .footer-strip-desc {
+        font-size: 14px;
+        line-height: 20px;
+        padding: 0 10px;
+    }
+    .footer-strip-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 0 15px;
+    }
+    .footer-subscribe-btn,
+    .footer-pro-btn {
+        width: 100%;
+        max-width: 240px;
+        margin: 0 auto !important;
+        text-align: center;
+        padding: 9px 12px;
+        font-size: 13.5px;
+        box-sizing: border-box;
+    }
+    .ambassador-button-container a {
+        padding: 10px 5px;
+        font-size: 11px;
+        line-height: 15px;
+    }
+    .ambassador-button-container {
+        bottom: 85px;
+    }
+    .newsletter-popup-button-container {
+        display: none;
+    }
+    .footer-main-content {
+        padding: 30px 10px 20px 10px;
+    }
+    .footer-payment-badges {
+        justify-content: center;
+        gap: 6px;
+    }
+    .payment-title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 4px;
     }
 }
 
