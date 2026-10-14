@@ -31,7 +31,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <div class="col-lg-6">
                     <div class="entry-img">
                         <figure>
-                            <img src="{{ $page_content['side_image'] }}" alt="Side Image" width="403" height="403" loading="lazy">
+                            <img src="{{ $page_content['side_image'] }}" alt="Side Image" loading="lazy">
                         </figure>
                     </div>
                 </div>
@@ -386,7 +386,7 @@ $sale_popup = getSalePopup();
                     <div class="col-lg-6">
                         <div class="restoration-img">
                             <figure>
-                                <img src="{{ $page_content['photo_restoration_service_image'] }}" alt="Photo restoration image" width="600" height="400" loading="lazy">
+                                <img src="{{ $page_content['photo_restoration_service_image'] }}" alt="Photo restoration image" loading="lazy">
                                 {{-- <img src="assets/images/cart-page.jpg" alt=""> --}}
                             </figure>
                         </div>
@@ -398,7 +398,7 @@ $sale_popup = getSalePopup();
                     <div class="col-lg-6">
                         <div class="restoration-img">
                             <figure>
-                                <img src="{{ $page_content['accept_bulk_order_image'] }}" alt="bulk image" width="600" height="400" loading="lazy">
+                                <img src="{{ $page_content['accept_bulk_order_image'] }}" alt="bulk image" loading="lazy">
                                 {{-- <img src="assets/images/canvasprint9.jpg" alt=""> --}}
                             </figure>
                         </div>
