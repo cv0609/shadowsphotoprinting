@@ -566,8 +566,7 @@ ul.sub-menu {
         padding-bottom: 100px;
     } */
     .restoration-img {
-        overflow: hidden;
-        height: 220px;
+        height: auto;
     }
     .so-widget h3 {
         line-height: 35px;

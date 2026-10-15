@@ -608,10 +608,11 @@ section.custom-size {
     margin-bottom: 24px;
 }
 .restoration-img img {
+    max-width: 100%;
     width: 100%;
     height: auto;
-    object-fit: cover;
     border-radius: 4px;
+    display: block;
 }
 section.restoration {
     margin-top: 48px;
