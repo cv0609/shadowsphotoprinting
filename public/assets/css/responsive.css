@@ -55,19 +55,20 @@
         position: fixed;
         top: 0;
         right: 0;
-        display: inline-block;
-        background-color: #444;
+        display: block;
+        background-color: #2b2b2b;
         height: 100vh;
-        transition: all 0.3s;
+        height: 100dvh;
+        transition: width 0.3s ease;
         z-index: 9999999;
-        padding-top: 0;
+        padding-top: 50px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
    
     .intro.sidenavs {
-        box-shadow: 0 0 0 100vmax #000000a3;
-
-    }
-    .intro.sidenavs{
+        box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.7);
         transform: translateX(0);
     }
 
@@ -93,12 +94,16 @@
 
     span.closebtn {
         display: none !important;
-        text-align: right;
         color: #F5F5F2;
         position: absolute;
-        left: 0px;
-        top: 0px;
-        font-size: 32px;
+        right: 15px;
+        top: 12px;
+        left: auto !important;
+        font-size: 26px;
+        cursor: pointer;
+        z-index: 10;
+        line-height: 1;
+        padding: 5px;
     }
    
     .navigation div#mySidenavs ul {
@@ -165,8 +170,12 @@
     .blog-heading {
         margin-bottom: 5%;
     }
-    .sidenavs[style="width: 290px;"] span.closebtn {
-        left: -40px;
+    .sidenavs[style*="290px"] span.closebtn,
+    .intro span.closebtn {
+        display: block !important;
+        left: auto !important;
+        right: 15px !important;
+        top: 12px !important;
     }
 
     .Product-box {
@@ -304,18 +313,47 @@
     }
 
 
-.intro span.closebtn{display: block!important;}
-
-.intro  .screen-reader{
-display:block
+.intro span.closebtn{
+    display: block !important;
+    left: auto !important;
+    right: 15px !important;
+    top: 12px !important;
 }
 
+.screen-reader {
+    display: none;
+    padding: 0 15px 15px 15px;
+}
+
+.intro .screen-reader{
+    display: block !important;
+}
 
 .search-box {
-    width: calc(100% - 20px);
+    width: 100%;
     margin: 0;
     padding: 0;
     border: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box input.search-field {
+    width: 100%;
+    padding: 8px 35px 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: #1e1e1e;
+    color: #fff;
+    font-size: 14px;
+}
+
+.search-box span.magnifying {
+    position: absolute;
+    right: 10px;
+    color: #aaa;
+    cursor: pointer;
 }
 span.cart-extras-title {
     display: none;

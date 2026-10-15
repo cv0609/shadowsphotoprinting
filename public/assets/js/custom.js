@@ -1,12 +1,33 @@
 // header js
 
 function openNav() {
-    document.getElementById("mySidenavs").style.width = "290px";
+    var nav = document.getElementById("mySidenavs");
+    if (nav && (nav.classList.contains("intro") || parseInt(nav.style.width) > 0)) {
+        closeNav();
+        return;
+    }
+    if (nav) {
+        nav.classList.add("intro");
+        nav.style.width = "290px";
+    }
 }
 
 function closeNav() {
-    document.getElementById("mySidenavs").style.width = "0";
+    var nav = document.getElementById("mySidenavs");
+    if (nav) {
+        nav.classList.remove("intro");
+        nav.style.width = "0";
+    }
 }
+
+$(document).on('click', function (e) {
+    var nav = document.getElementById("mySidenavs");
+    if (nav && (nav.classList.contains("intro") || parseInt(nav.style.width) > 0)) {
+        if (!$(e.target).closest('#mySidenavs, .toggle-bar, .toggle_menu').length) {
+            closeNav();
+        }
+    }
+});
 
 //  #button
 
@@ -23,6 +44,43 @@ $(window).scroll(function () {
 btn.on('click', function (e) {
     e.preventDefault();
     $('html, body').animate({ scrollTop: 0 }, '300');
+});
+
+// Sticky Navigation
+$(document).ready(function () {
+    var $navWrapper = $('.header-nav-wrapper');
+    var $nav = $('.outside-second');
+
+    if ($nav.length && $navWrapper.length) {
+        function updateStickyNav() {
+            if ($(window).width() > 991) {
+                var scrollTop = $(window).scrollTop();
+                var navTop = $navWrapper.offset().top;
+
+                if (scrollTop >= navTop) {
+                    if (!$nav.hasClass('is-sticky')) {
+                        $navWrapper.css('min-height', $nav.outerHeight() + 'px');
+                        $nav.addClass('is-sticky');
+                    }
+                } else {
+                    if ($nav.hasClass('is-sticky')) {
+                        $nav.removeClass('is-sticky');
+                        $navWrapper.css('min-height', '');
+                    }
+                }
+            } else {
+                if ($nav.hasClass('is-sticky')) {
+                    $nav.removeClass('is-sticky');
+                    $navWrapper.css('min-height', '');
+                }
+            }
+        }
+
+        $(window).on('scroll', updateStickyNav);
+        $(window).on('resize', updateStickyNav);
+        $(window).on('load', updateStickyNav);
+        updateStickyNav();
+    }
 });
 
 var all_images = [];
