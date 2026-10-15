@@ -1,6 +1,6 @@
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/js/custom.js') }}?v=3"></script>
 <script src="{{ asset('assets/js/slick.js') }}"></script>
 <script src="{{ asset('assets/js/aos.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
@@ -90,9 +90,7 @@ $("#login").on('click',function(){
 
 })
 
-$(".toggle_menu").click(function(){
-  $(".sidenavs").toggleClass("intro");
-});
+
 
 
 function validateEmail(email) {

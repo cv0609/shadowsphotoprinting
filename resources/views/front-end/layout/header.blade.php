@@ -96,22 +96,13 @@ $CartCount = $cartModel::getCartCount();
     </div>
 </header>
 <!-- HEADER BOTTOM -->
-<div class="outside-second">
+<div class="header-nav-wrapper">
+    <div class="outside-second">
         <div class="second-navclass">
             <div class="container">
                 <div class="second-clearfix">
                     <div class="sidenavs" id="mySidenavs">
                         <span class="closebtn" onclick="closeNav()"><i class="fa-solid fa-xmark"></i></span>
-                        <div class="screen-reader">
-                            <div class="">
-                                <form action="">
-                                    <div class="search-box">
-                                        <input type="search" class="search-field no-cancel-button" placeholder="Search …" value="" name="s">
-                                        <span class="magnifying"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                         <ul>
                             <li><a href="{{ url('/') }}">Home</a></li>
                             <li><a href="{{ url('shop') }}">Shop</a></li>
@@ -135,7 +126,8 @@ $CartCount = $cartModel::getCartCount();
             </div>
         </div>
     </div>
-    <!-- HEADER BOTTOM -->
+</div>
+<!-- HEADER BOTTOM -->
 
     <!-- August Promotion Popup - Only show for logged-in users who haven't received coupon -->
     @auth
