@@ -372,7 +372,7 @@
           <p>For <strong>6×8”</strong> scrapbook pages, please use:</p>
           <ul style="list-style: disc; padding-left: 30px; color: #F5F5F2;">
             <li><p><strong>1800 × 2400 pixels</strong> (portrait)</p></li>
-            <li><p><strong>2400 × 1800 pixels</strong> pixels (portrait)</p></li>
+            <li><p><strong>2400 × 1800 pixels</strong> (landscape)</p></li>
           </ul>
           <p>
             If you are using Canva or a scrapbooking program, just make sure

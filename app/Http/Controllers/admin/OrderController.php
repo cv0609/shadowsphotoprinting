@@ -35,10 +35,21 @@ class OrderController extends Controller
         $this->AfterPayService = $AfterPayService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with(['orderBillingShippingDetails', 'shoppingCountry'])->orderBy('id', 'desc')->paginate(10);
-        return view('admin.orders.index', compact('orders'));
+        $allowedPerPage = [10, 25, 50, 100, 150, 200, 250, 300, 400, 500];
+        $perPage = (int) $request->input('per_page', session('admin_orders_per_page', 50));
+        if (!in_array($perPage, $allowedPerPage)) {
+            $perPage = 50;
+        }
+        session(['admin_orders_per_page' => $perPage]);
+
+        $orders = Order::with(['orderBillingShippingDetails', 'shoppingCountry'])
+            ->orderBy('id', 'desc')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view('admin.orders.index', compact('orders', 'perPage'));
     }
 
     public function orderDetail($orderNumber)
@@ -105,18 +116,24 @@ class OrderController extends Controller
             ]);
         }
 
+        $allowedPerPage = [10, 25, 50, 100, 150, 200, 250, 300, 400, 500];
+        $perPage = (int) $request->input('per_page', session('admin_orders_per_page', 50));
+        if (!in_array($perPage, $allowedPerPage)) {
+            $perPage = 50;
+        }
+
         // Empty search with no date filter → restore default first page
         if ($searchTerm === '' && empty($startDate) && empty($endDate)) {
             $orders = Order::with(['orderBillingShippingDetails', 'shoppingCountry'])
                 ->orderBy('id', 'desc')
-                ->paginate(10);
+                ->paginate($perPage);
 
             return view('admin.orders.order_search', [
                 'orders' => $orders,
             ]);
         }
 
-        $orders = $ordersQuery->get();
+        $orders = $ordersQuery->limit($perPage)->get();
 
         if ($orders->isEmpty()) {
             return response('<tr><td colspan="9"><p class="text-center">No any data found!</p></td></tr>');
