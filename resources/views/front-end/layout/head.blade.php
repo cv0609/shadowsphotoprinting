@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?v=29">
 <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}?v=5">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
-<script defer src="https://js.stripe.com/v3/"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-27QW0FL5D9"></script>
 <script>
    window.dataLayer = window.dataLayer || [];
