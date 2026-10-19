@@ -20,21 +20,36 @@
     } */
 }
 
-@media only screen and (max-width:1199px) {
-    /* .envira-gallery .container{
-        padding-left: 0px;
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .second-clearfix ul {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-    .navigation {
-        padding: 10px 0px;
+    .second-clearfix ul > li {
+        flex: 1 1 auto !important;
+        text-align: center !important;
+        position: relative !important;
     }
-    .logo img {
-        max-width: 140px;
+    .second-clearfix ul > li > a {
+        padding: 14px 6px !important;
+        font-size: 13px !important;
+        white-space: nowrap !important;
+        letter-spacing: 0 !important;
+        display: block !important;
     }
-    .second-clearfix ul li a {
-        padding: 15px 10px;
-        font-size: 14px;
-    } */
-  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1280px) {
+    .second-clearfix ul > li > a {
+        padding: 18px 10px !important;
+        font-size: 15px !important;
+        white-space: nowrap !important;
+    }
+}
 
 
 
