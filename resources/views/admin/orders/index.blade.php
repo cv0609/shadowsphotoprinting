@@ -58,6 +58,86 @@
     color: #73879c;
     pointer-events: auto;
   }
+
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid #e6e9ed;
+    gap: 12px;
+  }
+
+  .pagination-container .pagination {
+    margin: 0;
+  }
+
+  .per-page-select-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .per-page-select-wrapper.x-title-per-page {
+    float: right;
+    margin-top: 4px;
+  }
+
+  .per-page-select-wrapper select {
+    display: inline-block;
+    width: auto;
+    min-width: 75px;
+    height: 30px;
+    padding: 2px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2a3f54;
+    background-color: #fff;
+    border: 1px solid #ccd0d7;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  .per-page-select-wrapper select:focus {
+    border-color: #1abb9c;
+    outline: 0;
+  }
+
+  .per-page-select-wrapper label {
+    margin-bottom: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #73879c;
+  }
+
+  .per-page-select-wrapper .per-page-label {
+    font-size: 13px;
+    color: #73879c;
+  }
+
+  .per-page-select-wrapper .pagination-entry-count {
+    margin-left: 12px;
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+    padding-left: 12px;
+    border-left: 1px solid #d9dee4;
+  }
+
+  @media (max-width: 768px) {
+    .pagination-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .per-page-select-wrapper.x-title-per-page {
+      float: none;
+      margin-top: 10px;
+    }
+  }
 </style>
 
 <div class="right_col" role="main">
@@ -93,6 +173,22 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Orders List</h2>
+                        <div class="per-page-select-wrapper x-title-per-page">
+                            <label for="per_page_top">Show:</label>
+                            <select id="per_page_top" class="per-page-dropdown">
+                                <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
+                                <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
+                                <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                                <option value="150" {{ $perPage == 150 ? 'selected' : '' }}>150</option>
+                                <option value="200" {{ $perPage == 200 ? 'selected' : '' }}>200</option>
+                                <option value="250" {{ $perPage == 250 ? 'selected' : '' }}>250</option>
+                                <option value="300" {{ $perPage == 300 ? 'selected' : '' }}>300</option>
+                                <option value="400" {{ $perPage == 400 ? 'selected' : '' }}>400</option>
+                                <option value="500" {{ $perPage == 500 ? 'selected' : '' }}>500</option>
+                            </select>
+                            <span class="per-page-label">orders per page</span>
+                        </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -114,7 +210,7 @@
                                 @foreach ($orders as $key => $order)
 
                                   <tr>
-                                    <td data-title="s_no">{{ $key + 1 }}</td>
+                                    <td data-title="s_no">{{ method_exists($orders, 'firstItem') && $orders->firstItem() ? ($orders->firstItem() + $key) : ($key + 1) }}</td>
                                     <td data-title="order-number">
                                         <a href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
                                         @php
@@ -239,7 +335,32 @@
                             </tbody>
                         </table>
 
-                        {{ $orders->links('pagination::bootstrap-4') }}
+                        <div class="pagination-container" id="pagination-wrapper">
+                            <div class="per-page-select-wrapper">
+                                <label for="per_page_bottom">Show:</label>
+                                <select id="per_page_bottom" class="per-page-dropdown">
+                                    <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                                    <option value="150" {{ $perPage == 150 ? 'selected' : '' }}>150</option>
+                                    <option value="200" {{ $perPage == 200 ? 'selected' : '' }}>200</option>
+                                    <option value="250" {{ $perPage == 250 ? 'selected' : '' }}>250</option>
+                                    <option value="300" {{ $perPage == 300 ? 'selected' : '' }}>300</option>
+                                    <option value="400" {{ $perPage == 400 ? 'selected' : '' }}>400</option>
+                                    <option value="500" {{ $perPage == 500 ? 'selected' : '' }}>500</option>
+                                </select>
+                                <span class="per-page-label">orders per page</span>
+                                @if(method_exists($orders, 'total') && $orders->total() > 0)
+                                <span class="pagination-entry-count">
+                                    Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{ $orders->total() }} orders
+                                </span>
+                                @endif
+                            </div>
+                            <div class="pagination-links">
+                                {{ $orders->links('pagination::bootstrap-4') }}
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -289,6 +410,14 @@
         };
     }
 
+    $(document).on('change', '.per-page-dropdown', function () {
+        const perPage = $(this).val();
+        const url = new URL(window.location.href);
+        url.searchParams.set('per_page', perPage);
+        url.searchParams.set('page', '1');
+        window.location.href = url.toString();
+    });
+
     function runOrderSearch(query) {
         query = (query || '').trim();
 
@@ -298,11 +427,14 @@
             return;
         }
 
+        const currentPerPage = $('.per-page-dropdown').first().val() || 50;
+
         $.ajax({
             url: '{{ route("orders.search") }}',
             type: 'GET',
-            data: Object.assign({ query: query }, getActiveDateRange()),
+            data: Object.assign({ query: query, per_page: currentPerPage }, getActiveDateRange()),
             success: function (data) {
+                $('#pagination-wrapper').addClass('d-none');
                 $('.pagination').addClass('d-none');
                 if (data && String(data).trim() !== '') {
                     $("#main-tbody").html(data);
@@ -335,6 +467,7 @@
         let startDate = picker.startDate.format('YYYY-MM-DD');
         let endDate = picker.endDate.format('YYYY-MM-DD');
         let query = ($('#order-search').val() || '').trim();
+        const currentPerPage = $('.per-page-dropdown').first().val() || 50;
 
         $.ajax({
             url: '{{ route("orders.search") }}',
@@ -342,9 +475,11 @@
             data: {
                 query: query,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                per_page: currentPerPage
             },
             success: function (data) {
+                $('#pagination-wrapper').addClass('d-none');
                 $('.pagination').addClass('d-none');
                 if (data && String(data).trim() !== '') {
                     $("#main-tbody").html(data);

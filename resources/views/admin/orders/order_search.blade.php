@@ -1,7 +1,7 @@
 @foreach ($orders as $key => $order)
 
 <tr>
-  <td data-title="s_no">{{ $key + 1 }}</td>
+  <td data-title="s_no">{{ method_exists($orders, 'firstItem') && $orders->firstItem() ? ($orders->firstItem() + $key) : ($key + 1) }}</td>
   <td data-title="order-number">
       <a href="{{ route('order-detail',['order_number'=>$order->order_number]) }}">{{ $order->order_number }}</a>
       @php
