@@ -1,6 +1,6 @@
 @extends('front-end.layout.main')
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=6">
+<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=7">
 @endsection
 @section('content')
 @php
@@ -629,8 +629,6 @@
                 </div>
             </div>
         </div>
-    </div>
- {{-- </div> --}}
 </section>
 @endsection
 @section('scripts')

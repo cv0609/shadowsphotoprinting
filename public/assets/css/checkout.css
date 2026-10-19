@@ -1,4 +1,7 @@
 /* Checkout page styles */
+.coupon-main {
+    background-color: #000;
+}
 
 .coupon-main p.form-row input,
 .coupon-main p.form-row textarea.input-text,
