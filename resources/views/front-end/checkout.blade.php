@@ -1,6 +1,6 @@
 @extends('front-end.layout.main')
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=7">
+<link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}?v=8">
 @endsection
 @section('content')
 @php
@@ -595,37 +595,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="checkout-trust-bar" aria-label="Checkout assurances">
-                <div class="checkout-trust-item">
-                    <span class="icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></span>
-                    <span class="text">
-                        <strong>Secure Checkout</strong>
-                        <span>100% protected payments</span>
-                    </span>
-                </div>
-                <div class="checkout-trust-item">
-                    <span class="icon" aria-hidden="true"><i class="fas fa-truck"></i></span>
-                    <span class="text">
-                        <strong>Fast Delivery</strong>
-                        <span>Australia &amp; New Zealand shipping</span>
-                    </span>
-                </div>
-                <div class="checkout-trust-item">
-                    <span class="icon" aria-hidden="true"><i class="fas fa-award"></i></span>
-                    <span class="text">
-                        <strong>Premium Quality</strong>
-                        <span>Satisfaction guaranteed</span>
-                    </span>
-                </div>
-                <div class="checkout-trust-item">
-                    <span class="icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
-                    <span class="text">
-                        <strong>24/7 Support</strong>
-                        <span>We're here to help</span>
-                    </span>
                 </div>
             </div>
         </div>
