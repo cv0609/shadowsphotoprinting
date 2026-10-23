@@ -8,7 +8,7 @@
                 <span class="bc-delimiter">»</span>
                 {{-- <span><a href="#">uncategorized</a></span>
                 <span class="bc-delimiter">»</span> --}}
-                <span> {{ strtoupper($promotionDetail['title']) }}</span>
+                <span><h1>{{ config('constant.promotions_h1.' . $promotionDetail['slug']) ?? $promotionDetail['title'] }}</h1></span>
             </div>
         </div>
     </div>
@@ -30,15 +30,58 @@
                     <div class="shadtpang">
                         @php
                             $contentHtml = $promotionDetail['content'] ?? '';
-                            $promoTitle = !empty($promotionDetail['title']) ? htmlspecialchars($promotionDetail['title'] . ' - Shadows Photo Printing') : 'Shadows Photo Printing Promotion';
-                            // Add alt attribute if missing
-                            $contentHtml = preg_replace_callback('/<img(?![^>]*\balt=)[^>]*>/i', function($match) use ($promoTitle) {
-                                return substr_replace($match[0], ' alt="' . $promoTitle . '"', 4, 0);
-                            }, $contentHtml);
-                            // Replace empty alt="" with descriptive alt
-                            $contentHtml = preg_replace('/<img([^>]*)\balt=["\']\s*["\']([^>]*)>/i', '<img$1 alt="' . $promoTitle . '"$2>', $contentHtml);
+                            $decodedContent = html_entity_decode($contentHtml);
+                            // Demote any inner <h1> in email/newsletter body to <h2> so there's only one page H1
+                            $decodedContent = preg_replace('/<(\/?)h1\b/i', '<$1h2', $decodedContent);
+
+                            $imageAltMap = config('constant.promotion_image_alts', []);
+                            $defaultAlt = !empty($promotionDetail['title']) 
+                                ? ($promotionDetail['title'] . ' - Shadows Photo Printing') 
+                                : 'Shadows Photo Printing';
+
+                            $decodedContent = preg_replace_callback('/<img\b([^>]*?)>/i', function($match) use ($imageAltMap, $defaultAlt) {
+                                $attrs = $match[1];
+                                
+                                $src = '';
+                                if (preg_match('/src=([\'"])(.*?)\1/i', $attrs, $srcMatch)) {
+                                    $src = $srcMatch[2];
+                                }
+
+                                $targetAlt = null;
+                                if (!empty($src)) {
+                                    if (isset($imageAltMap[$src])) {
+                                        $targetAlt = $imageAltMap[$src];
+                                    } else {
+                                        foreach ($imageAltMap as $key => $altVal) {
+                                            if (strpos($src, $key) !== false) {
+                                                $targetAlt = $altVal;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if ($targetAlt === null) {
+                                    if (preg_match('/\balt=([\'"])(.*?)\1/i', $attrs, $existingAltMatch) && trim($existingAltMatch[2]) !== '') {
+                                        return $match[0];
+                                    }
+                                    $targetAlt = $defaultAlt;
+                                }
+
+                                $escapedAlt = htmlspecialchars($targetAlt, ENT_QUOTES, 'UTF-8');
+
+                                if (preg_match('/\balt=([\'"]).*?\1/i', $attrs)) {
+                                    $newAttrs = preg_replace_callback('/\balt=([\'"]).*?\1/i', function() use ($escapedAlt) {
+                                        return 'alt="' . $escapedAlt . '"';
+                                    }, $attrs);
+                                } else {
+                                    $newAttrs = $attrs . ' alt="' . $escapedAlt . '"';
+                                }
+
+                                return '<img' . $newAttrs . '>';
+                            }, $decodedContent);
                         @endphp
-                        {!! html_entity_decode($contentHtml) !!}
+                        {!! $decodedContent !!}
                     </div>
                 </div>
             </div>

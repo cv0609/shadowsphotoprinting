@@ -111,7 +111,7 @@
                 <div class="col-lg-6">
                     <div class="canvas-summary">
                         {{-- <p>IMAGE</p> --}}
-                        <h2>{{$productDetails->product_title ?? ''}}</h2>
+                        <h1>{{$productDetails->product_title ?? ''}}</h1>
                         <p class="incl"> ${{$productDetails->price}}</p>
                         <div class="afterpay-4-payment">
                             <span>or 4 payments as low as ${{ number_format($productDetails->price/4,2) }} with </span>

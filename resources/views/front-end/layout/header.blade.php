@@ -449,4 +449,3 @@ max-width: 100px;
         </div>
     </div>
 </div>
-<h1 class="h1-missing">.</h1>

@@ -183,7 +183,7 @@
       <div class="container">
         <div class="about-printing">
           <!-- {!! html_entity_decode($page_content['fun-facts-content']) !!}  -->
-          <h3>Fun facts about printing</h3>
+          <h1>Fun facts about printing</h1>
           <p>
             Have you or did you know that we do all our printing in sRGB? The
             printer prints in sRGB.

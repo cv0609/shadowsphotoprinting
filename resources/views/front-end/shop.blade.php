@@ -67,6 +67,7 @@
 <!-- HERO SECTION -->
 
 <section class="instructions">
+    <h1 class="seo-visually-hidden">Shop Photo Prints</h1>
     <div class="container">
         <div class="instructions-inner">
             <div class="so-widget">

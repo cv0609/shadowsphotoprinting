@@ -826,6 +826,7 @@ section.about-printing {
     padding: 50px 0 0;
 }
 
+.about-printing h1,
 .about-printing h3 {
     font-family: "Source Sans Pro";
     line-height: 40px;
@@ -924,6 +925,7 @@ section.blog-new {
     margin-bottom: 2%;
 }
 
+.blog-heading h1,
 .blog-heading h2 {
     font-family: "Source Sans Pro";
     line-height: 40px;
@@ -1031,11 +1033,13 @@ section.contact-banner {
     text-align: center;
 }
 
+.contact-bnr-text h1,
 .contact-bnr-text h2 {
     color: #FFC205;
     font-size: 70px;
     text-transform: uppercase;
     font-weight: 600;
+    margin: 0;
 }
 
 section.shipping-policy {
@@ -1599,6 +1603,18 @@ section.poster-bnr {
     color: #777;
 }
 
+.breadcrumbs-wrapper h1,
+.breadcrumbs-wrapper span h1 {
+    display: inline;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
+    font-family: inherit;
+}
+
 .breadcrumbs-wrapper span a {
     border-bottom: 2px solid #eee;
     color: #777;
@@ -1850,6 +1866,7 @@ section.subcategories ul.cstmlist li.central a.active {
     margin: 0;
 }
 
+.title-cat h1,
 .title-cat h2 {
     font-family: "Source Sans Pro";
     line-height: 40px;
@@ -2286,6 +2303,7 @@ span.kt_postlink_title {
     transform: translateX(-50%);
 }
 
+.canvas-summary h1,
 .canvas-summary h2 {
     font-family: "Source Sans Pro";
     line-height: 40px;
@@ -6228,6 +6246,18 @@ font-size: 20px !important;
 #afterpay-modal,
 #augustPromotionPopup {
     z-index: 9999999 !important;
+}
+
+.seo-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .modal-backdrop,

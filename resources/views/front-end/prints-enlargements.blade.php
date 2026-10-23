@@ -15,7 +15,7 @@
     <div class="container">
         <div class="contact-bnr-text">
             {{-- <h2>PRINTS & ENLARGEMENTS </h2> --}}
-            <h2>{{ $page_content['prints_enlargements_banner_title'] }}</h2>
+            <h1>{{ $page_content['prints_enlargements_banner_title'] }}</h1>
         </div>
     </div>
 </section>

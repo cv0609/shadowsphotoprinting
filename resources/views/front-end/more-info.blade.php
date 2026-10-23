@@ -4,7 +4,7 @@
 <section class="about-printing">
     <div class="container">
         <div class="about-printing">
-            <h3>About Shadows Affordable Memories</h3>
+            <h1>About Shadows Affordable Memories</h1>
             
             <h4>Professional Photo Printing &amp; Community Art, History &amp; Creative Gallery</h4>
             <p>At <strong>Shadows Affordable Memories<strong>, we’re professional photographers passionate about supporting the photography and scrapbooking communities across <strong>Australia and New Zealand</strong>. As a small family-owned business in <strong>Glenreagh, NSW</strong>, we understand how meaningful your images are — that’s why every order is handled with care and attention to detail.</p>

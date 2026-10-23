@@ -29,7 +29,7 @@
                     <div class="summary">
                         <div class="title-cat">
                             <p>Gift Card</p>
-                            <h2>{{$blog_detail->product_title}}</h2>
+                            <h1>{{$blog_detail->product_title}}</h1>
 
                             <div class="afterpay-4-payment">
                                 <span>or 4 payments as low as $25 with </span>

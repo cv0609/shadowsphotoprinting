@@ -12,7 +12,7 @@
         </div>
         <div class="container">
             <div class="contact-bnr-text">
-                <h2>{{ $page_content['our_products_banner_title'] }} </h2>
+                <h1>{{ $page_content['our_products_banner_title'] }}</h1>
             </div>
         </div>
     </section>

@@ -5,7 +5,7 @@
     <div class="container">
         <div class="blog-new-wrapper">
             <div class="blog-heading">
-                <h2>{{ $page_content['meta_title'] }}</h2>
+                <h1>{{ $page_content['meta_title'] }}</h1>
             </div>
             <div class="kadence-posts">
 
@@ -13,8 +13,19 @@
                <article>
                 <a href="{{ route('promotion-detail',['slug'=>$value->slug]) }}">
                     <div class="post-thumbnail-inner">
-                        <img src="{{ $value['image'] }}" alt="Image">
-                        {{-- <img src="assets/images/table.png" alt="jon-tyson"> --}}
+                        @php
+                            $thumbSrc = $value['image'] ?? '';
+                            $matchedAlt = null;
+                            $altMap = config('constant.promotion_image_alts', []);
+                            foreach ($altMap as $k => $alt) {
+                                if (strpos($thumbSrc, $k) !== false) {
+                                    $matchedAlt = $alt;
+                                    break;
+                                }
+                            }
+                            $finalAlt = $matchedAlt ?? (!empty($value['title']) ? ($value['title'] . ' - Shadows Photo Printing') : 'Shadows Photo Printing');
+                        @endphp
+                        <img src="{{ $value['image'] }}" alt="{{ $finalAlt }}">
                     </div>
                 </a>
                 <div class="kadence-posts-content">

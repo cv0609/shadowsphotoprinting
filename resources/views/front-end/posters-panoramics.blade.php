@@ -14,7 +14,7 @@
     <div class="container">
         <div class="contact-bnr-text">
             {{-- <h2>POSTERS & PANORAMICS</h2> --}}
-            <h2>{{ $page_content['posters_panoramic_banner_title'] }}</h2>
+            <h1>{{ $page_content['posters_panoramic_banner_title'] }}</h1>
         </div>
     </div>
 </section>
