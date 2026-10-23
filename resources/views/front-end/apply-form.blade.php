@@ -607,7 +607,7 @@
         line-height: normal;
         margin-bottom: 4px;
       }
-      h3.banner-heading {
+      .banner-heading {
         color: #FFC205;
         font-size: 50px;
         text-transform: uppercase;
@@ -627,14 +627,14 @@
         line-height: 27px;
       }
       @media (max-width: 991px) {
-        h3.banner-heading {
+        .banner-heading {
           font-size: 45px;
 
           margin-bottom: 20px;
         }
       }
       @media (max-width: 767px) {
-        h3.banner-heading {
+        .banner-heading {
           font-size: 33px;
           margin-bottom: 12px;
         }
@@ -646,7 +646,7 @@
         }
       }
       @media (max-width: 575px) {
-        h3.banner-heading {
+        .banner-heading {
           font-size: 26px;
           margin-bottom: 10px;
         }
@@ -681,7 +681,7 @@
         .form-mm .clear-btn {
           margin-top: 0;
         }
-        h3.banner-heading {
+        .banner-heading {
           font-size: 23px;
           margin-bottom: 10px;
         }
@@ -729,7 +729,7 @@
     <section class="banner-sec-new">
         <div class="container">
             <div class="div-wrap-head">
-                <h3 class="banner-heading">Apply to Join the Shadows Pro Circle</h3>
+                <h1 class="banner-heading">Apply to Join the Shadows Pro Circle</h1>
                 <p class="banner-text">We're proud to work alongside talented photographers across Australia - and you can be one of them.</p>
                 <p class="banner-text">Our Pro Circle is a selected group of creatives who value quality, and love seeing their work come to life in print.</p>
                 <p class="banner-text">Selected photographers receive exclusive discounts, features across our blog and social media, and more.</p>

@@ -4,7 +4,7 @@
 <section class="contact-banner">
     <div class="container">
         <div class="contact-bnr-text">
-            <h2>{{ $page_content['contact_us_banner_title'] }} </h2>
+            <h1>{{ $page_content['contact_us_banner_title'] }}</h1>
             {{-- <h2>Contact Us </h2> --}}
         </div>
     </div>

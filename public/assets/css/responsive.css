@@ -390,6 +390,7 @@ ul.sub-menu {
     .tinymce ol {
         padding: 0 15px;
     }
+    .contact-bnr-text h1,
     .contact-bnr-text h2 {
         font-size: 55px;
     }
@@ -422,6 +423,7 @@ ul.sub-menu {
     /* .main-page {
         padding-bottom: 110px;
     } */
+    .blog-heading h1,
     .blog-heading h2 {
         font-size: 35px;
   }
@@ -468,6 +470,7 @@ ul.sub-menu {
         padding-bottom: 10px;
         display: inline-block;
     }
+    .contact-bnr-text h1,
     .contact-bnr-text h2 {
         font-size: 45px;
     }
@@ -499,6 +502,7 @@ ul.sub-menu {
         padding-top: 18px;
     }
 
+    .canvas-summary h1,
     .canvas-summary h2 {
         font-size: 30px;
     }
@@ -534,6 +538,7 @@ ul.sub-menu {
         margin-top: 18px;
     }
 
+    .widget-title h1,
     .widget-title h3 {
         font-size: 34px;
         max-width: 460px;
@@ -596,6 +601,7 @@ ul.sub-menu {
     section.instructions {
         padding: 0px 10px;
     }
+    .blog-heading h1,
     .blog-heading h2 {
         font-size: 27px;
     }
@@ -690,15 +696,18 @@ ul.sub-menu {
 
     }
 
+    .widget-title h1,
     .widget-title h3 {
         font-size: 24px;
         max-width: 240px;
     }
 
+    .widget-title h1,
     .widget-title h3 {
         font-size: 23px;
         max-width: 300px;
     }
+    .contact-bnr-text h1,
     .contact-bnr-text h2 {
         font-size: 30px;
     }

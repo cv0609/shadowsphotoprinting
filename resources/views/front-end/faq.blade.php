@@ -4,7 +4,7 @@
     <div class="banner-img"></div>
     <div class="container">
         <div class="contact-bnr-text">
-            <h2> FAQ </h2>
+            <h1>faqs</h1>
         </div>
     </div>
 </section>

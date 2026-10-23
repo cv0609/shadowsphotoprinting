@@ -38,7 +38,7 @@ $ProductCategoriesForBulk = $PageDataService->getProductCategoriesForBulk();
                 <div class="col-lg-6">
                     <div class="entry-text">
                         <div class="widget-title">
-                            <h3>{{ $page_content['title'] }}</h3>
+                            <h1>{{ $page_content['title'] }}</h1>
                             <div class="textwidget">
                                 {!! $page_content['description'] !!}
                             </div>

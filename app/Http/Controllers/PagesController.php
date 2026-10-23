@@ -39,9 +39,9 @@ class PagesController extends Controller
         // Extract the last segment
         $segments = explode('/', $path);
         if (in_array('our-products', $segments) && end($segments) != 'our-products') {
-            $slug = ProductCategory::where('name', str_replace('-', ' ', end($segments)))->select('slug')->first();
+            $cat = ProductCategory::where('name', str_replace('-', ' ', end($segments)))->select('slug')->first();
 
-            $slug = $slug['slug'];
+            $slug = $cat ? $cat->slug : end($segments);
         } else {
             $slug = end($segments);
         }
@@ -138,9 +138,20 @@ class PagesController extends Controller
             ->orderBy('id', 'asc')
             ->first();
 
+        $blogMeta = config("constant.blogs_meta.{$slug}") ?? ($blog_details ? config("constant.blogs_meta.{$blog_details->slug}") : null);
+        if (!$blogMeta) {
+            foreach (config('constant.blogs_meta', []) as $key => $meta) {
+                if (str_starts_with($slug, $key) || str_starts_with($key, $slug)) {
+                    $blogMeta = $meta;
+                    break;
+                }
+            }
+        }
+
+        $defaultDesc = \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($blog_details->description)), 160);
         $page_content = [
-            'meta_title' => $blog_details->title . ' | Shadows Photo Printing',
-            'meta_description' => \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($blog_details->description)), 160),
+            'meta_title' => $blogMeta['meta_title'] ?? ($blog_details->title . ' | Shadows Photo Printing'),
+            'meta_description' => $blogMeta['meta_description'] ?? $defaultDesc,
         ];
 
         return view('front-end/blog_detail', compact('blog_details', 'previousBlog', 'nextBlog', 'page_content'));
@@ -265,18 +276,30 @@ class PagesController extends Controller
 
         if ($slug == null) {
             $products = PhotoForSaleProduct::paginate(10);
+            $currentCategory = null;
         } else {
             $caregory = PhotoForSaleCategory::where('slug', $slug)->first();
             $products = PhotoForSaleProduct::where('category_id', $caregory ? $caregory->id : 0)->paginate(10);
+            $currentCategory = $caregory;
+            $catMeta = config("constant.photos_for_sale_meta.{$slug}") ?? ($caregory ? config("constant.photos_for_sale_meta.{$caregory->slug}") : null);
+            if (!$catMeta) {
+                foreach (config('constant.photos_for_sale_meta', []) as $key => $meta) {
+                    if (str_starts_with($slug, $key) || str_starts_with($key, $slug)) {
+                        $catMeta = $meta;
+                        break;
+                    }
+                }
+            }
+            $defaultTitle = ($caregory ? ucwords(str_replace(['-', '_'], ' ', $caregory->product_title ?? $caregory->slug)) : ucwords(str_replace(['-', '_'], ' ', (string) $slug))) . ' | Shadows Photo Printing';
             $page_content = [
-                "meta_title" => ($caregory ? $caregory->slug : $slug) . ' | Shadows Photo Printing',
-                "meta_description" => config('constant.pages_meta.photos_for_sale.meta_description')
+                "meta_title" => $catMeta['meta_title'] ?? $defaultTitle,
+                "meta_description" => $catMeta['meta_description'] ?? config('constant.pages_meta.photos_for_sale.meta_description')
             ];
         }
 
         $productCategories = PhotoForSaleCategory::get();
 
-        return view('front-end/photos-for-sale', compact('products', 'productCategories', 'page_content'));
+        return view('front-end/photos-for-sale', compact('products', 'productCategories', 'page_content', 'currentCategory'));
     }
 
     public function PhotosForSaleDetails($slug = null)
@@ -346,9 +369,11 @@ class PagesController extends Controller
                 "meta_description" => config('constant.pages_meta.hand_craft.meta_description')
             ];
             $products = HandCraftProduct::paginate(10);
+            $currentCategory = null;
         } else {
             $caregory = HandCraftCategory::where('slug', $slug)->first();
-            $products = HandCraftProduct::where('category_id', $caregory->id)->paginate(10);
+            $products = HandCraftProduct::where('category_id', $caregory ? $caregory->id : 0)->paginate(10);
+            $currentCategory = $caregory;
             $page_content = [
                 "meta_title" => ($caregory ? $caregory->name : ucwords(str_replace('-', ' ', $slug))) . ' | Shadows Photo Printing',
                 "meta_description" => $caregory->name ?? config('constant.pages_meta.hand_craft.meta_description')
@@ -357,15 +382,33 @@ class PagesController extends Controller
 
         $productCategories = HandCraftCategory::get();
 
-        return view('front-end/hand-craft', compact('products', 'productCategories', 'page_content'));
+        return view('front-end/hand-craft', compact('products', 'productCategories', 'page_content', 'currentCategory'));
     }
 
 
     public function giftCard_detail($slug)
     {
         $blog_detail = GiftCardCategory::where(["slug" => $slug])->first();
+        if (!$blog_detail) {
+            abort(404);
+        }
         $related_products =  GiftCardCategory::where("slug", "!=", $slug)->get();
-        $page_content = ["meta_title" => $blog_detail['slug'] . ' | Shadows Photo Printing', "meta_description" => $blog_detail['product_description']];
+        $giftMeta = config("constant.gift_cards_meta.{$slug}") ?? ($blog_detail ? config("constant.gift_cards_meta.{$blog_detail->slug}") : null);
+        if (!$giftMeta) {
+            foreach (config('constant.gift_cards_meta', []) as $key => $meta) {
+                if (str_starts_with($slug, $key) || str_starts_with($key, $slug)) {
+                    $giftMeta = $meta;
+                    break;
+                }
+            }
+        }
+        $defaultTitle = ($blog_detail ? ucwords(str_replace(['-', '_'], ' ', $blog_detail->product_title ?? $blog_detail['slug'])) : ucwords(str_replace(['-', '_'], ' ', (string) $slug))) . ' | Shadows Photo Printing';
+        $defaultDesc = !empty($blog_detail['product_description']) ? $blog_detail['product_description'] : config('constant.pages_meta.gift_card.meta_description');
+
+        $page_content = [
+            "meta_title" => $giftMeta['meta_title'] ?? $defaultTitle,
+            "meta_description" => $giftMeta['meta_description'] ?? $defaultDesc
+        ];
 
         return view('front-end/giftcard_detail', compact('blog_detail', 'related_products', 'page_content'));
     }
@@ -552,7 +595,12 @@ class PagesController extends Controller
     ]
 ];
 
-        return view('front-end.faq', compact('items'));
+        $page_content = [
+            'meta_title' => config('constant.pages_meta.faqs.meta_title', 'Help & FAQs | Shadows Photo Printing'),
+            'meta_description' => config('constant.pages_meta.faqs.meta_description', 'Find answers to frequently asked questions about photo printing, canvas prints, ordering, delivery, and more. Learn how Shadows Photo Printing helps you turn favourite images into lasting prints.')
+        ];
+
+        return view('front-end.faq', compact('items', 'page_content'));
     }
 
     public function moreInfo()

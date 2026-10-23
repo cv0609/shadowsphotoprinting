@@ -9,13 +9,13 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ url('shop') }}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="{{route('photos-for-sale')}}">images</a></span>
-                <span class="bc-delimiter">»</span>
-                <span>
-                    @foreach ($productCategories as $productCategory)
-                    {{ Request::url() == route('photos-for-sale', ['slug' => $productCategory->slug]) ? $productCategory->slug : '' }}
-                    @endforeach
-                </span>
+                @if(isset($currentCategory) && $currentCategory)
+                    <span><a href="{{ route('photos-for-sale') }}">Photos for sale</a></span>
+                    <span class="bc-delimiter">»</span>
+                    <span><h1>{{ $currentCategory->product_title }}</h1></span>
+                @else
+                    <span><h1>Photos for sale</h1></span>
+                @endif
             </div>
         </div>
     </div>

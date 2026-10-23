@@ -44,7 +44,13 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ url('shop') }}">Order prints</a></span>
                 <span class="bc-delimiter">»</span>
-                <span><a href="{{ url('our-products/hand-craft') }}">images</a></span>
+                @if(isset($currentCategory) && $currentCategory)
+                    <span><a href="{{ url('our-products/hand-craft') }}">Hand-craft</a></span>
+                    <span class="bc-delimiter">»</span>
+                    <span><h1>{{ $currentCategory->name }}</h1></span>
+                @else
+                    <span><h1>Hand-craft</h1></span>
+                @endif
             </div>
         </div>
     </div>

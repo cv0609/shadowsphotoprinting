@@ -29,8 +29,11 @@
     <section class="sm-mag-hero" style="background-image: url('{{ $heroImage }}');">
         <div class="sm-mag-hero__veil"></div>
         <div class="sm-mag-hero__inner">
-            <span class="sm-mag-hero__eyebrow">{{ strtoupper($edition->edition_label) }}</span>
-            <h1>{{ $edition->title }}</h1>
+            @php
+                $editionH1 = config("constant.monthly_editions_h1.{$edition->slug}")
+                    ?? (str_starts_with($edition->title, 'Shadows Monthly') ? $edition->title : 'Shadows Monthly ' . $edition->title);
+            @endphp
+            <h1>{{ $editionH1 }}</h1>
             <p class="sm-mag-hero__topics">{{ $topics->implode(' · ') }}</p>
             <a class="sm-mag-hero__scroll" href="#edition-content">
                 Continue Reading <span aria-hidden="true">↓</span>

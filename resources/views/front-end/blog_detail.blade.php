@@ -8,7 +8,7 @@
                 <span class="bc-delimiter">»</span>
                 <span><a href="{{ route('blogs') }}">Blog</a></span>
                 <span class="bc-delimiter">»</span>
-                <span>{{ strtoupper($blog_details->title) }}</span>
+                <span><h1>{{ strtoupper($blog_details->title) }}</h1></span>
             </div>
         </div>
     </div>
@@ -27,7 +27,11 @@
                     <div class="shadtpang">
                         <img src="{{ app(App\Services\PageDataService::class)->getBlogImageUrl($blog_details->image) }}" alt="{{ $blog_details->title }}">
                         <div class="blog-post-body">
-                            {!! html_entity_decode($blog_details->description) !!}
+                            @php
+                                $blogBody = html_entity_decode($blog_details->description);
+                                $blogBody = preg_replace('/<(\/?)h1\b/i', '<$1h2', $blogBody);
+                            @endphp
+                            {!! $blogBody !!}
                         </div>
                     </div>
                     <br>

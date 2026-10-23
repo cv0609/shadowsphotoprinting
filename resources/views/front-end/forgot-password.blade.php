@@ -34,6 +34,7 @@
 </section> --}}
 
 <section class="lost-your-password">
+  <h1 class="seo-visually-hidden">Forgot Password</h1>
   <div class="container">
       <div class="your-password">
           <div class="row">

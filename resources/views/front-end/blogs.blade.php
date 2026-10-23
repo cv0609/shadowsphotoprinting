@@ -8,7 +8,7 @@
     <div class="container">
         <div class="blog-new-wrapper">
             <div class="blog-heading">
-                <h2>{{ $page_content['photo_printing_blog_title'] ?? 'Shadows Affordable Memories Blog' }}</h2>
+                <h1>{{ $page_content['photo_printing_blog_title'] ?? 'Shadows Affordable Memories Blog' }}</h1>
             </div>
             <div class="kadence-posts">
                 @forelse (($blogs ?? []) as $value)

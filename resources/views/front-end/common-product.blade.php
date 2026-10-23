@@ -28,7 +28,7 @@ $CartService = app(App\Services\CartService::class);
     </div>
     <div class="container">
         <div class="contact-bnr-text">
-            <h2>{{ $page_content['header_title'] ?? '' }}</h2>
+            <h1>{{ $page_content['header_title'] ?? '' }}</h1>
         </div>
     </div>
 </section>
