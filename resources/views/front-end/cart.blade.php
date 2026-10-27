@@ -5,6 +5,9 @@
 @section('content')
 @php
 $CartService = app(App\Services\CartService::class);
+$hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($item) {
+    return $item->product_type !== 'gift_card';
+});
 // dd($CartTotal);
 // function getS3Img($str, $size){
 // $str = str_replace('original', $size, $str);
@@ -362,6 +365,7 @@ $CartService = app(App\Services\CartService::class);
                             <div class="cart-collaterals">
                                 <div class="cart_totals ">
                                     <h2>Cart totals</h2>
+                                    @if($hasPhysicalItems)
                                     <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 14px 16px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 8px;">
                                         <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #69794E; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
                                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
@@ -374,6 +378,7 @@ $CartService = app(App\Services\CartService::class);
                                             Change
                                         </a>
                                     </div>
+                                    @endif
                                 </div>
                                 <table cellspacing="0">
                                     <tbody>
@@ -383,6 +388,7 @@ $CartService = app(App\Services\CartService::class);
                                                 <span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span>
                                             </td>
                                         </tr>
+                                        @if($hasPhysicalItems)
                                         <tr>
                                             <td>
                                                 <div class="rad-btns-box">
@@ -403,6 +409,7 @@ $CartService = app(App\Services\CartService::class);
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
 
                                         @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
                                         <tr class="cart-shutter-point">
@@ -454,7 +461,7 @@ $CartService = app(App\Services\CartService::class);
                                         @endif
 
 
-                                        @if($shipping->status == "1")
+                                        @if($hasPhysicalItems && $shipping->status == "1")
                                         <tr class="shipping-section">
                                             {{-- <th></th> --}}
                                             <td>
@@ -467,99 +474,11 @@ $CartService = app(App\Services\CartService::class);
                                                 {{-- <div id="total-shipping-cost" style="display: none;">
                                                     <strong>Total Shipping: <span id="total-shipping-amount">${{ number_format($CartTotal['shippingCharge'],2) }}</span></strong>
                                                 </div> --}}
-
-                                                {{-- Commented out old flat rate shipping
-                                                @if(Session::has('billing_details'))
-                                                <span class="flat-rate"> Flat rate:
-                                                    ${{ number_format($CartTotal['shippingCharge'],2) }}</span>
-                                                <p>
-                                                    <p class="">
-                                                        Shipping to
-                                                        <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>.
-                                                    </p>
-                                                </p>
-                                                @endif
-                                                --}}
-
-                                                {{-- @if(Session::has('billing_details'))
-                                                <p class="shipping-address">
-                                                    Shipping to
-                                                    <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>
-                                                </p>
-
-                                                <form action="{{ route('billing-details') }}"
-                                                    class="change-calculate-form" method="POST">
-                                                    @csrf
-                                                    <a class="change-address calculat-shipping"
-                                                        id="change-address">Change address</a>
-                                                    <div class="calculate-shipping">
-                                                        <select class="form-control" id="country" name="country">
-                                                            <option selected>{{ $countries->name }}</option>
-                                                        </select>
-
-                                                        <select class="form-control" id="state" name="state" required>
-                                                            <option value="">State</option>
-                                                            @foreach ($countries->states as $state)
-                                                            <option value="{{ $state->id }} "
-                                                                <?= ($state->id ==  Session::get('billing_details')['state_id'] ) ? 'selected' : '' ?>>
-                                                                {{ $state->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="form-row">
-                                                            <input type="text" name="city" placeholder="city"
-                                                                value="{{ Session::get('billing_details')['city'] }}"
-                                                                required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <input type="text" name="postcode"
-                                                                placeholder="postcode/ ZIP"
-                                                                value="{{ Session::get('billing_details')['postcode'] }}"
-                                                                required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <button type="submit" class="update-btn">Update</button>
-                                                        </p>
-                                                    </div>
-                                                </form>
-                                                @endif --}}
-
-                                                {{-- @if(!Session::has('billing_details'))
-                                                <p class="woocommerce-shipping-destination">
-                                                    Shipping options will be updated during checkout. </p>
-
-                                                <form action="{{ route('billing-details') }}"
-                                                    class="change-calculate-form" method="POST">
-                                                    @csrf
-                                                    <a class="calculat-shipping" id="calculat-shipping">Calculate
-                                                        shipping</a>
-                                                    <div class="calculate-shipping">
-                                                        <select class="form-control" id="country" name="country">
-                                                            <option value="{{ $countries->id }}" selected>
-                                                                {{ $countries->name }}</option>
-                                                        </select>
-                                                        <select class="form-control" id="state" name="state" required>
-                                                            <option value="">State</option>
-                                                            @foreach ($countries->states as $state)
-                                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="form-row">
-                                                            <input type="text" name="city" placeholder="city" required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <input type="text" name="postcode"
-                                                                placeholder="postcode/ ZIP" required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <button type="submit" class="update-btn">Update</button>
-                                                        </p>
-                                                    </div>
-                                                </form>
-                                                @endif --}}
                                             </td>
                                         </tr>
                                         @endif
                                         
+                                        @if($hasPhysicalItems)
                                         <!-- Shipping Cost Row -->
                                         <tr class="shipping-cost-row" id="shipping-cost-row" style="display: none;">
                                             <th>Shipping</th>
@@ -567,6 +486,15 @@ $CartService = app(App\Services\CartService::class);
                                                 <span id="shipping-cost">$0.00</span>
                                             </td>
                                         </tr>
+                                        @else
+                                        <!-- Gift Card Free Shipping Row -->
+                                        <tr class="shipping-cost-row" id="shipping-cost-row">
+                                            <th>Shipping</th>
+                                            <td data-title="Shipping">
+                                                <span id="shipping-cost" style="font-weight: 500;">Free ($0.00)</span>
+                                            </td>
+                                        </tr>
+                                        @endif
                                         
                                         <tr class="order-total">
                                             <th>Total</th>
@@ -581,13 +509,15 @@ $CartService = app(App\Services\CartService::class);
                                     </tbody>
                                 </table>
                                 <div class="wc-proceed-to-checkout">
-                                    <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward is-disabled" aria-disabled="true" style="pointer-events:none;opacity:0.55;cursor:not-allowed;">
+                                    <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward @if($hasPhysicalItems) is-disabled @endif" @if($hasPhysicalItems) aria-disabled="true" style="pointer-events:none;opacity:0.55;cursor:not-allowed;" @endif>
                                         Proceed to checkout</a>
+                                    @if($hasPhysicalItems)
                                     <p class="checkout-wait-msg" style="margin:8px 0 0;color:#b45309;font-size:13px;">Please wait until shipping options finish loading.</p>
+                                    @endif
                                 </div>
-                                <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}"
-                                        class="shop_cont_button">Continue
-                                        Shopping →</a></div>
+                                <div class="shopping_btn_cstm">
+                                    <a href="{{ $hasPhysicalItems ? url('shop') : route('gift-card') }}" class="shop_cont_button">Continue Shopping →</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -648,8 +578,10 @@ $CartService = app(App\Services\CartService::class);
     })
 </script>
 
+@if($hasPhysicalItems)
 <!-- Include category-wise shipping calculator script -->
 <script src="{{ asset('js/category-shipping.js') }}"></script>
+@endif
 
 <script>
     $(document).ready(function () {
@@ -707,6 +639,7 @@ $CartService = app(App\Services\CartService::class);
         console.log('=== END UPDATE SHIPPING AND TOTAL ===');
     }
 
+    @if($hasPhysicalItems)
     let orderType = {{$order_type}}; 
     updateShippingAndTotal(orderType);
 
@@ -718,6 +651,7 @@ $CartService = app(App\Services\CartService::class);
             return false;
         }
     });
+    @endif
 
 
     $(".orderType").change(function () {

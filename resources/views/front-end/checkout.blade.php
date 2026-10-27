@@ -33,6 +33,10 @@
 
         return ['base' => $title, 'option' => null];
     };
+
+    $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($item) {
+        return $item->product_type !== 'gift_card';
+    });
 @endphp
 
 <section class="coupon-main">
@@ -132,6 +136,7 @@
                                 @endif
 
                             </div>
+                            @if($hasPhysicalItems)
                             <div class="Ship-field">
                                 <div class="ship-to-different">
                                     <label class="checkout-ship-toggle" for="shipcheckbox">
@@ -218,6 +223,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -226,6 +232,7 @@
                             <div class="checkout-order-summary">
                             <h3>Your order</h3>
 
+                            @if($hasPhysicalItems)
                             <div class="checkout-country-bar">
                                 <span class="icon" aria-hidden="true">
                                     <i class="fas fa-map-marker-alt"></i>
@@ -236,6 +243,7 @@
                                 </span>
                                 <a href="{{ route('shop-detail') }}">Change</a>
                             </div>
+                            @endif
 
                             @php
                                 // Check if there are any non-package items in the cart
@@ -287,12 +295,17 @@
                                 }
 
                                 $deliveryEta = $serviceEta[$shippingMethodKey] ?? null;
-                                $deliverySummary = $isPickupOrder
-                                    ? 'Store Pickup'
-                                    : trim('Shipping' . ($shippingMethod ? ' • ' . $shippingMethod : '') . ($deliveryEta ? ' (' . $deliveryEta . ')' : ''));
-                                $deliveryPriceLabel = $isPickupOrder
-                                    ? 'FREE'
-                                    : '$' . number_format((float) ($CartTotal['shippingCharge'] ?? 0), 2);
+                                if (!$hasPhysicalItems) {
+                                    $deliverySummary = 'Digital Delivery (eGift Card sent via Email)';
+                                    $deliveryPriceLabel = 'FREE';
+                                } else {
+                                    $deliverySummary = $isPickupOrder
+                                        ? 'Store Pickup'
+                                        : trim('Shipping' . ($shippingMethod ? ' • ' . $shippingMethod : '') . ($deliveryEta ? ' (' . $deliveryEta . ')' : ''));
+                                    $deliveryPriceLabel = $isPickupOrder
+                                        ? 'FREE'
+                                        : '$' . number_format((float) ($CartTotal['shippingCharge'] ?? 0), 2);
+                                }
                             @endphp
 
                             <div class="order_review checkout-order-card">
@@ -453,13 +466,13 @@
                                         </tr>
                                         @endif
 
-                                        @if($isPickupOrder || ($shipping && (string) $shipping->status === '1'))
+                                        @if($isPickupOrder || ($hasPhysicalItems && $shipping && (string) $shipping->status === '1') || !$hasPhysicalItems)
                                         <tr>
                                             <td colspan="2" style="padding: 8px 0 4px !important;">
                                                 <div class="checkout-delivery-card" id="checkout-delivery-card">
                                                     <button type="button" class="checkout-delivery-head" id="checkout-delivery-toggle" aria-expanded="true" aria-controls="checkout-delivery-body">
                                                         <span class="icon" aria-hidden="true">
-                                                            <i class="fas {{ $isPickupOrder ? 'fa-store' : 'fa-truck' }}"></i>
+                                                            <i class="fas {{ !$hasPhysicalItems ? 'fa-envelope' : ($isPickupOrder ? 'fa-store' : 'fa-truck') }}"></i>
                                                         </span>
                                                         <span class="title">Delivery</span>
                                                         <span class="chevron" aria-hidden="true"><i class="fas fa-chevron-up"></i></span>

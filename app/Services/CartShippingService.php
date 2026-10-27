@@ -226,7 +226,7 @@ class CartShippingService
         if (!empty($postersItems)) $categoriesWithItems++;
         if (!empty($handCraftItems)) $categoriesWithItems++;
         if (!empty($photosForSaleItems)) $categoriesWithItems++;
-        if (!empty($giftCardItems)) $categoriesWithItems++;
+        // Gift cards are digital products delivered via email and have no physical shipping
         if (!empty($weddingPackageItems)) $categoriesWithItems++;
         if (!empty($otherItems)) $categoriesWithItems++;
         
@@ -280,7 +280,7 @@ class CartShippingService
         // Check if this is a Photo Print or Scrapbook Print only order
         $hasPhotoPrints = !empty($photoPrintsItems);
         $hasScrapbook = !empty($scrapbookItems);
-        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($giftCardItems) || !empty($weddingPackageItems) || !empty($otherItems);
+        $hasOtherCategories = !empty($canvasItems) || !empty($photoEnlargementItems) || !empty($postersItems) || !empty($handCraftItems) || !empty($photosForSaleItems) || !empty($weddingPackageItems) || !empty($otherItems);
         
         if (($hasPhotoPrints || $hasScrapbook) && !$hasOtherCategories) {
             // Photo Print and/or Scrapbook Print only order - use tier-based pricing
@@ -497,9 +497,7 @@ class CartShippingService
             $categoryShippingOptions['photos_for_sale'] = $this->getFixedShippingForCategory('photos_for_sale');
         }
         
-        if (!empty($giftCardItems)) {
-            $categoryShippingOptions['gift_card'] = $this->getFixedShippingForCategory('gift_card');
-        }
+        // Gift cards are digital products delivered via email and have no physical shipping
         
         if (!empty($weddingPackageItems)) {
             $categoryShippingOptions['wedding_package'] = $this->getFixedShippingForCategory('wedding_package');

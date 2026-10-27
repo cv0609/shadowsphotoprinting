@@ -92,9 +92,14 @@ class PaymentController extends Controller
         });
         $CartTotal = $this->CartService->getCartTotal();
 
-        // Shipping required unless pickup. Direct /checkout must still resolve a shipping method.
+        $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($item) {
+            return $item->product_type !== 'gift_card';
+        });
+
+        // Shipping required unless pickup or cart contains only digital/gift cards. Direct /checkout must still resolve a shipping method.
         if (
-            $orderType !== 1
+            $hasPhysicalItems
+            && $orderType !== 1
             && $shipping
             && (string) $shipping->status === '1'
             && (float) ($CartTotal['shippingCharge'] ?? 0) <= 0

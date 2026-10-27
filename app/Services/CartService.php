@@ -147,8 +147,12 @@ class CartService
         if ($selectedShipping) {
             $selectedPrice = (float) ($selectedShipping['price'] ?? 0);
 
-            // Ignore stale/empty $0 session selections so checkout never uses a loading-race zero
-            if ($selectedPrice > 0) {
+            $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($item) {
+                return $item->product_type !== 'gift_card';
+            });
+
+            // Ignore stale/empty $0 session selections for physical items so checkout never uses a loading-race zero
+            if ($selectedPrice > 0 || !$hasPhysicalItems) {
                 return $selectedPrice;
             }
 
