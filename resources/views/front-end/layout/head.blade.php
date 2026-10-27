@@ -13,6 +13,16 @@
 
 <link rel="canonical" href="{{ request()->url() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}" />
 
+<!-- Open Graph Meta Tags -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Shadows Photo Printing">
+<meta property="og:title" content="{!! str_replace('"', '&quot;', html_entity_decode(!empty($page_content['meta_title']) ? $page_content['meta_title'] : 'Photo Prints Online Australia, Professional Photographer Glenreagh NSW, Canvas Photo Printing, Shadows Photo Printing', ENT_QUOTES, 'UTF-8')) !!}">
+<meta property="og:description" content="{!! str_replace('"', '&quot;', html_entity_decode(!empty($page_content['meta_description']) ? $page_content['meta_description'] : 'Photo Prints Online in Australia - Professional Photographer & Canvas Photo Printing in Glenreagh NSW - At Shadows Photo Printing we offer a professional photo printing by professional Photographers who take the time to check the quality of your image before we print. Contact us today.', ENT_QUOTES, 'UTF-8')) !!}">
+<meta property="og:url" content="{{ request()->is('/') ? 'https://shadowsphotoprinting.com.au/' : request()->url() }}">
+<meta property="og:image" content="{{ !empty($page_content['og_image']) ? asset($page_content['og_image']) : 'https://shadowsphotoprinting.com.au/assets/images/logo.png' }}">
+<meta property="og:image:alt" content="Professional photo prints and canvas printing by Shadows Photo Printing">
+<meta property="og:locale" content="en_AU">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="{{ asset('assets/fonts/SourceSansPro-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
