@@ -56,6 +56,26 @@ Route::get('/llms.txt', function () {
     ]);
 });
 
+Route::get('/preview-christmas-giftcard-email', function (\Illuminate\Http\Request $request) {
+    $sampleData = [
+        'from' => $request->get('from', 'Alysha'),
+        'amount' => $request->get('amount', '50.00'),
+        'message' => $request->get('message', "Merry Christmas, Mum!\nChoose a favourite photo and turn it into something lovely.\nLove, Alysha"),
+        'code' => $request->get('code', 'SAMPLE-ONLY'),
+        'image' => 'assets/images/christmas-egift-card-email.png',
+        'is_christmas' => $request->has('is_christmas') ? (bool)$request->is_christmas : true,
+        'card_title' => 'A Little Christmas Joy',
+        'reciept_email' => $request->get('send_to', '')
+    ];
+
+    if ($request->has('send_to') && filter_var($request->send_to, FILTER_VALIDATE_EMAIL)) {
+        \Illuminate\Support\Facades\Mail::to($request->send_to)->send(new \App\Mail\Order\GiftCardMail($sampleData));
+        return "Test email successfully sent to " . e($request->send_to) . "! <br><br><a href='" . url('/preview-christmas-giftcard-email') . "'>&larr; Back to preview</a>";
+    }
+
+    return view('mail.order.giftcardmail', ['order' => $sampleData]);
+});
+
 Route::prefix('admin')->group(function () {
 
     Route::get('/login',[AuthController::class,'login'])->name('admin.login');

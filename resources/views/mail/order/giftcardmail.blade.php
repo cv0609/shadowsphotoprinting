@@ -1,264 +1,261 @@
-{{-- @php
-    \Log::info($order);
-@endphp --}}
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+@if(!empty($order['is_christmas']))
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-
+  <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="x-apple-disable-message-reformatting">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ !empty($order['is_christmas']) ? 'You’ve received a Christmas gift!' : 'You’ve received an eGift Card!' }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700&display=swap" rel="stylesheet">
 
-    <style type="text/css">
-      @media only screen and (min-width: 620px) {
-  .u-row {
-    width: 600px !important;
-  }
-  .u-row .u-col {
-    vertical-align: top;
-  }
-
-  .u-row .u-col-100 {
-    width: 600px !important;
-  }
-
-}
-
-@media (max-width: 620px) {
-  .u-row-container {
-    max-width: 100% !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-  }
-  .u-row .u-col {
-    min-width: 320px !important;
-    max-width: 100% !important;
-    display: block !important;
-  }
-  .u-row {
-    width: 100% !important;
-  }
-  .u-col {
-    width: 100% !important;
-  }
-  .u-col > div {
-    margin: 0 auto;
-  }
-}
-body {
-  margin: 0;
-  padding: 0;
-}
-
-table,
-tr,
-td {
-  vertical-align: top;
-  border-collapse: collapse;
-}
-
-p {
-  margin: 0;
-}
-
-.ie-container table,
-.mso-container table {
-  table-layout: fixed;
-}
-
-* {
-  line-height: inherit;
-}
-
-a[x-apple-data-detectors='true'] {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }
-.v-button {
-  text-decoration: none !Important;
-}
-    </style>
-
-
-
-<link href="https://fonts.googleapis.com/css?family=Raleway:400,700&display=swap" rel="stylesheet" type="text/css">
-
+  <style type="text/css">
+    body, table, td, p, a, li, blockquote {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-rendering: optimizeLegibility !important;
+    }
+    table, td {
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+      border-collapse: collapse;
+    }
+    img {
+      -ms-interpolation-mode: bicubic;
+      border: 0;
+      height: auto;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      background-color: #F5EFE6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    @media only screen and (max-width: 620px) {
+      .email-container {
+        width: 100% !important;
+        margin: auto !important;
+        border-radius: 0px !important;
+      }
+      .card-padding {
+        padding: 28px 18px !important;
+      }
+      .heading-title {
+        font-size: 26px !important;
+        line-height: 32px !important;
+      }
+      .gift-value-title {
+        font-size: 28px !important;
+        line-height: 34px !important;
+      }
+      .coupon-code {
+        font-size: 19px !important;
+        letter-spacing: 2px !important;
+      }
+      .message-box-td {
+        padding: 20px 18px !important;
+      }
+    }
+  </style>
 </head>
+<body style="margin:0; padding:0; background-color:#F5EFE6; font-family:'Lora', Georgia, 'Times New Roman', serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;">
 
-<body class="clean-body u_body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #000000;color: #000000">
-
-  <table id="u_body" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #000000;width:100%" cellpadding="0" cellspacing="0">
-  <tbody>
-  <tr style="vertical-align: top">
-    <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-
-
-
-<div class="u-row-container" style="padding: 0px 10px;background-color: #ffffff">
-  <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ff1414;">
-    <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-
-
-
-<div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-  <div style="background-color: #000000;height: 100%;width: 100% !important;">
-<div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
+  <!-- Outer background container -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F5EFE6; width:100%; margin:0; padding:36px 10px;">
     <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:20px;font-family:'Raleway',sans-serif;" align="left">
+      <td align="center" style="vertical-align:top;">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-right: 0px;padding-left: 0px;" align="center">
+        <!-- Main Email Card (Clean White matching mockup) -->
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background-color:#FFFFFF; border-radius:18px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.04);">
+          
+          <!-- Inner content padding -->
+          <tr>
+            <td class="card-padding" style="padding:44px 38px 40px 38px; text-align:center;">
 
-      <img align="center" border="0" src="{{asset('assets/images/logo.png')}}" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 437px;" width="437"/>
+              <!-- Brand Subtitle -->
+              <p style="margin:0 0 10px 0; font-family:'Lora', Georgia, serif; font-size:15.5px; font-weight:400; color:#243927; letter-spacing:0.4px; text-align:center;">
+                Shadows Affordable Memories
+              </p>
 
-    </td>
-  </tr>
-</table>
+              <!-- Star Sparkle Divider -->
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto;">
+                <tr>
+                  <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
+                    <img src="{{ asset('assets/images/star-divider.png') }}" width="210" height="22" alt="✦" style="display:block; width:210px; max-width:210px; height:auto; margin:0 auto;" />
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Main Heading -->
+              <h1 class="heading-title" style="margin:0 0 26px 0; font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:33px; line-height:40px; font-weight:600; color:#183620; text-align:center;">
+                @if(!empty($order['is_christmas']))
+                  You’ve received a Christmas gift!
+                @else
+                  You’ve received an eGift Card!
+                @endif
+              </h1>
+
+              <!-- Gift Card Image -->
+              @php
+                $cardImage = !empty($order['image']) ? $order['image'] : 'assets/images/christmas-egift-card-email.png';
+                $cardImageUrl = preg_match('/^https?:\/\//i', $cardImage) ? $cardImage : asset(str_replace(' ', '%20', $cardImage));
+              @endphp
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0;">
+                <tr>
+                  <td align="center">
+                    <img src="{{ $cardImageUrl }}" alt="eGift Card" style="display:block; width:100%; max-width:524px; height:auto; border-radius:14px; box-shadow:0 3px 12px rgba(0,0,0,0.05);" />
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Sender Details -->
+              @if(!empty($order['from']))
+              <p style="margin:0 0 6px 0; font-family:'Lora', Georgia, serif; font-size:18px; line-height:24px; font-weight:400; color:#283D2B; text-align:center;">
+                A gift from {{ $order['from'] }}
+              </p>
+              @endif
+
+              <!-- Gift Card Value -->
+              @php
+                $cardAmount = isset($order['amount']) && is_numeric($order['amount']) ? number_format((float)$order['amount'], 2) : '50.00';
+              @endphp
+              <h2 class="gift-value-title" style="margin:0 0 26px 0; font-family:'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size:42px; line-height:48px; font-weight:700; font-variant-numeric:lining-nums; -webkit-font-feature-settings:'lnum' 1; font-feature-settings:'lnum' 1; color:#15381E; text-align:center;">
+                Your eGift Card: ${{ $cardAmount }}
+              </h2>
+
+              <!-- Personal Message Box -->
+              @if(!empty($order['message']))
+              @php
+                $rawMsg = $order['message'] ?? '';
+                $rawLines = array_values(array_filter(array_map('trim', explode("\n", str_replace(["\r\n", "\r"], "\n", $rawMsg))), function($l) { return $l !== ''; }));
+                $hasMultipleLines = count($rawLines) > 1;
+              @endphp
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 28px auto; max-width:524px; background-color:#FAF4EA; border-radius:14px;">
+                <tr>
+                  <td class="message-box-td" style="padding:26px 34px 26px 34px; text-align:center;">
+
+                    <!-- Decorative Holly Header (Centered icon + horizontal accent lines) -->
+                    <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 16px auto;">
+                      <tr>
+                        <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
+                          <img src="{{ asset('assets/images/holly-divider.png') }}" width="200" height="42" alt="🌿" style="display:block; width:200px; max-width:200px; height:auto; margin:0 auto;" />
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Message Text Layout formatted like mockup -->
+                    @if(!empty($rawLines))
+                      @if($hasMultipleLines)
+                        <!-- Greeting / Title Line -->
+                        <p style="margin:0 0 8px 0; font-family:'Lora', Georgia, serif; font-size:18px; line-height:25px; font-weight:500; color:#243927; text-align:center;">
+                          {{ $rawLines[0] }}
+                        </p>
+
+                        @if(count($rawLines) == 2)
+                          <!-- Second Line -->
+                          <p style="margin:0; font-family:'Lora', Georgia, serif; font-size:16px; line-height:25px; font-weight:400; color:#2A3F2C; text-align:center;">
+                            {{ $rawLines[1] }}
+                          </p>
+                        @else
+                          <!-- Body Lines -->
+                          <p style="margin:0 0 10px 0; font-family:'Lora', Georgia, serif; font-size:16px; line-height:25px; font-weight:400; color:#2A3F2C; text-align:center;">
+                            {!! nl2br(e(implode("\n", array_slice($rawLines, 1, -1)))) !!}
+                          </p>
+                          <!-- Sign-off Line -->
+                          <p style="margin:0; font-family:'Lora', Georgia, serif; font-size:16px; line-height:24px; font-weight:400; color:#2A3F2C; text-align:center;">
+                            {{ end($rawLines) }}
+                          </p>
+                        @endif
+                      @else
+                        <!-- Single-line Message -->
+                        <p style="margin:0; font-family:'Lora', Georgia, serif; font-size:16.5px; line-height:26px; font-weight:400; color:#2A3F2C; text-align:center;">
+                          {{ $rawLines[0] }}
+                        </p>
+                      @endif
+                    @endif
+
+                  </td>
+                </tr>
+              </table>
+              @endif
+
+              <!-- Gift Card Code Section -->
+              <p style="margin:0 0 12px 0; font-family:'Lora', Georgia, serif; font-size:17px; font-weight:400; color:#183620; text-align:center;">
+                Your gift card code
+              </p>
+
+              <!-- Copyable Code Box -->
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 22px auto;">
+                <tr>
+                  <td style="background-color:#FAF4EA; border-radius:8px; padding:12px 42px; text-align:center;">
+                    <span class="coupon-code" style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:24px; font-weight:600; letter-spacing:4px; color:#183620; user-select:all; display:inline-block;">
+                      {{ $order['code'] ?? 'SAMPLE-ONLY' }}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Call To Action Button -->
+              @php
+                $shopUrl = url('/shop');
+              @endphp
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 14px auto;">
+                <tr>
+                  <td align="center">
+                    <a href="{{ $shopUrl }}" target="_blank" style="background-color:#24452C; color:#FFFFFF; font-family:'Lora', Georgia, serif; font-size:18px; font-weight:500; line-height:24px; padding:14px 44px; border-radius:6px; text-decoration:none; display:inline-block; letter-spacing:0.3px; box-shadow:0 3px 10px rgba(36,69,44,0.2);">
+                      Use Your eGift Card
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Redemption Instructions -->
+              <p style="margin:0 0 28px 0; font-family:'Lora', Georgia, serif; font-size:15.5px; line-height:22px; color:#2A3F2C; font-weight:400; text-align:center;">
+                Enter your gift card code at checkout.
+              </p>
+
+              <!-- Star Sparkle Divider -->
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto;">
+                <tr>
+                  <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
+                    <img src="{{ asset('assets/images/star-divider.png') }}" width="210" height="22" alt="✦" style="display:block; width:210px; max-width:210px; height:auto; margin:0 auto;" />
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Family Sign-off -->
+              <p style="margin:0 0 18px 0; font-family:'Lora', Georgia, serif; font-size:16px; line-height:24px; color:#183620; font-weight:400; text-align:center;">
+                From our family to yours.<br>
+                The Shadows Family
+              </p>
+
+              <!-- Contact Details -->
+              <p style="margin:0; font-family:'Lora', Georgia, serif; font-size:12px; line-height:19px; color:#7E8A7F; text-align:center;">
+                Shadows Photo Printing &bull; 21 Boundary Street, Glenreagh NSW 2450<br>
+                Phone: <a href="tel:0266029424" style="color:#183620; text-decoration:none; font-weight:600;">02 6602 9424</a> &bull; <a href="{{ url('/') }}" style="color:#183620; text-decoration:none; font-weight:600;">shadowsphotoprinting.com.au</a>
+              </p>
+
+            </td>
+          </tr>
+
+        </table>
 
       </td>
     </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:16px 20px 8px;font-family:'Raleway',sans-serif;" align="left">
-
-  <div style="color: #16a085; line-height: 120%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 120%;"><strong><span style="font-size: 48px; line-height: 57.6px; font-family: Raleway, sans-serif;">Happy Shopping !!!!</span></strong></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:22px 0px 0px;font-family:'Raleway',sans-serif;" align="left">
-
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td style="padding-right: 0px;padding-left: 0px;" align="center">
-
-        <img align="center" border="0" 
-        src="{{ asset(str_replace(' ', '%20', $order['image'])) }}" 
-        alt="Image" title="Image" 
-        style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 564px;" 
-        width="564"/>
-
-    </td>
-  </tr>
-</table>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:15px 20px 14px;font-family:'Raleway',sans-serif;" align="left">
-
-  <div style="color: #16a085; line-height: 120%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 120%;"><span style="font-size: 30px; line-height: 36px;">We’re going to help you celebrate.</span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px;font-family:'Raleway',sans-serif;" align="left">
-
-  <div style="color: #16a085; line-height: 130%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px;">Purchase as a Gift. </span></p>
-<p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px;"></span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px;font-family:'Raleway',sans-serif;" align="left">
-
-  <div style="color: #16a085; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;">Someone special like you deserves the best and the best way to cheer yourself up is to cheer somebody else up. </span></p>
-<p><br></p>
-<p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;">Now we’re both happy!”</span></p>
-
-<p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;">As to give you a little gift is the best surprise!</span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 20px;font-family:'Raleway',
- sans-serif;" align="left">
-
-  <div style="color: #16a085; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">Our gift cards are valid for </span></p>
-<p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">3 years from date of purchase.</span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table style="font-family:'Raleway',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:15px 20px 25px;font-family:'Raleway',sans-serif;" align="center">
-
-<div align="center">
-
-    <a href="" target="_blank" class="v-button">
-      <span style="display:block;padding:13px 22px;line-height:120%;background-color: #16a085;color: #FFF;padding: 15px;border-radius: 10px;border: 2px solid #fff;">{{ $order['code'] }}</span>
-    </a>
-
-</div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-</div>
-  </div>
-</div>
-
-    </div>
-  </div>
-</div>
-
-
-    </td>
-  </tr>
-  </tbody>
   </table>
 
 </body>
-
 </html>
+@else
+@include('mail.order.legacy_giftcardmail')
+@endif

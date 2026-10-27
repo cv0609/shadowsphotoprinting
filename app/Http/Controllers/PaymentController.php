@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\Order\MakeOrder;
 use App\Mail\Order\GiftCardMail;
 use App\Mail\Order\GiftCardPurchasedMail;
+use App\Models\GiftCardCategory;
 use App\Mail\AdminNotifyOrder;
 use App\Models\User;
 use App\Models\UserDetails;
@@ -554,20 +555,35 @@ class PaymentController extends Controller
                 // Check if 'reciept_email' exists and retrieve it
                 $recieptEmail = $giftcardDesc['reciept_email'] ?? null;
                 $giftcard_msg = $giftcardDesc['giftcard_msg'] ?? null;
-                
+                $giftcard_from = $giftcardDesc['from'] ?? null;
+
+                $cardCat = GiftCardCategory::find($item->product_id);
+                $isChristmas = false;
+                if ($cardCat && (stripos($cardCat->product_title, 'christmas') !== false || stripos($cardCat->slug, 'christmas') !== false)) {
+                    $isChristmas = true;
+                }
+
+                $cardImage = $item->selected_images ?? '';
+                if ($cardCat && !empty($cardCat->use_different_email_image) && !empty($cardCat->email_product_image)) {
+                    $cardImage = 'assets/admin/uploads/categories/' . $cardCat->email_product_image;
+                }
 
                 $giftcardData = [
                    'reciept_email' => $recieptEmail ?? '',
                    'code' => $generateGiftCardCoupon ?? '',
-                   'image' => $item->selected_images ?? '',
-                   'message' => $giftcard_msg ?? ''
+                   'image' => $cardImage,
+                   'message' => $giftcard_msg ?? '',
+                   'from' => $giftcard_from ?? '',
+                   'amount' => $coupon_price,
+                   'card_title' => $cardCat->product_title ?? 'eGift Card',
+                   'is_christmas' => $isChristmas,
                 ];
 
                 \Log::info($giftcardData);
-                \Log::info('Test log');
 
-                Mail::to($recieptEmail)->send(new GiftCardMail($giftcardData));
-                Mail::to($recieptEmail)->send(new GiftCardPurchasedMail($giftcardData));
+                if (!empty($recieptEmail)) {
+                    Mail::to($recieptEmail)->send(new GiftCardMail($giftcardData));
+                }
             }
 
             $sale_price = null;

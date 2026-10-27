@@ -28,11 +28,20 @@ class GiftCardMail extends Mailable
      */
     public function build()
     {
-        return $this->from(env('APP_MAIL'))
-            ->subject('Your ShadowsPhotoPrinting GiftCard Coupon.')
+        $fromSender = !empty($this->order['from']) ? ' from ' . $this->order['from'] : '';
+        $isChristmas = !empty($this->order['is_christmas']);
+
+        $subject = $isChristmas 
+            ? "You've received a Christmas gift!" . $fromSender
+            : "You've received an eGift Card" . $fromSender . " | Shadows Photo Printing";
+
+        $mailFrom = config('mail.from.address') ?: env('APP_MAIL');
+        $mailFromName = config('mail.from.name') ?: 'Shadows Photo Printing';
+
+        return $this->from($mailFrom, $mailFromName)
+            ->subject($subject)
             ->view('mail.order.giftcardmail')
             ->with('order', $this->order);
-
     }
 }
 

@@ -33,13 +33,17 @@
                     </div>
 
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Card Image <span class="required">*</span>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Card Image (Web) <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="file" id="image" name="image" required="required" class="form-control ">
+                            <input type="file" id="image" name="image" required="required" class="form-control" accept="image/*">
                             @error('image')
                              <p class="text-danger">{{ $message }}</p>
                             @enderror
+                            <div class="mt-2" id="card_img_preview_box" style="display:none;">
+                                <label class="text-muted small d-block">Selected Card Image Preview:</label>
+                                <img id="preview_card_img" src="#" alt="Preview" style="max-height: 140px; max-width: 240px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd; padding: 4px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                            </div>
                         </div>
                     </div>
 
@@ -74,13 +78,17 @@
 
                             <div class="item form-group mb-0" id="email_image_wrapper" style="{{ old('use_different_email_image') == '1' ? '' : 'display:none;' }}">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="email_image">
-                                    Email Image <span class="required">*</span>
+                                    Email Image
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="file" id="email_image" name="email_image" class="form-control ">
+                                    <input type="file" id="email_image" name="email_image" class="form-control" accept="image/*">
                                     @error('email_image')
                                      <p class="text-danger">{{ $message }}</p>
                                     @enderror
+                                    <div class="mt-2" id="email_img_preview_box" style="display:none;">
+                                        <label class="text-muted small d-block">Selected Email Image Preview:</label>
+                                        <img id="preview_email_img" src="#" alt="Preview" style="max-height: 140px; max-width: 240px; object-fit: contain; border-radius: 8px; border: 1px solid #c3e6cb; padding: 4px; background: #f4faf6; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,24 +116,56 @@
         var toggle = document.getElementById('use_different_email_image');
         var wrapper = document.getElementById('email_image_wrapper');
         var emailImageInput = document.getElementById('email_image');
-
-        if (!toggle || !wrapper || !emailImageInput) {
-            return;
-        }
+        var cardImageInput = document.getElementById('image');
+        var previewCardBox = document.getElementById('card_img_preview_box');
+        var previewCardImg = document.getElementById('preview_card_img');
+        var previewEmailBox = document.getElementById('email_img_preview_box');
+        var previewEmailImg = document.getElementById('preview_email_img');
 
         function updateEmailImageVisibility() {
-            if (toggle.checked) {
-                wrapper.style.display = '';
-                emailImageInput.setAttribute('required', 'required');
-            } else {
-                wrapper.style.display = 'none';
-                emailImageInput.removeAttribute('required');
-                emailImageInput.value = '';
+            if (toggle && wrapper && emailImageInput) {
+                if (toggle.checked) {
+                    wrapper.style.display = '';
+                } else {
+                    wrapper.style.display = 'none';
+                }
             }
         }
 
-        toggle.addEventListener('change', updateEmailImageVisibility);
-        updateEmailImageVisibility();
+        if (toggle) {
+            toggle.addEventListener('change', updateEmailImageVisibility);
+            updateEmailImageVisibility();
+        }
+
+        // Live preview for Card Image
+        if (cardImageInput && previewCardImg && previewCardBox) {
+            cardImageInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewCardImg.src = event.target.result;
+                        previewCardBox.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Live preview for Email Image
+        if (emailImageInput && previewEmailImg && previewEmailBox) {
+            emailImageInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewEmailImg.src = event.target.result;
+                        previewEmailBox.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
     });
 </script>
 @endsection
