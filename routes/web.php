@@ -50,6 +50,12 @@ Route::get('/sitemap.xml', function () {
     return response()->file(public_path('sitemap.xml'));
 });
 
+Route::get('/llms.txt', function () {
+    return response()->file(public_path('llms.txt'), [
+        'Content-Type' => 'text/plain; charset=utf-8'
+    ]);
+});
+
 Route::prefix('admin')->group(function () {
 
     Route::get('/login',[AuthController::class,'login'])->name('admin.login');
