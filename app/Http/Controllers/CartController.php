@@ -643,21 +643,6 @@ class CartController extends Controller
             }
         }
 
-        // For gift card coupons (is_gift_card = 1), ensure cart contains gift card items
-        // Note: If product_category is set, the category validation above already handles the check
-        if ($coupon->is_gift_card == '1') {
-            $hasGiftCardItem = false;
-            foreach ($cart->items as $item) {
-                if ($item->product_type == 'gift_card') {
-                    $hasGiftCardItem = true;
-                    break;
-                }
-            }
-            
-            if (!$hasGiftCardItem) {
-                return ['success' => false, 'message' => 'This coupon is only applicable to gift card items in your cart'];
-            }
-        }
 
         if ($coupon->use_limit !== null && $coupon->use_limit <= 0) {
             return ['success' => false, 'message' => 'Your coupon limit has expired.'];
