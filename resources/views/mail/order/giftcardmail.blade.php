@@ -78,9 +78,22 @@
         <!-- Main Email Card (Clean White matching mockup) -->
         <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background-color:#FFFFFF; border-radius:18px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.04);">
           
+          <!-- Header matching other order emails -->
+          @php
+            $siteDomain = env('SITE_DOMAIN') ?: url('/');
+            $logoUrl = !empty(env('SITE_DOMAIN')) ? rtrim(env('SITE_DOMAIN'), '/') . '/assets/images/logo.png' : asset('assets/images/logo.png');
+          @endphp
+          <tr style="background-color: #000000; text-align: center; background: #000000;">
+            <td style="padding: 20px 10px; text-align: center; background-color: #000000; border-top-left-radius: 18px; border-top-right-radius: 18px;">
+              <a href="{{ $siteDomain }}" target="_blank" style="text-decoration: none; display: inline-block;">
+                <img src="{{ $logoUrl }}" alt="Shadows Photo Printing" style="max-width: 300px; width: 100%; height: auto; display: block; margin: 0 auto; border: 0;" />
+              </a>
+            </td>
+          </tr>
+
           <!-- Inner content padding -->
           <tr>
-            <td class="card-padding" style="padding:44px 38px 40px 38px; text-align:center;">
+            <td class="card-padding" style="padding:36px 38px 40px 38px; text-align:center;">
 
               <!-- Brand Subtitle -->
               <p style="margin:0 0 10px 0; font-family:'Lora', Georgia, serif; font-size:15.5px; font-weight:400; color:#243927; letter-spacing:0.4px; text-align:center;">
@@ -107,8 +120,12 @@
 
               <!-- Gift Card Image -->
               @php
-                $cardImage = !empty($order['image']) ? $order['image'] : 'assets/images/christmas-egift-card-email.png';
-                $cardImageUrl = preg_match('/^https?:\/\//i', $cardImage) ? $cardImage : asset(str_replace(' ', '%20', $cardImage));
+                $rawCardImage = !empty($order['image']) ? $order['image'] : 'assets/images/christmas-egift-card-email.png';
+                $rawCardImage = preg_replace('#(assets/admin/uploads/categories/)+#', 'assets/admin/uploads/categories/', (string)$rawCardImage);
+                if (!preg_match('#^(https?://|assets/)#i', $rawCardImage)) {
+                    $rawCardImage = 'assets/admin/uploads/categories/' . ltrim($rawCardImage, '/');
+                }
+                $cardImageUrl = preg_match('/^https?:\/\//i', $rawCardImage) ? $rawCardImage : asset(str_replace(' ', '%20', ltrim($rawCardImage, '/')));
               @endphp
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0;">
                 <tr>

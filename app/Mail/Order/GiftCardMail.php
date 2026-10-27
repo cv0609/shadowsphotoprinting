@@ -35,10 +35,13 @@ class GiftCardMail extends Mailable
             ? "You've received a Christmas gift!" . $fromSender
             : "You've received an eGift Card" . $fromSender . " | Shadows Photo Printing";
 
-        $mailFrom = config('mail.from.address') ?: env('APP_MAIL');
-        $mailFromName = config('mail.from.name') ?: 'Shadows Photo Printing';
+        $mailFrom = env('APP_MAIL') ?: config('mail.from.address');
+        $fromName = env('MAIL_FROM_NAME');
+        if (empty($fromName) || strtolower($fromName) === 'laravel' || strtolower($fromName) === 'example') {
+            $fromName = 'Shadows Photo Printing';
+        }
 
-        return $this->from($mailFrom, $mailFromName)
+        return $this->from($mailFrom, $fromName)
             ->subject($subject)
             ->view('mail.order.giftcardmail')
             ->with('order', $this->order);

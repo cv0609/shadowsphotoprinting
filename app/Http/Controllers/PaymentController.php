@@ -568,9 +568,18 @@ class PaymentController extends Controller
                     $isChristmas = true;
                 }
 
-                $cardImage = $item->selected_images ?? '';
+                $cardImage = '';
                 if ($cardCat && !empty($cardCat->use_different_email_image) && !empty($cardCat->email_product_image)) {
-                    $cardImage = 'assets/admin/uploads/categories/' . $cardCat->email_product_image;
+                    $cardImage = $cardCat->email_product_image;
+                } else {
+                    $cardImage = $item->selected_images ?? '';
+                }
+
+                if (!empty($cardImage)) {
+                    $cardImage = preg_replace('#^(assets/admin/uploads/categories/)+#', 'assets/admin/uploads/categories/', (string)$cardImage);
+                    if (!preg_match('#^(https?://|assets/)#i', $cardImage)) {
+                        $cardImage = 'assets/admin/uploads/categories/' . ltrim($cardImage, '/');
+                    }
                 }
 
                 $giftcardData = [
