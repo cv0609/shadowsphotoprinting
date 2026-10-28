@@ -56,6 +56,7 @@ class CouponController extends Controller
 
       Coupon::create([
          'code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'product_category'=>$product_category,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'qty' => $request->bulk_qty,
+         'is_gift_card' => $request->has('is_gift_card') ? '1' : '0',
          'rule_enabled' => $rule_enabled,
          'rule_apply_slug' => $rule_apply_slug,
          'rule_leave_first' => $request->has('rule_leave_first') ? 1 : 0,
@@ -109,6 +110,7 @@ class CouponController extends Controller
 
       Coupon::whereId($request->coupon_id)->update([
          'code'=>$request->code,'type'=>$request->coupon_type,'amount'=>$request->amount,'minimum_spend'=>$request->minimum_spend,'maximum_spend'=>$request->maximum_spend,'start_date'=>$request->start_date,'end_date'=>$request->end_date,'products'=>$productsId,'auto_applied'=>$request->auto_applied,'use_limit'=>$request->use_limit,'product_category'=>$product_category,'qty' => $request->bulk_qty,
+         'is_gift_card' => $request->has('is_gift_card') ? '1' : '0',
          'rule_enabled' => $rule_enabled,
          'rule_apply_slug' => $rule_apply_slug,
          'rule_leave_first' => $request->has('rule_leave_first') ? 1 : 0,

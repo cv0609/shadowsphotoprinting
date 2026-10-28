@@ -459,6 +459,13 @@
                                         </tr>
                                         @endif
 
+                                        @if(Session::has('gift_card') && !empty($CartTotal['gift_card_code']))
+                                        <tr class="giftcard-row">
+                                            <th>Gift Card: {{ $CartTotal['gift_card_code'] }}</th>
+                                            <td>-$ {{ number_format($CartTotal['gift_card_discount'], 2) }}</td>
+                                        </tr>
+                                        @endif
+
                                         @if($cart->shutter_point == '1')
                                         <tr>
                                             <th>Shutter Point:</th>

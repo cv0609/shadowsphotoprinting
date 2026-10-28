@@ -47,7 +47,12 @@
                         @foreach ($coupons as $key => $coupon)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ $coupon->code }}</td>
+                                <td>
+                                    {{ $coupon->code }}
+                                    @if($coupon->is_gift_card == '1')
+                                        <span class="badge badge-success ml-1">Gift Card</span>
+                                    @endif
+                                </td>
                                 <td>{{ date('d-m-Y',strtotime($coupon->start_date)) }}</td>
                                 <td>{{ date('d-m-Y',strtotime($coupon->end_date)) }}</td>
                                 <td>

@@ -512,7 +512,13 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
     {
-        $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
+        $couponCode = is_array($request->coupon_code) ? ($request->coupon_code['code'] ?? '') : $request->coupon_code;
+        $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
+
+        // Strict Separation: Gift Cards must not be applied in the Promo Code box
+        if ($coupon && $coupon->is_gift_card == '1') {
+            return ['success' => false, 'message' => 'This is an eGift Card code. Please enter it in the "Have an eGift Card / Gift Card?" section below.'];
+        }
 
         $total = $this->CartService->getCartTotal();
 
@@ -779,6 +785,73 @@ class CartController extends Controller
     {
         Session::forget('coupon');
         return back()->with('success', 'Coupon code has been reset successfully.');
+    }
+
+    public function applyGiftCard(Request $request)
+    {
+        $code = trim($request->gift_card_code ?? $request->coupon_code ?? '');
+        if (is_array($code)) {
+            $code = $code['code'] ?? '';
+        }
+
+        if (empty($code)) {
+            return ['success' => false, 'message' => 'Please enter a gift card code.'];
+        }
+
+        $giftCard = Coupon::where('code', $code)
+            ->where('is_gift_card', '1')
+            ->where('is_active', true)
+            ->first();
+
+        if (!$giftCard) {
+            $regularCoupon = Coupon::where('code', $code)->where('is_active', true)->first();
+            if ($regularCoupon && $regularCoupon->is_gift_card != '1') {
+                return ['success' => false, 'message' => 'This is a discount coupon. Please enter it in the Coupon Code field.'];
+            }
+            return ['success' => false, 'message' => 'Gift card code is not valid or does not exist.'];
+        }
+
+        $currentDate = date('Y-m-d');
+        if ($giftCard->start_date > $currentDate) {
+            return ['success' => false, 'message' => 'Gift card is not yet valid.'];
+        }
+
+        if ($giftCard->end_date < $currentDate) {
+            return ['success' => false, 'message' => 'Gift card has expired.'];
+        }
+
+        if ((float)$giftCard->amount <= 0) {
+            return ['success' => false, 'message' => 'This gift card balance is $0.00.'];
+        }
+
+        $auth_id = Auth::check() && !empty(Auth::user()) ? Auth::user()->id : null;
+        $session_id = $auth_id ? null : Session::getId();
+        $cart = $auth_id ? Cart::where('user_id', $auth_id)->with('items')->first() : Cart::where('session_id', $session_id)->with('items')->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return ['success' => false, 'message' => 'Your cart is empty.'];
+        }
+
+        Session::put('gift_card', [
+            'code' => $giftCard->code,
+            'id' => $giftCard->id,
+            'amount' => (float)$giftCard->amount,
+        ]);
+
+        $total = $this->CartService->getCartTotal();
+
+        return [
+            'success' => true,
+            'message' => 'Gift card applied successfully! (Balance: $' . number_format($giftCard->amount, 2) . ')',
+            'gift_card_discount' => $total['gift_card_discount'],
+            'total' => $total['total'],
+        ];
+    }
+
+    public function resetGiftCard()
+    {
+        Session::forget('gift_card');
+        return back()->with('success', 'Gift card has been removed successfully.');
     }
 
     public function billingDetails(Request $request)

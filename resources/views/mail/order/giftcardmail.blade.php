@@ -112,7 +112,7 @@
               <!-- Main Heading -->
               <h1 class="heading-title" style="margin:0 0 26px 0; font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:33px; line-height:40px; font-weight:600; color:#183620; text-align:center;">
                 @if(!empty($order['is_christmas']))
-                  You’ve received a Christmas gift!
+                  You’ve received a<br>Christmas gift!
                 @else
                   You’ve received an eGift Card!
                 @endif

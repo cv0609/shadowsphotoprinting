@@ -818,6 +818,15 @@
 
             @endif
 
+            @if(!empty($orderDetail->gift_card_code) && (float)$orderDetail->gift_card_discount > 0)
+
+              <tr>
+                <td style="padding: 5px;">Gift Card ({{ $orderDetail->gift_card_code }}):</td>
+                <td style="text-align: right; padding: 5px;"><strong>-${{ number_format($orderDetail->gift_card_discount, 2) }}</strong></td>
+              </tr>
+
+            @endif
+
             @if($orderDetail->order_type != '1')
 
             <tr>

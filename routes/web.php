@@ -262,6 +262,7 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/clear-cart/', [CartController::class, 'clearCart'])->name('clear-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+Route::post('/apply-gift-card', [CartController::class, 'applyGiftCard'])->name('apply-gift-card');
 Route::post('/order-type', [CartController::class, 'orderType'])->name('order-type');
 Route::post('/shutter-point', [CartController::class, 'shutterPoint'])->name('shutter-point');
 
@@ -275,6 +276,7 @@ Route::get('/shadows-pro-circle', [AmbassadorController::class, 'photographerBra
 
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
+Route::get('/reset-gift-card', [CartController::class, 'resetGiftCard'])->name('reset-gift-card');
 
 // August 2025 Promotion Email Route
 Route::post('/august-promotion/send-email', [UserController::class, 'augustPromotionEmail'])->name('august.promotion.email');

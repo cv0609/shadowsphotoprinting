@@ -134,7 +134,46 @@ class CartService
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
 
-        $data = ['subtotal' => $subtotal, 'total' => $totalAfterShipping, 'coupon_discount' => $discount, "coupon_code" => $coupon_code, 'coupon_id' => $coupon_id, "shippingCharge" => $shippingCharge];
+        // Gift Card handling from Session::get('gift_card')
+        $giftCardSession = Session::get('gift_card');
+        $gift_card_code = null;
+        $gift_card_id = null;
+        $gift_card_discount = 0;
+        $gift_card_balance = 0;
+
+        if ($giftCardSession && isset($giftCardSession['code'])) {
+            $currentDate = date('Y-m-d');
+            $giftCard = Coupon::where('code', $giftCardSession['code'])
+                ->where('is_gift_card', '1')
+                ->where('is_active', true)
+                ->first();
+
+            if ($giftCard && $giftCard->start_date <= $currentDate && $giftCard->end_date >= $currentDate && (float)$giftCard->amount > 0) {
+                $gift_card_code = $giftCard->code;
+                $gift_card_id = $giftCard->id;
+                $gift_card_balance = (float)$giftCard->amount;
+                // Gift card covers up to the full remaining amount (after promo coupon and shipping)
+                $gift_card_discount = min($gift_card_balance, (float)$totalAfterShipping);
+            } else {
+                Session::forget('gift_card');
+            }
+        }
+
+        $finalPayableTotal = max(0, (float)$totalAfterShipping - (float)$gift_card_discount);
+
+        $data = [
+            'subtotal' => $subtotal,
+            'total' => $finalPayableTotal,
+            'total_before_gift_card' => $totalAfterShipping,
+            'coupon_discount' => $discount,
+            'coupon_code' => $coupon_code,
+            'coupon_id' => $coupon_id,
+            'shippingCharge' => $shippingCharge,
+            'gift_card_code' => $gift_card_code,
+            'gift_card_id' => $gift_card_id,
+            'gift_card_discount' => $gift_card_discount,
+            'gift_card_balance' => $gift_card_balance,
+        ];
         \Log::info('$data',$data);
         return $data;
     }
@@ -361,7 +400,21 @@ class CartService
         }
 
         $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
-        $data = ['subtotal' => $subtotal, 'total' => $totalAfterShipping, 'coupon_discount' => $discount, "coupon_code" => $coupon_code, 'coupon_id' => $coupon_id, "shippingCharge" => $shippingCharge];
+        $gift_card_discount = (float)($order->gift_card_discount ?? 0);
+        $finalTotal = max(0, $totalAfterShipping - $gift_card_discount);
+
+        $data = [
+            'subtotal' => $subtotal,
+            'total' => $finalTotal,
+            'total_before_gift_card' => $totalAfterShipping,
+            'coupon_discount' => $discount,
+            'coupon_code' => $coupon_code,
+            'coupon_id' => $coupon_id,
+            'shippingCharge' => $shippingCharge,
+            'gift_card_code' => $order->gift_card_code ?? null,
+            'gift_card_id' => $order->gift_card_id ?? null,
+            'gift_card_discount' => $gift_card_discount,
+        ];
         return $data;
     }
 

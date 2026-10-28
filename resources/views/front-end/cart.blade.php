@@ -1,6 +1,40 @@
 @extends('front-end.layout.main')
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}?v=5">
+<style>
+.toggle-discount-link:hover {
+    color: #e5b95c !important;
+}
+.toggle-discount-link .toggle-chevron {
+    transition: transform 0.2s ease;
+}
+.cart_totals .cart-discount th,
+.cart_totals .cart-discount td {
+    color: #FFC205 !important;
+}
+.cart_totals .cart-discount td {
+    white-space: nowrap !important;
+}
+.cart_totals .reset-coupon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    font-size: 11px;
+    line-height: 1;
+    color: #ef4444 !important;
+    border: 1px solid #ef4444 !important;
+    border-radius: 50% !important;
+    text-decoration: none;
+    margin: 0 0 0 6px !important;
+    vertical-align: middle;
+}
+.cart_totals .reset-coupon:hover {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+</style>
 @endsection
 @section('content')
 @php
@@ -339,17 +373,39 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                     <tr>
                                         <td colspan="{{ $has_non_package_items ? '6' : '4' }}" class="actions">
 
-                                            @if(!Session::has('coupon'))
-                                            <div class="coupon-icons">
-                                                <input type="text" name="coupon_code" class="input-text"
-                                                    id="coupon_code" value="" placeholder="Coupon code">
-                                                <button type="button" class="button" id="apply_coupon">Apply
-                                                    coupon</button>
-                                                <span class="text-danger coupon-errors"></span>
-                                            </div>
-                                            @endif
+                                            <div class="cart-discounts-wrapper" style="margin: 20px 0 20px 0;">
+                                                @if(!Session::has('coupon'))
+                                                <div class="discount-toggle-item" style="margin-bottom: 15px;">
+                                                    <a href="javascript:void(0)" class="toggle-discount-link" id="toggle-promo-btn" style="color: #b8cb8c; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                        <i class="fas fa-tag"></i> <span>Have a promo code? Click here to enter</span> <i class="fas fa-chevron-down toggle-chevron" style="font-size: 11px; margin-left: 4px;"></i>
+                                                    </a>
+                                                    <div id="promo-code-box" style="display: none; margin-top: 10px;">
+                                                        <div class="discount-input-group" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                                            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code" style="max-width: 220px; padding: 8px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
+                                                            <button type="button" class="button" id="apply_coupon" style="background-color: #69794E; color: #fff; padding: 9px 18px; border: none; font-weight: 700; cursor: pointer;">Apply Coupon</button>
+                                                        </div>
+                                                        <span class="text-danger coupon-errors d-block mt-1" style="font-size: 13px;"></span>
+                                                    </div>
+                                                </div>
+                                                @endif
 
-                                            <div class="cart-action-buttons">
+                                                @if(!Session::has('gift_card'))
+                                                <div class="discount-toggle-item" style="margin-bottom: 15px;">
+                                                    <a href="javascript:void(0)" class="toggle-discount-link" id="toggle-giftcard-btn" style="color: #b8cb8c; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                        <i class="fas fa-gift"></i> <span>Have an eGift Card / Gift Card? Click here to enter</span> <i class="fas fa-chevron-down toggle-chevron" style="font-size: 11px; margin-left: 4px;"></i>
+                                                    </a>
+                                                    <div id="giftcard-code-box" style="display: none; margin-top: 10px;">
+                                                        <div class="discount-input-group" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                                            <input type="text" name="gift_card_code" class="input-text" id="gift_card_code" value="" placeholder="Gift card code" style="max-width: 220px; padding: 8px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
+                                                            <button type="button" class="button" id="apply_gift_card" style="background-color: #69794E; color: #fff; padding: 9px 18px; border: none; font-weight: 700; cursor: pointer;">Apply Gift Card</button>
+                                                        </div>
+                                                        <span class="text-danger giftcard-errors d-block mt-1" style="font-size: 13px;"></span>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+
+                                            <div class="cart-action-buttons" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.12);">
                                                 <button type="button" class="button satay3" name="update_cart"
                                                     value="Update cart" id="update_cart">Update cart</button>
                                                 <button type="button" class="button satay3" name="clear_cart"
@@ -445,16 +501,25 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
 
                                         @if(Session::has('coupon'))
                                         <tr class="cart-discount coupon-eofy-discount">
-                                            <th>Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
-                                            <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">
-                                                -<span class="woocommerce-Price-amount amount"><span
-                                                        class="woocommerce-Price-currencySymbol">$</span>
-                                                    {{-- @php @endphp --}}
-
-                                                    {{ number_format($CartTotal['coupon_discount'],2) }}
+                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
+                                            <td data-title="Coupon discount" style="white-space: nowrap !important; text-align: right; vertical-align: middle; padding: 6px 0;">
+                                                <span style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; white-space: nowrap; color: #FFC205 !important; font-weight: 600;">
+                                                    <span>-${{ number_format($CartTotal['coupon_discount'], 2) }}</span>
                                                     @if(!session()->has('referral_code'))
-                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
+                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')" title="Remove Coupon" style="margin: 0; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 11px; line-height: 1; color: #ef4444; border: 1px solid #ef4444; border-radius: 50%; text-decoration: none;">×</a>
                                                     @endif                                                
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endif
+
+                                        @if(Session::has('gift_card') && !empty($CartTotal['gift_card_code']))
+                                        <tr class="cart-discount gift-card-discount">
+                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">Gift Card: {{ $CartTotal['gift_card_code'] }}</th>
+                                            <td data-title="Gift Card" style="white-space: nowrap !important; text-align: right; vertical-align: middle; padding: 6px 0;">
+                                                <span style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; white-space: nowrap; color: #FFC205 !important; font-weight: 600;">
+                                                    <span>-${{ number_format($CartTotal['gift_card_discount'], 2) }}</span>
+                                                    <a class="reset-coupon" href="{{ route('reset-gift-card') }}" onclick="return confirm('Are you sure you want to remove this gift card?')" title="Remove Gift Card" style="margin: 0; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 11px; line-height: 1; color: #ef4444; border: 1px solid #ef4444; border-radius: 50%; text-decoration: none;">×</a>
                                                 </span>
                                             </td>
                                         </tr>
@@ -553,6 +618,18 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
 
 @section('scripts')
 <script>
+    $("#toggle-promo-btn").on('click', function (e) {
+        e.preventDefault();
+        $("#promo-code-box").slideToggle(200);
+        $(this).find('.toggle-chevron').toggleClass('fa-chevron-down fa-chevron-up');
+    });
+
+    $("#toggle-giftcard-btn").on('click', function (e) {
+        e.preventDefault();
+        $("#giftcard-code-box").slideToggle(200);
+        $(this).find('.toggle-chevron').toggleClass('fa-chevron-down fa-chevron-up');
+    });
+
     $("#apply_coupon").on('click', function () {
         $("#coupon_code").removeClass('validator');
         $(".coupon-errors").html('');
@@ -576,6 +653,28 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                 });
         }
     })
+
+    $("#apply_gift_card").on('click', function () {
+        $("#gift_card_code").removeClass('validator');
+        $(".giftcard-errors").html('');
+        if (!$("#gift_card_code").val()) {
+            $("#gift_card_code").addClass('validator');
+        } else {
+            var giftCardCode = $("#gift_card_code").val();
+            $.post("{{ route('apply-gift-card') }}", {
+                    gift_card_code: giftCardCode,
+                    "_token": "{{ csrf_token() }}"
+                },
+                function (res) {
+                    if (res.success === false) {
+                        $("#gift_card_code").addClass('validator');
+                        $(".giftcard-errors").html(res.message);
+                    } else {
+                        location.reload();
+                    }
+                });
+        }
+    });
 </script>
 
 @if($hasPhysicalItems)
