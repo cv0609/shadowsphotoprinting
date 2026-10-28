@@ -373,6 +373,7 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                     <tr>
                                         <td colspan="{{ $has_non_package_items ? '6' : '4' }}" class="actions">
 
+                                            @if($hasPhysicalItems)
                                             <div class="cart-discounts-wrapper" style="margin: 20px 0 20px 0;">
                                                 @if(!Session::has('coupon'))
                                                 <div class="discount-toggle-item" style="margin-bottom: 15px;">
@@ -404,6 +405,7 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                                 </div>
                                                 @endif
                                             </div>
+                                            @endif
 
                                             <div class="cart-action-buttons" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.12);">
                                                 <button type="button" class="button satay3" name="update_cart"

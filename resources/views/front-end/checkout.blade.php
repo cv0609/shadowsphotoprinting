@@ -425,23 +425,20 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <span>
-                                                    <bdi>
-                                                        <span>$</span>
-                                                        @if($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft')
-                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
-                                                        @else
-                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                                {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
-                                                            @else
-                                                                {{ isset($productSalePrice) && !empty($productSalePrice) 
-                                                                    ? number_format($item->quantity * $productSalePrice, 2) 
-                                                                    : number_format($item->quantity * $item->product->product_price, 2)
-                                                                }}
-                                                            @endif
-                                                        @endif
-                                                    </bdi>
-                                                </span>
+                                                @php
+                                                    if ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft') {
+                                                        $itemPriceVal = number_format($item->quantity * $item->product_price, 2);
+                                                    } else {
+                                                        if (isset($item->is_test_print) && ($item->is_test_print == '1')) {
+                                                            $itemPriceVal = number_format($item->test_print_qty * $item->test_print_price, 2);
+                                                        } else {
+                                                            $itemPriceVal = isset($productSalePrice) && !empty($productSalePrice) 
+                                                                ? number_format($item->quantity * $productSalePrice, 2) 
+                                                                : number_format($item->quantity * $item->product->product_price, 2);
+                                                        }
+                                                    }
+                                                @endphp
+                                                <span><bdi><span>$</span>{{ $itemPriceVal }}</bdi></span>
                                             </td>
                                         </tr>
                                        @endforeach
@@ -455,14 +452,14 @@
                                         @if(Session::has('coupon'))
                                         <tr class="coupon-row">
                                             <th>Coupon: {{ is_array($CartTotal['coupon_code'] ?? null) ? ($CartTotal['coupon_code']['code'] ?? '') : ($CartTotal['coupon_code'] ?? '') }}</th>
-                                            <td>-$ {{ number_format($CartTotal['coupon_discount'],2) }}</td>
+                                            <td>-${{ number_format($CartTotal['coupon_discount'], 2) }}</td>
                                         </tr>
                                         @endif
 
                                         @if(Session::has('gift_card') && !empty($CartTotal['gift_card_code']))
                                         <tr class="giftcard-row">
                                             <th>Gift Card: {{ $CartTotal['gift_card_code'] }}</th>
-                                            <td>-$ {{ number_format($CartTotal['gift_card_discount'], 2) }}</td>
+                                            <td>-${{ number_format($CartTotal['gift_card_discount'], 2) }}</td>
                                         </tr>
                                         @endif
 
@@ -506,7 +503,7 @@
 
                             <div class="checkout-order-total">
                                 <span class="label">Total</span>
-                                <span class="amount">$ {{ number_format($CartTotal['total'], 2) }}</span>
+                                <span class="amount">${{ number_format($CartTotal['total'], 2) }}</span>
                             </div>
                             <input type="hidden" id="total_amount" value="{{ number_format($CartTotal['total'],2) }}">
 

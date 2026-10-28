@@ -48,7 +48,10 @@ class CartService
         }
 
 
-        $subtotal = $cart->items->reduce(function ($carry, $item) {
+        $eligibleSubtotal = 0;
+        $giftCardSubtotal = 0;
+
+        foreach ($cart->items as $item) {
 
             if ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft') {
                 $product_price = $item->product_price;
@@ -76,11 +79,19 @@ class CartService
             
             // For package items, don't multiply by quantity since package has fixed price
             if(isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)){
-                return $carry + $product_price;
+                $lineTotal = $product_price;
             } else {
-                return $carry + ($product_price * $item->quantity);
+                $lineTotal = $product_price * $item->quantity;
             }
-        }, 0);
+
+            if ($item->product_type === 'gift_card') {
+                $giftCardSubtotal += $lineTotal;
+            } else {
+                $eligibleSubtotal += $lineTotal;
+            }
+        }
+
+        $subtotal = $eligibleSubtotal + $giftCardSubtotal;
         
         $shippingCharge = 0;
         // Calculate the total after applying the discount
@@ -90,39 +101,41 @@ class CartService
         $discount = 0;
         $coupon_code = "";
         $coupon_id = "";
-        $totalAfterDiscount = $subtotal;
-        if ($couponCode) {
+        $eligibleAfterDiscount = $eligibleSubtotal;
+
+        if ($couponCode && $eligibleSubtotal > 0) {
             $coupon = Coupon::where(['code' => $couponCode['code']])->where('is_active', true)->first();
 
             $coupon_code = $couponCode;
             if ($coupon) {
-                // Use stored discount_amount when set by applyCoupon (includes slug rule when enabled); else recalculate – keeps existing behaviour when no slug rule
-                $stored = $couponCode['discount_amount'] ?? null;
-                if ($stored !== null && $stored !== '' && is_numeric($stored)) {
-                    $discount = (float) $stored;
+                if ($coupon->is_gift_card == '1') {
+                    Session::forget('coupon');
+                    $coupon_code = "";
                 } else {
-                    if ($coupon->type == '1') {
-                        $discount = ($subtotal * $coupon->amount) / 100;
-                    } elseif ($coupon->type == '0') {
-                        $discount = $coupon->amount;
+                    // Use stored discount_amount when set by applyCoupon (includes slug rule when enabled); else recalculate – applied ONLY on eligible items
+                    $stored = $couponCode['discount_amount'] ?? null;
+                    if ($stored !== null && $stored !== '' && is_numeric($stored)) {
+                        $discount = (float) $stored;
+                    } else {
+                        if ($coupon->type == '1') {
+                            $discount = ($eligibleSubtotal * $coupon->amount) / 100;
+                        } elseif ($coupon->type == '0') {
+                            $discount = $coupon->amount;
+                        }
                     }
-                }
-                $discount = min($discount, $subtotal);
-                $coupon_id = $coupon->id;
-
-                if($coupon->is_gift_card != '1'){
-                    $totalAfterDiscount = $subtotal - $discount;
-                }else{
-                    $totalAfterDiscount = max(0, $subtotal - $discount); // Ensure total is never negative
+                    $discount = min($discount, $eligibleSubtotal);
+                    $coupon_id = $coupon->id;
+                    $eligibleAfterDiscount = max(0, $eligibleSubtotal - $discount);
                 }
             }
+        } elseif ($couponCode && $eligibleSubtotal <= 0) {
+            // Cart has only gift cards: promo coupons cannot be applied
+            Session::forget('coupon');
         }
 
-        if($cart->shutter_point == '1'){
-            $totalAfterDiscount = max(0, $totalAfterDiscount - $affiliate_sales->total_commission); // Ensure total is never negative
+        if($cart->shutter_point == '1' && !empty($affiliate_sales)){
+            $eligibleAfterDiscount = max(0, $eligibleAfterDiscount - $affiliate_sales->total_commission); // Ensure total is never negative
         }
-
-
 
         $order_type = 0;
         if(Session::has('order_type')){
@@ -132,7 +145,9 @@ class CartService
             }
         }
 
-        $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
+        // Amount eligible for Gift Card redemption is non-gift-card items after discount + shipping
+        $eligiblePayableForGiftCard = max(0, $eligibleAfterDiscount + $shippingCharge);
+        $totalAfterShipping = $giftCardSubtotal + $eligiblePayableForGiftCard;
 
         // Gift Card handling from Session::get('gift_card')
         $giftCardSession = Session::get('gift_card');
@@ -141,7 +156,7 @@ class CartService
         $gift_card_discount = 0;
         $gift_card_balance = 0;
 
-        if ($giftCardSession && isset($giftCardSession['code'])) {
+        if ($giftCardSession && isset($giftCardSession['code']) && $eligibleSubtotal > 0) {
             $currentDate = date('Y-m-d');
             $giftCard = Coupon::where('code', $giftCardSession['code'])
                 ->where('is_gift_card', '1')
@@ -152,17 +167,22 @@ class CartService
                 $gift_card_code = $giftCard->code;
                 $gift_card_id = $giftCard->id;
                 $gift_card_balance = (float)$giftCard->amount;
-                // Gift card covers up to the full remaining amount (after promo coupon and shipping)
-                $gift_card_discount = min($gift_card_balance, (float)$totalAfterShipping);
+                // Gift card balance can only cover non-gift-card items (+ shipping). Gift card items must be paid separately!
+                $gift_card_discount = min($gift_card_balance, (float)$eligiblePayableForGiftCard);
             } else {
                 Session::forget('gift_card');
             }
+        } elseif ($giftCardSession && $eligibleSubtotal <= 0) {
+            // Cart only has gift cards: cannot redeem gift card to purchase gift card
+            Session::forget('gift_card');
         }
 
-        $finalPayableTotal = max(0, (float)$totalAfterShipping - (float)$gift_card_discount);
+        $finalPayableTotal = max(0, (float)$giftCardSubtotal + ((float)$eligiblePayableForGiftCard - (float)$gift_card_discount));
 
         $data = [
             'subtotal' => $subtotal,
+            'eligible_subtotal' => $eligibleSubtotal,
+            'gift_card_subtotal' => $giftCardSubtotal,
             'total' => $finalPayableTotal,
             'total_before_gift_card' => $totalAfterShipping,
             'coupon_discount' => $discount,
@@ -350,7 +370,10 @@ class CartService
             return 0;
         }
 
-        $subtotal = $order->orderDetails->reduce(function ($carry, $item) {
+        $eligibleSubtotal = 0;
+        $giftCardSubtotal = 0;
+
+        foreach ($order->orderDetails as $item) {
 
             if ($item->product_type == 'gift_card' || $item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft') {
                 $product_price = $item->product_price;
@@ -364,33 +387,40 @@ class CartService
                 if (isset($sale_price) && !empty($sale_price)) {
                     $product_price = $sale_price->sale_price;
                 } else {
-                    $product_price = $item->product->product_price;
+                    $product_price = $item->product->product_price ?? $item->product_price;
                 }
             }
-            return $carry + ($product_price * $item->quantity);
-        }, 0);
+            $lineTotal = $product_price * $item->quantity;
+            if ($item->product_type === 'gift_card') {
+                $giftCardSubtotal += $lineTotal;
+            } else {
+                $eligibleSubtotal += $lineTotal;
+            }
+        }
+
+        $subtotal = $eligibleSubtotal + $giftCardSubtotal;
 
         $couponCode = $order->coupon_code;
-        $discount = 0;
-        $coupon_code = "";
-        $coupon_id = "";
-        if ($couponCode) {
+        $discount = (float)($order->discount ?? 0);
+        $coupon_code = $couponCode;
+        $coupon_id = $order->coupon_id ?? null;
+
+        if ($couponCode && $discount == 0 && $eligibleSubtotal > 0) {
             $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
-            $coupon_code = $couponCode;
             if ($coupon) {
                 if ($coupon->type == '1') {
-                    $discount = ($subtotal * $coupon->amount) / 100;
+                    $discount = ($eligibleSubtotal * $coupon->amount) / 100;
                 } elseif ($coupon->type == '0') {
                     $discount = $coupon->amount;
                 }
-                // Ensure the discount does not exceed the total
-                $discount = min($discount, $subtotal);
+                // Ensure the discount does not exceed eligible subtotal
+                $discount = min($discount, $eligibleSubtotal);
                 $coupon_id = $coupon->id;
             }
         }
 
         // Calculate the total after applying the discount
-        $totalAfterDiscount = $subtotal - $discount;
+        $totalAfterDiscount = max(0, $eligibleSubtotal - $discount);
         $shipping = $this->getShippingCharge();
 
         if ($shipping->status == "1" && isset($order->shipping_charge) && !empty($order->shipping_charge)) {
@@ -399,7 +429,8 @@ class CartService
             $shippingCharge = 0;
         }
 
-        $totalAfterShipping = $totalAfterDiscount + $shippingCharge;
+        $eligiblePayableForGiftCard = $totalAfterDiscount + $shippingCharge;
+        $totalAfterShipping = $giftCardSubtotal + $eligiblePayableForGiftCard;
         $gift_card_discount = (float)($order->gift_card_discount ?? 0);
         $finalTotal = max(0, $totalAfterShipping - $gift_card_discount);
 
@@ -421,6 +452,14 @@ class CartService
     public function autoAppliedCoupon($productId = null, $productCategoryId = null, $cartCount = null)
     {
         $CartTotal = $this->getCartTotal();
+        $eligibleSubtotal = (float)($CartTotal['eligible_subtotal'] ?? 0);
+
+        // Coupons cannot auto-apply if cart has no eligible physical/non-gift-card items
+        if ($eligibleSubtotal <= 0) {
+            Session::forget('coupon');
+            return false;
+        }
+
         $currentDate = Carbon::now()->toDateString();
         $cartCount = (int)$cartCount;
 
@@ -430,12 +469,12 @@ class CartService
             ->where('start_date', '<=', $currentDate)
             ->where('qty', '<=', $cartCount)
             ->where('end_date', '>=', $currentDate)
-            ->where(function ($query) use ($CartTotal) {
-                $query->where('minimum_spend', '<=', $CartTotal['subtotal'])
+            ->where(function ($query) use ($eligibleSubtotal) {
+                $query->where('minimum_spend', '<=', $eligibleSubtotal)
                     ->orWhere('minimum_spend', 0.00); // Include 0.00 as valid
             })
-            ->where(function ($query) use ($CartTotal) {
-                $query->where('maximum_spend', '>=', $CartTotal['subtotal'])
+            ->where(function ($query) use ($eligibleSubtotal) {
+                $query->where('maximum_spend', '>=', $eligibleSubtotal)
                     ->orWhere('maximum_spend', 0.00); // Include 0.00 as valid
             })
             ->where(function ($query) use ($productCategoryId) {
@@ -532,11 +571,12 @@ class CartService
             // Fallback to normal coupon type logic if slug-rule is off or yields 0
             if ($amount == 0) {
                 if ($coupon->type == "0") {
-                    $amount = $coupon->amount; // Fixed amount discount
+                    $amount = min((float)$coupon->amount, $eligibleSubtotal); // Fixed amount discount
                 } elseif ($coupon->type == "1") {
-                    $amount = ($coupon->amount / 100) * $CartTotal['subtotal']; // Percentage discount
+                    $amount = ($coupon->amount / 100) * $eligibleSubtotal; // Percentage discount applied ONLY on eligible items
                 }
             }
+            $amount = min($amount, $eligibleSubtotal);
             // Increment usage count if maximum usage is not exceeded
             if ($coupon->use_limit === null || $coupon->used < $coupon->use_limit) {
                 // \Log::info($coupon->used);    
