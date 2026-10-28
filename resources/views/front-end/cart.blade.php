@@ -290,26 +290,19 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                         <td class="product-price">
                                             <span class="">
 
-                                            @if($is_package != 1)   
-
-                                                <bdi>
-                                                    <span>$</span>
-                                                    @if($item->product_type == "gift_card" || $item->product_type ==
-                                                    "photo_for_sale" || $item->product_type == "hand_craft")
-                                                    {{ number_format($item->product_price, 2) }}
-                                                    @else
-
-                                                    @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                    {{ number_format($item->test_print_price, 2) }}
-                                                    @else
-                                                    {{ isset($product_sale_price) && !empty($product_sale_price) 
-                                                    ? number_format($product_sale_price, 2) 
-                                                    : number_format($product_detail->product_price, 2)
-                                                }}
-                                                    @endif
-
-                                                    @endif
-                                                </bdi>
+                                            @if($is_package != 1)
+                                                @php
+                                                    if ($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft") {
+                                                        $unitPrice = number_format($item->product_price, 2);
+                                                    } elseif (isset($item->is_test_print) && ($item->is_test_print == '1')) {
+                                                        $unitPrice = number_format($item->test_print_price, 2);
+                                                    } else {
+                                                        $unitPrice = isset($product_sale_price) && !empty($product_sale_price) 
+                                                            ? number_format($product_sale_price, 2) 
+                                                            : number_format($product_detail->product_price, 2);
+                                                    }
+                                                @endphp
+                                                <bdi><span>$</span>{{ $unitPrice }}</bdi>
                                             @else
                                                 @if($is_first_package_item)
                                                     <div class="package-info">
@@ -346,24 +339,18 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
 
                                             <td class="product-subtotal">
                                                 @if($is_package != 1)  
-                                                    <span>
-                                                        <bdi>
-                                                            <span>$</span>
-                                                            @if($item->product_type == "gift_card" || $item->product_type ==
-                                                            "photo_for_sale" || $item->product_type == "hand_craft")
-                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
-                                                            @else
-                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                            {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
-                                                            @else
-                                                            {{ isset($product_sale_price) && !empty($product_sale_price) 
+                                                    @php
+                                                        if ($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft") {
+                                                            $lineSubtotal = number_format($item->quantity * $item->product_price, 2);
+                                                        } elseif (isset($item->is_test_print) && ($item->is_test_print == '1')) {
+                                                            $lineSubtotal = number_format($item->test_print_qty * $item->test_print_price, 2);
+                                                        } else {
+                                                            $lineSubtotal = isset($product_sale_price) && !empty($product_sale_price) 
                                                                 ? number_format($item->quantity * $product_sale_price, 2) 
-                                                                : number_format($item->quantity * $product_detail->product_price, 2)
-                                                            }}
-                                                            @endif
-                                                            @endif
-                                                        </bdi>
-                                                    </span>
+                                                                : number_format($item->quantity * $product_detail->product_price, 2);
+                                                        }
+                                                    @endphp
+                                                    <span><bdi><span>$</span>{{ $lineSubtotal }}</bdi></span>
                                                 @endif
                                             </td>
                                         @endif
