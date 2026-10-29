@@ -74,7 +74,7 @@
                                     </div>
                                     <div class="delivery-method">
                                         <label class="">Delivery Method</label>
-                                        <div class="recipient">
+                                        <div class="recipient" style="margin-bottom: 0;">
                                             <input type="radio" name="radio" checked="checked" id="">
                                             <span class="">Mail To Recipient</span>
                                             <div class="delivery-email">
@@ -85,26 +85,30 @@
                                                     recipient's email address</span></p>
                                             </div>
                                         </div>
-                                        <div class="preview-email" style="margin: 12px 0 18px 0;">
-                                            <a href="javascript:void(0)" id="giftcard-preview" style="display: inline-flex; align-items: center; gap: 8px; color: #b8cb8c; background: rgba(184, 203, 140, 0.1); border: 1px solid rgba(184, 203, 140, 0.35); padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
-                                                <i class="fa fa-eye" aria-hidden="true"></i> PREVIEW GIFT CARD
-                                            </a>
-                                            <span style="display: block; font-size: 12px; color: #9ca3af; margin-top: 5px; font-style: normal; font-weight: normal; letter-spacing: normal;">
-                                                See exactly what the recipient will receive
-                                            </span>
-                                        </div>
                                     </div>
+
+                                    <!-- 1. Preview Gift Card (20px below Delivery Method box, left-aligned) -->
+                                    <div class="giftcard-preview-wrap" style="margin-top: 20px; text-align: left;">
+                                        <a href="javascript:void(0)" id="giftcard-preview" style="display: inline-flex; align-items: center; gap: 8px; color: #b8cb8c; background: rgba(184, 203, 140, 0.1); border: 1px solid rgba(184, 203, 140, 0.35); padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+                                            <i class="fa fa-eye" aria-hidden="true"></i> PREVIEW GIFT CARD
+                                        </a>
+                                        <p style="margin: 6px 0 0 0; font-size: 12px; color: #9ca3af; line-height: 1.4; text-align: left;">
+                                            See exactly what the recipient will receive
+                                        </p>
+                                    </div>
+                                </div><!-- /quantity -->
+
+                                <!-- 2. Add to cart Row (20px below Preview text, horizontal row, left-aligned) -->
+                                <div class="quanti" style="display: flex; align-items: center; gap: 10px; margin-top: 20px; margin-bottom: 0; padding: 0; text-align: left;">
+                                    <input type="number" name="quantity" id="quantity" value="1" class="input-text" style="width: 50px; height: 40px; margin: 0; text-align: center; border-radius: 4px; background: #fff; color: #000; border: none; outline: none; font-size: 15px; font-weight: 600;">
+                                    <button type="button" id="addToCartBtn" style="height: 40px; line-height: 40px; padding: 0 22px; margin: 0; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">Add to cart</button>
                                 </div>
-                                <div class="quanti">
-                                    <input type="number" name="quantity" id="quantity" value="1" class="input-text">
-                                    <button type="button" id="addToCartBtn">Add to cart</button>
-                                </div>
-                                <h6><span class="error-message" id="quantity_error"></span></h6>
+                                <h6><span class="error-message" id="quantity_error" style="display: block; margin: 4px 0 0 0;"></span></h6>
                             </form>
 
-                            <div class="giftcard-meta-details" style="margin-top: 18px;">
-                                <!-- 3-Year Validity Badge (Compact, subtle green border) -->
-                                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(184, 203, 140, 0.06); border: 1px solid rgba(184, 203, 140, 0.25); border-radius: 6px; padding: 7px 12px; width: fit-content; max-width: 100%;">
+                            <!-- 3. Validity Badge (16px below Add to cart row, same left alignment) -->
+                            <div class="giftcard-meta-details" style="margin-top: 16px; margin-bottom: 0; padding: 0; text-align: left;">
+                                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(184, 203, 140, 0.06); border: 1px solid rgba(184, 203, 140, 0.25); border-radius: 6px; padding: 7px 12px; width: fit-content; max-width: 100%; margin: 0;">
                                     <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #69794E; color: #ffffff; font-size: 11px; flex-shrink: 0;">
                                         <i class="fa fa-clock-o" aria-hidden="true"></i>
                                     </span>
@@ -124,7 +128,8 @@
 </section>
 
 
-<section class="related-product">
+<!-- 4. Related Products with proper section separation -->
+<section class="related-product" style="margin-top: 75px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
     <div class="container">
         <div class="related-wrapper">
             <h3>Related Products</h3>
