@@ -85,9 +85,14 @@
                                                     recipient's email address</span></p>
                                             </div>
                                         </div>
-                                        <span class="preview-email">
-                                            <a id="giftcard-preview">PREVIEW</a>
-                                        </span>
+                                        <div class="preview-email" style="margin: 12px 0 18px 0;">
+                                            <a href="javascript:void(0)" id="giftcard-preview" style="display: inline-flex; align-items: center; gap: 8px; color: #b8cb8c; background: rgba(184, 203, 140, 0.1); border: 1px solid rgba(184, 203, 140, 0.35); padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+                                                <i class="fa fa-eye" aria-hidden="true"></i> PREVIEW GIFT CARD
+                                            </a>
+                                            <span style="display: block; font-size: 12px; color: #9ca3af; margin-top: 5px; font-style: normal; font-weight: normal; letter-spacing: normal;">
+                                                See exactly what the recipient will receive
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="quanti">
@@ -158,6 +163,144 @@
     </div>
 </section>
 
+<!-- Gift Card Recipient Email Live Preview Modal -->
+<div class="modal fade" id="giftcardPreviewModal" tabindex="-1" role="dialog" aria-labelledby="giftcardPreviewModalLabel" aria-hidden="true" style="z-index: 9999999;">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 560px; width: 94%; margin: 1.5rem auto;">
+        <div class="modal-content" style="background: #141414; border: 1px solid rgba(184, 203, 140, 0.3); box-shadow: 0 16px 48px rgba(0,0,0,0.65); border-radius: 16px; overflow: hidden;">
+            
+            <!-- Modal Header -->
+            <div style="background: #0d0d0d; padding: 13px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #b8cb8c; letter-spacing: 0.5px; text-transform: uppercase;">
+                    <i class="fa fa-eye" style="color: #b8cb8c;"></i> Recipient eGift Card Preview
+                </div>
+                <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close" style="color: #ffffff; background: transparent; border: none; font-size: 24px; line-height: 1; cursor: pointer; opacity: 0.8; padding: 0;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Modal Body (Email Card Replica) -->
+            <div class="modal-body" style="background-color: #F5EFE6; padding: 20px 16px; max-height: 76vh; overflow-y: auto;">
+                
+                <div style="background-color: #FFFFFF; border-radius: 14px; padding: 26px 20px 28px 20px; text-align: center; font-family: 'Lora', Georgia, 'Times New Roman', serif; box-shadow: 0 4px 20px rgba(0,0,0,0.05); max-width: 480px; margin: 0 auto;">
+                    
+                    <!-- Shadows Header Logo -->
+                    <div style="background: #000000; padding: 14px 10px; border-radius: 10px; margin-bottom: 20px;">
+                        <img src="{{ asset('assets/images/logo.png') }}" alt="Shadows Photo Printing" style="max-width: 220px; width: 100%; height: auto; display: block; margin: 0 auto; border: 0;">
+                    </div>
+
+                    <!-- Brand Subtitle -->
+                    <p style="margin: 0 0 8px 0; font-family: 'Lora', Georgia, serif; font-size: 14px; font-weight: 400; color: #243927; letter-spacing: 0.4px;">
+                        Shadows Affordable Memories
+                    </p>
+
+                    <!-- Star Sparkle Divider -->
+                    <div style="margin: 0 auto 16px auto; line-height: 0;">
+                        <img src="{{ asset('assets/images/star-divider.png') }}" alt="✦" style="width: 170px; max-width: 170px; height: auto; display: inline-block;">
+                    </div>
+
+                    <!-- Main Heading -->
+                    @php
+                        $isChristmas = ($blog_detail && (stripos($blog_detail->product_title, 'christmas') !== false || stripos($blog_detail->slug, 'christmas') !== false));
+                        $cardEmailImage = ($blog_detail->use_different_email_image == 1 && !empty($blog_detail->email_product_image)) ? $blog_detail->email_product_image : $blog_detail->product_image;
+                    @endphp
+                    <h2 style="margin: 0 0 20px 0; font-family: 'Lora', Georgia, serif; font-size: 24px; line-height: 30px; font-weight: 600; color: #183620; text-align: center;">
+                        @if($isChristmas)
+                            You’ve received a<br>Christmas gift!
+                        @else
+                            You’ve received an eGift Card!
+                        @endif
+                    </h2>
+
+                    <!-- Gift Card Artwork -->
+                    <div style="margin: 0 0 20px 0;">
+                        <img src="{{ asset($cardEmailImage) }}" alt="{{ $blog_detail->product_title ?? 'eGift Card' }}" style="display: block; width: 100%; max-width: 440px; height: auto; border-radius: 12px; margin: 0 auto; box-shadow: 0 3px 12px rgba(0,0,0,0.06);">
+                    </div>
+
+                    <!-- Sender Name -->
+                    <p id="pv-from-wrap" style="margin: 0 0 6px 0; font-family: 'Lora', Georgia, serif; font-size: 16.5px; line-height: 22px; font-weight: 400; color: #283D2B;">
+                        A gift from <strong id="pv-from-name" style="font-weight: 600;">Your Name</strong>
+                    </p>
+
+                    <!-- Recipient Email Notice (Informative Detail) -->
+                    <p id="pv-to-wrap" style="margin: 0 0 12px 0; font-family: 'Lora', Georgia, serif; font-size: 12.5px; color: #556B58;">
+                        <i class="fa fa-envelope-o" style="margin-right: 4px;"></i> Delivered to: <span id="pv-to-email">recipient@example.com</span>
+                    </p>
+
+                    <!-- Gift Card Value -->
+                    <h3 style="margin: 0 0 20px 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 34px; line-height: 40px; font-weight: 700; color: #15381E;">
+                        Your eGift Card: $<span id="pv-amount">100.00</span>
+                    </h3>
+
+                    <!-- Message Box -->
+                    <div style="background-color: #FAF4EA; border-radius: 12px; padding: 20px 22px; margin: 0 auto 22px auto; max-width: 440px;">
+                        <div style="margin: 0 auto 12px auto; line-height: 0;">
+                            @if($isChristmas)
+                                <img src="{{ asset('assets/images/holly-divider.png') }}" width="160" height="34" alt="🌿" style="display: inline-block; width: 160px; max-width: 160px; height: auto;">
+                            @else
+                                <img src="{{ asset('assets/images/star-divider.png') }}" width="150" height="16" alt="✦" style="display: inline-block; width: 150px; max-width: 150px; height: auto;">
+                            @endif
+                        </div>
+                        <p id="pv-message" style="margin: 0; font-family: 'Lora', Georgia, serif; font-size: 14.5px; line-height: 22px; font-weight: 400; color: #2A3F2C; white-space: pre-line; word-break: break-word;">
+                            Wishing you a Merry Christmas and a wonderful New Year!
+                        </p>
+                    </div>
+
+                    <!-- Code Box -->
+                    <p style="margin: 0 0 10px 0; font-family: 'Lora', Georgia, serif; font-size: 14px; font-weight: 400; color: #183620;">
+                        Your gift card code
+                    </p>
+                    <div style="display: inline-block; background-color: #FAF4EA; border-radius: 8px; padding: 10px 28px; margin: 0 auto 16px auto;">
+                        <span style="font-family: 'Lora', Georgia, serif; font-size: 20px; font-weight: 600; letter-spacing: 3px; color: #183620;">
+                            SAMPLE-CODE
+                        </span>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div style="margin: 0 auto 12px auto;">
+                        <span style="background-color: #24452C; color: #FFFFFF; font-family: 'Lora', Georgia, serif; font-size: 15px; font-weight: 500; line-height: 20px; padding: 12px 34px; border-radius: 6px; display: inline-block; letter-spacing: 0.3px;">
+                            Use Your eGift Card
+                        </span>
+                    </div>
+
+                    <!-- Checkout Instruction -->
+                    <p style="margin: 0 0 6px 0; font-family: 'Lora', Georgia, serif; font-size: 13.5px; line-height: 20px; color: #2A3F2C; font-weight: 400;">
+                        Enter your gift card code at checkout.
+                    </p>
+
+                    <!-- 3-Year Expiry Notice -->
+                    <p style="margin: 0 0 22px 0; font-family: 'Lora', Georgia, serif; font-size: 13px; line-height: 18px; color: #526755; font-weight: 500;">
+                        Expires in 3 years from date of purchase (<span id="pv-expiry">{{ \Carbon\Carbon::now()->addYears(3)->format('d F Y') }}</span>)
+                    </p>
+
+                    <!-- Divider -->
+                    <div style="margin: 0 auto 14px auto; line-height: 0;">
+                        <img src="{{ asset('assets/images/star-divider.png') }}" alt="✦" style="width: 170px; max-width: 170px; height: auto; display: inline-block;">
+                    </div>
+
+                    <!-- Sign-off -->
+                    <p style="margin: 0; font-family: 'Lora', Georgia, serif; font-size: 14px; line-height: 20px; color: #183620; font-weight: 400;">
+                        From our family to yours.<br>
+                        The Shadows Family
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="background: #0d0d0d; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: #9ca3af; font-size: 12px;">
+                    <i class="fa fa-info-circle" style="color: #b8cb8c;"></i> Live preview from your entered form details
+                </span>
+                <button type="button" class="btn" data-dismiss="modal" data-bs-dismiss="modal" style="background: #24452C; color: #ffffff; border: 1px solid #365e3f; padding: 6px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                    Close Preview
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @endsection
 
 
@@ -171,6 +314,48 @@ $(document).ready(function() {
         if ($(this).val().length > 4) {
             $(this).val($(this).val().slice(0, 4));
         }
+    });
+
+    // Live Gift Card Preview Modal Handler
+    $('#giftcard-preview').on('click', function(e) {
+        e.preventDefault();
+        
+        var card_price = $('#card_price').val();
+        var from = ($('#from').val() || '').trim();
+        var giftcard_msg = ($('#giftcard_msg').val() || '').trim();
+        var reciept_email = ($('#reciept_email').val() || '').trim();
+
+        // Dynamic Amount
+        if (card_price && !isNaN(card_price) && parseFloat(card_price) > 0) {
+            $('#pv-amount').text(parseFloat(card_price).toFixed(2));
+        } else {
+            $('#pv-amount').text('100.00');
+        }
+
+        // Dynamic Sender Name
+        if (from !== '') {
+            $('#pv-from-name').text(from);
+        } else {
+            $('#pv-from-name').text('Your Name');
+        }
+
+        // Dynamic Recipient Email
+        if (reciept_email !== '') {
+            $('#pv-to-email').text(reciept_email);
+            $('#pv-to-wrap').show();
+        } else {
+            $('#pv-to-email').text("recipient's email");
+            $('#pv-to-wrap').show();
+        }
+
+        // Dynamic Personal Message
+        if (giftcard_msg !== '') {
+            $('#pv-message').text(giftcard_msg);
+        } else {
+            $('#pv-message').text("Wishing you a Merry Christmas and a wonderful New Year!");
+        }
+
+        $('#giftcardPreviewModal').modal('show');
     });
 
     $('#addToCartBtn').click(function() {
