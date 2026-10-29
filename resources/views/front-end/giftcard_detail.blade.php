@@ -102,7 +102,7 @@
                                 <h6><span class="error-message" id="quantity_error"></span></h6>
                             </form>
 
-                            <div class="giftcard-meta-details" style="margin-top: 18px; display: flex; flex-direction: column; gap: 10px;">
+                            <div class="giftcard-meta-details" style="margin-top: 18px;">
                                 <!-- 3-Year Validity Badge (Compact, subtle green border) -->
                                 <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(184, 203, 140, 0.06); border: 1px solid rgba(184, 203, 140, 0.25); border-radius: 6px; padding: 7px 12px; width: fit-content; max-width: 100%;">
                                     <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #69794E; color: #ffffff; font-size: 11px; flex-shrink: 0;">
@@ -111,12 +111,6 @@
                                     <span style="color: #d1d5db; font-size: 13px; font-weight: 500; letter-spacing: 0.1px; line-height: 1;">
                                         Valid for <strong style="color: #b8cb8c; font-weight: 600;">3 years</strong> from date of purchase
                                     </span>
-                                </div>
-
-                                <!-- Category Info -->
-                                <div style="font-size: 12px; color: #8e9b91; padding-left: 2px;">
-                                    <span>Category:</span>
-                                    <a href="{{ route('gift-card') }}" style="color: #b8cb8c; text-decoration: none; font-weight: 600; margin-left: 4px; border-bottom: 1px dotted rgba(184, 203, 140, 0.4); padding-bottom: 1px;">Gift Card</a>
                                 </div>
                             </div>
                             {{-- <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p> --}}
