@@ -101,6 +101,10 @@
                                 <span class="posted_in">
                                     Category: <a href="{{route('gift-card')}}">Gift Card</a>
                                 </span>
+                                <p style="margin-top: 10px; font-size: 14px; color: #666; font-style: italic;">
+                                    <i class="fa fa-info-circle" style="color: #183620; margin-right: 4px;"></i>
+                                    All eGift Cards expire 3 years from the date of purchase.
+                                </p>
                             </div>
                             {{-- <p><a href="{{ route('more-info') }}" class="more-info-link">More Info</a></p> --}}
 

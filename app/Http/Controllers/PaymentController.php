@@ -600,6 +600,9 @@ class PaymentController extends Controller
                     }
                 }
 
+                $expiryDate = Carbon::now()->addYears(3)->format('d/m/Y');
+                $expiryDateFormatted = Carbon::now()->addYears(3)->format('d F Y');
+
                 $giftcardData = [
                    'reciept_email' => $recieptEmail ?? '',
                    'code' => $generateGiftCardCoupon ?? '',
@@ -609,6 +612,8 @@ class PaymentController extends Controller
                    'amount' => $coupon_price,
                    'card_title' => $cardCat->product_title ?? 'eGift Card',
                    'is_christmas' => $isChristmas,
+                   'expiry_date' => $expiryDate,
+                   'expiry_date_formatted' => $expiryDateFormatted,
                 ];
 
                 \Log::info($giftcardData);

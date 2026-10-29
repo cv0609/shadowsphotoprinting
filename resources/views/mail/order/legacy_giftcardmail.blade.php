@@ -219,7 +219,13 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
   <div style="color: #16a085; line-height: 140%; text-align: center; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">Our gift cards are valid for </span></p>
-<p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">3 years from date of purchase.</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;">3 years from date of purchase.</span></p>
+    @php
+      $legacyExpiry = !empty($order['expiry_date_formatted']) 
+        ? $order['expiry_date_formatted'] 
+        : (!empty($order['expiry_date']) ? $order['expiry_date'] : \Carbon\Carbon::now()->addYears(3)->format('d F Y'));
+    @endphp
+    <p style="font-size: 13px; line-height: 140%; margin-top: 6px;"><span style="font-size: 14px; line-height: 20px; color: #333333; font-weight: 600;">(Expires: {{ $legacyExpiry }})</span></p>
   </div>
 
       </td>

@@ -65,7 +65,9 @@ Route::get('/preview-christmas-giftcard-email', function (\Illuminate\Http\Reque
         'image' => 'assets/images/christmas-egift-card-email.png',
         'is_christmas' => $request->has('is_christmas') ? (bool)$request->is_christmas : true,
         'card_title' => 'A Little Christmas Joy',
-        'reciept_email' => $request->get('send_to', '')
+        'reciept_email' => $request->get('send_to', ''),
+        'expiry_date' => \Carbon\Carbon::now()->addYears(3)->format('d/m/Y'),
+        'expiry_date_formatted' => \Carbon\Carbon::now()->addYears(3)->format('d F Y')
     ];
 
     if ($request->has('send_to') && filter_var($request->send_to, FILTER_VALIDATE_EMAIL)) {

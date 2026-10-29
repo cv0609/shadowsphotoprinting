@@ -1,4 +1,3 @@
-@if(!empty($order['is_christmas']))
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -161,11 +160,15 @@
                 <tr>
                   <td class="message-box-td" style="padding:26px 34px 26px 34px; text-align:center;">
 
-                    <!-- Decorative Holly Header (Centered icon + horizontal accent lines) -->
+                    <!-- Decorative Header (Centered icon + horizontal accent lines) -->
                     <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 16px auto;">
                       <tr>
                         <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
-                          <img src="{{ asset('assets/images/holly-divider.png') }}" width="200" height="42" alt="🌿" style="display:block; width:200px; max-width:200px; height:auto; margin:0 auto;" />
+                          @if(!empty($order['is_christmas']))
+                            <img src="{{ asset('assets/images/holly-divider.png') }}" width="200" height="42" alt="🌿" style="display:block; width:200px; max-width:200px; height:auto; margin:0 auto;" />
+                          @else
+                            <img src="{{ asset('assets/images/star-divider.png') }}" width="180" height="19" alt="✦" style="display:block; width:180px; max-width:180px; height:auto; margin:0 auto;" />
+                          @endif
                         </td>
                       </tr>
                     </table>
@@ -237,8 +240,18 @@
               </table>
 
               <!-- Redemption Instructions -->
-              <p style="margin:0 0 28px 0; font-family:'Lora', Georgia, serif; font-size:15.5px; line-height:22px; color:#2A3F2C; font-weight:400; text-align:center;">
+              <p style="margin:0 0 6px 0; font-family:'Lora', Georgia, serif; font-size:15.5px; line-height:22px; color:#2A3F2C; font-weight:400; text-align:center;">
                 Enter your gift card code at checkout.
+              </p>
+
+              <!-- Expiry Notice -->
+              @php
+                $expiryDisplay = !empty($order['expiry_date_formatted']) 
+                  ? $order['expiry_date_formatted'] 
+                  : (!empty($order['expiry_date']) ? $order['expiry_date'] : \Carbon\Carbon::now()->addYears(3)->format('d F Y'));
+              @endphp
+              <p style="margin:0 0 26px 0; font-family:'Lora', Georgia, serif; font-size:14px; line-height:20px; color:#526755; font-weight:400; text-align:center;">
+                Expires in 3 years from date of purchase ({{ $expiryDisplay }})
               </p>
 
               <!-- Star Sparkle Divider -->
@@ -273,6 +286,3 @@
 
 </body>
 </html>
-@else
-@include('mail.order.legacy_giftcardmail')
-@endif
