@@ -30,10 +30,15 @@ class GiftCardMail extends Mailable
     {
         $fromSender = !empty($this->order['from']) ? ' from ' . $this->order['from'] : '';
         $isChristmas = !empty($this->order['is_christmas']);
+        $isBirthday = !empty($this->order['is_birthday']);
 
-        $subject = $isChristmas 
-            ? "You've received a Christmas gift!" . $fromSender
-            : "You've received an eGift Card" . $fromSender . " | Shadows Photo Printing";
+        if ($isChristmas) {
+            $subject = "You've received a Christmas gift!" . $fromSender;
+        } elseif ($isBirthday) {
+            $subject = "You've received a birthday gift!" . $fromSender;
+        } else {
+            $subject = "You've received a gift!" . $fromSender;
+        }
 
         $mailFrom = env('APP_MAIL') ?: config('mail.from.address');
         $fromName = env('MAIL_FROM_NAME');

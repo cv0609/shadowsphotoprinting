@@ -192,21 +192,30 @@
                         Shadows Affordable Memories
                     </p>
 
-                    <!-- Star Sparkle Divider -->
-                    <div style="margin: 0 auto 16px auto; line-height: 0;">
-                        <img src="{{ asset('assets/images/star-divider.png') }}" alt="✦" style="width: 170px; max-width: 170px; height: auto; display: inline-block;">
-                    </div>
-
                     <!-- Main Heading -->
                     @php
                         $isChristmas = ($blog_detail && (stripos($blog_detail->product_title, 'christmas') !== false || stripos($blog_detail->slug, 'christmas') !== false));
+                        $isBirthday = ($blog_detail && (stripos($blog_detail->product_title, 'birthday') !== false || stripos($blog_detail->slug, 'birthday') !== false));
                         $cardEmailImage = ($blog_detail->use_different_email_image == 1 && !empty($blog_detail->email_product_image)) ? $blog_detail->email_product_image : $blog_detail->product_image;
+                        $lineColor = $isBirthday ? '#7E97AE' : '#7E8F7A';
                     @endphp
+
+                    <!-- Top Divider -->
+                    @if(!empty($isChristmas))
+                    <div style="margin: 0 auto 16px auto; line-height: 0;">
+                        <img src="{{ asset('assets/images/star-divider.png') }}" alt="✦" style="width: 170px; max-width: 170px; height: auto; display: inline-block;">
+                    </div>
+                    @else
+                    <div style="margin: 0 auto 18px auto; width: 140px; border-top: 1px solid {{ $lineColor }};"></div>
+                    @endif
+
                     <h2 style="margin: 0 0 20px 0; font-family: 'Lora', Georgia, serif; font-size: 24px; line-height: 30px; font-weight: 600; color: #183620; text-align: center;">
                         @if($isChristmas)
                             You’ve received a<br>Christmas gift!
+                        @elseif($isBirthday)
+                            You’ve received a birthday gift!
                         @else
-                            You’ve received an eGift Card!
+                            You’ve received a gift!
                         @endif
                     </h2>
 
@@ -232,15 +241,23 @@
 
                     <!-- Message Box -->
                     <div style="background-color: #FAF4EA; border-radius: 12px; padding: 20px 22px; margin: 0 auto 22px auto; max-width: 440px;">
+                        @if($isChristmas)
                         <div style="margin: 0 auto 12px auto; line-height: 0;">
-                            @if($isChristmas)
-                                <img src="{{ asset('assets/images/holly-divider.png') }}" width="160" height="34" alt="🌿" style="display: inline-block; width: 160px; max-width: 160px; height: auto;">
-                            @else
-                                <img src="{{ asset('assets/images/star-divider.png') }}" width="150" height="16" alt="✦" style="display: inline-block; width: 150px; max-width: 150px; height: auto;">
-                            @endif
+                            <img src="{{ asset('assets/images/holly-divider.png') }}" width="160" height="34" alt="🌿" style="display: inline-block; width: 160px; max-width: 160px; height: auto;">
                         </div>
+                        @endif
                         <p id="pv-message" style="margin: 0; font-family: 'Lora', Georgia, serif; font-size: 14.5px; line-height: 22px; font-weight: 400; color: #2A3F2C; white-space: pre-line; word-break: break-word;">
-                            Wishing you a Merry Christmas and a wonderful New Year!
+                            @if($isChristmas)
+                                Wishing you a Merry Christmas and a wonderful New Year!
+                            @elseif($isBirthday)
+                                Happy Birthday!
+Choose something special and make it your own.
+Love, Alysha
+                            @else
+                                A little something, just for you.
+Choose something special and make it your own.
+Love, Alysha
+                            @endif
                         </p>
                     </div>
 
@@ -255,8 +272,17 @@
                     </div>
 
                     <!-- CTA Button -->
+                    @php
+                        if (!empty($isChristmas)) {
+                            $btnColor = '#24452C';
+                        } elseif (!empty($isBirthday)) {
+                            $btnColor = '#5B7C99';
+                        } else {
+                            $btnColor = '#617762';
+                        }
+                    @endphp
                     <div style="margin: 0 auto 12px auto;">
-                        <span style="background-color: #24452C; color: #FFFFFF; font-family: 'Lora', Georgia, serif; font-size: 15px; font-weight: 500; line-height: 20px; padding: 12px 34px; border-radius: 6px; display: inline-block; letter-spacing: 0.3px;">
+                        <span style="background-color: {{ $btnColor }}; color: #FFFFFF; font-family: 'Lora', Georgia, serif; font-size: 15px; font-weight: 500; line-height: 20px; padding: 12px 34px; border-radius: 6px; display: inline-block; letter-spacing: 0.3px;">
                             Use Your eGift Card
                         </span>
                     </div>
@@ -267,19 +293,34 @@
                     </p>
 
                     <!-- 3-Year Expiry Notice -->
+                    @if(!empty($isChristmas))
                     <p style="margin: 0 0 22px 0; font-family: 'Lora', Georgia, serif; font-size: 13px; line-height: 18px; color: #526755; font-weight: 500;">
                         Expires in 3 years from date of purchase (<span id="pv-expiry">{{ \Carbon\Carbon::now()->addYears(3)->format('d F Y') }}</span>)
                     </p>
+                    @else
+                    <p style="margin: 0 0 22px 0; font-family: 'Lora', Georgia, serif; font-size: 13px; line-height: 18px; color: #4A5E4C; font-weight: 400;">
+                        Valid for 3 years from the date of purchase.
+                    </p>
+                    @endif
 
-                    <!-- Divider -->
+                    <!-- Bottom Divider -->
+                    @if(!empty($isChristmas))
                     <div style="margin: 0 auto 14px auto; line-height: 0;">
                         <img src="{{ asset('assets/images/star-divider.png') }}" alt="✦" style="width: 170px; max-width: 170px; height: auto; display: inline-block;">
                     </div>
+                    @else
+                    <div style="margin: 0 auto 16px auto; width: 140px; border-top: 1px solid {{ $lineColor }};"></div>
+                    @endif
 
                     <!-- Sign-off -->
                     <p style="margin: 0; font-family: 'Lora', Georgia, serif; font-size: 14px; line-height: 20px; color: #183620; font-weight: 400;">
                         From our family to yours.<br>
                         The Shadows Family
+                    </p>
+
+                    <!-- Design Example Note -->
+                    <p style="margin: 14px 0 0 0; font-family: 'Lora', Georgia, serif; font-size: 11px; line-height: 16px; color: #8E998E; font-style: italic;">
+                        Design example only &mdash; sample value, message and code.
                     </p>
 
                 </div>
@@ -351,7 +392,15 @@ $(document).ready(function() {
         if (giftcard_msg !== '') {
             $('#pv-message').text(giftcard_msg);
         } else {
-            $('#pv-message').text("Wishing you a Merry Christmas and a wonderful New Year!");
+            var defaultMsg = '';
+            @if(!empty($isChristmas))
+                defaultMsg = "Wishing you a Merry Christmas and a wonderful New Year!";
+            @elseif(!empty($isBirthday))
+                defaultMsg = "Happy Birthday!\nChoose something special and make it your own.\nLove, Alysha";
+            @else
+                defaultMsg = "A little something, just for you.\nChoose something special and make it your own.\nLove, Alysha";
+            @endif
+            $('#pv-message').text(defaultMsg);
         }
 
         $('#giftcardPreviewModal').modal('show');

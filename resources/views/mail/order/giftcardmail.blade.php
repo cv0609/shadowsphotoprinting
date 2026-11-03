@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{{ !empty($order['is_christmas']) ? 'You’ve received a Christmas gift!' : 'You’ve received an eGift Card!' }}</title>
+  <title>{{ !empty($order['is_christmas']) ? 'You’ve received a Christmas gift!' : (!empty($order['is_birthday']) ? 'You’ve received a birthday gift!' : 'You’ve received a gift!') }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700&display=swap" rel="stylesheet">
@@ -99,27 +99,46 @@
                 Shadows Affordable Memories
               </p>
 
-              <!-- Star Sparkle Divider -->
-              <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto;">
-                <tr>
-                  <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
-                    <img src="{{ asset('assets/images/star-divider.png') }}" width="210" height="22" alt="✦" style="display:block; width:210px; max-width:210px; height:auto; margin:0 auto;" />
-                  </td>
-                </tr>
-              </table>
+              <!-- Top Divider -->
+              @if(!empty($order['is_christmas']))
+                <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto;">
+                  <tr>
+                    <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
+                      <img src="{{ asset('assets/images/star-divider.png') }}" width="210" height="22" alt="✦" style="display:block; width:210px; max-width:210px; height:auto; margin:0 auto;" />
+                    </td>
+                  </tr>
+                </table>
+              @else
+                @php
+                  $lineColor = !empty($order['is_birthday']) ? '#7E97AE' : '#7E8F7A';
+                @endphp
+                <!-- Thin Line Divider for Everyday / Birthday Gifting (matching preview) -->
+                <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto; width:140px;">
+                  <tr>
+                    <td style="border-top:1px solid {{ $lineColor }}; font-size:0; line-height:0; height:1px; width:140px;">&nbsp;</td>
+                  </tr>
+                </table>
+              @endif
 
               <!-- Main Heading -->
               <h1 class="heading-title" style="margin:0 0 26px 0; font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:33px; line-height:40px; font-weight:600; color:#183620; text-align:center;">
                 @if(!empty($order['is_christmas']))
                   You’ve received a<br>Christmas gift!
+                @elseif(!empty($order['is_birthday']))
+                  You’ve received a birthday gift!
                 @else
-                  You’ve received an eGift Card!
+                  You’ve received a gift!
                 @endif
               </h1>
 
               <!-- Gift Card Image -->
               @php
-                $rawCardImage = !empty($order['image']) ? $order['image'] : 'assets/images/christmas-egift-card-email.png';
+                $defaultCardImage = !empty($order['is_christmas']) 
+                  ? 'assets/images/christmas-egift-card-email.png' 
+                  : (!empty($order['is_birthday'])
+                      ? 'assets/admin/uploads/categories/Dusty blue birthday eGift card (1).png-1793685680.png'
+                      : 'assets/admin/uploads/categories/Refined eGift card with ivory lettering.png-1793683410.png');
+                $rawCardImage = !empty($order['image']) ? $order['image'] : $defaultCardImage;
                 $rawCardImage = preg_replace('#(assets/admin/uploads/categories/)+#', 'assets/admin/uploads/categories/', (string)$rawCardImage);
                 if (!preg_match('#^(https?://|assets/)#i', $rawCardImage)) {
                     $rawCardImage = 'assets/admin/uploads/categories/' . ltrim($rawCardImage, '/');
@@ -160,18 +179,16 @@
                 <tr>
                   <td class="message-box-td" style="padding:26px 34px 26px 34px; text-align:center;">
 
-                    <!-- Decorative Header (Centered icon + horizontal accent lines) -->
+                    <!-- Decorative Header (Christmas Holly Divider) -->
+                    @if(!empty($order['is_christmas']))
                     <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 16px auto;">
                       <tr>
                         <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
-                          @if(!empty($order['is_christmas']))
-                            <img src="{{ asset('assets/images/holly-divider.png') }}" width="200" height="42" alt="🌿" style="display:block; width:200px; max-width:200px; height:auto; margin:0 auto;" />
-                          @else
-                            <img src="{{ asset('assets/images/star-divider.png') }}" width="180" height="19" alt="✦" style="display:block; width:180px; max-width:180px; height:auto; margin:0 auto;" />
-                          @endif
+                          <img src="{{ asset('assets/images/holly-divider.png') }}" width="200" height="42" alt="🌿" style="display:block; width:200px; max-width:200px; height:auto; margin:0 auto;" />
                         </td>
                       </tr>
                     </table>
+                    @endif
 
                     <!-- Message Text Layout formatted like mockup -->
                     @if(!empty($rawLines))
@@ -228,11 +245,18 @@
               <!-- Call To Action Button -->
               @php
                 $shopUrl = url('/shop');
+                if (!empty($order['is_christmas'])) {
+                    $btnBgColor = '#24452C';
+                } elseif (!empty($order['is_birthday'])) {
+                    $btnBgColor = '#5B7C99';
+                } else {
+                    $btnBgColor = '#617762';
+                }
               @endphp
               <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 14px auto;">
                 <tr>
                   <td align="center">
-                    <a href="{{ $shopUrl }}" target="_blank" style="background-color:#24452C; color:#FFFFFF; font-family:'Lora', Georgia, serif; font-size:18px; font-weight:500; line-height:24px; padding:14px 44px; border-radius:6px; text-decoration:none; display:inline-block; letter-spacing:0.3px; box-shadow:0 3px 10px rgba(36,69,44,0.2);">
+                    <a href="{{ $shopUrl }}" target="_blank" style="background-color:{{ $btnBgColor }}; color:#FFFFFF; font-family:'Lora', Georgia, serif; font-size:18px; font-weight:500; line-height:24px; padding:14px 44px; border-radius:6px; text-decoration:none; display:inline-block; letter-spacing:0.3px; box-shadow:0 3px 10px rgba(36,69,44,0.15);">
                       Use Your eGift Card
                     </a>
                   </td>
@@ -240,34 +264,56 @@
               </table>
 
               <!-- Redemption Instructions -->
-              <p style="margin:0 0 6px 0; font-family:'Lora', Georgia, serif; font-size:15.5px; line-height:22px; color:#2A3F2C; font-weight:400; text-align:center;">
+              <p style="margin:0 0 6px 0; font-family:'Lora', Georgia, serif; font-size:15px; line-height:22px; color:#2A3F2C; font-weight:400; text-align:center;">
                 Enter your gift card code at checkout.
               </p>
 
               <!-- Expiry Notice -->
-              @php
-                $expiryDisplay = !empty($order['expiry_date_formatted']) 
-                  ? $order['expiry_date_formatted'] 
-                  : (!empty($order['expiry_date']) ? $order['expiry_date'] : \Carbon\Carbon::now()->addYears(3)->format('d F Y'));
-              @endphp
-              <p style="margin:0 0 26px 0; font-family:'Lora', Georgia, serif; font-size:14px; line-height:20px; color:#526755; font-weight:400; text-align:center;">
-                Expires in 3 years from date of purchase ({{ $expiryDisplay }})
-              </p>
+              @if(!empty($order['is_christmas']))
+                @php
+                  $expiryDisplay = !empty($order['expiry_date_formatted']) 
+                    ? $order['expiry_date_formatted'] 
+                    : (!empty($order['expiry_date']) ? $order['expiry_date'] : \Carbon\Carbon::now()->addYears(3)->format('d F Y'));
+                @endphp
+                <p style="margin:0 0 24px 0; font-family:'Lora', Georgia, serif; font-size:14px; line-height:20px; color:#526755; font-weight:400; text-align:center;">
+                  Expires in 3 years from date of purchase ({{ $expiryDisplay }})
+                </p>
+              @else
+                <p style="margin:0 0 24px 0; font-family:'Lora', Georgia, serif; font-size:14px; line-height:20px; color:#4A5E4C; font-weight:400; text-align:center;">
+                  Valid for 3 years from the date of purchase.
+                </p>
+              @endif
 
-              <!-- Star Sparkle Divider -->
-              <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto;">
-                <tr>
-                  <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
-                    <img src="{{ asset('assets/images/star-divider.png') }}" width="210" height="22" alt="✦" style="display:block; width:210px; max-width:210px; height:auto; margin:0 auto;" />
-                  </td>
-                </tr>
-              </table>
+              <!-- Bottom Divider -->
+              @if(!empty($order['is_christmas']))
+                <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto;">
+                  <tr>
+                    <td align="center" style="padding:0; line-height:0; font-size:0; text-align:center;">
+                      <img src="{{ asset('assets/images/star-divider.png') }}" width="210" height="22" alt="✦" style="display:block; width:210px; max-width:210px; height:auto; margin:0 auto;" />
+                    </td>
+                  </tr>
+                </table>
+              @else
+                <!-- Thin Line Divider for Everyday / Birthday Gifting (matching preview) -->
+                <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 18px auto; width:140px;">
+                  <tr>
+                    <td style="border-top:1px solid {{ $lineColor }}; font-size:0; line-height:0; height:1px; width:140px;">&nbsp;</td>
+                  </tr>
+                </table>
+              @endif
 
               <!-- Family Sign-off -->
               <p style="margin:0 0 18px 0; font-family:'Lora', Georgia, serif; font-size:16px; line-height:24px; color:#183620; font-weight:400; text-align:center;">
                 From our family to yours.<br>
                 The Shadows Family
               </p>
+
+              <!-- Sample Notice (if sample preview) -->
+              @if(!empty($order['is_sample']))
+              <p style="margin:0 0 16px 0; font-family:'Lora', Georgia, serif; font-size:11px; line-height:16px; color:#8E998E; font-style:italic; text-align:center;">
+                Design example only &mdash; sample value, message and code.
+              </p>
+              @endif
 
               <!-- Contact Details -->
               <p style="margin:0; font-family:'Lora', Georgia, serif; font-size:12px; line-height:19px; color:#7E8A7F; text-align:center;">

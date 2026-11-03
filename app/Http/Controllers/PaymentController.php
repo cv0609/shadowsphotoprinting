@@ -582,13 +582,19 @@ class PaymentController extends Controller
 
                 $cardCat = GiftCardCategory::find($item->product_id);
                 $isChristmas = false;
+                $isBirthday = false;
                 if ($cardCat && (stripos($cardCat->product_title, 'christmas') !== false || stripos($cardCat->slug, 'christmas') !== false)) {
                     $isChristmas = true;
+                }
+                if ($cardCat && (stripos($cardCat->product_title, 'birthday') !== false || stripos($cardCat->slug, 'birthday') !== false)) {
+                    $isBirthday = true;
                 }
 
                 $cardImage = '';
                 if ($cardCat && !empty($cardCat->use_different_email_image) && !empty($cardCat->email_product_image)) {
                     $cardImage = $cardCat->email_product_image;
+                } elseif ($cardCat && !empty($cardCat->product_image)) {
+                    $cardImage = $cardCat->product_image;
                 } else {
                     $cardImage = $item->selected_images ?? '';
                 }
@@ -612,6 +618,7 @@ class PaymentController extends Controller
                    'amount' => $coupon_price,
                    'card_title' => $cardCat->product_title ?? 'eGift Card',
                    'is_christmas' => $isChristmas,
+                   'is_birthday' => $isBirthday,
                    'expiry_date' => $expiryDate,
                    'expiry_date_formatted' => $expiryDateFormatted,
                 ];
