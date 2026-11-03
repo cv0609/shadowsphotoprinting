@@ -32,20 +32,24 @@
                     </div>
 
                     <div class="item form-group">
-                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Card    Image <span class="required">*</span>
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="image">Card Image (Web) <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                        <div class="choose-file-wrap">
-                            <input type="file" id="image" name="image" class="form-control">
+                            <input type="file" id="image" name="image" class="form-control" accept="image/*">
                             @if(Session::has('error'))
                                 <p class="text-danger">{{ Session::get('error') }}</p>
                             @endif
-                            <div class="choose-file-single">
-                                <figure>
-                                    <img src="{{ asset($category->product_image) }}" alt="img-single">                                   
-                                </figure>
+                            @error('image')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                            <div class="mt-2">
+                                <label class="text-muted small d-block">Current / Selected Preview:</label>
+                                @if(!empty($category->product_image))
+                                    <img id="preview_card_img" src="{{ asset($category->product_image) }}" alt="Card Image Preview" style="max-height: 140px; max-width: 240px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd; padding: 4px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                                @else
+                                    <img id="preview_card_img" src="#" alt="Preview" style="display:none; max-height: 140px; max-width: 240px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd; padding: 4px; background: #fff;">
+                                @endif
                             </div>
-                        </div>
                         </div>
                     </div>
 
@@ -80,20 +84,19 @@
 
                             <div class="item form-group mb-0" id="email_image_wrapper" style="{{ old('use_different_email_image', (string)$category->use_different_email_image) == '1' ? '' : 'display:none;' }}">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="email_image">
-                                    Email Image <span class="required">*</span>
+                                    Email Image
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <div class="choose-file-wrap">
-                                        <input type="file" id="email_image" name="email_image" class="form-control">
-                                        @error('email_image')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                        @if(old('use_different_email_image', (string)$category->use_different_email_image) == '1' && !empty($category->email_product_image))
-                                        <div class="choose-file-single">
-                                            <figure>
-                                                <img src="{{ asset($category->email_product_image) }}" alt="email-img-single">
-                                            </figure>
-                                        </div>
+                                    <input type="file" id="email_image" name="email_image" class="form-control" accept="image/*">
+                                    @error('email_image')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                    <div class="mt-2" id="email_img_preview_box">
+                                        <label class="text-muted small d-block">Current / Selected Preview:</label>
+                                        @if(!empty($category->email_product_image))
+                                            <img id="preview_email_img" src="{{ asset($category->email_product_image) }}" alt="Email Image Preview" style="max-height: 140px; max-width: 240px; object-fit: contain; border-radius: 8px; border: 1px solid #c3e6cb; padding: 4px; background: #f4faf6; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                                        @else
+                                            <img id="preview_email_img" src="#" alt="Preview" style="display:none; max-height: 140px; max-width: 240px; object-fit: contain; border-radius: 8px; border: 1px solid #c3e6cb; padding: 4px; background: #f4faf6;">
                                         @endif
                                     </div>
                                 </div>
@@ -121,24 +124,54 @@
         var toggle = document.getElementById('use_different_email_image');
         var wrapper = document.getElementById('email_image_wrapper');
         var emailImageInput = document.getElementById('email_image');
-
-        if (!toggle || !wrapper || !emailImageInput) {
-            return;
-        }
+        var cardImageInput = document.getElementById('image');
+        var previewCardImg = document.getElementById('preview_card_img');
+        var previewEmailImg = document.getElementById('preview_email_img');
 
         function updateEmailImageVisibility() {
-            if (toggle.checked) {
-                wrapper.style.display = '';
-                emailImageInput.setAttribute('required', 'required');
-            } else {
-                wrapper.style.display = 'none';
-                emailImageInput.removeAttribute('required');
-                emailImageInput.value = '';
+            if (toggle && wrapper && emailImageInput) {
+                if (toggle.checked) {
+                    wrapper.style.display = '';
+                } else {
+                    wrapper.style.display = 'none';
+                }
             }
         }
 
-        toggle.addEventListener('change', updateEmailImageVisibility);
-        updateEmailImageVisibility();
+        if (toggle) {
+            toggle.addEventListener('change', updateEmailImageVisibility);
+            updateEmailImageVisibility();
+        }
+
+        // Live preview for Card Image
+        if (cardImageInput && previewCardImg) {
+            cardImageInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewCardImg.src = event.target.result;
+                        previewCardImg.style.display = 'inline-block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Live preview for Email Image
+        if (emailImageInput && previewEmailImg) {
+            emailImageInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewEmailImg.src = event.target.result;
+                        previewEmailImg.style.display = 'inline-block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
     });
 </script>
 

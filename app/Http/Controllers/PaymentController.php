@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Session;
 use App\Mail\Order\MakeOrder;
 use App\Mail\Order\GiftCardMail;
 use App\Mail\Order\GiftCardPurchasedMail;
+use App\Models\GiftCardCategory;
 use App\Mail\AdminNotifyOrder;
 use App\Models\User;
 use App\Models\UserDetails;
@@ -91,9 +92,14 @@ class PaymentController extends Controller
         });
         $CartTotal = $this->CartService->getCartTotal();
 
-        // Shipping required unless pickup. Direct /checkout must still resolve a shipping method.
+        $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($item) {
+            return $item->product_type !== 'gift_card';
+        });
+
+        // Shipping required unless pickup or cart contains only digital/gift cards. Direct /checkout must still resolve a shipping method.
         if (
-            $orderType !== 1
+            $hasPhysicalItems
+            && $orderType !== 1
             && $shipping
             && (string) $shipping->status === '1'
             && (float) ($CartTotal['shippingCharge'] ?? 0) <= 0
@@ -365,6 +371,9 @@ class PaymentController extends Controller
         $coupon_discount = $cartTotal['coupon_discount'] ?? 0;
         $coupon_code = $cartTotal['coupon_code'] ?? '';
         $coupon_id = (isset($cartTotal['coupon_id']) && !empty($cartTotal['coupon_id'])) ? $cartTotal['coupon_id'] : null;
+        $gift_card_id = (isset($cartTotal['gift_card_id']) && !empty($cartTotal['gift_card_id'])) ? $cartTotal['gift_card_id'] : null;
+        $gift_card_code = $cartTotal['gift_card_code'] ?? null;
+        $gift_card_discount = $cartTotal['gift_card_discount'] ?? 0;
 
 
 
@@ -432,6 +441,9 @@ class PaymentController extends Controller
             'coupon_id' => $coupon_id,
             'coupon_code' => $coupon_code['code'] ?? '',
             'discount' => $coupon_discount ?? 0,
+            'gift_card_id' => $gift_card_id,
+            'gift_card_code' => $gift_card_code,
+            'gift_card_discount' => $gift_card_discount,
             'shutter_point' => $shutter_point ?? 0,
             'commission' => $commission ?? 0,
             'sub_total' => $subtotal ?? 0,
@@ -506,11 +518,23 @@ class PaymentController extends Controller
             ->first();
         
             if ($g_coupon) {
-                $g_coupon->update(['amount' => $g_coupon->amount - $coupon_discount]);
+                $g_coupon->update(['amount' => max(0, $g_coupon->amount - $coupon_discount)]);
             }
 
             $coupon = Coupon::where('code', $coupon_code['code'])->where('is_active', true)->first();
-            $coupon->decrement('use_limit', $coupon->use_limit > 0 ? 1 : 0);
+            if ($coupon) {
+                $coupon->decrement('use_limit', $coupon->use_limit > 0 ? 1 : 0);
+            }
+        }
+
+        if (!empty($gift_card_code) && $gift_card_discount > 0) {
+            $dedicatedGiftCard = Coupon::where('code', $gift_card_code)
+                ->where('is_gift_card', '1')
+                ->where('is_active', 1)
+                ->first();
+            if ($dedicatedGiftCard) {
+                $dedicatedGiftCard->update(['amount' => max(0, (float)$dedicatedGiftCard->amount - (float)$gift_card_discount)]);
+            }
         }
 
         foreach ($cart->items as $item) {
@@ -554,20 +578,56 @@ class PaymentController extends Controller
                 // Check if 'reciept_email' exists and retrieve it
                 $recieptEmail = $giftcardDesc['reciept_email'] ?? null;
                 $giftcard_msg = $giftcardDesc['giftcard_msg'] ?? null;
-                
+                $giftcard_from = $giftcardDesc['from'] ?? null;
+
+                $cardCat = GiftCardCategory::find($item->product_id);
+                $isChristmas = false;
+                $isBirthday = false;
+                if ($cardCat && (stripos($cardCat->product_title, 'christmas') !== false || stripos($cardCat->slug, 'christmas') !== false)) {
+                    $isChristmas = true;
+                }
+                if ($cardCat && (stripos($cardCat->product_title, 'birthday') !== false || stripos($cardCat->slug, 'birthday') !== false)) {
+                    $isBirthday = true;
+                }
+
+                $cardImage = '';
+                if ($cardCat && !empty($cardCat->use_different_email_image) && !empty($cardCat->email_product_image)) {
+                    $cardImage = $cardCat->email_product_image;
+                } elseif ($cardCat && !empty($cardCat->product_image)) {
+                    $cardImage = $cardCat->product_image;
+                } else {
+                    $cardImage = $item->selected_images ?? '';
+                }
+
+                if (!empty($cardImage)) {
+                    $cardImage = preg_replace('#^(assets/admin/uploads/categories/)+#', 'assets/admin/uploads/categories/', (string)$cardImage);
+                    if (!preg_match('#^(https?://|assets/)#i', $cardImage)) {
+                        $cardImage = 'assets/admin/uploads/categories/' . ltrim($cardImage, '/');
+                    }
+                }
+
+                $expiryDate = Carbon::now()->addYears(3)->format('d/m/Y');
+                $expiryDateFormatted = Carbon::now()->addYears(3)->format('d F Y');
 
                 $giftcardData = [
                    'reciept_email' => $recieptEmail ?? '',
                    'code' => $generateGiftCardCoupon ?? '',
-                   'image' => $item->selected_images ?? '',
-                   'message' => $giftcard_msg ?? ''
+                   'image' => $cardImage,
+                   'message' => $giftcard_msg ?? '',
+                   'from' => $giftcard_from ?? '',
+                   'amount' => $coupon_price,
+                   'card_title' => $cardCat->product_title ?? 'eGift Card',
+                   'is_christmas' => $isChristmas,
+                   'is_birthday' => $isBirthday,
+                   'expiry_date' => $expiryDate,
+                   'expiry_date_formatted' => $expiryDateFormatted,
                 ];
 
                 \Log::info($giftcardData);
-                \Log::info('Test log');
 
-                Mail::to($recieptEmail)->send(new GiftCardMail($giftcardData));
-                Mail::to($recieptEmail)->send(new GiftCardPurchasedMail($giftcardData));
+                if (!empty($recieptEmail)) {
+                    Mail::to($recieptEmail)->send(new GiftCardMail($giftcardData));
+                }
             }
 
             $sale_price = null;
@@ -650,7 +710,7 @@ class PaymentController extends Controller
             Mail::to(env('ADMIN_MAIL'))->send(new AdminNotifyOrder($orderDetail));
         }
 
-        Session::forget(['order_address', 'coupon', 'billing_details', 'order_type','shutter_point']);
+        Session::forget(['order_address', 'coupon', 'gift_card', 'billing_details', 'order_type','shutter_point']);
 
          // Clear shipping session after order is created
         session()->forget('selected_shipping');
@@ -861,16 +921,28 @@ class PaymentController extends Controller
             ]
         ];
 
+        $discounts = [];
         if ((float) $coupon_discount > 0) {
-            $orderDetails["discounts"] = [
-                [
-                    "displayName" => $couponCodeString !== '' ? $couponCodeString : 'Discount',
-                    "amount" => [
-                        "amount" => $couponDiscountInCents ?? "0.00",
-                        "currency" => "AUD"
-                    ]
+            $discounts[] = [
+                "displayName" => $couponCodeString !== '' ? $couponCodeString : 'Discount',
+                "amount" => [
+                    "amount" => $couponDiscountInCents ?? "0.00",
+                    "currency" => "AUD"
                 ]
             ];
+        }
+        $giftCardDiscount = $cartTotal['gift_card_discount'] ?? 0;
+        if ((float) $giftCardDiscount > 0) {
+            $discounts[] = [
+                "displayName" => 'Gift Card (' . ($cartTotal['gift_card_code'] ?? '') . ')',
+                "amount" => [
+                    "amount" => number_format($giftCardDiscount, 2, '.', ''),
+                    "currency" => "AUD"
+                ]
+            ];
+        }
+        if (!empty($discounts)) {
+            $orderDetails["discounts"] = $discounts;
         }
 
         $response = $this->AfterPayService->charge($orderDetails);
@@ -976,7 +1048,7 @@ class PaymentController extends Controller
         if(Session::has('order_address')){
             $orderResponse = $this->createOrder($charge = null, $paymentResponse);
             $orderData = json_decode($orderResponse->getContent(), true); // Decode JSON response
-            Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+            Session::forget(['order_address', 'coupon', 'gift_card', 'billing_details', 'afterpay_token', 'order_type']);
             // Clear shipping session after order is created
             session()->forget('selected_shipping');
             // return response()->json(['error' => false, 'data' => route('thankyou')]);
@@ -1002,7 +1074,7 @@ class PaymentController extends Controller
                 
             if (isset($paymentResponse['status']) && $paymentResponse['status'] === "APPROVED") {
                 $this->createOrder($charge = null, $paymentResponse);
-                Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type','shutter_point']);
+                Session::forget(['order_address', 'coupon', 'gift_card', 'billing_details', 'afterpay_token', 'order_type','shutter_point']);
                 // Clear shipping session after order is created
                 session()->forget('selected_shipping');
                 return redirect()->route('order.success');
@@ -1015,7 +1087,7 @@ class PaymentController extends Controller
 
     public function afterpayCancel()
     {
-        Session::forget(['order_address', 'coupon', 'billing_details', 'afterpay_token', 'order_type']);
+        Session::forget(['order_address', 'coupon', 'gift_card', 'billing_details', 'afterpay_token', 'order_type']);
         // Clear shipping session when payment is cancelled
         session()->forget('selected_shipping');
         return redirect()->route('checkout')->with('error', 'Payment was cancelled. Please try again.');

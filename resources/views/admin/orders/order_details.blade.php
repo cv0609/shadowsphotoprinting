@@ -253,6 +253,305 @@
     color: #64748b;
   }
 
+  /* Modern Order Items Table Styling */
+  .order-invoice-main table.table {
+    margin-bottom: 0;
+    background: #ffffff;
+    border: 1px solid #e5eaf0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .order-invoice-main table.table thead.table_head th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 13px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    border-top: none;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .order-invoice-main table.table tbody tr td {
+    padding: 14px 14px;
+    vertical-align: middle;
+    border-top: 1px solid #edf2f7;
+    color: #1e293b;
+    font-size: 14px;
+  }
+
+  .order-invoice-main table.table tbody tr:hover td {
+    background-color: #fafbfc;
+  }
+
+  .order-invoice-main .order-img {
+    width: 65px;
+    min-width: 65px;
+    padding-right: 4px;
+    text-align: center;
+  }
+
+  .order-img-preview-trigger {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+
+  .order-img-preview-trigger img {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    display: block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .order-img-preview-trigger:hover img {
+    transform: scale(1.06);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .order-img-zoom-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.45);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: opacity 0.2s ease;
+  }
+
+  .order-img-preview-trigger:hover .order-img-zoom-icon {
+    opacity: 1;
+  }
+
+  .order-image-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .order-preview-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f766e !important;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    padding: 3px 9px;
+    border-radius: 5px;
+    text-decoration: none !important;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+  }
+
+  .order-preview-btn:hover {
+    background: #ccfbf1;
+    color: #115e59 !important;
+    border-color: #5eead4;
+  }
+
+  .order-product-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d4ed8 !important;
+    text-decoration: none !important;
+    display: inline-block;
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .order-product-title:hover {
+    color: #1e40af !important;
+    text-decoration: underline !important;
+  }
+
+  .giftcard-meta-box {
+    margin-top: 6px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-left: 3px solid #60a5fa;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #334155;
+  }
+
+  .giftcard-meta-line {
+    margin: 2px 0;
+    word-break: break-word;
+  }
+
+  .giftcard-meta-label {
+    font-weight: 700;
+    color: #475569;
+    margin-right: 4px;
+  }
+
+  .wc-order-item-sku {
+    font-size: 12.5px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .order-filename-meta {
+    font-size: 12px;
+    color: #64748b;
+    margin: 3px 0 5px;
+    word-break: break-all;
+  }
+
+  .order-download-link {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .order-download-link:hover {
+    text-decoration: underline;
+  }
+
+  .cell-price {
+    font-weight: 600;
+    color: #0f172a;
+    white-space: nowrap !important;
+    text-align: right;
+  }
+
+  .cell-qty {
+    font-weight: 600;
+    color: #334155;
+    text-align: center;
+    white-space: nowrap !important;
+  }
+
+  .cell-sale-status {
+    text-align: center;
+    white-space: nowrap !important;
+  }
+
+  .sale-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .sale-badge.is-on {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+  }
+
+  .sale-badge.is-off {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+  }
+
+  .cell-sale-cost {
+    text-align: right;
+    white-space: nowrap !important;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .cell-total {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 15px;
+    white-space: nowrap !important;
+    text-align: right;
+  }
+
+  /* Actions footer row */
+  .download_zip_tr td {
+    background: #f8fafc !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 14px 18px !important;
+  }
+
+  .order-action-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn-add-note {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 7px 16px !important;
+    background: #2563eb !important;
+    border: 1px solid #1d4ed8 !important;
+    color: #ffffff !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    line-height: 1.4 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.15s ease-in-out;
+  }
+
+  .btn-add-note:hover {
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  }
+
+  .btn-download-zip {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 7px 16px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    line-height: 1.4 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    transition: all 0.15s ease-in-out;
+  }
+
+  .btn-download-zip:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #94a3b8 !important;
+  }
+
   @media (max-width: 991px) {
     .order-meta-panel {
       flex-direction: column;
@@ -494,19 +793,18 @@
         <table class="table">
           <thead class="table_head">
             <tr>
-              <th class="center">Item</th>
-              <th></th>
+              <th colspan="2" style="text-align: left; padding-left: 16px;">Item</th>
               @if($has_package_items && !$has_non_package_items)
-                <th class="right">Items</th>
+                <th style="text-align: right; width: 110px; white-space: nowrap;">Items</th>
               @elseif($has_package_items && $has_non_package_items)
-                <th class="right">Cost</th>
+                <th style="text-align: right; width: 110px; white-space: nowrap;">Cost</th>
               @else
-                <th class="right">Cost</th>
+                <th style="text-align: right; width: 110px; white-space: nowrap;">Cost</th>
               @endif
-              <th class="right">Sale</th>
-              <th class="right">Sale Cost</th>
-              <th class="center">Qty</th>
-              <th class="right">Total</th>
+              <th style="text-align: center; width: 85px; white-space: nowrap;">Sale</th>
+              <th style="text-align: right; width: 115px; white-space: nowrap;">Sale Cost</th>
+              <th style="text-align: center; width: 75px; white-space: nowrap;">Qty</th>
+              <th style="text-align: right; width: 120px; white-space: nowrap;">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -549,103 +847,110 @@
                           $image1 = $imageArray[0] ?? '';
                           $image2 = $imageArray[1] ?? '';
                       }
+
+                      if ($item->product_type == 'gift_card') {
+                          $thumbUrl = asset($product_detail->product_image);
+                      } elseif ($item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft') {
+                          $thumbUrl = asset($image1);
+                      } else {
+                          $thumbUrl = getS3Img(asset($item->selected_images), 'raw');
+                      }
+
+                      $fullImageUrl = !empty($item->selected_images)
+                          ? (str_contains($item->selected_images, 'amazonaws.com') ? $item->selected_images : asset($item->selected_images))
+                          : $thumbUrl;
+                      $previewTitle = $product_detail->product_title ?? 'Item Image';
                   @endphp
 
-                  <img src="
-                      @if($item->product_type == 'gift_card')
-                          {{ asset($product_detail->product_image) }}
-                      @elseif($item->product_type == 'photo_for_sale')
-
-                          {{ asset($image1) }}
-
-                      @elseif($item->product_type == 'hand_craft')
-
-                          {{ asset($image1) }}
-
-                      @else
-                          {{-- {{ getS3Img(asset($item->selected_images), 'medium') }} --}}
-                          {{ getS3Img(asset($item->selected_images), 'raw') }}
-                      @endif
-                  " alt="">
+                  <a href="javascript:void(0)" class="order-img-preview-trigger" data-img-url="{{ $fullImageUrl }}" data-img-title="{{ $previewTitle }}" title="Click to preview image">
+                    <img src="{{ $thumbUrl }}" alt="{{ $previewTitle }}">
+                    <span class="order-img-zoom-icon"><i class="fas fa-search-plus"></i></span>
+                  </a>
                 
                 </td>
                 <td class="strong order_page_td">
                   
                       @if($item->product_type == "gift_card")
-                      <a href="{{ route('gift-card-show', ['category_id' => $product_detail->id]) }}">
-                          {{ $product_detail->product_title }}
-                          <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
-                      </a>    
+                      <a href="{{ route('gift-card-show', ['category_id' => $product_detail->id]) }}" class="order-product-title">
+                          {{ $product_detail->product_title ?? 'Gift Card' }}
+                      </a>
+                      @if(!empty($giftcard_product_desc))
+                      <div class="giftcard-meta-box">
+                          @if(!empty($giftcard_product_desc->reciept_email))
+                            <div class="giftcard-meta-line"><span class="giftcard-meta-label">To:</span> <span>{{ $giftcard_product_desc->reciept_email }}</span></div>
+                          @endif
+                          @if(!empty($giftcard_product_desc->from))
+                            <div class="giftcard-meta-line"><span class="giftcard-meta-label">From:</span> <span>{{ $giftcard_product_desc->from }}</span></div>
+                          @endif
+                          @if(!empty($giftcard_product_desc->giftcard_msg))
+                            <div class="giftcard-meta-line"><span class="giftcard-meta-label">Message:</span> <span>{{ $giftcard_product_desc->giftcard_msg }}</span></div>
+                          @endif
+                      </div>
+                      @endif
                       @elseif($item->product_type == "photo_for_sale")
-                      <a href="{{ route('photos-for-sale-product-show', ['slug' => $product_detail->slug]) }}">
-                          {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                      <a href="{{ route('photos-for-sale-product-show', ['slug' => $product_detail->slug]) }}" class="order-product-title">
+                          {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}}, {{$photo_product_desc->photo_for_sale_type ?? ''}}
                       </a>    
                       @elseif($item->product_type == "hand_craft")  
-                      <a href="{{ route('hand-craft-product-show', ['slug' => $product_detail->slug]) }}">
+                      <a href="{{ route('hand-craft-product-show', ['slug' => $product_detail->slug]) }}" class="order-product-title">
                         {{ $product_detail->product_title ?? '' }}  
                       </a>
                       @else
-                      <a href="{{ route('product-show', ['slug' => $item->product->slug]) }}">
+                      <a href="{{ route('product-show', ['slug' => $item->product->slug ?? '']) }}" class="order-product-title">
                         {{ $item->product->product_title ?? ''}}
                       </a>
                       @endif
                   
-                  <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
-                  <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
-
-                  <a href="{{ str_contains($item->selected_images, 'amazonaws.com') ? $item->selected_images : asset($item->selected_images) }}" download>Download image</a>
-              </td>
-
-
-              <td class="right order_page_td" data-title="price">
-                  <span class="">
-                    @if(!$has_package_items)
-                      <bdi>
-                          <span>$</span>
-                      {{-- @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
-                          {{ number_format($item->product_price, 2) }}
-                      @else
-                          {{ number_format($product_detail->product_price, 2) }}
-                      @endif --}}
-                        {{ number_format($item->product_price, 2) }}
-                      </bdi>
-                    @else
-                          package item
-                    @endif
-                  </span>
-              </td>
-              <td>
-                  @php
-                  $sale_status = "";
-                  $sale_price = "";
-                    if(isset($item->sale_on) && !empty($item->sale_on)){
-                      $sale_status = 'On';
-                      $sale_price = $item->sale_price;
-                    }else{
-                      $sale_status = 'Off';
-                      $sale_price = '-';
-                    }
-                  @endphp
-
-                  {{$sale_status}}
-
-              </td>
-              <td>{{$sale_price}}</td>
-
-              <td class="center order_page_td" data-title="qty">{{ $item->quantity }}</td>
-              <td class="right order_page_td" data-title="total">
-                @if(!$has_package_items)
-                $ 
-                  @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
-                      {{ number_format($item->quantity * $item->product_price, 2) }}
-                  @else
-
-                      {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $item->product_price, 2) }}
-                      
+                  @if(!empty($product_detail->slug))
+                    <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug }}</div>
                   @endif
+                  @if(!empty($item->selected_images))
+                    <p class="order-filename-meta"><strong>Filename:</strong> {{ basename($item->selected_images) }}</p>
+                  @endif
+                  <div class="order-image-actions">
+                    <a href="javascript:void(0)" class="order-preview-btn" data-img-url="{{ $fullImageUrl }}" data-img-title="{{ $previewTitle }}">
+                      <i class="fas fa-eye"></i> Preview Image
+                    </a>
+                    @if(!empty($item->selected_images))
+                      <a href="{{ $fullImageUrl }}" download class="order-download-link">
+                        <i class="fas fa-download"></i> Download image
+                      </a>
+                    @endif
+                  </div>
+              </td>
 
+
+              <td class="cell-price" data-title="price">
+                @if(!$has_package_items)
+                  ${{ number_format($item->product_price, 2) }}
                 @else
-                
+                  <span class="text-muted" style="font-size: 13px; font-weight: normal;">package item</span>
+                @endif
+              </td>
+              <td class="cell-sale-status" data-title="sale">
+                @php
+                  $isSale = !empty($item->sale_on);
+                @endphp
+                <span class="sale-badge {{ $isSale ? 'is-on' : 'is-off' }}">{{ $isSale ? 'On' : 'Off' }}</span>
+              </td>
+              <td class="cell-sale-cost" data-title="sale-cost">
+                @php
+                  $isSale = !empty($item->sale_on);
+                  $salePriceDisplay = ($isSale && isset($item->sale_price) && is_numeric($item->sale_price))
+                    ? '$' . number_format($item->sale_price, 2)
+                    : (($isSale && !empty($item->sale_price)) ? $item->sale_price : '—');
+                @endphp
+                {{ $salePriceDisplay }}
+              </td>
+
+              <td class="cell-qty" data-title="qty">{{ $item->quantity }}</td>
+              <td class="cell-total" data-title="total">
+                @if(!$has_package_items)
+                  @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                    ${{ number_format($item->quantity * $item->product_price, 2) }}
+                  @else
+                    ${{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $item->product_price, 2) }}
+                  @endif
                 @endif
               </td>
             </tr>
@@ -693,108 +998,127 @@
                           $image1 = $imageArray[0] ?? '';
                           $image2 = $imageArray[1] ?? '';
                       }
+
+                      if ($item->product_type == 'gift_card') {
+                          $thumbUrl = asset($product_detail->product_image);
+                      } elseif ($item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft') {
+                          $thumbUrl = asset($image1);
+                      } else {
+                          $thumbUrl = getS3Img(asset($item->selected_images), 'raw');
+                      }
+
+                      $fullImageUrl = !empty($item->selected_images)
+                          ? (str_contains($item->selected_images, 'amazonaws.com') ? $item->selected_images : asset($item->selected_images))
+                          : $thumbUrl;
+                      $previewTitle = $product_detail->product_title ?? 'Item Image';
                   @endphp
 
-                  <img src="
-                      @if($item->product_type == 'gift_card')
-                          {{ asset($product_detail->product_image) }}
-                      @elseif($item->product_type == 'photo_for_sale')
-
-                          {{ asset($image1) }}
-
-                      @elseif($item->product_type == 'hand_craft')
-
-                          {{ asset($image1) }}
-
-                      @else
-                          {{-- {{ getS3Img(asset($item->selected_images), 'medium') }} --}}
-                          {{ getS3Img(asset($item->selected_images), 'raw') }}
-                      @endif
-                  " alt="">
+                  <a href="javascript:void(0)" class="order-img-preview-trigger" data-img-url="{{ $fullImageUrl }}" data-img-title="{{ $previewTitle }}" title="Click to preview image">
+                    <img src="{{ $thumbUrl }}" alt="{{ $previewTitle }}">
+                    <span class="order-img-zoom-icon"><i class="fas fa-search-plus"></i></span>
+                  </a>
                 
                 </td>
                 <td class="strong order_page_td">
                   
                       @if($item->product_type == "gift_card")
-                      <a href="{{ route('gift-card-show', ['category_id' => $product_detail->id]) }}">
-                          {{ $product_detail->product_title }}
-                          <p class="giftcard-message"><span class="gift-desc-heading">To: </span><span>{{$giftcard_product_desc->reciept_email ?? ''}}</span><span class="gift-desc-heading"> From: </span><span> {{$giftcard_product_desc->from ?? ''}}</span><span class="gift-desc-heading"> Message: </span><span>{{$giftcard_product_desc->giftcard_msg ?? ''}}</span></p>
-                      </a>    
+                      <a href="{{ route('gift-card-show', ['category_id' => $product_detail->id]) }}" class="order-product-title">
+                          {{ $product_detail->product_title ?? 'Gift Card' }}
+                      </a>
+                      @if(!empty($giftcard_product_desc))
+                      <div class="giftcard-meta-box">
+                          @if(!empty($giftcard_product_desc->reciept_email))
+                            <div class="giftcard-meta-line"><span class="giftcard-meta-label">To:</span> <span>{{ $giftcard_product_desc->reciept_email }}</span></div>
+                          @endif
+                          @if(!empty($giftcard_product_desc->from))
+                            <div class="giftcard-meta-line"><span class="giftcard-meta-label">From:</span> <span>{{ $giftcard_product_desc->from }}</span></div>
+                          @endif
+                          @if(!empty($giftcard_product_desc->giftcard_msg))
+                            <div class="giftcard-meta-line"><span class="giftcard-meta-label">Message:</span> <span>{{ $giftcard_product_desc->giftcard_msg }}</span></div>
+                          @endif
+                      </div>
+                      @endif
                       @elseif($item->product_type == "photo_for_sale")
-                      <a href="{{ route('photos-for-sale-product-show', ['slug' => $product_detail->slug]) }}">
-                          {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}},{{$photo_product_desc->photo_for_sale_type ?? ''}}
+                      <a href="{{ route('photos-for-sale-product-show', ['slug' => $product_detail->slug]) }}" class="order-product-title">
+                          {{ $product_detail->product_title ?? '' }} - {{$photo_product_desc->photo_for_sale_size  ?? ''}}, {{$photo_product_desc->photo_for_sale_type ?? ''}}
                       </a>    
                       @elseif($item->product_type == "hand_craft")  
-                      <a href="{{ route('hand-craft-product-show', ['slug' => $product_detail->slug]) }}">
+                      <a href="{{ route('hand-craft-product-show', ['slug' => $product_detail->slug]) }}" class="order-product-title">
                         {{ $product_detail->product_title ?? '' }}  
                       </a>
                       @else
-                      <a href="{{ route('product-show', ['slug' => $item->product->slug]) }}">
+                      <a href="{{ route('product-show', ['slug' => $item->product->slug ?? '']) }}" class="order-product-title">
                         {{ $item->product->product_title ?? ''}}
                       </a>
                       @endif
                   
-                  <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug ?? ''}}</div>
-                  <p style="display: block;margin: 0 0 5px;color: #888;"><strong>Filename:</strong> {{ basename($item->selected_images) }} </p>
-
-                  <a href="{{ str_contains($item->selected_images, 'amazonaws.com') ? $item->selected_images : asset($item->selected_images) }}" download>Download image</a>
-              </td>
-
-
-              <td class="right order_page_td" data-title="price">
-                  <span class="">
-                      <bdi>
-                          <span>$</span>
-                      {{-- @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
-                          {{ number_format($item->product_price, 2) }}
-                      @else
-                          {{ number_format($product_detail->product_price, 2) }}
-                      @endif --}}
-                        {{ number_format($item->product_price, 2) }}
-                      </bdi>
-                  </span>
-              </td>
-              <td>
-                  @php
-                  $sale_status = "";
-                  $sale_price = "";
-                    if(isset($item->sale_on) && !empty($item->sale_on)){
-                      $sale_status = 'On';
-                      $sale_price = $item->sale_price;
-                    }else{
-                      $sale_status = 'Off';
-                      $sale_price = '-';
-                    }
-                  @endphp
-
-                  {{$sale_status}}
-
-              </td>
-              <td>{{$sale_price}}</td>
-
-              <td class="center order_page_td" data-title="qty">{{ $item->quantity }}</td>
-              <td class="right order_page_td" data-title="total">$ 
-                  @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
-                      {{ number_format($item->quantity * $item->product_price, 2) }}
-                  @else
-
-                      {{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $item->product_price, 2) }}
-                      
+                  @if(!empty($product_detail->slug))
+                    <div class="wc-order-item-sku"><strong>SKU:</strong> {{ $product_detail->slug }}</div>
                   @endif
+                  @if(!empty($item->selected_images))
+                    <p class="order-filename-meta"><strong>Filename:</strong> {{ basename($item->selected_images) }}</p>
+                  @endif
+                  <div class="order-image-actions">
+                    <a href="javascript:void(0)" class="order-preview-btn" data-img-url="{{ $fullImageUrl }}" data-img-title="{{ $previewTitle }}">
+                      <i class="fas fa-eye"></i> Preview Image
+                    </a>
+                    @if(!empty($item->selected_images))
+                      <a href="{{ $fullImageUrl }}" download class="order-download-link">
+                        <i class="fas fa-download"></i> Download image
+                      </a>
+                    @endif
+                  </div>
+              </td>
+
+
+              <td class="cell-price" data-title="price">
+                ${{ number_format($item->product_price, 2) }}
+              </td>
+              <td class="cell-sale-status" data-title="sale">
+                @php
+                  $isSale = !empty($item->sale_on);
+                @endphp
+                <span class="sale-badge {{ $isSale ? 'is-on' : 'is-off' }}">{{ $isSale ? 'On' : 'Off' }}</span>
+              </td>
+              <td class="cell-sale-cost" data-title="sale-cost">
+                @php
+                  $isSale = !empty($item->sale_on);
+                  $salePriceDisplay = ($isSale && isset($item->sale_price) && is_numeric($item->sale_price))
+                    ? '$' . number_format($item->sale_price, 2)
+                    : (($isSale && !empty($item->sale_price)) ? $item->sale_price : '—');
+                @endphp
+                {{ $salePriceDisplay }}
+              </td>
+
+              <td class="cell-qty" data-title="qty">{{ $item->quantity }}</td>
+              <td class="cell-total" data-title="total">
+                @if($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft")
+                  ${{ number_format($item->quantity * $item->product_price, 2) }}
+                @else
+                  ${{ isset($product_sale_price) && !empty($product_sale_price) ? number_format($item->quantity * $product_sale_price, 2) : number_format($item->quantity * $item->product_price, 2) }}
+                @endif
               </td>
             </tr>
             @endforeach
             
             <tr class="download_zip_tr">
-              <td>
+              <td colspan="7">
+                <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 12px; padding: 4px 0;">
+                  <div class="order-action-btn-group">
+                    <a href="#addNotes" data-toggle="modal" class="btn-add-note">
+                      <i class="fas fa-sticky-note"></i> Add Note
+                    </a>
+                    <a href="{{ route('download-order-zip', ['order_id' => $orderDetail->id]) }}" class="btn-download-zip">
+                      <i class="fas fa-file-archive"></i> Download Zip
+                    </a>
+                  </div>
                   @if(isset($orderDetail->orderBillingShippingDetails['order_notes']) && !empty($orderDetail->orderBillingShippingDetails['order_notes']))
-                    <h2>Order Note</h2>
-                    <p>{{$orderDetail->orderBillingShippingDetails['order_notes'] ?? ''}}</p>
+                    <div style="font-size: 13px; color: #475569; background: #ffffff; padding: 6px 14px; border-radius: 6px; border: 1px solid #e2e8f0; max-width: 600px;">
+                      <strong style="color: #1e293b;"><i class="fas fa-comment-alt" style="margin-right: 5px; color: #3b82f6;"></i>Order Note:</strong>
+                      <span>{{$orderDetail->orderBillingShippingDetails['order_notes'] ?? ''}}</span>
+                    </div>
                   @endif
-                    <a href="#addNotes" data-toggle="modal" class="btn btn-primary add-notes">Add note</a>
-              </td>
-              <td colspan="10" class="download-zip-cls">
-               <a href="{{ route('download-order-zip', ['order_id' => $orderDetail->id]) }}" class="download_zip_btn">download zip</a>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -802,8 +1126,7 @@
       </div>
 
       <div class="zaya">
-        <table style=" border-collapse: collapse;  padding: 20px; width: 100%; max-width: 387px;">
-           <table class="wc-order-totals">
+         <table class="wc-order-totals">
             <tr>
                 <td style="padding: 5px;">Items Subtotal:</td>
                 <td style="text-align: right; padding: 5px;"><strong>${{ number_format($orderDetail->sub_total,2) }}</strong></td>
@@ -814,6 +1137,15 @@
               <tr>
                 <td style="padding: 5px;">Coupon ({{ $orderDetail->coupon_code }}):</td>
                 <td style="text-align: right; padding: 5px;"><strong>-${{ number_format($orderDetail->discount, 2) }}</strong></td>
+              </tr>
+
+            @endif
+
+            @if(!empty($orderDetail->gift_card_code) && (float)$orderDetail->gift_card_discount > 0)
+
+              <tr>
+                <td style="padding: 5px;">Gift Card ({{ $orderDetail->gift_card_code }}):</td>
+                <td style="text-align: right; padding: 5px;"><strong>-${{ number_format($orderDetail->gift_card_discount, 2) }}</strong></td>
               </tr>
 
             @endif
@@ -991,6 +1323,35 @@
     </div>
   </div>
 
+  <!-- Image Preview Modal -->
+  <div id="imagePreviewModal" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 860px;">
+      <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.22);">
+        <div class="modal-header" style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 14px 20px;">
+          <h5 class="modal-title" id="imagePreviewModalTitle" style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-image" style="color: #0f766e;"></i> <span>Image Preview</span>
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 24px; color: #64748b; opacity: 1; outline: none;">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center" style="padding: 24px; background: #0f172a; min-height: 280px; display: flex; align-items: center; justify-content: center;">
+          <img id="imagePreviewModalImg" src="" alt="Full Preview" style="max-width: 100%; max-height: 72vh; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.35); object-fit: contain;">
+        </div>
+        <div class="modal-footer" style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <span id="imagePreviewFilename" style="font-size: 12.5px; color: #64748b; word-break: break-all; max-width: 500px;"></span>
+          <div style="display: flex; gap: 8px;">
+            <a id="imagePreviewDownloadBtn" href="" download class="btn btn-primary" style="font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 6px;">
+              <i class="fas fa-download" style="margin-right: 5px;"></i> Download
+            </a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 6px;">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 @endsection
 
@@ -1023,6 +1384,24 @@
           $('#addNotesForm').submit();
        }   
      })
+
+     // Image Preview Modal Handler
+     $(document).on('click', '.order-img-preview-trigger, .order-preview-btn', function(e) {
+       e.preventDefault();
+       var imgUrl = $(this).attr('data-img-url');
+       var imgTitle = $(this).attr('data-img-title') || 'Image Preview';
+       
+       if (imgUrl) {
+         $('#imagePreviewModalTitle span').text(imgTitle);
+         $('#imagePreviewModalImg').attr('src', imgUrl);
+         $('#imagePreviewDownloadBtn').attr('href', imgUrl);
+         
+         var filename = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
+         $('#imagePreviewFilename').text(decodeURIComponent(filename));
+         
+         $('#imagePreviewModal').modal('show');
+       }
+     });
   </script>
 
 

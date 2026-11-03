@@ -184,11 +184,13 @@
     padding-top: 14px !important;
 }
 
-.checkout-order-card .coupon-row th {
+.checkout-order-card .coupon-row th,
+.checkout-order-card .giftcard-row th {
     color: #FFC205 !important;
 }
 
-.checkout-order-card .coupon-row td {
+.checkout-order-card .coupon-row td,
+.checkout-order-card .giftcard-row td {
     color: #22c55e !important;
     font-weight: 600;
 }

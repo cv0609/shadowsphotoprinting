@@ -17,6 +17,9 @@ class Order extends Model
         'coupon_id',
         'coupon_code',
         'discount',
+        'gift_card_id',
+        'gift_card_code',
+        'gift_card_discount',
         'shutter_point',
         'commission',
         'sub_total',
@@ -41,6 +44,16 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id');
+    }
+
+    public function giftCard()
+    {
+        return $this->belongsTo(Coupon::class, 'gift_card_id');
     }
 
     public function orderDetails()

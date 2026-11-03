@@ -56,6 +56,53 @@ Route::get('/llms.txt', function () {
     ]);
 });
 
+Route::get('/preview-giftcard-email', function (\Illuminate\Http\Request $request) {
+    $type = $request->get('type', '');
+    $isChristmas = $request->has('is_christmas') ? (bool)$request->is_christmas : ($type === 'christmas');
+    $isBirthday = $request->has('is_birthday') ? (bool)$request->is_birthday : ($type === 'birthday');
+
+    if ($isChristmas) {
+        $defaultMessage = "Merry Christmas, Mum!\nChoose a favourite photo and turn it into something lovely.\nLove, Alysha";
+        $defaultImage = 'assets/images/christmas-egift-card-email.png';
+        $defaultTitle = 'A Little Christmas Joy';
+    } elseif ($isBirthday) {
+        $defaultMessage = "Happy Birthday!\nChoose something special and make it your own.\nLove, Alysha";
+        $defaultImage = 'assets/admin/uploads/categories/Dusty blue birthday eGift card (1).png-1793685680.png';
+        $defaultTitle = 'Birthday Gift Card';
+    } else {
+        $defaultMessage = "A little something, just for you.\nChoose something special and make it your own.\nLove, Alysha";
+        $defaultImage = 'assets/admin/uploads/categories/Refined eGift card with ivory lettering.png-1793683410.png';
+        $defaultTitle = 'eGift Card';
+    }
+
+    $sampleData = [
+        'from' => $request->get('from', 'Alysha'),
+        'amount' => $request->get('amount', '50.00'),
+        'message' => $request->get('message', $defaultMessage),
+        'code' => $request->get('code', 'SAMPLE-ONLY'),
+        'image' => $request->get('image', $defaultImage),
+        'is_christmas' => $isChristmas,
+        'is_birthday' => $isBirthday,
+        'card_title' => $request->get('card_title', $defaultTitle),
+        'reciept_email' => $request->get('send_to', ''),
+        'expiry_date' => \Carbon\Carbon::now()->addYears(3)->format('d/m/Y'),
+        'expiry_date_formatted' => \Carbon\Carbon::now()->addYears(3)->format('d F Y'),
+        'is_sample' => true,
+    ];
+
+    if ($request->has('send_to') && filter_var($request->send_to, FILTER_VALIDATE_EMAIL)) {
+        \Illuminate\Support\Facades\Mail::to($request->send_to)->send(new \App\Mail\Order\GiftCardMail($sampleData));
+        $backParam = $isChristmas ? '?type=christmas' : ($isBirthday ? '?type=birthday' : '');
+        return "Test email successfully sent to " . e($request->send_to) . "! <br><br><a href='" . url('/preview-giftcard-email' . $backParam) . "'>&larr; Back to preview</a>";
+    }
+
+    return view('mail.order.giftcardmail', ['order' => $sampleData]);
+});
+
+Route::get('/preview-christmas-giftcard-email', function (\Illuminate\Http\Request $request) {
+    return redirect('/preview-giftcard-email?type=christmas');
+});
+
 Route::prefix('admin')->group(function () {
 
     Route::get('/login',[AuthController::class,'login'])->name('admin.login');
@@ -242,6 +289,7 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('
 Route::get('/remove-from-cart/{product_id}', [CartController::class, 'removeFromCart'])->name('remove-from-cart');
 Route::post('/clear-cart/', [CartController::class, 'clearCart'])->name('clear-cart');
 Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+Route::post('/apply-gift-card', [CartController::class, 'applyGiftCard'])->name('apply-gift-card');
 Route::post('/order-type', [CartController::class, 'orderType'])->name('order-type');
 Route::post('/shutter-point', [CartController::class, 'shutterPoint'])->name('shutter-point');
 
@@ -255,6 +303,7 @@ Route::get('/shadows-pro-circle', [AmbassadorController::class, 'photographerBra
 
 
 Route::get('/reset-coupon', [CartController::class, 'resetCoupon'])->name('reset-coupon');
+Route::get('/reset-gift-card', [CartController::class, 'resetGiftCard'])->name('reset-gift-card');
 
 // August 2025 Promotion Email Route
 Route::post('/august-promotion/send-email', [UserController::class, 'augustPromotionEmail'])->name('august.promotion.email');

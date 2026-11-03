@@ -133,8 +133,18 @@
 
                     <tr>
                         <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
-                            Discount:</th>
+                            Discount ({{ $order->coupon_code }}):</th>
                         <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">-${{number_format($order->discount,2)}}</td>
+                    </tr>
+
+                @endif
+
+                @if(isset($order->gift_card_code) && !empty($order->gift_card_code) && (float)$order->gift_card_discount > 0)
+
+                    <tr>
+                        <th colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align: left; color: #636363;">
+                            Gift Card ({{ $order->gift_card_code }}):</th>
+                        <td style="padding: 10px; border: 1px solid #ddd;  color: #636363;">-${{number_format($order->gift_card_discount,2)}}</td>
                     </tr>
 
                 @endif

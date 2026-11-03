@@ -329,7 +329,10 @@ class CartController extends Controller
         if (!Session::has('coupon')) {
 
             foreach ($cart->items as $item) {
-                $productCategoryId = (string)$item->product->category_id;
+                if ($item->product_type === 'gift_card') {
+                    continue;
+                }
+                $productCategoryId = $item->product ? (string)$item->product->category_id : null;
                 $productId = (string)$item->product_id;
                 $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
                 // Check if a coupon was applied and terminate the loop if it was
@@ -464,7 +467,10 @@ class CartController extends Controller
                 if (!Session::has('coupon')) {
 
                     foreach ($cart->items as $item) {
-                        $productCategoryId = (string)$item->product->category_id;
+                        if ($item->product_type === 'gift_card') {
+                            continue;
+                        }
+                        $productCategoryId = $item->product ? (string)$item->product->category_id : null;
                         $productId = (string)$item->product_id;
                         $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
                         // Check if a coupon was applied and terminate the loop if it was
@@ -512,7 +518,13 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
     {
-        $coupon = Coupon::where('code', $request->coupon_code)->where('is_active', true)->first();
+        $couponCode = is_array($request->coupon_code) ? ($request->coupon_code['code'] ?? '') : $request->coupon_code;
+        $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
+
+        // Strict Separation: Gift Cards must not be applied in the Promo Code box
+        if ($coupon && $coupon->is_gift_card == '1') {
+            return ['success' => false, 'message' => 'This is an eGift Card code. Please enter it in the "Have an eGift Card / Gift Card?" section below.'];
+        }
 
         $total = $this->CartService->getCartTotal();
 
@@ -556,14 +568,53 @@ class CartController extends Controller
             return ['success' => false, 'message' => 'Cart is empty'];
         }
 
+        $hasPhysicalItems = $cart->items && $cart->items->contains(function ($item) {
+            return $item->product_type !== 'gift_card';
+        });
+
+        if (!$hasPhysicalItems) {
+            return ['success' => false, 'message' => 'Coupons cannot be applied to orders containing only gift cards.'];
+        }
+
+        // Calculate eligible subtotal (excluding gift cards)
+        $eligibleSubtotal = 0;
+        foreach ($cart->items as $item) {
+            if ($item->product_type !== 'gift_card') {
+                if ($item->product_type == 'photo_for_sale' || $item->product_type == 'hand_craft') {
+                    $product_price = $item->product_price;
+                } else {
+                    $currentDate = date('Y-m-d');
+                    $sale_price = product_sale::where('sale_start_date', '<=', $currentDate)->where('sale_end_date', '>=', $currentDate)->where('product_id', $item->product_id)->first();
+                    if (!empty($item->is_test_print) && $item->is_test_print == '1') {
+                        $product_price = $item->test_print_price;
+                    } else {
+                        if (isset($sale_price) && !empty($sale_price)) {
+                            $product_price = $sale_price->sale_price;
+                        } else {
+                            if (isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)) {
+                                $product_price = $item->package_price;
+                            } else {
+                                $product_price = $item->product->product_price ?? 0;
+                            }
+                        }
+                    }
+                }
+                if (isset($item->is_package) && !empty($item->is_package) && ($item->is_package == 1)) {
+                    $eligibleSubtotal += $product_price;
+                } else {
+                    $eligibleSubtotal += ($product_price * $item->quantity);
+                }
+            }
+        }
+
         if($coupon->is_gift_card != '1'){
 
-            if ($total['subtotal'] < $coupon->minimum_cart_total) {
-                return ['success' => false, 'message' => 'Cart total is less than the minimum required to apply this coupon'];
+            if ($eligibleSubtotal < $coupon->minimum_cart_total) {
+                return ['success' => false, 'message' => 'Cart total for eligible items is less than the minimum required to apply this coupon'];
             }
 
             if ($coupon->auto_applied != '1') {
-                if ($total['subtotal'] < $coupon->minimum_spend || $total['subtotal'] > $coupon->maximum_spend) {
+                if ($eligibleSubtotal < $coupon->minimum_spend || ($coupon->maximum_spend > 0 && $eligibleSubtotal > $coupon->maximum_spend)) {
                     return ['success' => false, 'message' => 'you can use this coupon between ' . $coupon->minimum_spend . ' To ' . $coupon->maximum_spend . ' amount'];
                 }
             }
@@ -643,21 +694,6 @@ class CartController extends Controller
             }
         }
 
-        // For gift card coupons (is_gift_card = 1), ensure cart contains gift card items
-        // Note: If product_category is set, the category validation above already handles the check
-        if ($coupon->is_gift_card == '1') {
-            $hasGiftCardItem = false;
-            foreach ($cart->items as $item) {
-                if ($item->product_type == 'gift_card') {
-                    $hasGiftCardItem = true;
-                    break;
-                }
-            }
-            
-            if (!$hasGiftCardItem) {
-                return ['success' => false, 'message' => 'This coupon is only applicable to gift card items in your cart'];
-            }
-        }
 
         if ($coupon->use_limit !== null && $coupon->use_limit <= 0) {
             return ['success' => false, 'message' => 'Your coupon limit has expired.'];
@@ -740,12 +776,12 @@ class CartController extends Controller
                 if ($coupon->type == "0") {
                     $amount = $coupon->amount;
                 } elseif ($coupon->type == "1") {
-                    $amount = ($coupon->amount / 100) * $total['subtotal'];
+                    $amount = ($coupon->amount / 100) * $eligibleSubtotal;
                 }
             }
         }
 
-        $amount = min($amount, $total['subtotal']);
+        $amount = min($amount, $eligibleSubtotal);
         // $coupon->used++;
         $coupon->save();
 
@@ -794,6 +830,81 @@ class CartController extends Controller
     {
         Session::forget('coupon');
         return back()->with('success', 'Coupon code has been reset successfully.');
+    }
+
+    public function applyGiftCard(Request $request)
+    {
+        $code = trim($request->gift_card_code ?? $request->coupon_code ?? '');
+        if (is_array($code)) {
+            $code = $code['code'] ?? '';
+        }
+
+        if (empty($code)) {
+            return ['success' => false, 'message' => 'Please enter a gift card code.'];
+        }
+
+        $giftCard = Coupon::where('code', $code)
+            ->where('is_gift_card', '1')
+            ->where('is_active', true)
+            ->first();
+
+        if (!$giftCard) {
+            $regularCoupon = Coupon::where('code', $code)->where('is_active', true)->first();
+            if ($regularCoupon && $regularCoupon->is_gift_card != '1') {
+                return ['success' => false, 'message' => 'This is a discount coupon. Please enter it in the Coupon Code field.'];
+            }
+            return ['success' => false, 'message' => 'Gift card code is not valid or does not exist.'];
+        }
+
+        $currentDate = date('Y-m-d');
+        if ($giftCard->start_date > $currentDate) {
+            return ['success' => false, 'message' => 'Gift card is not yet valid.'];
+        }
+
+        if ($giftCard->end_date < $currentDate) {
+            return ['success' => false, 'message' => 'Gift card has expired.'];
+        }
+
+        if ((float)$giftCard->amount <= 0) {
+            return ['success' => false, 'message' => 'This gift card balance is $0.00.'];
+        }
+
+        $auth_id = Auth::check() && !empty(Auth::user()) ? Auth::user()->id : null;
+        $session_id = $auth_id ? null : Session::getId();
+        $cart = $auth_id ? Cart::where('user_id', $auth_id)->with('items')->first() : Cart::where('session_id', $session_id)->with('items')->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return ['success' => false, 'message' => 'Your cart is empty.'];
+        }
+
+        $hasPhysicalItems = $cart->items->contains(function ($item) {
+            return $item->product_type !== 'gift_card';
+        });
+
+        if (!$hasPhysicalItems) {
+            return ['success' => false, 'message' => 'Gift cards cannot be used to purchase gift cards.'];
+        }
+
+        Session::put('gift_card', [
+            'code' => $giftCard->code,
+            'id' => $giftCard->id,
+            'amount' => (float)$giftCard->amount,
+        ]);
+
+        $total = $this->CartService->getCartTotal();
+
+        return [
+            'success' => true,
+            'message' => 'Gift card applied successfully! (Balance: $' . number_format($giftCard->amount, 2) . ')',
+            'gift_card_discount' => $total['gift_card_discount'],
+            'total' => $total['total'],
+        ];
+    }
+
+    public function resetGiftCard()
+    {
+        Session::forget('gift_card');
+        return back()->with('success', 'Gift card has been removed successfully.');
     }
 
     public function billingDetails(Request $request)
@@ -868,7 +979,10 @@ class CartController extends Controller
         // if (!Session::has('coupon')) {
 
         foreach ($cart->items as $item) {
-            $productCategoryId = (string)$item->product->category_id;
+            if ($item->product_type === 'gift_card') {
+                continue;
+            }
+            $productCategoryId = $item->product ? (string)$item->product->category_id : null;
             $productId = (string)$item->product_id;
             $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
             // Check if a coupon was applied and terminate the loop if it was

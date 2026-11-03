@@ -63,10 +63,10 @@ class GiftCardController extends Controller
     {
         $category = GiftCardCategory::whereId($request->category_id)->firstOrFail();
         $useDifferentEmailImage = $request->use_different_email_image == '1';
-        $emailImageRule = 'nullable|image|mimes:jpeg,png,jpg|max:2048';
+        $emailImageRule = 'nullable|image|mimes:jpeg,png,jpg,webp';
 
         if ($useDifferentEmailImage && empty($category->email_product_image)) {
-            $emailImageRule = 'required|image|mimes:jpeg,png,jpg|max:2048';
+            $emailImageRule = 'required|image|mimes:jpeg,png,jpg,webp';
         }
 
         $request->validate([
@@ -74,7 +74,7 @@ class GiftCardController extends Controller
                 'required',
                 Rule::unique('gift_card_category', 'product_title')->ignore($request->category_id),
             ],
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp',
             'use_different_email_image' => 'nullable|in:0,1',
             'email_image' => $emailImageRule
         ]);

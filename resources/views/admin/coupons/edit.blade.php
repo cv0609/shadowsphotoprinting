@@ -177,6 +177,18 @@
                         </div>
                     </div>
 
+                    <div class="item form-group control-label">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="is_gift_card">Gift Card Voucher<span class="required"></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                           <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="1" name="is_gift_card" {{ ($coupon_detail->is_gift_card ?? '0') == '1' ? 'checked' : '' }}> Mark as Gift Card Voucher
+                            </label>
+                           </div>
+                        </div>
+                    </div>
+
                     <div class="ln_solid"></div>
                     <div class="card mb-4 border" style="max-width: 100%; overflow: hidden; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
                         <div class="card-header d-flex align-items-center justify-content-between py-3 px-4 cursor-pointer coupon-rule-toggle" role="button" data-toggle="collapse" data-target="#coupon-rule-collapse" aria-expanded="{{ ($coupon_detail->rule_enabled ?? false) ? 'true' : 'false' }}" aria-controls="coupon-rule-collapse" style="cursor: pointer; background: linear-gradient(180deg, #f8f9fa 0%, #eef1f4 100%); border-bottom: 1px solid #dee2e6;">

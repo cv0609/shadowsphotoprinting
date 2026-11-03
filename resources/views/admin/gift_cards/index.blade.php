@@ -30,30 +30,48 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table class="table">
+                <table class="table table-striped jambo_table">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Category Name</th>
-                            <th>Image</th>
-                            <th>Action</th>
+                            <th style="width: 50px;">#</th>
+                            <th>Card Name</th>
+                            <th>Web Display Image</th>
+                            <th>Email Recipient Image</th>
+                            <th style="width: 160px;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($categories as $key => $category)
                           <tr>
-                            <th scope="row">{{ $key + 1 }}</th>
-                            <td>{{ ucfirst($category->product_title) }}</td>
-                            <td><img src="{{ (isset($category['product_image']) && !empty($category['product_image'])) ? asset($category['product_image']) : asset('assets/admin/images/dummy-image.jpg') }}" alt="Image" height="100px" width="100px"></td>
-                            <td>
-                              <div class="x_content">
-                              <a href="{{ route('gift-card-show', ['category_id' => $category->id]) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                            <td scope="row" style="vertical-align: middle;">{{ $key + 1 }}</td>
+                            <td style="vertical-align: middle;"><strong>{{ ucfirst($category->product_title) }}</strong></td>
+                            <td style="vertical-align: middle;">
+                              @if(!empty($category['product_image']))
+                                <a href="{{ asset($category['product_image']) }}" target="_blank">
+                                  <img src="{{ asset($category['product_image']) }}" alt="Web Image" style="max-height: 80px; max-width: 120px; object-fit: contain; border-radius: 6px; border: 1px solid #e0e0e0; background: #fafafa; padding: 2px;">
+                                </a>
+                              @else
+                                <span class="badge badge-light border">No Image</span>
+                              @endif
+                            </td>
+                            <td style="vertical-align: middle;">
+                              @if($category->use_different_email_image == '1' && !empty($category->email_product_image))
+                                <a href="{{ asset($category->email_product_image) }}" target="_blank">
+                                  <img src="{{ asset($category->email_product_image) }}" alt="Email Image" style="max-height: 80px; max-width: 120px; object-fit: contain; border-radius: 6px; border: 1px solid #c3e6cb; background: #f4faf6; padding: 2px;">
+                                </a>
+                                <br><span class="badge badge-success mt-1" style="font-size: 10px;">Custom Email Image</span>
+                              @else
+                                <span class="badge badge-secondary" style="font-size: 11px; padding: 4px 8px;">Same as Web Image</span>
+                              @endif
+                            </td>
+                            <td style="vertical-align: middle;">
+                              <a href="{{ route('gift-card-show', ['category_id' => $category->id]) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
                               <form action="{{ route('gift-card-delete', ['category_id' => $category->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
                               </form>
-                 </td>
+                            </td>
                           </tr>
                         @endforeach
                     </tbody>

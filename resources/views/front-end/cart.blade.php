@@ -1,10 +1,47 @@
 @extends('front-end.layout.main')
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/cart-shipping.css') }}?v=5">
+<style>
+.toggle-discount-link:hover {
+    color: #e5b95c !important;
+}
+.toggle-discount-link .toggle-chevron {
+    transition: transform 0.2s ease;
+}
+.cart_totals .cart-discount th,
+.cart_totals .cart-discount td {
+    color: #FFC205 !important;
+}
+.cart_totals .cart-discount td {
+    white-space: nowrap !important;
+}
+.cart_totals .reset-coupon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    font-size: 11px;
+    line-height: 1;
+    color: #ef4444 !important;
+    border: 1px solid #ef4444 !important;
+    border-radius: 50% !important;
+    text-decoration: none;
+    margin: 0 0 0 6px !important;
+    vertical-align: middle;
+}
+.cart_totals .reset-coupon:hover {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+</style>
 @endsection
 @section('content')
 @php
 $CartService = app(App\Services\CartService::class);
+$hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($item) {
+    return $item->product_type !== 'gift_card';
+});
 // dd($CartTotal);
 // function getS3Img($str, $size){
 // $str = str_replace('original', $size, $str);
@@ -253,26 +290,19 @@ $CartService = app(App\Services\CartService::class);
                                         <td class="product-price">
                                             <span class="">
 
-                                            @if($is_package != 1)   
-
-                                                <bdi>
-                                                    <span>$</span>
-                                                    @if($item->product_type == "gift_card" || $item->product_type ==
-                                                    "photo_for_sale" || $item->product_type == "hand_craft")
-                                                    {{ number_format($item->product_price, 2) }}
-                                                    @else
-
-                                                    @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                    {{ number_format($item->test_print_price, 2) }}
-                                                    @else
-                                                    {{ isset($product_sale_price) && !empty($product_sale_price) 
-                                                    ? number_format($product_sale_price, 2) 
-                                                    : number_format($product_detail->product_price, 2)
-                                                }}
-                                                    @endif
-
-                                                    @endif
-                                                </bdi>
+                                            @if($is_package != 1)
+                                                @php
+                                                    if ($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft") {
+                                                        $unitPrice = number_format($item->product_price, 2);
+                                                    } elseif (isset($item->is_test_print) && ($item->is_test_print == '1')) {
+                                                        $unitPrice = number_format($item->test_print_price, 2);
+                                                    } else {
+                                                        $unitPrice = isset($product_sale_price) && !empty($product_sale_price) 
+                                                            ? number_format($product_sale_price, 2) 
+                                                            : number_format($product_detail->product_price, 2);
+                                                    }
+                                                @endphp
+                                                <bdi><span>$</span>{{ $unitPrice }}</bdi>
                                             @else
                                                 @if($is_first_package_item)
                                                     <div class="package-info">
@@ -309,24 +339,18 @@ $CartService = app(App\Services\CartService::class);
 
                                             <td class="product-subtotal">
                                                 @if($is_package != 1)  
-                                                    <span>
-                                                        <bdi>
-                                                            <span>$</span>
-                                                            @if($item->product_type == "gift_card" || $item->product_type ==
-                                                            "photo_for_sale" || $item->product_type == "hand_craft")
-                                                            {{ number_format($item->quantity * $item->product_price, 2) }}
-                                                            @else
-                                                            @if(isset($item->is_test_print) && ($item->is_test_print == '1'))
-                                                            {{ number_format($item->test_print_qty * $item->test_print_price, 2) }}
-                                                            @else
-                                                            {{ isset($product_sale_price) && !empty($product_sale_price) 
+                                                    @php
+                                                        if ($item->product_type == "gift_card" || $item->product_type == "photo_for_sale" || $item->product_type == "hand_craft") {
+                                                            $lineSubtotal = number_format($item->quantity * $item->product_price, 2);
+                                                        } elseif (isset($item->is_test_print) && ($item->is_test_print == '1')) {
+                                                            $lineSubtotal = number_format($item->test_print_qty * $item->test_print_price, 2);
+                                                        } else {
+                                                            $lineSubtotal = isset($product_sale_price) && !empty($product_sale_price) 
                                                                 ? number_format($item->quantity * $product_sale_price, 2) 
-                                                                : number_format($item->quantity * $product_detail->product_price, 2)
-                                                            }}
-                                                            @endif
-                                                            @endif
-                                                        </bdi>
-                                                    </span>
+                                                                : number_format($item->quantity * $product_detail->product_price, 2);
+                                                        }
+                                                    @endphp
+                                                    <span><bdi><span>$</span>{{ $lineSubtotal }}</bdi></span>
                                                 @endif
                                             </td>
                                         @endif
@@ -336,17 +360,41 @@ $CartService = app(App\Services\CartService::class);
                                     <tr>
                                         <td colspan="{{ $has_non_package_items ? '6' : '4' }}" class="actions">
 
-                                            @if(!Session::has('coupon'))
-                                            <div class="coupon-icons">
-                                                <input type="text" name="coupon_code" class="input-text"
-                                                    id="coupon_code" value="" placeholder="Coupon code">
-                                                <button type="button" class="button" id="apply_coupon">Apply
-                                                    coupon</button>
-                                                <span class="text-danger coupon-errors"></span>
+                                            @if($hasPhysicalItems)
+                                            <div class="cart-discounts-wrapper" style="margin: 20px 0 20px 0;">
+                                                @if(!Session::has('coupon'))
+                                                <div class="discount-toggle-item" style="margin-bottom: 15px;">
+                                                    <a href="javascript:void(0)" class="toggle-discount-link" id="toggle-promo-btn" style="color: #b8cb8c; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                        <i class="fas fa-tag"></i> <span>Have a promo code? Click here to enter</span> <i class="fas fa-chevron-down toggle-chevron" style="font-size: 11px; margin-left: 4px;"></i>
+                                                    </a>
+                                                    <div id="promo-code-box" style="display: none; margin-top: 10px;">
+                                                        <div class="discount-input-group" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                                            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code" style="max-width: 220px; padding: 8px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
+                                                            <button type="button" class="button" id="apply_coupon" style="background-color: #69794E; color: #fff; padding: 9px 18px; border: none; font-weight: 700; cursor: pointer;">Apply Coupon</button>
+                                                        </div>
+                                                        <span class="text-danger coupon-errors d-block mt-1" style="font-size: 13px;"></span>
+                                                    </div>
+                                                </div>
+                                                @endif
+
+                                                @if(!Session::has('gift_card'))
+                                                <div class="discount-toggle-item" style="margin-bottom: 15px;">
+                                                    <a href="javascript:void(0)" class="toggle-discount-link" id="toggle-giftcard-btn" style="color: #b8cb8c; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                        <i class="fas fa-gift"></i> <span>Have an eGift Card / Gift Card? Click here to enter</span> <i class="fas fa-chevron-down toggle-chevron" style="font-size: 11px; margin-left: 4px;"></i>
+                                                    </a>
+                                                    <div id="giftcard-code-box" style="display: none; margin-top: 10px;">
+                                                        <div class="discount-input-group" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                                            <input type="text" name="gift_card_code" class="input-text" id="gift_card_code" value="" placeholder="Gift card code" style="max-width: 220px; padding: 8px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
+                                                            <button type="button" class="button" id="apply_gift_card" style="background-color: #69794E; color: #fff; padding: 9px 18px; border: none; font-weight: 700; cursor: pointer;">Apply Gift Card</button>
+                                                        </div>
+                                                        <span class="text-danger giftcard-errors d-block mt-1" style="font-size: 13px;"></span>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             </div>
                                             @endif
 
-                                            <div class="cart-action-buttons">
+                                            <div class="cart-action-buttons" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.12);">
                                                 <button type="button" class="button satay3" name="update_cart"
                                                     value="Update cart" id="update_cart">Update cart</button>
                                                 <button type="button" class="button satay3" name="clear_cart"
@@ -362,6 +410,7 @@ $CartService = app(App\Services\CartService::class);
                             <div class="cart-collaterals">
                                 <div class="cart_totals ">
                                     <h2>Cart totals</h2>
+                                    @if($hasPhysicalItems)
                                     <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 14px 16px; background: #f5f7fa; border: 1px solid #dbe3ea; border-radius: 8px;">
                                         <span style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex: 0 0 38px; color: #69794E; background: #fff; border: 1px solid #dbe3ea; border-radius: 50%;">
                                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
@@ -374,6 +423,7 @@ $CartService = app(App\Services\CartService::class);
                                             Change
                                         </a>
                                     </div>
+                                    @endif
                                 </div>
                                 <table cellspacing="0">
                                     <tbody>
@@ -383,6 +433,7 @@ $CartService = app(App\Services\CartService::class);
                                                 <span><bdi><span>$</span>{{ number_format($CartTotal['subtotal'],2) }}</bdi></span>
                                             </td>
                                         </tr>
+                                        @if($hasPhysicalItems)
                                         <tr>
                                             <td>
                                                 <div class="rad-btns-box">
@@ -403,6 +454,7 @@ $CartService = app(App\Services\CartService::class);
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
 
                                         @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && $affiliate_sales->total_shutter_points >= 500)
                                         <tr class="cart-shutter-point">
@@ -438,23 +490,32 @@ $CartService = app(App\Services\CartService::class);
 
                                         @if(Session::has('coupon'))
                                         <tr class="cart-discount coupon-eofy-discount">
-                                            <th>Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
-                                            <td data-title="Coupon: {{ $CartTotal['coupon_code']['code'] }} discount">
-                                                -<span class="woocommerce-Price-amount amount"><span
-                                                        class="woocommerce-Price-currencySymbol">$</span>
-                                                    {{-- @php @endphp --}}
-
-                                                    {{ number_format($CartTotal['coupon_discount'],2) }}
+                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
+                                            <td data-title="Coupon discount" style="white-space: nowrap !important; text-align: right; vertical-align: middle; padding: 6px 0;">
+                                                <span style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; white-space: nowrap; color: #FFC205 !important; font-weight: 600;">
+                                                    <span>-${{ number_format($CartTotal['coupon_discount'], 2) }}</span>
                                                     @if(!session()->has('referral_code'))
-                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')">×</a></span>
+                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')" title="Remove Coupon" style="margin: 0; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 11px; line-height: 1; color: #ef4444; border: 1px solid #ef4444; border-radius: 50%; text-decoration: none;">×</a>
                                                     @endif                                                
                                                 </span>
                                             </td>
                                         </tr>
                                         @endif
 
+                                        @if(Session::has('gift_card') && !empty($CartTotal['gift_card_code']))
+                                        <tr class="cart-discount gift-card-discount">
+                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">Gift Card: {{ $CartTotal['gift_card_code'] }}</th>
+                                            <td data-title="Gift Card" style="white-space: nowrap !important; text-align: right; vertical-align: middle; padding: 6px 0;">
+                                                <span style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; white-space: nowrap; color: #FFC205 !important; font-weight: 600;">
+                                                    <span>-${{ number_format($CartTotal['gift_card_discount'], 2) }}</span>
+                                                    <a class="reset-coupon" href="{{ route('reset-gift-card') }}" onclick="return confirm('Are you sure you want to remove this gift card?')" title="Remove Gift Card" style="margin: 0; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 11px; line-height: 1; color: #ef4444; border: 1px solid #ef4444; border-radius: 50%; text-decoration: none;">×</a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endif
 
-                                        @if($shipping->status == "1")
+
+                                        @if($hasPhysicalItems && $shipping->status == "1")
                                         <tr class="shipping-section">
                                             {{-- <th></th> --}}
                                             <td>
@@ -467,99 +528,11 @@ $CartService = app(App\Services\CartService::class);
                                                 {{-- <div id="total-shipping-cost" style="display: none;">
                                                     <strong>Total Shipping: <span id="total-shipping-amount">${{ number_format($CartTotal['shippingCharge'],2) }}</span></strong>
                                                 </div> --}}
-
-                                                {{-- Commented out old flat rate shipping
-                                                @if(Session::has('billing_details'))
-                                                <span class="flat-rate"> Flat rate:
-                                                    ${{ number_format($CartTotal['shippingCharge'],2) }}</span>
-                                                <p>
-                                                    <p class="">
-                                                        Shipping to
-                                                        <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>.
-                                                    </p>
-                                                </p>
-                                                @endif
-                                                --}}
-
-                                                {{-- @if(Session::has('billing_details'))
-                                                <p class="shipping-address">
-                                                    Shipping to
-                                                    <strong>{{ Session::get('billing_details')['city'].' '. Session::get('billing_details')['state']['name'].' '.Session::get('billing_details')['postcode']}}</strong>
-                                                </p>
-
-                                                <form action="{{ route('billing-details') }}"
-                                                    class="change-calculate-form" method="POST">
-                                                    @csrf
-                                                    <a class="change-address calculat-shipping"
-                                                        id="change-address">Change address</a>
-                                                    <div class="calculate-shipping">
-                                                        <select class="form-control" id="country" name="country">
-                                                            <option selected>{{ $countries->name }}</option>
-                                                        </select>
-
-                                                        <select class="form-control" id="state" name="state" required>
-                                                            <option value="">State</option>
-                                                            @foreach ($countries->states as $state)
-                                                            <option value="{{ $state->id }} "
-                                                                <?= ($state->id ==  Session::get('billing_details')['state_id'] ) ? 'selected' : '' ?>>
-                                                                {{ $state->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="form-row">
-                                                            <input type="text" name="city" placeholder="city"
-                                                                value="{{ Session::get('billing_details')['city'] }}"
-                                                                required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <input type="text" name="postcode"
-                                                                placeholder="postcode/ ZIP"
-                                                                value="{{ Session::get('billing_details')['postcode'] }}"
-                                                                required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <button type="submit" class="update-btn">Update</button>
-                                                        </p>
-                                                    </div>
-                                                </form>
-                                                @endif --}}
-
-                                                {{-- @if(!Session::has('billing_details'))
-                                                <p class="woocommerce-shipping-destination">
-                                                    Shipping options will be updated during checkout. </p>
-
-                                                <form action="{{ route('billing-details') }}"
-                                                    class="change-calculate-form" method="POST">
-                                                    @csrf
-                                                    <a class="calculat-shipping" id="calculat-shipping">Calculate
-                                                        shipping</a>
-                                                    <div class="calculate-shipping">
-                                                        <select class="form-control" id="country" name="country">
-                                                            <option value="{{ $countries->id }}" selected>
-                                                                {{ $countries->name }}</option>
-                                                        </select>
-                                                        <select class="form-control" id="state" name="state" required>
-                                                            <option value="">State</option>
-                                                            @foreach ($countries->states as $state)
-                                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="form-row">
-                                                            <input type="text" name="city" placeholder="city" required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <input type="text" name="postcode"
-                                                                placeholder="postcode/ ZIP" required>
-                                                        </p>
-                                                        <p class="form-row">
-                                                            <button type="submit" class="update-btn">Update</button>
-                                                        </p>
-                                                    </div>
-                                                </form>
-                                                @endif --}}
                                             </td>
                                         </tr>
                                         @endif
                                         
+                                        @if($hasPhysicalItems)
                                         <!-- Shipping Cost Row -->
                                         <tr class="shipping-cost-row" id="shipping-cost-row" style="display: none;">
                                             <th>Shipping</th>
@@ -567,6 +540,15 @@ $CartService = app(App\Services\CartService::class);
                                                 <span id="shipping-cost">$0.00</span>
                                             </td>
                                         </tr>
+                                        @else
+                                        <!-- Gift Card Free Shipping Row -->
+                                        <tr class="shipping-cost-row" id="shipping-cost-row">
+                                            <th>Shipping</th>
+                                            <td data-title="Shipping">
+                                                <span id="shipping-cost" style="font-weight: 500;">Free ($0.00)</span>
+                                            </td>
+                                        </tr>
+                                        @endif
                                         
                                         <tr class="order-total">
                                             <th>Total</th>
@@ -581,13 +563,15 @@ $CartService = app(App\Services\CartService::class);
                                     </tbody>
                                 </table>
                                 <div class="wc-proceed-to-checkout">
-                                    <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward is-disabled" aria-disabled="true" style="pointer-events:none;opacity:0.55;cursor:not-allowed;">
+                                    <a href="{{ route('checkout') }}" class="checkout-button button alt wc-forward @if($hasPhysicalItems) is-disabled @endif" @if($hasPhysicalItems) aria-disabled="true" style="pointer-events:none;opacity:0.55;cursor:not-allowed;" @endif>
                                         Proceed to checkout</a>
+                                    @if($hasPhysicalItems)
                                     <p class="checkout-wait-msg" style="margin:8px 0 0;color:#b45309;font-size:13px;">Please wait until shipping options finish loading.</p>
+                                    @endif
                                 </div>
-                                <div class="shopping_btn_cstm"> <a href="{{ url('shop') }}"
-                                        class="shop_cont_button">Continue
-                                        Shopping →</a></div>
+                                <div class="shopping_btn_cstm">
+                                    <a href="{{ $hasPhysicalItems ? url('shop') : route('gift-card') }}" class="shop_cont_button">Continue Shopping →</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -623,6 +607,18 @@ $CartService = app(App\Services\CartService::class);
 
 @section('scripts')
 <script>
+    $("#toggle-promo-btn").on('click', function (e) {
+        e.preventDefault();
+        $("#promo-code-box").slideToggle(200);
+        $(this).find('.toggle-chevron').toggleClass('fa-chevron-down fa-chevron-up');
+    });
+
+    $("#toggle-giftcard-btn").on('click', function (e) {
+        e.preventDefault();
+        $("#giftcard-code-box").slideToggle(200);
+        $(this).find('.toggle-chevron').toggleClass('fa-chevron-down fa-chevron-up');
+    });
+
     $("#apply_coupon").on('click', function () {
         $("#coupon_code").removeClass('validator');
         $(".coupon-errors").html('');
@@ -646,10 +642,34 @@ $CartService = app(App\Services\CartService::class);
                 });
         }
     })
+
+    $("#apply_gift_card").on('click', function () {
+        $("#gift_card_code").removeClass('validator');
+        $(".giftcard-errors").html('');
+        if (!$("#gift_card_code").val()) {
+            $("#gift_card_code").addClass('validator');
+        } else {
+            var giftCardCode = $("#gift_card_code").val();
+            $.post("{{ route('apply-gift-card') }}", {
+                    gift_card_code: giftCardCode,
+                    "_token": "{{ csrf_token() }}"
+                },
+                function (res) {
+                    if (res.success === false) {
+                        $("#gift_card_code").addClass('validator');
+                        $(".giftcard-errors").html(res.message);
+                    } else {
+                        location.reload();
+                    }
+                });
+        }
+    });
 </script>
 
+@if($hasPhysicalItems)
 <!-- Include category-wise shipping calculator script -->
 <script src="{{ asset('js/category-shipping.js') }}"></script>
+@endif
 
 <script>
     $(document).ready(function () {
@@ -707,6 +727,7 @@ $CartService = app(App\Services\CartService::class);
         console.log('=== END UPDATE SHIPPING AND TOTAL ===');
     }
 
+    @if($hasPhysicalItems)
     let orderType = {{$order_type}}; 
     updateShippingAndTotal(orderType);
 
@@ -718,6 +739,7 @@ $CartService = app(App\Services\CartService::class);
             return false;
         }
     });
+    @endif
 
 
     $(".orderType").change(function () {

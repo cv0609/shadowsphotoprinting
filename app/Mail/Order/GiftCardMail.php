@@ -28,11 +28,28 @@ class GiftCardMail extends Mailable
      */
     public function build()
     {
-        return $this->from(env('APP_MAIL'))
-            ->subject('Your ShadowsPhotoPrinting GiftCard Coupon.')
+        $fromSender = !empty($this->order['from']) ? ' from ' . $this->order['from'] : '';
+        $isChristmas = !empty($this->order['is_christmas']);
+        $isBirthday = !empty($this->order['is_birthday']);
+
+        if ($isChristmas) {
+            $subject = "You've received a Christmas gift!" . $fromSender;
+        } elseif ($isBirthday) {
+            $subject = "You've received a birthday gift!" . $fromSender;
+        } else {
+            $subject = "You've received a gift!" . $fromSender;
+        }
+
+        $mailFrom = env('APP_MAIL') ?: config('mail.from.address');
+        $fromName = env('MAIL_FROM_NAME');
+        if (empty($fromName) || strtolower($fromName) === 'laravel' || strtolower($fromName) === 'example') {
+            $fromName = 'Shadows Photo Printing';
+        }
+
+        return $this->from($mailFrom, $fromName)
+            ->subject($subject)
             ->view('mail.order.giftcardmail')
             ->with('order', $this->order);
-
     }
 }
 
