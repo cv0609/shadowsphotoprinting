@@ -299,6 +299,7 @@ Route::get('/apply-form', [AmbassadorController::class, 'applyForm'])->name('app
 Route::post('/apply-form', [AmbassadorController::class, 'saveForm'])->name('apply-form.post');
 Route::get('/shadows-pro-circle-photographers', [AmbassadorController::class, 'featuredPhotographers'])->name('shadows-pro-circle-photographers');
 Route::get('/shadows-pro-circle', [AmbassadorController::class, 'photographerBrandAmbassador'])->name('shadows-pro-circle');
+Route::redirect('/photographer-brand-ambassador', '/', 301);
 
 
 
