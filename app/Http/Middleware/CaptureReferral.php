@@ -22,6 +22,7 @@ class CaptureReferral
             $affiliate = Affiliate::where('referral_code',$request->query('ref'))->first();
 
             session(['referral_code' => $request->query('ref'),'referral_coupon_code'=>$affiliate->coupon_code]);
+            session()->forget('referral_discount_removed');
         }
 
         return $next($request);

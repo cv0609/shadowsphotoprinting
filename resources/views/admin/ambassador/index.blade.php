@@ -46,7 +46,6 @@
                                     <th>Affiliate Code</th>
                                     <th>Shutter Bucks</th>
                                     <th>Reffered Users</th>
-                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             <tbody id="main-tbody">
@@ -58,11 +57,29 @@
                                     <td data-title="order-number">{{ $ambassador->name }}</td>
 
                                     <td>{{ $ambassador->email }}</td>
-                                    <td>{{$ambassador->user?->affiliate?->referral_code}}</td>
+                                    <td>
+                                        @if($ambassador->user?->affiliate?->referral_code)
+                                            @php
+                                                $refUrl = url('/shop?ref=' . $ambassador->user->affiliate->referral_code);
+                                            @endphp
+                                            <div style="font-weight: 600; color: #2A3F54; font-size: 13px;">
+                                                {{ $ambassador->user->affiliate->referral_code }}
+                                            </div>
+                                            <div style="margin-top: 3px; font-size: 12px;">
+                                                <a href="javascript:void(0)" class="copy-ref-link" data-url="{{ $refUrl }}" title="Click to copy full referral link" style="color: #337ab7; text-decoration: none; cursor: pointer;">
+                                                    <i class="fa fa-copy"></i> <span class="copy-text">Copy Link</span>
+                                                </a>
+                                                <span style="color: #ccc; margin: 0 5px;">|</span>
+                                                <a href="{{ $refUrl }}" target="_blank" title="Test referral link in new tab" style="color: #73879C; text-decoration: none;">
+                                                    <i class="fa fa-external-link"></i> Visit
+                                                </a>
+                                            </div>
+                                        @else
+                                            <span class="text-muted">-</span>
+                                        @endif
+                                    </td>
                                     <td>{{($ambassador->user?->affiliate?->commission)*100}}</td>
                                     <td>{{$ambassador->user?->affiliate?->referral_count}}</td>
-
-                                    <!-- <td>{{ $ambassador->status }}</td> -->
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -79,8 +96,53 @@
 @endsection
 @section('custom-script')
 <script>
+$(document).ready(function() {
+    $(document).on('click', '.copy-ref-link', function(e) {
+        e.preventDefault();
+        var link = $(this);
+        var textSpan = link.find('.copy-text');
+        var icon = link.find('i');
+        var urlToCopy = link.data('url');
 
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(urlToCopy).then(function() {
+                showSuccess();
+            }).catch(function() {
+                fallbackCopy(urlToCopy);
+            });
+        } else {
+            fallbackCopy(urlToCopy);
+        }
 
+        function fallbackCopy(text) {
+            var tempInput = document.createElement("input");
+            tempInput.style.position = "absolute";
+            tempInput.style.left = "-9999px";
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand("copy");
+                showSuccess();
+            } catch (err) {
+                console.error("Copy failed", err);
+            }
+            document.body.removeChild(tempInput);
+        }
 
+        function showSuccess() {
+            var originalText = textSpan.text();
+            icon.removeClass('fa-copy').addClass('fa-check');
+            textSpan.text('Copied!');
+            link.css('color', '#26b99a');
+
+            setTimeout(function() {
+                icon.removeClass('fa-check').addClass('fa-copy');
+                textSpan.text(originalText);
+                link.css('color', '#337ab7');
+            }, 2000);
+        }
+    });
+});
 </script>
 @endsection

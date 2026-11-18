@@ -51,10 +51,14 @@ class CartController extends Controller
                         $amount = ($coupon->amount / 100) * $total['subtotal'];
     
                         Session::put('referral_code', $affiliate->referral_code); // store for future logic
-                        Session::put('coupon', [
-                            'code' => $coupon->code,
-                            'discount_amount' => $amount,
-                        ]);
+                        if (!Session::has('coupon') && !Session::has('referral_discount_removed')) {
+                            Session::put('coupon', [
+                                'code' => $coupon->code,
+                                'discount_amount' => $amount,
+                            ]);
+                        } elseif (Session::has('coupon') && is_array(Session::get('coupon')) && strcasecmp(Session::get('coupon.code'), $coupon->code) === 0) {
+                            Session::put('coupon.discount_amount', $amount);
+                        }
                     }
                 }
             }
@@ -75,10 +79,14 @@ class CartController extends Controller
                         $total = $this->CartService->getCartTotal();
                         $amount = ($coupon->amount / 100) * $total['subtotal'];
     
-                        Session::put('coupon', [
-                            'code' => $coupon->code,
-                            'discount_amount' => $amount,
-                        ]);
+                        if (!Session::has('coupon') && !Session::has('referral_discount_removed')) {
+                            Session::put('coupon', [
+                                'code' => $coupon->code,
+                                'discount_amount' => $amount,
+                            ]);
+                        } elseif (Session::has('coupon') && is_array(Session::get('coupon')) && strcasecmp(Session::get('coupon.code'), $coupon->code) === 0) {
+                            Session::put('coupon.discount_amount', $amount);
+                        }
                     }
                 }
             }
@@ -359,8 +367,18 @@ class CartController extends Controller
 
     public function shutterPoint(Request $request){
         $shutter_point = $request['shutter_point'];
-        Session::put('shutter_point',$shutter_point);
-       return response()->json(['order_type' => Session::get('order_type')]);
+        Session::put('shutter_point', $shutter_point);
+
+        if (Auth::check()) {
+            Cart::where('user_id', Auth::id())
+                ->whereNull('session_id')
+                ->update(['shutter_point' => $shutter_point]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'order_type' => Session::get('order_type')
+        ]);
     }
 
 
@@ -519,6 +537,44 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
     {
         $couponCode = is_array($request->coupon_code) ? ($request->coupon_code['code'] ?? '') : $request->coupon_code;
+        $couponCode = trim((string)$couponCode);
+
+        if (empty($couponCode)) {
+            return ['success' => false, 'message' => 'Please enter a coupon code.'];
+        }
+
+        // Option A Non-Stackable Rule: Check if a discount / coupon is already applied
+        if (Session::has('coupon')) {
+            $currentCoupon = Session::get('coupon');
+            $currentCode = is_array($currentCoupon) ? ($currentCoupon['code'] ?? '') : (string)$currentCoupon;
+
+            if (strcasecmp($currentCode, $couponCode) === 0) {
+                return ['success' => false, 'message' => 'This coupon code is already applied.'];
+            }
+
+            // Check if currently applied coupon is the affiliate referral discount
+            $isAffiliateCoupon = false;
+            if (Session::has('referral_code')) {
+                $refCode = Session::get('referral_code');
+                $affiliate = Affiliate::where('referral_code', $refCode)->first();
+                if ($affiliate && strcasecmp($currentCode, $affiliate->coupon_code) === 0) {
+                    $isAffiliateCoupon = true;
+                }
+            }
+
+            if ($isAffiliateCoupon) {
+                return [
+                    'success' => false,
+                    'message' => 'This promotional code cannot be combined with your existing affiliate discount. Please remove the existing discount first if you wish to use this code.'
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'A coupon code (' . $currentCode . ') is already applied. Please remove it first to use a different code.'
+                ];
+            }
+        }
+
         $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
 
         // Strict Separation: Gift Cards must not be applied in the Promo Code box
@@ -829,6 +885,9 @@ class CartController extends Controller
     public function resetCoupon()
     {
         Session::forget('coupon');
+        if (Session::has('referral_code')) {
+            Session::put('referral_discount_removed', true);
+        }
         return back()->with('success', 'Coupon code has been reset successfully.');
     }
 
