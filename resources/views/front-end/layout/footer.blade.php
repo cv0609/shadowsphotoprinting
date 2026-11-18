@@ -12,14 +12,14 @@
 
     <div class="modal fade newslatter-cls" id="newsletter-modal" aria-hidden="true"
         aria-labelledby="exampleModalToggleLabel1" tabindex="-1" style="z-index: 9999999 !important;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 580px;">
+            <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                <div class="modal-header" style="border-bottom: none; padding: 12px 16px 0; justify-content: flex-end;">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin: 0;"></button>
                 </div>
 
-                <div class="modal-body">
-                    <iframe width="540" height="454" src="https://9b41dcb9.sibforms.com/serve/MUIFACxvmkzwHkfGewsdaZwbjQk9ADo7q-xiQlZiFN0-FV9Hb6M1etx9lKlwijle_Q7CEEUq7aT8nf38jhc-HmtAaBN2DLPeoUc3Cpk6Rb94lN1PIqkwCqcyFbl6cT9lXfEIQHZvHk8Gz8ad-oQsUnGDveoSqTU5oDnPskA_o4x1xGAUdxaIuP2Jc7NLXdbttxx4rjnEv6w1j5-T" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+                <div class="modal-body" style="padding: 0 10px 15px; overflow: hidden;">
+                    <iframe width="540" height="520" src="https://9b41dcb9.sibforms.com/serve/MUIFACxvmkzwHkfGewsdaZwbjQk9ADo7q-xiQlZiFN0-FV9Hb6M1etx9lKlwijle_Q7CEEUq7aT8nf38jhc-HmtAaBN2DLPeoUc3Cpk6Rb94lN1PIqkwCqcyFbl6cT9lXfEIQHZvHk8Gz8ad-oQsUnGDveoSqTU5oDnPskA_o4x1xGAUdxaIuP2Jc7NLXdbttxx4rjnEv6w1j5-T" frameborder="0" scrolling="no" allowfullscreen style="display: block; margin-left: auto; margin-right: auto; max-width: 100%; border: none; height: 520px; overflow: hidden;"></iframe>
                 </div>
             </div>
         </div>
