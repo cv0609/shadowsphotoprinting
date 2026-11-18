@@ -299,7 +299,7 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                                     } else {
                                                         $unitPrice = isset($product_sale_price) && !empty($product_sale_price) 
                                                             ? number_format($product_sale_price, 2) 
-                                                            : number_format($product_detail->product_price, 2);
+                                                            : number_format($product_detail?->product_price ?? $item->product_price ?? 0, 2);
                                                     }
                                                 @endphp
                                                 <bdi><span>$</span>{{ $unitPrice }}</bdi>
@@ -347,7 +347,7 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                                         } else {
                                                             $lineSubtotal = isset($product_sale_price) && !empty($product_sale_price) 
                                                                 ? number_format($item->quantity * $product_sale_price, 2) 
-                                                                : number_format($item->quantity * $product_detail->product_price, 2);
+                                                                : number_format($item->quantity * ($product_detail?->product_price ?? $item->product_price ?? 0), 2);
                                                         }
                                                     @endphp
                                                     <span><bdi><span>$</span>{{ $lineSubtotal }}</bdi></span>
@@ -362,7 +362,6 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
 
                                             @if($hasPhysicalItems)
                                             <div class="cart-discounts-wrapper" style="margin: 20px 0 20px 0;">
-                                                @if(!Session::has('coupon'))
                                                 <div class="discount-toggle-item" style="margin-bottom: 15px;">
                                                     <a href="javascript:void(0)" class="toggle-discount-link" id="toggle-promo-btn" style="color: #b8cb8c; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
                                                         <i class="fas fa-tag"></i> <span>Have a promo code? Click here to enter</span> <i class="fas fa-chevron-down toggle-chevron" style="font-size: 11px; margin-left: 4px;"></i>
@@ -372,10 +371,14 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                                                             <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code" style="max-width: 220px; padding: 8px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff;">
                                                             <button type="button" class="button" id="apply_coupon" style="background-color: #69794E; color: #fff; padding: 9px 18px; border: none; font-weight: 700; cursor: pointer;">Apply Coupon</button>
                                                         </div>
+                                                        @if(Session::has('referral_code') && Session::has('coupon'))
+                                                            <small style="display: block; color: #b8cb8c; margin-top: 6px; font-size: 12px;">
+                                                                <i class="fas fa-info-circle"></i> Note: Promotional codes cannot be combined with an existing affiliate discount.
+                                                            </small>
+                                                        @endif
                                                         <span class="text-danger coupon-errors d-block mt-1" style="font-size: 13px;"></span>
                                                     </div>
                                                 </div>
-                                                @endif
 
                                                 @if(!Session::has('gift_card'))
                                                 <div class="discount-toggle-item" style="margin-bottom: 15px;">
@@ -490,13 +493,26 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
 
                                         @if(Session::has('coupon'))
                                         <tr class="cart-discount coupon-eofy-discount">
-                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">Coupon: {{ $CartTotal['coupon_code']['code'] }} discount</th>
+                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">
+                                                Coupon: {{ is_array($CartTotal['coupon_code'] ?? null) ? ($CartTotal['coupon_code']['code'] ?? '') : ($CartTotal['coupon_code'] ?? '') }} discount
+                                            </th>
                                             <td data-title="Coupon discount" style="white-space: nowrap !important; text-align: right; vertical-align: middle; padding: 6px 0;">
                                                 <span style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; white-space: nowrap; color: #FFC205 !important; font-weight: 600;">
                                                     <span>-${{ number_format($CartTotal['coupon_discount'], 2) }}</span>
-                                                    @if(!session()->has('referral_code'))
-                                                        <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure!')" title="Remove Coupon" style="margin: 0; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 11px; line-height: 1; color: #ef4444; border: 1px solid #ef4444; border-radius: 50%; text-decoration: none;">×</a>
-                                                    @endif                                                
+                                                    <a class="reset-coupon" href="{{ route('reset-coupon') }}" onclick="return confirm('Are you sure you want to remove this discount?')" title="Remove Discount" style="margin: 0; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; font-size: 11px; line-height: 1; color: #ef4444; border: 1px solid #ef4444; border-radius: 50%; text-decoration: none;">×</a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endif
+
+                                        @if(Auth::check() && !empty(Auth::user()) && Auth::user()->role == 'affiliate' && !empty($affiliate_sales) && $affiliate_sales->total_shutter_points >= 500 && (Session::get('shutter_point') == '1' || (isset($cart) && $cart->shutter_point == '1')))
+                                        <tr class="cart-discount shutter-point-discount">
+                                            <th style="color: #FFC205 !important; font-weight: 600; padding: 6px 0; vertical-align: middle;">
+                                                Shutter Points: -{{ $affiliate_sales->total_shutter_points }} (${{ $affiliate_sales->total_commission }})
+                                            </th>
+                                            <td data-title="Shutter Points discount" style="white-space: nowrap !important; text-align: right; vertical-align: middle; padding: 6px 0;">
+                                                <span style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; white-space: nowrap; color: #FFC205 !important; font-weight: 600;">
+                                                    <span>-${{ number_format($affiliate_sales->total_commission, 2) }}</span>
                                                 </span>
                                             </td>
                                         </tr>
@@ -791,7 +807,7 @@ $hasPhysicalItems = $cart && $cart->items && $cart->items->contains(function ($i
                     _token: "{{ csrf_token() }}", 
                 },
                 success: function (response) {
-                    updateShippingAndTotal(response.order_type);
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
