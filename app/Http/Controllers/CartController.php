@@ -51,7 +51,20 @@ class CartController extends Controller
                         $amount = ($coupon->amount / 100) * $total['subtotal'];
     
                         Session::put('referral_code', $affiliate->referral_code); // store for future logic
-                        if (!Session::has('coupon') && !Session::has('referral_discount_removed')) {
+                        $canApplyReferral = false;
+                        if (!Session::has('referral_discount_removed')) {
+                            if (!Session::has('coupon')) {
+                                $canApplyReferral = true;
+                            } else {
+                                $existingCouponCode = is_array(Session::get('coupon')) ? (Session::get('coupon.code') ?? '') : (string)Session::get('coupon');
+                                $existingCoupon = Coupon::where('code', $existingCouponCode)->first();
+                                if ($existingCoupon && $existingCoupon->auto_applied == '1') {
+                                    $canApplyReferral = true; // Affiliate referral discount takes priority over generic auto-applied store coupons
+                                }
+                            }
+                        }
+
+                        if ($canApplyReferral) {
                             Session::put('coupon', [
                                 'code' => $coupon->code,
                                 'discount_amount' => $amount,
@@ -79,7 +92,20 @@ class CartController extends Controller
                         $total = $this->CartService->getCartTotal();
                         $amount = ($coupon->amount / 100) * $total['subtotal'];
     
-                        if (!Session::has('coupon') && !Session::has('referral_discount_removed')) {
+                        $canApplyReferral = false;
+                        if (!Session::has('referral_discount_removed')) {
+                            if (!Session::has('coupon')) {
+                                $canApplyReferral = true;
+                            } else {
+                                $existingCouponCode = is_array(Session::get('coupon')) ? (Session::get('coupon.code') ?? '') : (string)Session::get('coupon');
+                                $existingCoupon = Coupon::where('code', $existingCouponCode)->first();
+                                if ($existingCoupon && $existingCoupon->auto_applied == '1') {
+                                    $canApplyReferral = true; // Affiliate referral discount takes priority over generic auto-applied store coupons
+                                }
+                            }
+                        }
+
+                        if ($canApplyReferral) {
                             Session::put('coupon', [
                                 'code' => $coupon->code,
                                 'discount_amount' => $amount,
@@ -334,8 +360,9 @@ class CartController extends Controller
         isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
 
 
-        if (!Session::has('coupon')) {
+        $this->applyReferralCouponIfNeeded();
 
+        if (!Session::has('coupon')) {
             foreach ($cart->items as $item) {
                 if ($item->product_type === 'gift_card') {
                     continue;
@@ -349,8 +376,6 @@ class CartController extends Controller
                 }
             }
         }
-
-        $this->applyReferralCouponIfNeeded();
 
         // Recalculate shipping after adding items to cart
         $this->recalculateShippingAfterCartUpdate();
@@ -1035,21 +1060,20 @@ class CartController extends Controller
         $cartCount = CartData::where('cart_id', $cartId)->sum('quantity');
         isset($cartCount) && !empty($cartCount) ? $cartCount : 0;
 
-        // if (!Session::has('coupon')) {
-
-        foreach ($cart->items as $item) {
-            if ($item->product_type === 'gift_card') {
-                continue;
-            }
-            $productCategoryId = $item->product ? (string)$item->product->category_id : null;
-            $productId = (string)$item->product_id;
-            $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
-            // Check if a coupon was applied and terminate the loop if it was
-            if (Session::has('coupon')) {
-                break; // Exit the loop if a coupon is applied
+        if (!Session::has('coupon')) {
+            foreach ($cart->items as $item) {
+                if ($item->product_type === 'gift_card') {
+                    continue;
+                }
+                $productCategoryId = $item->product ? (string)$item->product->category_id : null;
+                $productId = (string)$item->product_id;
+                $this->CartService->autoAppliedCoupon($productId, $productCategoryId, $cartCount);
+                // Check if a coupon was applied and terminate the loop if it was
+                if (Session::has('coupon')) {
+                    break; // Exit the loop if a coupon is applied
+                }
             }
         }
-        // }
 
         // Recalculate shipping after cart update
         $this->recalculateShippingAfterCartUpdate();
