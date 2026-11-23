@@ -34,6 +34,39 @@
     line-height: 1;
   }
 
+  .order-coupon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    background-color: #17a2b8;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .order-coupon-badge i {
+    font-size: 10px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .order-coupon-badge span.coupon-text {
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .order-range-list .serach-bar-range {
     position: relative;
     max-width: 340px;
@@ -162,7 +195,7 @@
                 </div>
 
                 <div class="serach-bar-range">
-                    <input type="text" name="search" id="order-search" placeholder="Search order, username, country"><span><i class="fa fa-search"></i></span>
+                    <input type="text" name="search" id="order-search" placeholder="Search order, username, country, coupon"><span><i class="fa fa-search"></i></span>
                 </div>
             </div>
         </div>
@@ -227,6 +260,14 @@
                                                         @endif
                                                     </span>
                                                     {{ $countryName }}
+                                                </span>
+                                            </div>
+                                        @endif
+                                        @if(!empty($order->coupon_code))
+                                            <div>
+                                                <span class="order-coupon-badge" title="Coupon Applied">
+                                                    <i class="fa fa-tag"></i>
+                                                    <span class="coupon-text">{{ $order->coupon_code }}</span>
                                                 </span>
                                             </div>
                                         @endif

@@ -21,6 +21,14 @@
               </span>
           </div>
       @endif
+      @if(!empty($order->coupon_code))
+          <div>
+              <span class="order-coupon-badge" title="Coupon Applied">
+                  <i class="fa fa-tag"></i>
+                  <span class="coupon-text">{{ $order->coupon_code }}</span>
+              </span>
+          </div>
+      @endif
   </td>
   <td>{{ $order->orderBillingShippingDetails->fname ?? ''}}</td>
   <td data-title="created-at">{{ date('M d, Y',strtotime($order->created_at)) }}</td>
