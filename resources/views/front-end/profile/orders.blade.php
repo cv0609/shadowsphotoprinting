@@ -50,6 +50,8 @@
                                                         $status = "Cancelled";
                                                     } elseif($value->order_status == "3") {
                                                         $status = "Refunded";
+                                                    } elseif($value->order_status == "4") {
+                                                        $status = "On Hold";
                                                     }
                                                 @endphp
                                         
