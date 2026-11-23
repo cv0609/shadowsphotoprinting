@@ -98,6 +98,7 @@ class OrderController extends Controller
         if ($searchTerm !== '') {
             $ordersQuery->where(function ($query) use ($searchTerm) {
                 $query->where('order_number', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('coupon_code', 'LIKE', "%{$searchTerm}%")
                     ->orWhereHas('orderBillingShippingDetails', function ($billingQuery) use ($searchTerm) {
                         $billingQuery->where('fname', 'LIKE', "%{$searchTerm}%")
                             ->orWhere('lname', 'LIKE', "%{$searchTerm}%");
