@@ -114,9 +114,9 @@
                                     <input type="number" name="postcode" id="postcode" value="{{ isset($user_address) && !empty($user_address->postcode) ? $user_address->postcode : '' }}">
                                 </p>
                                 <p class="form-row">
-                                    <label> Phone (optional)
+                                    <label> Phone *
                                     </label>
-                                    <input type="number" name="phone" id="phone" value="{{ isset($user_address) && !empty($user_address->phone) ? $user_address->phone : '' }}">
+                                    <input type="text" name="phone" id="phone" value="{{ isset($user_address) && !empty($user_address->phone) ? $user_address->phone : '' }}">
                                 </p>
                                 <p class="form-row">
                                     <label> Email address *
@@ -776,7 +776,7 @@
 
         var isValid = true;
 
-        var requiredFields = ['#fname', '#lname', '#street1', '#postcode', '#email', '#suburb'];
+        var requiredFields = ['#fname', '#lname', '#street1', '#postcode', '#email', '#suburb', '#phone'];
 
         if (!authcheck) {
             requiredFields = requiredFields.concat(['#username', '#password']);

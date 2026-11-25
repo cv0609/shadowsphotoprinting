@@ -165,7 +165,7 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="billing_first">
-                                                        <label>Phone (optional)
+                                                        <label>Phone *
                                                         </label>
                                                         <input type="number" name="phone" value="{{old('phone')}}"  placeholder="2145 *">
                                                     </div>
