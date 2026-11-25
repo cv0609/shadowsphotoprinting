@@ -116,7 +116,7 @@
                                 <p class="form-row">
                                     <label> Phone *
                                     </label>
-                                    <input type="text" name="phone" id="phone" value="{{ isset($user_address) && !empty($user_address->phone) ? $user_address->phone : '' }}">
+                                    <input type="tel" inputmode="tel" name="phone" id="phone" value="{{ isset($user_address) && !empty($user_address->phone) ? $user_address->phone : '' }}" placeholder="e.g. 0412 345 678" maxlength="20">
                                 </p>
                                 <p class="form-row">
                                     <label> Email address *
@@ -667,6 +667,11 @@
                 $('.stripe-details').hide();
             }
         });
+
+        // Only allow numbers and valid phone characters in phone field
+        $(document).on('input', '#phone', function() {
+            this.value = this.value.replace(/[^0-9+\s\-()]/g, '');
+        });
     });
 
     var order_cart_total = {{$CartTotal['total']}};
@@ -789,6 +794,18 @@
                 $field.after('<span class="error-message" style="color: red;">This field is required.</span>');
             }
         });
+
+        // Phone format validation (reject text / gibberish, require minimum 8 digits)
+        var phoneVal = $('#phone').val().trim();
+        if (phoneVal !== '') {
+            var digitCount = (phoneVal.match(/\d/g) || []).length;
+            var phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
+            if (!phoneRegex.test(phoneVal) || digitCount < 8 || digitCount > 15) {
+                isValid = false;
+                $('#phone').next('.error-message').remove();
+                $('#phone').after('<span class="error-message" style="color: red;">Please enter a valid phone number.</span>');
+            }
+        }
 
         // Shipping address validation if checkbox is checked
         if ($('#shipcheckbox').is(':checked')) {
