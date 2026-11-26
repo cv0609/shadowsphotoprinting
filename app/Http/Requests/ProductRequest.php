@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
             'product_description' => 'required|string',
             'product_price' => 'required|numeric',
             'type_of_paper_use' => 'required|string|max:255',
-            'product_image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_image' => 'image|mimes:jpeg,png,jpg,gif,svg',
             'sale_price' => 'required_if:manage_sale,1',
             'sale_start_date' => 'required_if:manage_sale,1',
             'sale_end_date' => 'required_if:manage_sale,1',
